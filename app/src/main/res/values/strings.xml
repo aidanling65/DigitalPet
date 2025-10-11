@@ -3,4 +3,9 @@
     <string name="tamagotchi">Tamagotchi</string>
     <string name="hunger">Hunger</string>
     <string name="discipline">Discipline</string>
+    <string name="feed">Feed</string>
+    <string name="light">Light</string>
+    <string name="clean">Clean</string>
+    <string name="heal">Heal</string>
+    <string name="play">Play</string>
 </resources>
