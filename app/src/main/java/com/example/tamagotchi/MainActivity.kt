@@ -18,6 +18,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -27,13 +29,43 @@ import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.ui.theme.TamagotchiTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val repository = TamagotchiRepository(this.applicationContext)
+        val gameViewModel = GameViewModel(repository)
         enableEdgeToEdge()
         setContent {
             TamagotchiTheme {
-                TamagotchiApp()
+                TamagotchiApp(gameViewModel)
             }
+        }
+    }
+}
+
+@Composable
+fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier=Modifier) {
+    val tamagotchiState by gameViewModel.tamagotchiState.collectAsState()
+    Scaffold(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = colorResource(R.color.blue)),
+        topBar = { TamagotchiAppBar() },
+        bottomBar = { BottomNavBar(gameViewModel) }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+
+                .background(color = colorResource(R.color.blue))
+                .padding(innerPadding),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Spacer(Modifier.height(16.dp))
+            TamogatchiDisplay()
+            Spacer(Modifier.height(16.dp))
+            StatusBars(gameViewModel, tamagotchiState)
         }
     }
 }
@@ -53,39 +85,4 @@ fun TamagotchiAppBar(modifier: Modifier = Modifier) {
             )
         },
     )
-}
-
-
-@Composable
-fun TamagotchiApp(modifier: Modifier = Modifier) {
-    Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = colorResource(R.color.blue)),
-        topBar = { TamagotchiAppBar() },
-        bottomBar = { BottomNavBar() }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-
-                .background(color = colorResource(R.color.blue))
-                .padding(innerPadding),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
-        ) {
-            Spacer(Modifier.height(16.dp))
-            TamogatchiDisplay()
-            Spacer(Modifier.height(16.dp))
-            StatusBars()
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun TamagotchiPreview() {
-    TamagotchiTheme {
-        TamagotchiApp()
-    }
 }

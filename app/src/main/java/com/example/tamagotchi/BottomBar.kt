@@ -44,7 +44,7 @@ fun NavButton(painter: Painter,
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomNavBar(modifier: Modifier = Modifier) {
+fun BottomNavBar(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
     BottomAppBar(
         containerColor = colorResource(R.color.blue),
         actions = {
@@ -53,15 +53,16 @@ fun BottomNavBar(modifier: Modifier = Modifier) {
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 listOf(
-                    R.drawable.kife_fork to R.string.feed,
-                    R.drawable.light_bulb to R.string.light,
-                    R.drawable.clean to R.string.clean,
-                    R.drawable.heal to R.string.heal,
-                    R.drawable.play to R.string.play,
-                    R.drawable.discipline to R.string.discipline
-                ).forEach { (icon, desc) ->
+                    Triple(R.drawable.kife_fork, {gameViewModel.feed()}, R.string.feed),
+                    Triple(R.drawable.light_bulb, {gameViewModel.light()},  R.string.light),
+                    Triple(R.drawable.clean, {gameViewModel.clean()}, R.string.clean),
+                    Triple(R.drawable.heal, {gameViewModel.heal()}, R.string.heal),
+                    Triple(R.drawable.play, {gameViewModel.play()},  R.string.play),
+                    Triple(R.drawable.discipline, {gameViewModel.discipline()}, R.string.discipline)
+                ).forEach{(icon, onClick, desc) ->
                     NavButton(
                         painter = painterResource(icon),
+                        onClick = onClick,
                         contentDescription = stringResource(desc),
                         modifier = Modifier
                             .weight(1f)
