@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -92,7 +93,8 @@ fun StatusBar(
     Text(
         text = label,
         color = colorResource(R.color.white),
-        textAlign = TextAlign.Left
+        textAlign = TextAlign.Left,
+        style = MaterialTheme.typography.bodySmall
     )
 }
 
@@ -120,18 +122,24 @@ fun StatusBars(
             modifier = Modifier.fillMaxWidth()
         ) {
             Column() {
-                Text(text = "${tamagotchiState.age} yr", color = colorResource(R.color.white))
+                Text(
+                    text = "${tamagotchiState.age} yr",
+                    color = colorResource(R.color.white),
+                    style = MaterialTheme.typography.bodySmall
+                )
                 Text(
                     text = if (tamagotchiState.misbehaving) stringResource(R.string.misbehaving) else stringResource(
                         R.string.well_behaved
                     ),
-                    color = colorResource(R.color.white)
+                    color = colorResource(R.color.white),
+                    style = MaterialTheme.typography.bodySmall
                 )
                 Text(
                     text = if (tamagotchiState.light) stringResource(R.string.lights_on) else stringResource(
                         R.string.lights_out
                     ),
-                    color = colorResource(R.color.white)
+                    color = colorResource(R.color.white),
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
             /*Image(
@@ -141,18 +149,24 @@ fun StatusBars(
             )*/
             Column()
             {
-                Text(text = "${tamagotchiState.weight} Ib", color = colorResource(R.color.white))
+                Text(
+                    text = "${tamagotchiState.weight} Ib",
+                    color = colorResource(R.color.white),
+                    style = MaterialTheme.typography.bodySmall
+                )
                 Text(
                     text = if (tamagotchiState.poop) stringResource(R.string.dirty) else stringResource(
                         R.string.clean
                     ),
-                    color = colorResource(R.color.white)
+                    color = colorResource(R.color.white),
+                    style = MaterialTheme.typography.bodySmall
                 )
                 Text(
                     text = if (tamagotchiState.sleeping) stringResource(R.string.sleeping) else stringResource(
                         R.string.awake
                     ),
-                    color = colorResource(R.color.white)
+                    color = colorResource(R.color.white),
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
         }

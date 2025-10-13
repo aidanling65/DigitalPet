@@ -12,6 +12,13 @@ val pottaOne = FontFamily(
     Font(R.font.pottaone_regular)
 )
 
+val pixelifySans = FontFamily(
+    Font(R.font.pixelifysans_bold, FontWeight.Bold),
+    Font(R.font.pixelifysans_semibold, FontWeight.SemiBold),
+    Font(R.font.pixelifysans_medium, FontWeight.Medium),
+    Font(R.font.pixelifysans_regular, FontWeight.Normal)
+)
+
 // Set of Material typography styles to start with
 val Typography = Typography(
     bodyLarge = TextStyle(
@@ -27,7 +34,15 @@ val Typography = Typography(
         fontSize = 51.sp,
         lineHeight = 28.sp,
         letterSpacing = 0.sp
-    )/*
+    ),
+    bodySmall = TextStyle(
+        fontFamily = pixelifySans,
+        fontWeight = FontWeight.Normal,
+        fontSize = 32.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.sp,
+    )
+/*
     labelSmall = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Medium,

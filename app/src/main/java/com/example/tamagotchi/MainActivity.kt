@@ -65,14 +65,14 @@ fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = colorResource(R.color.blue)),
+            .background(color = colorResource(R.color.purple_700)),
         topBar = { TamagotchiAppBar() },
         bottomBar = { BottomNavBar(gameViewModel) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = colorResource(R.color.blue))
+                .background(color = colorResource(R.color.purple_700))
                 .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
@@ -91,7 +91,7 @@ fun TamagotchiAppBar(modifier: Modifier = Modifier) {
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             titleContentColor = colorResource(R.color.gold),
-            containerColor = colorResource(R.color.blue)
+            containerColor = colorResource(R.color.purple_700)
         ),
         title = {
             Text(
