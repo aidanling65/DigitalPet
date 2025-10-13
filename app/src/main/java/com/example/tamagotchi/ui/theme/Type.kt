@@ -38,8 +38,8 @@ val Typography = Typography(
     bodySmall = TextStyle(
         fontFamily = pixelifySans,
         fontWeight = FontWeight.Normal,
-        fontSize = 32.sp,
-        lineHeight = 24.sp,
+        fontSize = 24.sp,
+        lineHeight = 16.sp,
         letterSpacing = 0.sp,
     )
 /*

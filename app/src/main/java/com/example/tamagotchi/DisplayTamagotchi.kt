@@ -110,7 +110,7 @@ fun StatusBars(
             .padding(horizontal = 32.dp),
         horizontalAlignment = Alignment.Start,
     ) {
-        val spacerModifier = Modifier.height(24.dp)
+        val spacerModifier = Modifier.height(16.dp)
         StatusBar(tamagotchiState.hunger, MAX_HUNGER, stringResource(R.string.hunger))
         Spacer(modifier = spacerModifier)
         StatusBar(tamagotchiState.discipline, MAX_DISCIPLINE, stringResource(R.string.discipline))

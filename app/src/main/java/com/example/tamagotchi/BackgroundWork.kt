@@ -37,11 +37,14 @@ class TamagotchiWork(
     @RequiresApi(Build.VERSION_CODES.O)
     override fun doWork(): Result {
         Log.d("msg", "Periodic update")
+        val currentTime = LocalTime.now()
+        val sleepTime = LocalTime.of(20,0)
+        val wakeTime = LocalTime.of(8,0)
+
+        Log.d("msg", currentTime.toString())
+
         runBlocking {
             val currentState = repository.getState()
-            val currentTime = LocalTime.now()
-            val sleepTime = LocalTime.of(20,0)
-            val wakeTime = LocalTime.of(8,0)
 
             val updatedState = currentState.copy(
                 hunger = if (currentState.hunger > 0) currentState.hunger - 1 else currentState.hunger,
