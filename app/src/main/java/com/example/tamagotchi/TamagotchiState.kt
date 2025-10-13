@@ -10,7 +10,7 @@ data class TamagotchiState(
 
     val light: Boolean = true,
 
-    var medicineTaken: Boolean = false,
+    val medicineTaken: Boolean = false,
     val sick: Boolean = false,
 
     val poop: Boolean = false,

@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -28,12 +29,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun TamogatchiDisplay(modifier: Modifier = Modifier){
+fun TamagotchiDisplay(modifier: Modifier = Modifier){
     Row(
         Modifier
             .clip(RoundedCornerShape(32.dp))
             .background(color = colorResource(R.color.lcd))
-            .border(width=2.dp, color= colorResource(R.color.black),shape= RoundedCornerShape(32.dp))
+            .border(
+                width = 2.dp,
+                color = colorResource(R.color.black),
+                shape = RoundedCornerShape(32.dp)
+            )
             .wrapContentSize()
             .padding(32.dp)
     ) {
@@ -75,7 +80,9 @@ fun StatusBar(
         progress= {progressBar},
         color=color,
         trackColor = Color(0x00000000),
-        modifier = Modifier.fillMaxWidth().height(16.dp))
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(16.dp))
     Text(
         text = label,
         color = colorResource(R.color.white),
@@ -86,22 +93,29 @@ fun StatusBar(
 @Composable
 fun StatusBars(gameViewModel: GameViewModel, tamagotchiState: TamagotchiState, modifier: Modifier = Modifier){
 
-    Column(modifier = Modifier.fillMaxSize().padding(horizontal = 32.dp),
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .padding(horizontal = 32.dp),
         horizontalAlignment = Alignment.Start,
     ) {
+        val spacerModifier = Modifier.height(32.dp)
         StatusBar(tamagotchiState.hunger, 10,stringResource(R.string.hunger))
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = spacerModifier)
         StatusBar(tamagotchiState.discipline, 4, stringResource(R.string.discipline))
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = spacerModifier)
+        StatusBar(tamagotchiState.happiness, 4, stringResource(R.string.happiness))
+        Spacer(modifier= spacerModifier)
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ){
             Text(text = "${tamagotchiState.age} yr", color = colorResource(R.color.white))
-            Image(
+
+            /*Image(
                 painter = painterResource(R.drawable.smiley_face),
-                contentDescription = "Your Tamagotchi is happy, good job"
-            )
+                contentDescription = "Your Tamagotchi is happy, good job",
+                contentScale = ContentScale.Fit
+            )*/
             Text(text = "${tamagotchiState.weight} Ib",color = colorResource(R.color.white))
         }
     }

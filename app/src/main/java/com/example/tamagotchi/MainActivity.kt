@@ -24,9 +24,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.tamagotchi.ui.theme.TamagotchiTheme
+import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {
 
@@ -34,6 +37,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val repository = TamagotchiRepository(this.applicationContext)
         val gameViewModel = GameViewModel(repository)
+
+        val periodicWorkRequest = PeriodicWorkRequestBuilder<TamagotchiWork>(15, TimeUnit.MINUTES)
+            .build()
+
+        WorkManager.getInstance(this.applicationContext).enqueueUniquePeriodicWork(
+            "tamagotchi_passive_tasks",
+            ExistingPeriodicWorkPolicy.KEEP,
+            periodicWorkRequest
+        )
+
         enableEdgeToEdge()
         setContent {
             TamagotchiTheme {
@@ -63,7 +76,7 @@ fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier=Modifier) {
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
             Spacer(Modifier.height(16.dp))
-            TamogatchiDisplay()
+            TamagotchiDisplay()
             Spacer(Modifier.height(16.dp))
             StatusBars(gameViewModel, tamagotchiState)
         }
