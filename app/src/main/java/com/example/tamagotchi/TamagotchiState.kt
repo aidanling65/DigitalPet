@@ -1,5 +1,10 @@
 package com.example.tamagotchi
 
+const val MAX_HUNGER = 4
+const val MAX_WEIGHT = 99
+const val MAX_HAPPINESS = 4
+const val MAX_DISCIPLINE = 5
+
 data class TamagotchiState(
     val age: Int = 0,
     val weight: Int = 0,
@@ -8,6 +13,7 @@ data class TamagotchiState(
     val happiness: Int = 0,
     val discipline: Int = 0,
 
+    val sleeping: Boolean = true,
     val light: Boolean = true,
 
     val medicineTaken: Boolean = false,

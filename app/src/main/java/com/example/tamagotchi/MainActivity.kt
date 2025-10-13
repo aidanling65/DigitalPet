@@ -26,19 +26,29 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.tamagotchi.ui.theme.TamagotchiTheme
 import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {
-
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val repository = TamagotchiRepository(this.applicationContext)
+        val repository = TamagotchiRepository(applicationContext)
         val gameViewModel = GameViewModel(repository)
 
-        val periodicWorkRequest = PeriodicWorkRequestBuilder<TamagotchiWork>(15, TimeUnit.MINUTES)
+        val testWork = OneTimeWorkRequestBuilder<TamagotchiWork>()
+            .setInitialDelay(1, TimeUnit.SECONDS) // optional
+            .build()
+
+        WorkManager.getInstance(this).enqueue(testWork)
+
+
+        val periodicWorkRequest = PeriodicWorkRequestBuilder<TamagotchiWork>(
+            15, TimeUnit.MINUTES)
+            .setInitialDelay(10, TimeUnit.SECONDS)
             .build()
 
         WorkManager.getInstance(this.applicationContext).enqueueUniquePeriodicWork(

@@ -9,9 +9,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
-class TamagotchiRepository(private val context: Context) {
+val Context.dataStore by preferencesDataStore(name = "tamagotchi_prefs")
 
-    val Context.dataStore by preferencesDataStore(name = "tamagotchi_prefs")
+class TamagotchiRepository(private val context: Context) {
 
     private val AGE = intPreferencesKey("age")
     private val WEIGHT = intPreferencesKey("weight")

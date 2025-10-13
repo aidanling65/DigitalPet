@@ -46,7 +46,7 @@ fun NavButton(painter: Painter,
 @Composable
 fun BottomNavBar(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
     BottomAppBar(
-        containerColor = colorResource(R.color.blue),
+        containerColor = colorResource(R.color.purple_700),
         actions = {
             Row(
                 modifier = Modifier.fillMaxWidth(),

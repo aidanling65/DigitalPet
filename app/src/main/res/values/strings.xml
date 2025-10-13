@@ -6,7 +6,12 @@
     <string name="feed">Feed</string>
     <string name="light">Light</string>
     <string name="clean">Clean</string>
+    <string name="dirty">Dirty</string>
     <string name="heal">Heal</string>
     <string name="play">Play</string>
     <string name="happiness">Happiness</string>
+    <string name="misbehaving">Misbehaving</string>
+    <string name="well_behaved">Well behaved</string>
+    <string name="lights_on">Lights on</string>
+    <string name="lights_out">Lights out</string>
 </resources>

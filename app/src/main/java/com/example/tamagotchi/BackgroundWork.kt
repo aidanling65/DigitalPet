@@ -1,6 +1,7 @@
 package com.example.tamagotchi
 
 import android.content.Context
+import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.runBlocking
@@ -13,13 +14,14 @@ class TamagotchiWork(
 
     private val repository = TamagotchiRepository(appContext)
     override fun doWork(): Result {
-        runBlocking{
+        Log.d("msg", "Periodic update")
+        runBlocking {
             val currentState = repository.getState()
             val updatedState = currentState.copy(
-                hunger = currentState.hunger - 1,
-                happiness =  currentState.happiness - 1,
-                misbehaving = Random.nextInt(1,4) == 1,
-                poop = Random.nextInt(1,4) == 1
+                hunger = if (currentState.hunger > 0) currentState.hunger - 1 else currentState.hunger,
+                happiness = if (currentState.happiness > 0) currentState.happiness - 1 else currentState.happiness,
+                misbehaving = Random.nextInt(1, 4) == 1,
+                poop = Random.nextInt(1, 4) == 1
             )
 
             repository.saveState(updatedState)
@@ -27,6 +29,5 @@ class TamagotchiWork(
 
         return Result.success()
     }
-
 }
 

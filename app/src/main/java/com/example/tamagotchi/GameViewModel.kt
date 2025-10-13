@@ -7,9 +7,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-const val MAX_HUNGER = 10
-const val MAX_WEIGHT = 99
-const val MAX_HAPPINESS = 4
 
 class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() {
     private val _tamagotchiState = MutableStateFlow(TamagotchiState())
@@ -95,7 +92,7 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
         val current = tamagotchiState.value
         if (current.misbehaving) {
             updateTamagotchiState(discipline = current.discipline.inc(), misbehaving = false)
-        } else {
+        } else if (current.happiness > 0) {
             updateTamagotchiState(happiness = current.happiness.dec())
         }
     }
