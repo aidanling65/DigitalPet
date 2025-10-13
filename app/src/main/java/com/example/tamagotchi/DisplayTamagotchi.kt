@@ -44,7 +44,7 @@ fun TamagotchiDisplay(modifier: Modifier = Modifier) {
         Image(
             painter = painterResource(R.drawable.tamagotchi),
             contentDescription = null,
-            modifier = Modifier.size(250.dp)
+            modifier = Modifier.size(200.dp)
         )
     }
 }
@@ -82,8 +82,12 @@ fun StatusBar(
         trackColor = Color(0x00000000),
         modifier = Modifier
             .fillMaxWidth()
-            .height(32.dp)
-            .border(width=2.dp,color = colorResource(R.color.black), shape = RoundedCornerShape(16.dp))
+            .height(24.dp)
+            .border(
+                width = 2.dp,
+                color = colorResource(R.color.black),
+                shape = RoundedCornerShape(16.dp)
+            )
     )
     Text(
         text = label,
@@ -94,7 +98,6 @@ fun StatusBar(
 
 @Composable
 fun StatusBars(
-    gameViewModel: GameViewModel,
     tamagotchiState: TamagotchiState,
     modifier: Modifier = Modifier
 ) {
@@ -105,7 +108,7 @@ fun StatusBars(
             .padding(horizontal = 32.dp),
         horizontalAlignment = Alignment.Start,
     ) {
-        val spacerModifier = Modifier.height(32.dp)
+        val spacerModifier = Modifier.height(24.dp)
         StatusBar(tamagotchiState.hunger, MAX_HUNGER, stringResource(R.string.hunger))
         Spacer(modifier = spacerModifier)
         StatusBar(tamagotchiState.discipline, MAX_DISCIPLINE, stringResource(R.string.discipline))
@@ -116,31 +119,42 @@ fun StatusBars(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "${tamagotchiState.age} yr", color = colorResource(R.color.white))
-            Text(
-                text = if (tamagotchiState.misbehaving) stringResource(R.string.misbehaving) else stringResource(
-                    R.string.well_behaved
-                ),
-                color = colorResource(R.color.white)
-            )
-            Text(
-                text = if (tamagotchiState.light) stringResource(R.string.lights_on) else stringResource(
-                    R.string.lights_out
-                ),
-                color = colorResource(R.color.white)
-            )
+            Column() {
+                Text(text = "${tamagotchiState.age} yr", color = colorResource(R.color.white))
+                Text(
+                    text = if (tamagotchiState.misbehaving) stringResource(R.string.misbehaving) else stringResource(
+                        R.string.well_behaved
+                    ),
+                    color = colorResource(R.color.white)
+                )
+                Text(
+                    text = if (tamagotchiState.light) stringResource(R.string.lights_on) else stringResource(
+                        R.string.lights_out
+                    ),
+                    color = colorResource(R.color.white)
+                )
+            }
             /*Image(
                 painter = painterResource(R.drawable.smiley_face),
                 contentDescription = "Your Tamagotchi is happy, good job",
                 contentScale = ContentScale.Fit
             )*/
-            Text(
-                text = if (tamagotchiState.poop) stringResource(R.string.dirty) else stringResource(
-                    R.string.clean
-                ),
-                color = colorResource(R.color.white)
-            )
-            Text(text = "${tamagotchiState.weight} Ib", color = colorResource(R.color.white))
+            Column()
+            {
+                Text(text = "${tamagotchiState.weight} Ib", color = colorResource(R.color.white))
+                Text(
+                    text = if (tamagotchiState.poop) stringResource(R.string.dirty) else stringResource(
+                        R.string.clean
+                    ),
+                    color = colorResource(R.color.white)
+                )
+                Text(
+                    text = if (tamagotchiState.sleeping) stringResource(R.string.sleeping) else stringResource(
+                        R.string.awake
+                    ),
+                    color = colorResource(R.color.white)
+                )
+            }
         }
     }
 }

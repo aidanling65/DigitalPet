@@ -26,28 +26,21 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.tamagotchi.ui.theme.TamagotchiTheme
 import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val repository = TamagotchiRepository(applicationContext)
         val gameViewModel = GameViewModel(repository)
 
-        val testWork = OneTimeWorkRequestBuilder<TamagotchiWork>()
-            .setInitialDelay(1, TimeUnit.SECONDS) // optional
-            .build()
-
-        WorkManager.getInstance(this).enqueue(testWork)
-
-
         val periodicWorkRequest = PeriodicWorkRequestBuilder<TamagotchiWork>(
-            15, TimeUnit.MINUTES)
+            15, TimeUnit.MINUTES
+        )
             .setInitialDelay(10, TimeUnit.SECONDS)
             .build()
 
@@ -67,7 +60,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier=Modifier) {
+fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
     val tamagotchiState by gameViewModel.tamagotchiState.collectAsState()
     Scaffold(
         modifier = Modifier
@@ -79,7 +72,6 @@ fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier=Modifier) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-
                 .background(color = colorResource(R.color.blue))
                 .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -88,7 +80,7 @@ fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier=Modifier) {
             Spacer(Modifier.height(16.dp))
             TamagotchiDisplay()
             Spacer(Modifier.height(16.dp))
-            StatusBars(gameViewModel, tamagotchiState)
+            StatusBars(tamagotchiState)
         }
     }
 }

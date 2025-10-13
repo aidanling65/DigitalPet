@@ -14,4 +14,6 @@
     <string name="well_behaved">Well behaved</string>
     <string name="lights_on">Lights on</string>
     <string name="lights_out">Lights out</string>
+    <string name="sleeping">Sleeping</string>
+    <string name="awake">Awake</string>
 </resources>
