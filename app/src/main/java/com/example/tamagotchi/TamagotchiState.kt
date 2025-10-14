@@ -24,5 +24,7 @@ data class TamagotchiState(
     val poop: Boolean = false,
     val misbehaving: Boolean = false,
 
+    val physicalMistakes: Int = 0,
+    val mentalMistakes: Int = 0,
     val animation: List<Int> = listOf<Int>()
 )

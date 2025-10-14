@@ -2,7 +2,6 @@ package com.example.tamagotchi
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -32,7 +31,6 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.tamagotchi.ui.theme.TamagotchiTheme
-import java.time.LocalTime
 import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {
@@ -42,7 +40,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val repository = TamagotchiRepository(applicationContext)
         val gameViewModel = GameViewModel(repository)
-        
+
         val periodicWorkRequest = PeriodicWorkRequestBuilder<TamagotchiWork>(
             15, TimeUnit.MINUTES
         )
