@@ -23,6 +23,7 @@ class TamagotchiRepository(private val context: Context) {
     private val SICK = booleanPreferencesKey("sick")
     private val POOP = booleanPreferencesKey("poop")
     private val MISBEHAVING = booleanPreferencesKey("misbehaving")
+    private  val SLEEPING = booleanPreferencesKey("sleeping")
 
     val tamagotchiStateFlow: Flow<TamagotchiState> = context.dataStore.data
         .map { prefs ->
@@ -36,7 +37,8 @@ class TamagotchiRepository(private val context: Context) {
                 medicineTaken = prefs[MEDICINE_TAKEN] ?: false,
                 sick = prefs[SICK] ?: false,
                 poop = prefs[POOP] ?: false,
-                misbehaving = prefs[MISBEHAVING] ?: false
+                misbehaving = prefs[MISBEHAVING] ?: false,
+                sleeping = prefs[SLEEPING] ?: false
             )
 
         }
@@ -53,6 +55,7 @@ class TamagotchiRepository(private val context: Context) {
             updated[SICK] = current.sick
             updated[POOP] = current.poop
             updated[MISBEHAVING] = current.misbehaving
+            updated[SLEEPING] = current.sleeping
         }
     }
 
@@ -69,7 +72,8 @@ class TamagotchiRepository(private val context: Context) {
                     medicineTaken = prefs[MEDICINE_TAKEN] ?: false,
                     sick = prefs[SICK] ?: false,
                     poop = prefs[POOP] ?: false,
-                    misbehaving = prefs[MISBEHAVING] ?: false
+                    misbehaving = prefs[MISBEHAVING] ?: false,
+                    sleeping = prefs[SLEEPING] ?: false,
                 )
             }
             .first()

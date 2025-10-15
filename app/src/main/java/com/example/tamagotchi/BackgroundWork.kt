@@ -86,12 +86,11 @@ class TamagotchiWork(
                 weight = calculateWeight(currentState),
                 misbehaving = Random.nextInt(1, 4) == 1,
                 poop = Random.nextInt(1, 4) == 1,
-                sleeping = currentTime.isAfter(sleepTime) || currentTime.isBefore(wakeTime),
+                sleeping = (currentTime.isAfter(sleepTime) && currentTime.isBefore(wakeTime)),
             )
 
             repository.saveState(updatedState)
         }
-
         return Result.success()
     }
 }

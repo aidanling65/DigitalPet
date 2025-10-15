@@ -1,5 +1,6 @@
 package com.example.tamagotchi
 
+import androidx.compose.material3.LocalTextStyle
 import java.time.LocalTime
 
 const val MAX_HUNGER = 4
