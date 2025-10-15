@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -26,8 +27,8 @@ class TamagotchiRepository(private val context: Context) {
     private val POOP = booleanPreferencesKey("poop")
     private val MISBEHAVING = booleanPreferencesKey("misbehaving")
     private val SLEEPING = booleanPreferencesKey("sleeping")
-    private val AGE_STAGE = intPreferencesKey("age stage")
-    private val ANIMATIONS = intPreferencesKey("animations")
+    private val AGE_STAGE = stringPreferencesKey("age stage")
+    private val ANIMATIONS = stringPreferencesKey("animations")
 
     @RequiresApi(Build.VERSION_CODES.O)
     val tamagotchiStateFlow: Flow<TamagotchiState> = context.dataStore.data
@@ -44,8 +45,8 @@ class TamagotchiRepository(private val context: Context) {
                 poop = prefs[POOP] ?: false,
                 misbehaving = prefs[MISBEHAVING] ?: false,
                 sleeping = prefs[SLEEPING] ?: false,
-                ageStage = AgeStage.values()[prefs[AGE_STAGE] ?: 0],
-                animations = EvolutionAnimations.values()[prefs[ANIMATIONS] ?: 0]
+                ageStage = AgeStage.valueOf(prefs[AGE_STAGE] ?: AgeStage.EGG.name),
+                animations = EvolutionAnimations.valueOf(prefs[ANIMATIONS] ?: EvolutionAnimations.EGG.name)
             )
 
         }
@@ -63,8 +64,8 @@ class TamagotchiRepository(private val context: Context) {
             updated[POOP] = current.poop
             updated[MISBEHAVING] = current.misbehaving
             updated[SLEEPING] = current.sleeping
-            updated[AGE_STAGE] = current.ageStage.ordinal
-            updated[ANIMATIONS] = current.animations.ordinal
+            updated[AGE_STAGE] = current.ageStage.name
+            updated[ANIMATIONS] = current.animations.name
         }
     }
 
@@ -84,8 +85,8 @@ class TamagotchiRepository(private val context: Context) {
                     poop = prefs[POOP] ?: false,
                     misbehaving = prefs[MISBEHAVING] ?: false,
                     sleeping = prefs[SLEEPING] ?: false,
-                    ageStage = AgeStage.values()[prefs[AGE_STAGE] ?: 0],
-                    animations = EvolutionAnimations.values()[prefs[ANIMATIONS] ?: 0]
+                    ageStage = AgeStage.valueOf(prefs[AGE_STAGE] ?: AgeStage.EGG.name),
+                    animations = EvolutionAnimations.valueOf(prefs[ANIMATIONS] ?: EvolutionAnimations.EGG.name)
                 )
             }
             .first()
