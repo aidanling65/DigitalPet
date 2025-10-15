@@ -1,6 +1,8 @@
 package com.example.tamagotchi
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -23,8 +25,11 @@ class TamagotchiRepository(private val context: Context) {
     private val SICK = booleanPreferencesKey("sick")
     private val POOP = booleanPreferencesKey("poop")
     private val MISBEHAVING = booleanPreferencesKey("misbehaving")
-    private  val SLEEPING = booleanPreferencesKey("sleeping")
+    private val SLEEPING = booleanPreferencesKey("sleeping")
+    private val AGE_STAGE = intPreferencesKey("age stage")
+    private val ANIMATIONS = intPreferencesKey("animations")
 
+    @RequiresApi(Build.VERSION_CODES.O)
     val tamagotchiStateFlow: Flow<TamagotchiState> = context.dataStore.data
         .map { prefs ->
             TamagotchiState(
@@ -38,7 +43,9 @@ class TamagotchiRepository(private val context: Context) {
                 sick = prefs[SICK] ?: false,
                 poop = prefs[POOP] ?: false,
                 misbehaving = prefs[MISBEHAVING] ?: false,
-                sleeping = prefs[SLEEPING] ?: false
+                sleeping = prefs[SLEEPING] ?: false,
+                ageStage = AgeStage.values()[prefs[AGE_STAGE] ?: 0],
+                animations = EvolutionAnimations.values()[prefs[ANIMATIONS] ?: 0]
             )
 
         }
@@ -56,9 +63,12 @@ class TamagotchiRepository(private val context: Context) {
             updated[POOP] = current.poop
             updated[MISBEHAVING] = current.misbehaving
             updated[SLEEPING] = current.sleeping
+            updated[AGE_STAGE] = current.ageStage.ordinal
+            updated[ANIMATIONS] = current.animations.ordinal
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun getState(): TamagotchiState {
         return context.dataStore.data
             .map { prefs ->
@@ -74,6 +84,8 @@ class TamagotchiRepository(private val context: Context) {
                     poop = prefs[POOP] ?: false,
                     misbehaving = prefs[MISBEHAVING] ?: false,
                     sleeping = prefs[SLEEPING] ?: false,
+                    ageStage = AgeStage.values()[prefs[AGE_STAGE] ?: 0],
+                    animations = EvolutionAnimations.values()[prefs[ANIMATIONS] ?: 0]
                 )
             }
             .first()

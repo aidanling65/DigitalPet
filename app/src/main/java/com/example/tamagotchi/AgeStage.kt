@@ -6,7 +6,7 @@ import java.time.LocalTime
 import java.time.Duration
 
 @RequiresApi(Build.VERSION_CODES.O)
-enum class Stage(val ageStage: AgeStage) {
+enum class AgeStage(val ageStage: AgeStage) {
     EGG(
         AgeStage(
             minimumWeight = 0,
