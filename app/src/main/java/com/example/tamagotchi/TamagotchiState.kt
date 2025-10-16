@@ -29,5 +29,5 @@ data class TamagotchiState @RequiresApi(Build.VERSION_CODES.O) constructor(
     val ageStage: AgeStage = AgeStage.EGG,
     val animations: EvolutionAnimations = EvolutionAnimations.EGG,
 
-    val weight: Int = ageStage.ageStage.minimumWeight,
+    val weight: Int = ageStage.minimumWeight,
 )

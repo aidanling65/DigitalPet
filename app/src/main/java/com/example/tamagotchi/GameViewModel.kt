@@ -1,5 +1,7 @@
 package com.example.tamagotchi
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -8,6 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() {
     private val _tamagotchiState = MutableStateFlow(TamagotchiState())
     val tamagotchiState: StateFlow<TamagotchiState> = _tamagotchiState.asStateFlow()

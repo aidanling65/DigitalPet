@@ -2,6 +2,7 @@ package com.example.tamagotchi
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -28,6 +29,8 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.tamagotchi.ui.theme.TamagotchiTheme
@@ -55,7 +58,15 @@ class MainActivity : ComponentActivity() {
             periodicWorkRequest
         )
 
-        val currentTime = LocalTime.now(ZoneId.systemDefault())
+        val evolutionRequest = OneTimeWorkRequestBuilder<EvolutionWork>()
+            .setInitialDelay(5, TimeUnit.MINUTES)
+            .build()
+
+        WorkManager.getInstance(this.applicationContext).enqueueUniqueWork(
+            "evolve",
+            ExistingWorkPolicy.KEEP,
+            evolutionRequest
+        )
 
         enableEdgeToEdge()
         setContent {
