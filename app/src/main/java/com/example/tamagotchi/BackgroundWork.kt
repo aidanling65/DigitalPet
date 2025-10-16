@@ -41,7 +41,8 @@ class TamagotchiWork(
         }
 
         val weight = currentState.weight - weightLoss
-        return if (weight < 0) 0 else weight
+        val minimumWeight = currentState.ageStage.minimumWeight
+        return if (weight < minimumWeight) minimumWeight else weight
     }
 
     fun calculatePhysicalMistakes(currentState: TamagotchiState): Int{
@@ -74,8 +75,6 @@ class TamagotchiWork(
     override fun doWork(): Result {
         Log.d("msg", "Periodic update")
         val currentTime = LocalTime.now(ZoneId.systemDefault())
-        val sleepTime = LocalTime.of(20, 0)
-        val wakeTime = LocalTime.of(8, 0)
         runBlocking {
             val currentState = repository.getState()
             val updatedState = currentState.copy(
@@ -86,7 +85,7 @@ class TamagotchiWork(
                 weight = calculateWeight(currentState),
                 misbehaving = Random.nextInt(1, 4) == 1,
                 poop = Random.nextInt(1, 4) == 1,
-                sleeping = (currentTime.isAfter(sleepTime) && currentTime.isBefore(wakeTime)),
+                sleeping = currentTime.isAfter(currentState.ageStage.bedTime) || currentTime.isBefore(currentState.ageStage.wakeTime),
             )
 
             repository.saveState(updatedState)
