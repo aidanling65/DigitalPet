@@ -18,6 +18,7 @@ enum class AgeStage(
         bedTime = null,
         wakeTime = null,
         stageLength = Duration.ofMinutes(5),
+        //stageLength = Duration.ofSeconds(10),
         evolve = ::eggBabyEvolve
     ),
     BABY(
@@ -25,6 +26,7 @@ enum class AgeStage(
         bedTime = null,
         wakeTime = null,
         stageLength = Duration.ofMinutes(65),
+        //stageLength = Duration.ofSeconds(10),
         evolve = ::babyChildEvolve
     ),
     CHILD(
@@ -32,6 +34,7 @@ enum class AgeStage(
         bedTime = LocalTime.of(20, 0),
         wakeTime = LocalTime.of(9, 0),
         stageLength = Duration.ofHours(24),
+        //stageLength = Duration.ofSeconds(10),
         evolve = ::childTeenEvolve
     ),
     TEEN(
@@ -39,6 +42,7 @@ enum class AgeStage(
         bedTime = LocalTime.of(21, 0),
         wakeTime = LocalTime.of(9, 0),
         stageLength = Duration.ofHours(72),
+        //stageLength = Duration.ofSeconds(10),
         evolve = ::teenAdultEvolve
     ),
     ADULT(
@@ -46,6 +50,7 @@ enum class AgeStage(
         bedTime = LocalTime.of(22, 0),
         wakeTime = LocalTime.of(9, 0),
         stageLength = Duration.ofHours(72),
+        //stageLength = Duration.ofSeconds(10),
         evolve = ::adultDeadEvolve
     ),
     DEAD(

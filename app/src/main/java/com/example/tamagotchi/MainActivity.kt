@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
         )
 
         val evolutionRequest = OneTimeWorkRequestBuilder<EvolutionWork>()
-            .setInitialDelay(5, TimeUnit.MINUTES)
+            .setInitialDelay(10, TimeUnit.SECONDS)
             .build()
 
         WorkManager.getInstance(this.applicationContext).enqueueUniqueWork(
@@ -77,6 +77,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
     val tamagotchiState by gameViewModel.tamagotchiState.collectAsState()

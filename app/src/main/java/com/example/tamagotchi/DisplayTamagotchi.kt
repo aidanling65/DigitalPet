@@ -117,6 +117,11 @@ fun StatusBars(
         Spacer(modifier = spacerModifier)
         StatusBar(tamagotchiState.happiness, MAX_HAPPINESS, stringResource(R.string.happiness))
         Spacer(modifier = spacerModifier)
+        Text(
+            text = "State: ${tamagotchiState.ageStage.name}",
+            color = colorResource(R.color.white),
+            style = MaterialTheme.typography.bodySmall
+        )
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()

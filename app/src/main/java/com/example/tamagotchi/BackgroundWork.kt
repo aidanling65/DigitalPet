@@ -45,27 +45,27 @@ class TamagotchiWork(
         return if (weight < minimumWeight) minimumWeight else weight
     }
 
-    fun calculatePhysicalMistakes(currentState: TamagotchiState): Int{
+    fun calculatePhysicalMistakes(currentState: TamagotchiState): Int {
         var currentMistakes = currentState.physicalMistakes
-        if(currentState.misbehaving){
+        if (currentState.misbehaving) {
             currentMistakes++
         }
-        if(currentState.sick){
+        if (currentState.sick) {
             currentMistakes++
         }
-        if(currentState.hunger == 0){
+        if (currentState.hunger == 0) {
             currentMistakes++
         }
 
         return currentMistakes
     }
 
-    fun calculateMentalMistakes(currentState: TamagotchiState): Int{
+    fun calculateMentalMistakes(currentState: TamagotchiState): Int {
         var currentMistakes = currentState.mentalMistakes
-        if(currentState.happiness == 0){
+        if (currentState.happiness == 0) {
             currentMistakes++
         }
-        if(currentState.sleeping && currentState.light){
+        if (currentState.sleeping && currentState.light) {
             currentMistakes++
         }
         return currentMistakes
@@ -85,7 +85,13 @@ class TamagotchiWork(
                 weight = calculateWeight(currentState),
                 misbehaving = Random.nextInt(1, 4) == 1,
                 poop = Random.nextInt(1, 4) == 1,
-                sleeping = currentTime.isAfter(currentState.ageStage.bedTime) || currentTime.isBefore(currentState.ageStage.wakeTime),
+                sleeping = currentTime.isAfter(
+                    currentState.ageStage.bedTime ?: LocalTime.of(
+                        23,
+                        59,
+                        59
+                    )
+                ) || currentTime.isBefore(currentState.ageStage.wakeTime ?: LocalTime.of(0, 0, 0)),
             )
 
             repository.saveState(updatedState)

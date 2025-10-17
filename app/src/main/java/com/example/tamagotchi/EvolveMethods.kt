@@ -1,10 +1,13 @@
 package com.example.tamagotchi
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.work.OneTimeWorkRequestBuilder
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun eggBabyEvolve(currentState: TamagotchiState): TamagotchiState {
+    Log.d("msg", "Your Tamagotchi is hatching!")
     return currentState.copy(
         hunger = 0,
         happiness = 0,
@@ -17,6 +20,7 @@ fun eggBabyEvolve(currentState: TamagotchiState): TamagotchiState {
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun babyChildEvolve(currentState: TamagotchiState): TamagotchiState {
+    Log.d("msg", "Your Tamagotchi has evolved!")
     return currentState.copy(
         hunger = 0,
         happiness = 0,
@@ -31,6 +35,7 @@ fun babyChildEvolve(currentState: TamagotchiState): TamagotchiState {
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun childTeenEvolve(currentState: TamagotchiState): TamagotchiState {
+    Log.d("msg", "Your Tamagotchi has evolved!")
     return currentState.copy(
         hunger = 0,
         happiness = 0,
@@ -66,6 +71,7 @@ fun teenAdultEvolve(currentState: TamagotchiState): TamagotchiState {
         }
     }
 
+    Log.d("msg", "Your Tamagotchi has evolved!")
     val updatedState = currentState.copy(
         hunger = 0,
         happiness = 0,
@@ -81,6 +87,7 @@ fun teenAdultEvolve(currentState: TamagotchiState): TamagotchiState {
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun adultDeadEvolve(currentState: TamagotchiState): TamagotchiState {
+    Log.d("msg", "Your Tamagotchi has died!")
     return currentState.copy(
         ageStage = AgeStage.DEAD,
         weight = AgeStage.DEAD.minimumWeight,
