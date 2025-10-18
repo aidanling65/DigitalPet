@@ -19,6 +19,10 @@ class TamagotchiWork(
     private val repository = TamagotchiRepository(appContext)
 
     fun calculateHappiness(currentState: TamagotchiState): Int {
+        if(currentState.sleeping && !currentState.light){
+            return currentState.happiness
+        }
+
         var currentLoss = 1
         if (currentState.sleeping && currentState.light && Random.nextInt(0, 2) == 2) {
             currentLoss++
@@ -33,6 +37,10 @@ class TamagotchiWork(
     }
 
     fun calculateWeight(currentState: TamagotchiState): Int {
+        if(currentState.sleeping){
+            return currentState.weight
+        }
+
         val randomValue = Random.nextInt(1, MAX_HUNGER)
         val currentHunger = currentState.hunger
         var weightLoss = 0
@@ -47,6 +55,10 @@ class TamagotchiWork(
 
     fun calculatePhysicalMistakes(currentState: TamagotchiState): Int {
         var currentMistakes = currentState.physicalMistakes
+        if(currentState.sleeping){
+            return currentMistakes
+        }
+
         if (currentState.misbehaving) {
             currentMistakes++
         }
@@ -62,7 +74,7 @@ class TamagotchiWork(
 
     fun calculateMentalMistakes(currentState: TamagotchiState): Int {
         var currentMistakes = currentState.mentalMistakes
-        if (currentState.happiness == 0) {
+        if (currentState.happiness == 0 && !currentState.sleeping) {
             currentMistakes++
         }
         if (currentState.sleeping && currentState.light) {
@@ -78,12 +90,12 @@ class TamagotchiWork(
         runBlocking {
             val currentState = repository.getState()
             val updatedState = currentState.copy(
-                hunger = if (currentState.hunger > 0) currentState.hunger - 1 else currentState.hunger,
+                hunger = if (currentState.hunger > 0 && !currentState.sleeping) currentState.hunger - 1 else currentState.hunger,
                 happiness = calculateHappiness(currentState),
                 physicalMistakes = calculatePhysicalMistakes(currentState),
                 mentalMistakes = calculateMentalMistakes(currentState),
                 weight = calculateWeight(currentState),
-                misbehaving = Random.nextInt(1, 4) == 1,
+                misbehaving = !currentState.sleeping && Random.nextInt(1, 4) == 1,
                 poop = Random.nextInt(1, 4) == 1,
                 sleeping = currentTime.isAfter(
                     currentState.ageStage.bedTime ?: LocalTime.of(
