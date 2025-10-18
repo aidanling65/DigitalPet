@@ -20,19 +20,19 @@ class EvolutionWork(
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun doWork(): Result{
-        var currentState: TamagotchiState? = null
+        var updatedState: TamagotchiState? = null
         runBlocking {
-            currentState = repository.getState()
-            val updatedState = currentState.ageStage.evolve?.let { it(currentState) }
+            val currentState = repository.getState()
+            updatedState = currentState.ageStage.evolve?.let { it(currentState) }
             Log.d("EvolutionWork", updatedState?.animations?.name ?: "")
             repository.saveState(updatedState?: currentState)
         }
 
-        if(currentState?.ageStage == AgeStage.DEAD){
+        if(updatedState?.ageStage == AgeStage.DEAD){
             return Result.success()
         }
 
-        val delay = currentState?.ageStage?.stageLength ?: Duration.ZERO
+        val delay = updatedState?.ageStage?.stageLength ?: Duration.ZERO
         val evolutionRequest = OneTimeWorkRequestBuilder<EvolutionWork>()
             .setInitialDelay(delay)
             .build()

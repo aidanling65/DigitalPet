@@ -36,5 +36,4 @@ data class TamagotchiState @RequiresApi(Build.VERSION_CODES.O) constructor(
     val weight: Int = ageStage.minimumWeight,
 ){
     var currentAnimation by mutableStateOf(animations.idle ?: listOf(R.drawable.tamagotchi))
-    var currentFrame by mutableStateOf(0)
 }

@@ -37,10 +37,13 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifier) {
+    var currentFrame by remember(currentState.currentAnimation){mutableStateOf(0)}
+
     LaunchedEffect(currentState.currentAnimation) {
+        currentFrame = 0
         while(true){
             delay(500)
-            currentState.currentFrame = ((currentState.currentFrame + 1) % currentState.currentAnimation.size)
+            currentFrame = ((currentFrame + 1) % currentState.currentAnimation.size)
         }
     }
 
@@ -57,7 +60,7 @@ fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifi
             .padding(32.dp)
     ) {
         Image(
-            painter = painterResource(currentState.currentAnimation[currentState.currentFrame]),
+            painter = painterResource(currentState.currentAnimation[currentFrame]),
             contentDescription = null,
             modifier = Modifier.size(200.dp)
         )
