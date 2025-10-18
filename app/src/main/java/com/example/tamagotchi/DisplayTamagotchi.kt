@@ -1,5 +1,6 @@
 package com.example.tamagotchi
 
+import android.widget.ImageView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -18,6 +19,11 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,9 +33,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 
 @Composable
-fun TamagotchiDisplay(modifier: Modifier = Modifier) {
+fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifier) {
+    LaunchedEffect(currentState.currentAnimation) {
+        while(true){
+            delay(500)
+            currentState.currentFrame = ((currentState.currentFrame + 1) % currentState.currentAnimation.size)
+        }
+    }
+
     Row(
         Modifier
             .clip(RoundedCornerShape(48.dp))
@@ -43,7 +57,7 @@ fun TamagotchiDisplay(modifier: Modifier = Modifier) {
             .padding(32.dp)
     ) {
         Image(
-            painter = painterResource(R.drawable.tamagotchi),
+            painter = painterResource(currentState.currentAnimation[currentState.currentFrame]),
             contentDescription = null,
             modifier = Modifier.size(200.dp)
         )

@@ -24,7 +24,7 @@ class EvolutionWork(
         runBlocking {
             currentState = repository.getState()
             val updatedState = currentState.ageStage.evolve?.let { it(currentState) }
-            Log.d("msg", updatedState?.animations?.name ?: "")
+            Log.d("EvolutionWork", updatedState?.animations?.name ?: "")
             repository.saveState(updatedState?: currentState)
         }
 
@@ -32,8 +32,9 @@ class EvolutionWork(
             return Result.success()
         }
 
+        val delay = currentState?.ageStage?.stageLength ?: Duration.ZERO
         val evolutionRequest = OneTimeWorkRequestBuilder<EvolutionWork>()
-            .setInitialDelay(currentState?.ageStage?.stageLength ?: Duration.ZERO)
+            .setInitialDelay(delay)
             .build()
 
         WorkManager.getInstance(this.applicationContext).enqueueUniqueWork(
@@ -42,7 +43,7 @@ class EvolutionWork(
             evolutionRequest
         )
 
-        Log.d("msg", "next evolution scheduled")
+        Log.d("EvolutionWork", "next evolution scheduled for in ${delay.seconds}")
 
         return Result.success()
     }

@@ -97,7 +97,7 @@ fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
             Spacer(Modifier.height(16.dp))
-            TamagotchiDisplay()
+            TamagotchiDisplay(tamagotchiState)
             Spacer(Modifier.height(16.dp))
             StatusBars(tamagotchiState)
         }

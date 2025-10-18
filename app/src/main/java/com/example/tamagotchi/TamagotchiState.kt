@@ -2,6 +2,10 @@ package com.example.tamagotchi
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+
 const val MAX_HUNGER = 4
 const val MAX_WEIGHT = 99
 const val MAX_HAPPINESS = 4
@@ -30,4 +34,7 @@ data class TamagotchiState @RequiresApi(Build.VERSION_CODES.O) constructor(
     val animations: EvolutionAnimations = EvolutionAnimations.EGG,
 
     val weight: Int = ageStage.minimumWeight,
-)
+){
+    var currentAnimation by mutableStateOf(animations.idle ?: listOf(R.drawable.tamagotchi))
+    var currentFrame by mutableStateOf(0)
+}
