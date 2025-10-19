@@ -63,49 +63,49 @@ enum class EvolutionAnimations(
         sick = listOf(1)
     ),
     ADULT_1(
-        idle = listOf(R.drawable.tamagotchi, R.drawable.tamagotchi),
+        idle = loadAnimations("adult_1_idle"),
         eating = listOf(1),
         sleep = listOf(1),
         poop = listOf(1),
         sick = listOf(1)
     ),
     ADULT_2(
-        idle = listOf(R.drawable.tamagotchi, R.drawable.tamagotchi),
+        idle = loadAnimations("adult_2_idle"),
         eating = listOf(1),
         sleep = listOf(1),
         poop = listOf(1),
         sick = listOf(1)
     ),
     ADULT_3(
-        idle = listOf(R.drawable.tamagotchi, R.drawable.tamagotchi),
+        idle = loadAnimations("adult_1_idle"),
         eating = listOf(1),
         sleep = listOf(1),
         poop = listOf(1),
         sick = listOf(1)
     ),
     ADULT_4(
-        idle = listOf(R.drawable.tamagotchi, R.drawable.tamagotchi),
+        idle = loadAnimations("adult_1_idle"),
         eating = listOf(1),
         sleep = listOf(1),
         poop = listOf(1),
         sick = listOf(1)
     ),
     ADULT_5(
-        idle = listOf(R.drawable.tamagotchi, R.drawable.tamagotchi),
+        idle = loadAnimations("adult_1_idle"),
         eating = listOf(1),
         sleep = listOf(1),
         poop = listOf(1),
         sick = listOf(1)
     ),
     ADULT_6(
-        idle = listOf(R.drawable.tamagotchi, R.drawable.tamagotchi),
+        idle = loadAnimations("adult_1_idle"),
         eating = listOf(1),
         sleep = listOf(1),
         poop = listOf(1),
         sick = listOf(1)
     ),
     DEAD(
-        idle = listOf(R.drawable.tamagotchi, R.drawable.tamagotchi),
+        idle = loadAnimations("adult_1_idle"),
         eating = null,
         sleep = null,
         poop = null,

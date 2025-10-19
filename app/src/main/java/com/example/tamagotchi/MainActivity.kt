@@ -2,7 +2,6 @@ package com.example.tamagotchi
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -34,8 +33,6 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.tamagotchi.ui.theme.TamagotchiTheme
-import java.time.LocalTime
-import java.time.ZoneId
 import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {

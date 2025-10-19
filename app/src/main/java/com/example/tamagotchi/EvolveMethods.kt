@@ -3,7 +3,6 @@ package com.example.tamagotchi
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.compose.ui.Modifier
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun baseEvolve(currentState: TamagotchiState) : TamagotchiState{

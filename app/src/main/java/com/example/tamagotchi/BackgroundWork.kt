@@ -96,7 +96,7 @@ class TamagotchiWork(
                 mentalMistakes = calculateMentalMistakes(currentState),
                 weight = calculateWeight(currentState),
                 misbehaving = !currentState.sleeping && Random.nextInt(1, 4) == 1,
-                poop = Random.nextInt(1, 4) == 1,
+                poop = !currentState.sleeping && Random.nextInt(1, 4) == 1,
                 sleeping = currentTime.isAfter(
                     currentState.ageStage.bedTime ?: LocalTime.of(
                         23,
