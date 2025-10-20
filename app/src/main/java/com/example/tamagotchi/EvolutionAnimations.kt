@@ -77,14 +77,14 @@ enum class EvolutionAnimations(
         sick = listOf(1)
     ),
     ADULT_3(
-        idle = loadAnimations("adult_1_idle"),
+        idle = loadAnimations("adult_3_idle"),
         eating = listOf(1),
         sleep = listOf(1),
         poop = listOf(1),
         sick = listOf(1)
     ),
     ADULT_4(
-        idle = loadAnimations("adult_1_idle"),
+        idle = loadAnimations("adult_4_idle"),
         eating = listOf(1),
         sleep = listOf(1),
         poop = listOf(1),
@@ -105,7 +105,7 @@ enum class EvolutionAnimations(
         sick = listOf(1)
     ),
     DEAD(
-        idle = loadAnimations("adult_1_idle"),
+        idle = loadAnimations("dead"),
         eating = null,
         sleep = null,
         poop = null,

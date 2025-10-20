@@ -56,7 +56,7 @@ class MainActivity : ComponentActivity() {
         )
 
         val evolutionRequest = OneTimeWorkRequestBuilder<EvolutionWork>()
-            .setInitialDelay(10, TimeUnit.SECONDS)
+            .setInitialDelay(5, TimeUnit.SECONDS)
             .build()
 
         WorkManager.getInstance(this.applicationContext).enqueueUniqueWork(
