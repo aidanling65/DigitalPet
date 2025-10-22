@@ -16,4 +16,5 @@
     <string name="lights_out">Lights out</string>
     <string name="sleeping">Sleeping</string>
     <string name="awake">Awake</string>
+    <string name="tamagotchi_notifications">Tamagotchi Notifications</string>
 </resources>

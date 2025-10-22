@@ -1,5 +1,8 @@
 package com.example.tamagotchi
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,6 +16,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -27,13 +31,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.tamagotchi.ui.theme.TamagotchiTheme
+import kotlinx.coroutines.runBlocking
 import java.util.concurrent.TimeUnit
+
+
+const val NOTIFICATION_PERMISSION_CODE = 100
+const val CHANNEL_ID = "Tamagotchi"
 
 class MainActivity : ComponentActivity() {
 
@@ -41,7 +53,18 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val repository = TamagotchiRepository(applicationContext)
+        runBlocking {
+            val currentState = repository.getState()
+            MyApp.currentAnimation = currentState.currentAnimation
+        }
         val gameViewModel = GameViewModel(repository)
+
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+            NOTIFICATION_PERMISSION_CODE
+            )
+        createNotificationChannel()
 
         val periodicWorkRequest = PeriodicWorkRequestBuilder<TamagotchiWork>(
             15, TimeUnit.MINUTES
@@ -72,6 +95,21 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = getString(R.string.tamagotchi)
+            val descriptionText = getString(R.string.tamagotchi_notifications)
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+            // Register the channel with the system.
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -81,14 +119,14 @@ fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = colorResource(R.color.purple_700)),
+            .background(color = MaterialTheme.colorScheme.background),
         topBar = { TamagotchiAppBar() },
         bottomBar = { BottomNavBar(gameViewModel) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = colorResource(R.color.purple_700))
+                .background(color = MaterialTheme.colorScheme.background)
                 .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
@@ -107,13 +145,13 @@ fun TamagotchiAppBar(modifier: Modifier = Modifier) {
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             titleContentColor = colorResource(R.color.gold),
-            containerColor = colorResource(R.color.purple_700)
+            containerColor = MaterialTheme.colorScheme.background
         ),
         title = {
             Text(
                 text = stringResource(R.string.tamagotchi),
                 style = MaterialTheme.typography.titleLarge
             )
-        },
+        }
     )
 }

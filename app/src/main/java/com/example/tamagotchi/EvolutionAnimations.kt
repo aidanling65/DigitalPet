@@ -21,9 +21,11 @@ fun loadAnimations(prefix: String) : List<Int>{
 }
 
 enum class EvolutionAnimations(
-    val idle: List<Int>?,
+    val idle: List<Int>,
     val eating: List<Int>?,
     val sleep: List<Int>?,
+    val lights_out_sleep: List<Int>?,
+    val lights_out_awake: List<Int>?,
     val poop: List<Int>?,
     val sick: List<Int>?
 ) {
@@ -31,13 +33,17 @@ enum class EvolutionAnimations(
         idle = loadAnimations("egg_idle"),
         eating = null,
         sleep = null,
+        lights_out_sleep = null,
+        lights_out_awake = listOf(R.drawable.lights_out_awake),
         poop = null,
-        sick = null
+        sick = null,
     ),
     BABY(
         idle = loadAnimations("baby_idle"),
         eating = listOf(1),
         sleep = listOf(1),
+        lights_out_sleep = loadAnimations("lights_out_sleep"),
+        lights_out_awake = listOf(R.drawable.lights_out_awake),
         poop = listOf(1),
         sick = listOf(1)
     ),
@@ -45,6 +51,8 @@ enum class EvolutionAnimations(
         idle = loadAnimations("child_idle"),
         eating = listOf(1),
         sleep = listOf(1),
+        lights_out_sleep = loadAnimations("lights_out_sleep"),
+        lights_out_awake = listOf(R.drawable.lights_out_awake),
         poop = listOf(1),
         sick = listOf(1)
     ),
@@ -52,6 +60,8 @@ enum class EvolutionAnimations(
         idle = loadAnimations("teen_1_idle"),
         eating = listOf(1),
         sleep = listOf(1),
+        lights_out_sleep = loadAnimations("lights_out_sleep"),
+        lights_out_awake = listOf(R.drawable.lights_out_awake),
         poop = listOf(1),
         sick = listOf(1)
     ),
@@ -59,6 +69,8 @@ enum class EvolutionAnimations(
         idle = loadAnimations("teen_2_idle"),
         eating = listOf(1),
         sleep = listOf(1),
+        lights_out_sleep = loadAnimations("lights_out_sleep"),
+        lights_out_awake = listOf(R.drawable.lights_out_awake),
         poop = listOf(1),
         sick = listOf(1)
     ),
@@ -66,6 +78,8 @@ enum class EvolutionAnimations(
         idle = loadAnimations("adult_1_idle"),
         eating = listOf(1),
         sleep = listOf(1),
+        lights_out_sleep = null,
+        lights_out_awake = listOf(R.drawable.lights_out_awake),
         poop = listOf(1),
         sick = listOf(1)
     ),
@@ -73,6 +87,8 @@ enum class EvolutionAnimations(
         idle = loadAnimations("adult_2_idle"),
         eating = listOf(1),
         sleep = listOf(1),
+        lights_out_sleep = loadAnimations("lights_out_sleep"),
+        lights_out_awake = listOf(R.drawable.lights_out_awake),
         poop = listOf(1),
         sick = listOf(1)
     ),
@@ -80,6 +96,8 @@ enum class EvolutionAnimations(
         idle = loadAnimations("adult_3_idle"),
         eating = listOf(1),
         sleep = listOf(1),
+        lights_out_sleep = loadAnimations("lights_out_sleep"),
+        lights_out_awake = listOf(R.drawable.lights_out_awake),
         poop = listOf(1),
         sick = listOf(1)
     ),
@@ -87,20 +105,26 @@ enum class EvolutionAnimations(
         idle = loadAnimations("adult_4_idle"),
         eating = listOf(1),
         sleep = listOf(1),
+        lights_out_sleep = loadAnimations("lights_out_sleep"),
+        lights_out_awake = listOf(R.drawable.lights_out_awake),
         poop = listOf(1),
         sick = listOf(1)
     ),
     ADULT_5(
-        idle = loadAnimations("adult_1_idle"),
+        idle = loadAnimations("adult_5_idle"),
         eating = listOf(1),
         sleep = listOf(1),
+        lights_out_sleep = loadAnimations("lights_out_sleep"),
+        lights_out_awake = listOf(R.drawable.lights_out_awake),
         poop = listOf(1),
         sick = listOf(1)
     ),
     ADULT_6(
-        idle = loadAnimations("adult_1_idle"),
+        idle = loadAnimations("adult_6_idle"),
         eating = listOf(1),
         sleep = listOf(1),
+        lights_out_sleep = loadAnimations("lights_out_sleep"),
+        lights_out_awake = listOf(R.drawable.lights_out_awake),
         poop = listOf(1),
         sick = listOf(1)
     ),
@@ -108,6 +132,8 @@ enum class EvolutionAnimations(
         idle = loadAnimations("dead"),
         eating = null,
         sleep = null,
+        lights_out_sleep = null,
+        lights_out_awake = null,
         poop = null,
         sick = null
     );

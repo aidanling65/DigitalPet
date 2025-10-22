@@ -1,51 +1,64 @@
 package com.example.tamagotchi
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun baseEvolve(currentState: TamagotchiState) : TamagotchiState{
-    return currentState.copy(
+    val updatedState =  currentState.copy(
         hunger = 0,
         happiness = 0,
         discipline = 0,
         mentalMistakes = 0,
-        physicalMistakes = 0
+        physicalMistakes = 0,
+        poop = false,
+        sick = false
     )
+
+    if(updatedState.sleeping && updatedState.light){
+        MyApp.currentAnimation = updatedState.animations.sleep ?: updatedState.animations.idle
+    }
+    else if(updatedState.sleeping && !updatedState.light){
+        MyApp.currentAnimation = updatedState.animations.lights_out_sleep ?: updatedState.animations.idle
+    }
+    MyApp.currentAnimation = updatedState.animations.idle
+    return  updatedState
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun eggBabyEvolve(currentState: TamagotchiState): TamagotchiState {
-    Log.d("EvolutionWork", "Your Tamagotchi is hatching!")
-    val updatedState = baseEvolve(currentState)
-    return updatedState.copy(
+    showNotification("Your Tamagotchi has hatched!")
+
+    val updatedState = currentState.copy(
         ageStage = AgeStage.BABY,
         weight = AgeStage.BABY.minimumWeight,
         animations = EvolutionAnimations.BABY,
     )
+    return baseEvolve(updatedState)
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun babyChildEvolve(currentState: TamagotchiState): TamagotchiState {
-    Log.d("EvolutionWork", "Your Tamagotchi has evolved!")
-    val updatedState = baseEvolve(currentState)
-    return updatedState.copy(
+    showNotification("Your Tamagotchi has evolved!")
+
+    val updatedState =  currentState.copy(
         ageStage = AgeStage.CHILD,
         weight = AgeStage.CHILD.minimumWeight,
         animations = EvolutionAnimations.CHILD,
     )
+    return baseEvolve(updatedState)
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun childTeenEvolve(currentState: TamagotchiState): TamagotchiState {
-    Log.d("msg", "Your Tamagotchi has evolved!")
-    val updatedState = baseEvolve(currentState)
-    return updatedState.copy(
+    showNotification("Your Tamagotchi has evolved!")
+
+    val updatedState = currentState.copy(
         ageStage = AgeStage.TEEN,
         weight = AgeStage.TEEN.minimumWeight,
         animations = if (currentState.physicalMistakes + currentState.mentalMistakes <= 1) EvolutionAnimations.TEEN_1 else EvolutionAnimations.TEEN_2,
     )
+    return  baseEvolve(updatedState)
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -71,18 +84,20 @@ fun teenAdultEvolve(currentState: TamagotchiState): TamagotchiState {
         }
     }
 
-    Log.d("msg", "Your Tamagotchi has evolved!")
-    val updatedState = baseEvolve(currentState)
-    return updatedState.copy(
+    showNotification("Your Tamagotchi has evolved!")
+
+    val updatedState = currentState.copy(
         ageStage = AgeStage.ADULT,
         weight = AgeStage.ADULT.minimumWeight,
         animations =  nextAnimation
     )
+
+    return baseEvolve(updatedState)
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun adultDeadEvolve(currentState: TamagotchiState): TamagotchiState {
-    Log.d("msg", "Your Tamagotchi has died!")
+    showNotification("Your Tamagotchi has died!")
     return currentState.copy(
         ageStage = AgeStage.DEAD,
         weight = AgeStage.DEAD.minimumWeight,

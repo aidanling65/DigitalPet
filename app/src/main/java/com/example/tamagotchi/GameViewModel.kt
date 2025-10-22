@@ -88,7 +88,25 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
     }
 
     fun light() {
-        updateTamagotchiState(light = !tamagotchiState.value.light)
+        val current = tamagotchiState.value
+        if(current.light) {
+            updateTamagotchiState(light =false)
+            if(current.sleeping){
+                MyApp.currentAnimation = current.animations.lights_out_sleep ?: current.animations.idle
+            }
+            else{
+                MyApp.currentAnimation = current.animations.lights_out_awake ?: current.animations.idle
+            }
+        }
+        else{
+            updateTamagotchiState(light=true)
+            if(current.sleeping){
+                MyApp.currentAnimation = current.animations.sleep ?: current.animations.idle
+            }
+            else{
+                MyApp.currentAnimation = current.animations.idle
+            }
+        }
     }
 
     fun discipline() {

@@ -36,13 +36,13 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifier) {
-    var currentFrame by remember(currentState.currentAnimation){mutableStateOf(0)}
+    var currentFrame by remember(MyApp.currentAnimation){mutableStateOf(0)}
 
-    LaunchedEffect(currentState.currentAnimation) {
+    LaunchedEffect(MyApp.currentAnimation) {
         currentFrame = 0
         while(true){
             delay(500)
-            currentFrame = ((currentFrame + 1) % currentState.currentAnimation.size)
+            currentFrame = ((currentFrame + 1) % MyApp.currentAnimation.size)
         }
     }
 
@@ -59,12 +59,21 @@ fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifi
             .padding(32.dp)
     ) {
         Image(
-            painter = painterResource(currentState.currentAnimation[currentFrame]),
+            painter = painterResource(MyApp.currentAnimation[currentFrame]),
             contentDescription = null,
             modifier = Modifier.size(200.dp)
         )
     }
 }
+
+/*@Composable
+fun PlayAnimation(animation: Int){
+    val img = findViewById<ImageView>(animation)
+    img.setBackgroundResource(animation)
+
+    val frameAnimation = img.background as AnimationDrawable
+    frameAnimation.start()
+}*/
 
 @Composable
 fun StatusBar(
@@ -108,7 +117,7 @@ fun StatusBar(
     )
     Text(
         text = label,
-        color = colorResource(R.color.white),
+        color = MaterialTheme.colorScheme.primary,
         textAlign = TextAlign.Left,
         style = MaterialTheme.typography.bodySmall
     )
@@ -135,7 +144,7 @@ fun StatusBars(
         Spacer(modifier = spacerModifier)
         Text(
             text = "State: ${tamagotchiState.ageStage.name}",
-            color = colorResource(R.color.white),
+            color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.bodySmall
         )
         Row(
@@ -145,21 +154,21 @@ fun StatusBars(
             Column() {
                 Text(
                     text = "${tamagotchiState.age} yr",
-                    color = colorResource(R.color.white),
+                    color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodySmall
                 )
                 Text(
                     text = if (tamagotchiState.misbehaving) stringResource(R.string.misbehaving) else stringResource(
                         R.string.well_behaved
                     ),
-                    color = colorResource(R.color.white),
+                    color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodySmall
                 )
                 Text(
                     text = if (tamagotchiState.light) stringResource(R.string.lights_on) else stringResource(
                         R.string.lights_out
                     ),
-                    color = colorResource(R.color.white),
+                    color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodySmall
                 )
             }
@@ -172,21 +181,21 @@ fun StatusBars(
             {
                 Text(
                     text = "${tamagotchiState.weight} Ib",
-                    color = colorResource(R.color.white),
+                    color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodySmall
                 )
                 Text(
                     text = if (tamagotchiState.poop) stringResource(R.string.dirty) else stringResource(
                         R.string.clean
                     ),
-                    color = colorResource(R.color.white),
+                    color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodySmall
                 )
                 Text(
                     text = if (tamagotchiState.sleeping) stringResource(R.string.sleeping) else stringResource(
                         R.string.awake
                     ),
-                    color = colorResource(R.color.white),
+                    color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodySmall
                 )
             }

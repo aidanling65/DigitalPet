@@ -1,5 +1,7 @@
 package com.example.tamagotchi
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,6 +23,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.tamagotchi.ui.theme.TamagotchiTheme
 
 @Composable
 fun NavButton(painter: Painter,
@@ -42,11 +46,12 @@ fun NavButton(painter: Painter,
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomNavBar(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
     BottomAppBar(
-        containerColor = colorResource(R.color.purple_700),
+        containerColor = MaterialTheme.colorScheme.background,
         actions = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
