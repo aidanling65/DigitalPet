@@ -63,6 +63,12 @@ fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifi
             contentDescription = null,
             modifier = Modifier.size(200.dp)
         )
+        if(currentState.poop){
+            Image(
+                painter = painterResource(R.drawable.poop0),
+                contentDescription = null
+            )
+        }
     }
 }
 

@@ -40,93 +40,93 @@ enum class EvolutionAnimations(
     ),
     BABY(
         idle = loadAnimations("baby_idle"),
-        eating = listOf(1),
-        sleep = listOf(1),
+        eating = listOf(R.drawable.tamagotchi),
+        sleep = loadAnimations("baby_sleep"),
         lights_out_sleep = loadAnimations("lights_out_sleep"),
         lights_out_awake = listOf(R.drawable.lights_out_awake),
-        poop = listOf(1),
-        sick = listOf(1)
+        poop = listOf(R.drawable.tamagotchi),
+        sick = listOf(R.drawable.tamagotchi)
     ),
     CHILD(
         idle = loadAnimations("child_idle"),
-        eating = listOf(1),
-        sleep = listOf(1),
+        eating = listOf(R.drawable.tamagotchi),
+        sleep = loadAnimations("child_sleep"),
         lights_out_sleep = loadAnimations("lights_out_sleep"),
         lights_out_awake = listOf(R.drawable.lights_out_awake),
-        poop = listOf(1),
-        sick = listOf(1)
+        poop = listOf(R.drawable.tamagotchi),
+        sick = listOf(R.drawable.tamagotchi)
     ),
     TEEN_1(
         idle = loadAnimations("teen_1_idle"),
-        eating = listOf(1),
-        sleep = listOf(1),
+        eating = listOf(R.drawable.tamagotchi),
+        sleep = loadAnimations("teen_1_sleep"),
         lights_out_sleep = loadAnimations("lights_out_sleep"),
         lights_out_awake = listOf(R.drawable.lights_out_awake),
-        poop = listOf(1),
-        sick = listOf(1)
+        poop = listOf(R.drawable.tamagotchi),
+        sick = listOf(R.drawable.tamagotchi)
     ),
     TEEN_2(
         idle = loadAnimations("teen_2_idle"),
-        eating = listOf(1),
-        sleep = listOf(1),
+        eating = listOf(R.drawable.tamagotchi),
+        sleep = loadAnimations("teen_2_sleep"),
         lights_out_sleep = loadAnimations("lights_out_sleep"),
         lights_out_awake = listOf(R.drawable.lights_out_awake),
-        poop = listOf(1),
-        sick = listOf(1)
+        poop = listOf(R.drawable.tamagotchi),
+        sick = listOf(R.drawable.tamagotchi)
     ),
     ADULT_1(
         idle = loadAnimations("adult_1_idle"),
-        eating = listOf(1),
-        sleep = listOf(1),
-        lights_out_sleep = null,
+        eating = listOf(R.drawable.tamagotchi),
+        sleep = loadAnimations("adult_1_sleep"),
+        lights_out_sleep = loadAnimations("lights_out_sleep"),
         lights_out_awake = listOf(R.drawable.lights_out_awake),
-        poop = listOf(1),
-        sick = listOf(1)
+        poop = listOf(R.drawable.tamagotchi),
+        sick = listOf(R.drawable.tamagotchi)
     ),
     ADULT_2(
         idle = loadAnimations("adult_2_idle"),
-        eating = listOf(1),
-        sleep = listOf(1),
+        eating = listOf(R.drawable.tamagotchi),
+        sleep = listOf(R.drawable.tamagotchi),
         lights_out_sleep = loadAnimations("lights_out_sleep"),
         lights_out_awake = listOf(R.drawable.lights_out_awake),
-        poop = listOf(1),
-        sick = listOf(1)
+        poop = listOf(R.drawable.tamagotchi),
+        sick = listOf(R.drawable.tamagotchi)
     ),
     ADULT_3(
         idle = loadAnimations("adult_3_idle"),
-        eating = listOf(1),
-        sleep = listOf(1),
+        eating = listOf(R.drawable.tamagotchi),
+        sleep = listOf(R.drawable.tamagotchi),
         lights_out_sleep = loadAnimations("lights_out_sleep"),
         lights_out_awake = listOf(R.drawable.lights_out_awake),
-        poop = listOf(1),
-        sick = listOf(1)
+        poop = listOf(R.drawable.tamagotchi),
+        sick = listOf(R.drawable.tamagotchi)
     ),
     ADULT_4(
         idle = loadAnimations("adult_4_idle"),
-        eating = listOf(1),
-        sleep = listOf(1),
+        eating = listOf(R.drawable.tamagotchi),
+        sleep = loadAnimations("adult_4_sleep"),
         lights_out_sleep = loadAnimations("lights_out_sleep"),
         lights_out_awake = listOf(R.drawable.lights_out_awake),
-        poop = listOf(1),
-        sick = listOf(1)
+        poop = listOf(R.drawable.tamagotchi),
+        sick = listOf(R.drawable.tamagotchi)
     ),
     ADULT_5(
         idle = loadAnimations("adult_5_idle"),
-        eating = listOf(1),
-        sleep = listOf(1),
+        eating = listOf(R.drawable.tamagotchi),
+        sleep = loadAnimations("adult_5_sleep"),
         lights_out_sleep = loadAnimations("lights_out_sleep"),
         lights_out_awake = listOf(R.drawable.lights_out_awake),
-        poop = listOf(1),
-        sick = listOf(1)
+        poop = listOf(R.drawable.tamagotchi),
+        sick = listOf(R.drawable.tamagotchi)
     ),
     ADULT_6(
         idle = loadAnimations("adult_6_idle"),
-        eating = listOf(1),
-        sleep = listOf(1),
+        eating = listOf(R.drawable.tamagotchi),
+        sleep = loadAnimations("adult_6_sleep"),
         lights_out_sleep = loadAnimations("lights_out_sleep"),
         lights_out_awake = listOf(R.drawable.lights_out_awake),
-        poop = listOf(1),
-        sick = listOf(1)
+        poop = listOf(R.drawable.tamagotchi),
+        sick = listOf(R.drawable.tamagotchi)
     ),
     DEAD(
         idle = loadAnimations("dead"),

@@ -24,7 +24,7 @@ data class TamagotchiState @RequiresApi(Build.VERSION_CODES.O) constructor(
     val medicineTaken: Boolean = false,
     val sick: Boolean = false,
 
-    val poop: Boolean = false,
+    val poop: Boolean = true,
     val misbehaving: Boolean = false,
 
     val physicalMistakes: Int = 0,
