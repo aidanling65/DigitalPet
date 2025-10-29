@@ -18,4 +18,6 @@
     <string name="awake">Awake</string>
     <string name="tamagotchi_notifications">Tamagotchi Notifications</string>
     <string name="reset_tamagotchi">Reset Tamagotchi</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="confirm">Confirm</string>
 </resources>

@@ -99,6 +99,15 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
     val tamagotchiState by gameViewModel.tamagotchiState.collectAsState()
+    val showDialog by gameViewModel.showResetDialog.collectAsState()
+
+    if(showDialog){
+        ResetDialog(
+            onDismissRequest = {gameViewModel.onDismissDialog()},
+            onConfirmation = {gameViewModel.confirmReset() }
+        )
+    }
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize()

@@ -17,6 +17,9 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
     private val _tamagotchiState = MutableStateFlow(TamagotchiState())
     val tamagotchiState: StateFlow<TamagotchiState> = _tamagotchiState.asStateFlow()
 
+    private  val _showResetDialog = MutableStateFlow(false)
+    val showResetDialog: StateFlow<Boolean> = _showResetDialog.asStateFlow()
+
     init {
         viewModelScope.launch {
             repository.tamagotchiStateFlow.collect { state ->
@@ -103,7 +106,15 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
         }
     }
 
-    fun reset(){
+    fun onResetClicked(){
+        _showResetDialog.value = true
+    }
+
+    fun onDismissDialog(){
+        _showResetDialog.value = false
+    }
+
+    fun confirmReset(){
         _tamagotchiState.update { TamagotchiState() }
         viewModelScope.launch {
             repository.saveState(tamagotchiState.value)
@@ -118,5 +129,7 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
             ExistingWorkPolicy.KEEP,
             evolutionRequest
         )
+
+        onDismissDialog()
     }
 }

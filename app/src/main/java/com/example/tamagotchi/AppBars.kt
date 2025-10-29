@@ -64,7 +64,7 @@ fun TamagotchiAppBar(gameViewModel: GameViewModel, modifier: Modifier = Modifier
             NavButton(
                 painter=painterResource(R.drawable.reset_button),
                 contentDescription = stringResource(R.string.reset_tamagotchi),
-                onClick = {gameViewModel.reset()},
+                onClick = {gameViewModel.onResetClicked()},
                 modifier = Modifier
             )
         }
