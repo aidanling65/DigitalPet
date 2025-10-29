@@ -17,4 +17,5 @@
     <string name="sleeping">Sleeping</string>
     <string name="awake">Awake</string>
     <string name="tamagotchi_notifications">Tamagotchi Notifications</string>
+    <string name="reset_tamagotchi">Reset Tamagotchi</string>
 </resources>

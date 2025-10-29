@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -36,13 +37,13 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifier) {
-    var currentFrame by remember(MyApp.currentAnimation){mutableStateOf(0)}
+    var currentFrame by remember(currentState.currentAnimation){mutableStateOf(0)}
 
-    LaunchedEffect(MyApp.currentAnimation) {
+    LaunchedEffect(currentState.currentAnimation) {
         currentFrame = 0
         while(true){
             delay(500)
-            currentFrame = ((currentFrame + 1) % MyApp.currentAnimation.size)
+            currentFrame = ((currentFrame + 1) % currentState.currentAnimation.size)
         }
     }
 
@@ -59,14 +60,16 @@ fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifi
             .padding(32.dp)
     ) {
         Image(
-            painter = painterResource(MyApp.currentAnimation[currentFrame]),
+            painter = painterResource(currentState.currentAnimation[currentFrame]),
             contentDescription = null,
             modifier = Modifier.size(200.dp)
+                .offset(0.dp,0.dp)
         )
         if(currentState.poop){
             Image(
                 painter = painterResource(R.drawable.poop0),
-                contentDescription = null
+                contentDescription = null,
+                modifier = Modifier.offset(-30.dp, -30.dp)
             )
         }
     }
@@ -178,11 +181,6 @@ fun StatusBars(
                     style = MaterialTheme.typography.bodySmall
                 )
             }
-            /*Image(
-                painter = painterResource(R.drawable.smiley_face),
-                contentDescription = "Your Tamagotchi is happy, good job",
-                contentScale = ContentScale.Fit
-            )*/
             Column()
             {
                 Text(

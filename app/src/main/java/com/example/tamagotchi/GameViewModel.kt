@@ -1,16 +1,17 @@
 package com.example.tamagotchi
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
-@RequiresApi(Build.VERSION_CODES.O)
 class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() {
     private val _tamagotchiState = MutableStateFlow(TamagotchiState())
     val tamagotchiState: StateFlow<TamagotchiState> = _tamagotchiState.asStateFlow()
@@ -92,19 +93,19 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
         if(current.light) {
             updateTamagotchiState(light =false)
             if(current.sleeping){
-                MyApp.currentAnimation = current.animations.lights_out_sleep ?: current.animations.idle
+                current.currentAnimation = current.animations.lights_out_sleep ?: current.animations.idle
             }
             else{
-                MyApp.currentAnimation = current.animations.lights_out_awake ?: current.animations.idle
+                current.currentAnimation = current.animations.lights_out_awake ?: current.animations.idle
             }
         }
         else{
             updateTamagotchiState(light=true)
             if(current.sleeping){
-                MyApp.currentAnimation = current.animations.sleep ?: current.animations.idle
+                current.currentAnimation = current.animations.sleep ?: current.animations.idle
             }
             else{
-                MyApp.currentAnimation = current.animations.idle
+                current.currentAnimation = current.animations.idle
             }
         }
     }
@@ -116,5 +117,22 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
         } else if (current.happiness > 0) {
             updateTamagotchiState(happiness = current.happiness.dec())
         }
+    }
+
+    fun reset(){
+        _tamagotchiState.update { TamagotchiState() }
+        viewModelScope.launch {
+            repository.saveState(tamagotchiState.value)
+        }
+
+        val evolutionRequest = OneTimeWorkRequestBuilder<EvolutionWork>()
+            .setInitialDelay(5, TimeUnit.SECONDS)
+            .build()
+
+        WorkManager.getInstance(MyApp.instance).enqueueUniqueWork(
+            "evolve",
+            ExistingWorkPolicy.KEEP,
+            evolutionRequest
+        )
     }
 }

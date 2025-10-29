@@ -1,9 +1,5 @@
 package com.example.tamagotchi
 
-import android.os.Build
-import androidx.annotation.RequiresApi
-
-@RequiresApi(Build.VERSION_CODES.O)
 fun baseEvolve(currentState: TamagotchiState) : TamagotchiState{
     val updatedState =  currentState.copy(
         hunger = 0,
@@ -16,16 +12,17 @@ fun baseEvolve(currentState: TamagotchiState) : TamagotchiState{
     )
 
     if(updatedState.sleeping && updatedState.light){
-        MyApp.currentAnimation = updatedState.animations.sleep ?: updatedState.animations.idle
+        updatedState.currentAnimation = updatedState.animations.sleep ?: updatedState.animations.idle
     }
     else if(updatedState.sleeping && !updatedState.light){
-        MyApp.currentAnimation = updatedState.animations.lights_out_sleep ?: updatedState.animations.idle
+        updatedState.currentAnimation = updatedState.animations.lights_out_sleep ?: updatedState.animations.idle
+    } else
+    {
+        updatedState.currentAnimation = updatedState.animations.idle
     }
-    MyApp.currentAnimation = updatedState.animations.idle
     return  updatedState
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun eggBabyEvolve(currentState: TamagotchiState): TamagotchiState {
     showNotification("Your Tamagotchi has hatched!")
 
@@ -37,7 +34,6 @@ fun eggBabyEvolve(currentState: TamagotchiState): TamagotchiState {
     return baseEvolve(updatedState)
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun babyChildEvolve(currentState: TamagotchiState): TamagotchiState {
     showNotification("Your Tamagotchi has evolved!")
 
@@ -49,7 +45,6 @@ fun babyChildEvolve(currentState: TamagotchiState): TamagotchiState {
     return baseEvolve(updatedState)
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun childTeenEvolve(currentState: TamagotchiState): TamagotchiState {
     showNotification("Your Tamagotchi has evolved!")
 
@@ -61,7 +56,6 @@ fun childTeenEvolve(currentState: TamagotchiState): TamagotchiState {
     return  baseEvolve(updatedState)
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun teenAdultEvolve(currentState: TamagotchiState): TamagotchiState {
     val discipline = currentState.discipline
     val mistakes = currentState.mentalMistakes + currentState.physicalMistakes
@@ -95,12 +89,13 @@ fun teenAdultEvolve(currentState: TamagotchiState): TamagotchiState {
     return baseEvolve(updatedState)
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun adultDeadEvolve(currentState: TamagotchiState): TamagotchiState {
     showNotification("Your Tamagotchi has died!")
-    return currentState.copy(
+    val updatedState = currentState.copy(
         ageStage = AgeStage.DEAD,
         weight = AgeStage.DEAD.minimumWeight,
         animations = EvolutionAnimations.DEAD
     )
+    currentState.currentAnimation = updatedState.animations.idle
+    return updatedState
 }

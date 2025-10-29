@@ -3,7 +3,6 @@ package com.example.tamagotchi
 import android.content.Context
 import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.runBlocking
@@ -83,7 +82,6 @@ class TamagotchiWork(
         return currentMistakes
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun doWork(): Result {
         Log.d("msg", "Periodic update")
         val currentTime = LocalTime.now(ZoneId.systemDefault())

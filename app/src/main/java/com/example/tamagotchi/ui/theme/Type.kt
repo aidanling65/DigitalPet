@@ -31,7 +31,7 @@ val Typography = Typography(
     titleLarge = TextStyle(
         fontFamily = pottaOne,
         fontWeight = FontWeight.Normal,
-        fontSize = 51.sp,
+        fontSize = 40.sp,
         lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),

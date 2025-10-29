@@ -1,11 +1,8 @@
 package com.example.tamagotchi
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import java.time.LocalTime
 import java.time.Duration
 
-@RequiresApi(Build.VERSION_CODES.O)
 enum class AgeStage(
     val minimumWeight: Int,
     val bedTime: LocalTime?,

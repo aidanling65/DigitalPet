@@ -1,7 +1,5 @@
 package com.example.tamagotchi
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,8 +10,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,7 +24,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.tamagotchi.ui.theme.TamagotchiTheme
 
 @Composable
 fun NavButton(painter: Painter,
@@ -33,7 +33,7 @@ fun NavButton(painter: Painter,
     Box(
         modifier = modifier
             .size(48.dp)
-            .clickable(onClick=onClick)
+            .clickable(onClick = onClick)
             .padding(4.dp),
         contentAlignment = Alignment.Center
     ){
@@ -46,7 +46,32 @@ fun NavButton(painter: Painter,
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TamagotchiAppBar(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
+    CenterAlignedTopAppBar(
+        colors = TopAppBarDefaults.topAppBarColors(
+            titleContentColor = colorResource(R.color.gold),
+            containerColor = MaterialTheme.colorScheme.background
+        ),
+        title = {
+            Text(
+                text = stringResource(R.string.tamagotchi),
+                style = MaterialTheme.typography.titleLarge
+            )
+        },
+        actions = {
+            NavButton(
+                painter=painterResource(R.drawable.reset_button),
+                contentDescription = stringResource(R.string.reset_tamagotchi),
+                onClick = {gameViewModel.reset()},
+                modifier = Modifier
+            )
+        }
+    )
+}
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomNavBar(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {

@@ -1,7 +1,5 @@
 package com.example.tamagotchi
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,7 +9,7 @@ const val MAX_WEIGHT = 99
 const val MAX_HAPPINESS = 4
 const val MAX_DISCIPLINE = 5
 
-data class TamagotchiState @RequiresApi(Build.VERSION_CODES.O) constructor(
+data class TamagotchiState(
     val age: Int = 0,
 
     val hunger: Int = 0,

@@ -1,9 +1,7 @@
 package com.example.tamagotchi
 
 import android.content.Context
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
@@ -18,7 +16,6 @@ class EvolutionWork(
 ) : Worker(appContext, workerParams) {
     private val repository = TamagotchiRepository(appContext)
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun doWork(): Result{
         var updatedState: TamagotchiState? = null
         runBlocking {

@@ -1,8 +1,6 @@
 package com.example.tamagotchi
 
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -29,24 +27,24 @@ class TamagotchiRepository(private val context: Context) {
     private val SLEEPING = booleanPreferencesKey("sleeping")
     private val AGE_STAGE = stringPreferencesKey("age stage")
     private val ANIMATIONS = stringPreferencesKey("animations")
-
-    @RequiresApi(Build.VERSION_CODES.O)
+    
     val tamagotchiStateFlow: Flow<TamagotchiState> = context.dataStore.data
         .map { prefs ->
+            val defaultState = TamagotchiState()
             TamagotchiState(
-                age = prefs[AGE] ?: 0,
-                weight = prefs[WEIGHT] ?: 5,
-                hunger = prefs[HUNGER] ?: 0,
-                happiness = prefs[HAPPINESS] ?: 0,
-                discipline = prefs[DISCIPLINE] ?: 0,
-                light = prefs[LIGHT] ?: true,
-                medicineTaken = prefs[MEDICINE_TAKEN] ?: false,
-                sick = prefs[SICK] ?: false,
-                poop = prefs[POOP] ?: false,
-                misbehaving = prefs[MISBEHAVING] ?: false,
-                sleeping = prefs[SLEEPING] ?: false,
-                ageStage = AgeStage.valueOf(prefs[AGE_STAGE] ?: AgeStage.EGG.name),
-                animations = EvolutionAnimations.valueOf(prefs[ANIMATIONS] ?: EvolutionAnimations.EGG.name)
+                age = prefs[AGE] ?: defaultState.age,
+                weight = prefs[WEIGHT] ?: defaultState.weight,
+                hunger = prefs[HUNGER] ?: defaultState.hunger,
+                happiness = prefs[HAPPINESS] ?: defaultState.happiness,
+                discipline = prefs[DISCIPLINE] ?: defaultState.discipline,
+                light = prefs[LIGHT] ?: defaultState.light,
+                medicineTaken = prefs[MEDICINE_TAKEN] ?: defaultState.medicineTaken,
+                sick = prefs[SICK] ?: defaultState.sick,
+                poop = prefs[POOP] ?: defaultState.poop,
+                misbehaving = prefs[MISBEHAVING] ?: defaultState.misbehaving,
+                sleeping = prefs[SLEEPING] ?: defaultState.sleeping,
+                ageStage = AgeStage.valueOf(prefs[AGE_STAGE] ?: defaultState.ageStage.name),
+                animations = EvolutionAnimations.valueOf(prefs[ANIMATIONS] ?: defaultState.animations.name)
             )
 
         }
@@ -69,9 +67,7 @@ class TamagotchiRepository(private val context: Context) {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun getState(): TamagotchiState {
-        return context.dataStore.data
+    suspend fun getState(): TamagotchiState { return context.dataStore.data
             .map { prefs ->
                 TamagotchiState(
                     age = prefs[AGE] ?: 0,
