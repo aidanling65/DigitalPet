@@ -10,16 +10,6 @@ fun baseEvolve(currentState: TamagotchiState) : TamagotchiState{
         poop = false,
         sick = false
     )
-
-    if(updatedState.sleeping && updatedState.light){
-        updatedState.currentAnimation = updatedState.animations.sleep ?: updatedState.animations.idle
-    }
-    else if(updatedState.sleeping && !updatedState.light){
-        updatedState.currentAnimation = updatedState.animations.lights_out_sleep ?: updatedState.animations.idle
-    } else
-    {
-        updatedState.currentAnimation = updatedState.animations.idle
-    }
     return  updatedState
 }
 
@@ -96,6 +86,5 @@ fun adultDeadEvolve(currentState: TamagotchiState): TamagotchiState {
         weight = AgeStage.DEAD.minimumWeight,
         animations = EvolutionAnimations.DEAD
     )
-    currentState.currentAnimation = updatedState.animations.idle
     return updatedState
 }

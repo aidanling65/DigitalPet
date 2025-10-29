@@ -1,5 +1,6 @@
 package com.example.tamagotchi
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.ExistingWorkPolicy
@@ -90,24 +91,7 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
 
     fun light() {
         val current = tamagotchiState.value
-        if(current.light) {
-            updateTamagotchiState(light =false)
-            if(current.sleeping){
-                current.currentAnimation = current.animations.lights_out_sleep ?: current.animations.idle
-            }
-            else{
-                current.currentAnimation = current.animations.lights_out_awake ?: current.animations.idle
-            }
-        }
-        else{
-            updateTamagotchiState(light=true)
-            if(current.sleeping){
-                current.currentAnimation = current.animations.sleep ?: current.animations.idle
-            }
-            else{
-                current.currentAnimation = current.animations.idle
-            }
-        }
+        updateTamagotchiState(light = !current.light)
     }
 
     fun discipline() {
