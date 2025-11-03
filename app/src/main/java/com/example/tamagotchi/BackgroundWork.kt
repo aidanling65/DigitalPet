@@ -1,8 +1,8 @@
 package com.example.tamagotchi
 
 import android.content.Context
-import android.os.Build
 import android.util.Log
+import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.runBlocking
@@ -82,13 +82,25 @@ class TamagotchiWork(
         return currentMistakes
     }
 
+    fun die(currentState: TamagotchiState) : TamagotchiState{
+        showNotification("Your Tamagotchi has died!")
+        WorkManager.getInstance(MyApp.instance).cancelAllWorkByTag("evolve")
+        val updatedState = currentState.copy(
+            ageStage = AgeStage.DEAD,
+            weight = AgeStage.DEAD.minimumWeight,
+            animations = EvolutionAnimations.DEAD
+        )
+        return updatedState
+    }
+
     override fun doWork(): Result {
         Log.d("msg", "Periodic update")
         val currentTime = LocalTime.now(ZoneId.systemDefault())
         runBlocking {
             val currentState = repository.getState()
             val updatedState =
-                if (currentState.ageStage == AgeStage.DEAD) currentState.copy() else currentState.copy(
+                if(currentState.physicalMistakes + currentState.mentalMistakes >= 5) die(currentState).copy()
+                else if (currentState.ageStage == AgeStage.DEAD) currentState.copy() else currentState.copy(
                     hunger = if (currentState.hunger > 0 && !currentState.sleeping) currentState.hunger - 1 else currentState.hunger,
                     happiness = calculateHappiness(currentState),
                     physicalMistakes = calculatePhysicalMistakes(currentState),

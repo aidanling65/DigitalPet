@@ -79,7 +79,7 @@ fun teenAdultEvolve(currentState: TamagotchiState): TamagotchiState {
     return baseEvolve(updatedState)
 }
 
-fun adultDeadEvolve(currentState: TamagotchiState): TamagotchiState {
+fun deadEvolve(currentState: TamagotchiState): TamagotchiState {
     showNotification("Your Tamagotchi has died!")
     val updatedState = currentState.copy(
         ageStage = AgeStage.DEAD,
