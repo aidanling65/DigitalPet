@@ -28,8 +28,10 @@ class EvolutionWork(
         if(updatedState?.ageStage == AgeStage.DEAD){
             return Result.success()
         }
-
         val delay = updatedState?.ageStage?.stageLength ?: Duration.ZERO
+        if(delay == Duration.ZERO){
+            return Result.success()
+        }
         val evolutionRequest = OneTimeWorkRequestBuilder<EvolutionWork>()
             .setInitialDelay(delay)
             .build()
