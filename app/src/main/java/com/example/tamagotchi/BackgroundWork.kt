@@ -57,7 +57,6 @@ class TamagotchiWork(
         if (currentState.sleeping) {
             return currentMistakes
         }
-
         if (currentState.misbehaving) {
             currentMistakes++
         }
@@ -93,34 +92,45 @@ class TamagotchiWork(
         return updatedState
     }
 
-    override fun doWork(): Result {
-        Log.d("msg", "Periodic update")
+    fun sleepAndAge(currentState: TamagotchiState) : TamagotchiState{
         val currentTime = LocalTime.now(ZoneId.systemDefault())
+        val sleeping  = currentTime.isAfter(
+            currentState.ageStage.bedTime ?: LocalTime.of(
+                23,
+                59,
+                59
+            )
+        ) || currentTime.isBefore(
+            currentState.ageStage.wakeTime ?: LocalTime.of(
+                0,
+                0,
+                0
+            )
+        )
+
+        return currentState.copy(
+            age = if(currentState.sleeping && !sleeping) currentState.age + 1 else currentState.age,
+            sleeping = sleeping
+        )
+    }
+
+    override fun doWork(): Result {
+        Log.d("Background Work", "Periodic update")
         runBlocking {
             val currentState = repository.getState()
+            val sleepAgeState = sleepAndAge(currentState).copy()
             val updatedState =
                 if(currentState.physicalMistakes + currentState.mentalMistakes >= 5) die(currentState).copy()
                 else if (currentState.ageStage == AgeStage.DEAD) currentState.copy() else currentState.copy(
-                    hunger = if (currentState.hunger > 0 && !currentState.sleeping) currentState.hunger - 1 else currentState.hunger,
-                    happiness = calculateHappiness(currentState),
                     physicalMistakes = calculatePhysicalMistakes(currentState),
                     mentalMistakes = calculateMentalMistakes(currentState),
+                    hunger = if (currentState.hunger > 0 && !currentState.sleeping) currentState.hunger - 1 else currentState.hunger,
+                    happiness = calculateHappiness(currentState),
                     weight = calculateWeight(currentState),
                     misbehaving = !currentState.sleeping && Random.nextInt(1, 4) == 1,
                     poop = !currentState.sleeping && Random.nextInt(1, 4) == 1,
-                    sleeping = currentTime.isAfter(
-                        currentState.ageStage.bedTime ?: LocalTime.of(
-                            23,
-                            59,
-                            59
-                        )
-                    ) || currentTime.isBefore(
-                        currentState.ageStage.wakeTime ?: LocalTime.of(
-                            0,
-                            0,
-                            0
-                        )
-                    ),
+                    sleeping = sleepAgeState.sleeping,
+                    age = sleepAgeState.age,
                 )
             repository.saveState(updatedState)
         }
