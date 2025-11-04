@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -54,32 +55,42 @@ fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifi
     Row(
         Modifier
             .clip(RoundedCornerShape(48.dp))
-            .background(color = colorResource(R.color.lcd)
-               /* if(currentState.currentAnimation == currentState.animations.lights_out_awake || currentState.currentAnimation == currentState.animations.lights_out_sleep)
-                    colorResource(R.color.black)
-                else colorResource(R.color.lcd)*/
-            )
             .border(
                 width = 2.dp,
                 color = colorResource(R.color.black),
                 shape = RoundedCornerShape(48.dp)
             )
-            .wrapContentSize()
+            .background(
+                color = if (
+                    currentState.currentAnimation == currentState.animations.lights_out_awake ||
+                    currentState.currentAnimation == currentState.animations.lights_out_sleep
+                ) colorResource(R.color.black)
+                else colorResource(R.color.lcd),
+                shape = RoundedCornerShape(48.dp)
+            )
             .padding(32.dp)
     ) {
-        Image(
-            painter = painterResource(currentState.currentAnimation[currentFrame]),
-            contentDescription = null,
-            modifier = Modifier
-                .size(200.dp)
-                .offset(0.dp, 0.dp)
-        )
-        if(currentState.poop){
+        Box(
+            Modifier
+                .background(colorResource(R.color.lcd))
+                .wrapContentSize()
+        ) {
             Image(
-                painter = painterResource(R.drawable.poop0),
+                painter = painterResource(currentState.currentAnimation[currentFrame]),
                 contentDescription = null,
-                modifier = Modifier.offset(-10.dp, -10.dp)
+                modifier = Modifier
+                    .size(200.dp)
             )
+            if (currentState.poop) {
+                Image(
+                    painter = painterResource(R.drawable.poop0),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .offset((-10).dp, (-10).dp)
+                        .size(128.dp)
+                )
+            }
         }
     }
 }
