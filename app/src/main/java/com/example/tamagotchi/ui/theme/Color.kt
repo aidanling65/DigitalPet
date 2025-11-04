@@ -1,8 +1,6 @@
 package com.example.tamagotchi.ui.theme
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
-import com.example.tamagotchi.R
 
 val Purple80 = Color(0xFFD0BCFF)
 val Purple700 = Color(0xFF553CDB)

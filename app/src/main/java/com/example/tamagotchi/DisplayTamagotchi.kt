@@ -54,7 +54,11 @@ fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifi
     Row(
         Modifier
             .clip(RoundedCornerShape(48.dp))
-            .background(color = colorResource(R.color.lcd))
+            .background(color = colorResource(R.color.lcd)
+               /* if(currentState.currentAnimation == currentState.animations.lights_out_awake || currentState.currentAnimation == currentState.animations.lights_out_sleep)
+                    colorResource(R.color.black)
+                else colorResource(R.color.lcd)*/
+            )
             .border(
                 width = 2.dp,
                 color = colorResource(R.color.black),
@@ -66,14 +70,15 @@ fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifi
         Image(
             painter = painterResource(currentState.currentAnimation[currentFrame]),
             contentDescription = null,
-            modifier = Modifier.size(200.dp)
-                .offset(0.dp,0.dp)
+            modifier = Modifier
+                .size(200.dp)
+                .offset(0.dp, 0.dp)
         )
         if(currentState.poop){
             Image(
                 painter = painterResource(R.drawable.poop0),
                 contentDescription = null,
-                modifier = Modifier.offset(-30.dp, -30.dp)
+                modifier = Modifier.offset(-10.dp, -10.dp)
             )
         }
     }
@@ -155,16 +160,17 @@ fun StatusBars(
         Spacer(modifier = spacerModifier)
         StatusBar(tamagotchiState.happiness, MAX_HAPPINESS, stringResource(R.string.happiness))
         Spacer(modifier = spacerModifier)
-        Text(
-            text = "State: ${tamagotchiState.ageStage.name}",
-            color = MaterialTheme.colorScheme.primary,
-            style = MaterialTheme.typography.bodySmall
-        )
+
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
             Column() {
+                Text(
+                    text = "State: ${tamagotchiState.ageStage.name}",
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.bodySmall
+                )
                 Text(
                     text = "${tamagotchiState.age} yr",
                     color = MaterialTheme.colorScheme.primary,
@@ -202,6 +208,13 @@ fun StatusBars(
                 Text(
                     text = if (tamagotchiState.sleeping) stringResource(R.string.sleeping) else stringResource(
                         R.string.awake
+                    ),
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.bodySmall
+                )
+                Text(
+                    text = if(tamagotchiState.sick) stringResource(R.string.sick) else stringResource(
+                        R.string.healthy
                     ),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodySmall

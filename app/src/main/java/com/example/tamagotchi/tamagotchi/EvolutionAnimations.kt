@@ -89,7 +89,7 @@ enum class EvolutionAnimations(
     ADULT_2(
         idle = loadAnimations("adult_2_idle"),
         eating = listOf(R.drawable.tamagotchi),
-        sleep = listOf(R.drawable.tamagotchi),
+        sleep = loadAnimations("adult_2_sleep"),
         lights_out_sleep = loadAnimations("lights_out_sleep"),
         lights_out_awake = listOf(R.drawable.lights_out_awake),
         poop = listOf(R.drawable.tamagotchi),
@@ -98,7 +98,7 @@ enum class EvolutionAnimations(
     ADULT_3(
         idle = loadAnimations("adult_3_idle"),
         eating = listOf(R.drawable.tamagotchi),
-        sleep = listOf(R.drawable.tamagotchi),
+        sleep = loadAnimations("adult_3_sleep"),
         lights_out_sleep = loadAnimations("lights_out_sleep"),
         lights_out_awake = listOf(R.drawable.lights_out_awake),
         poop = listOf(R.drawable.tamagotchi),

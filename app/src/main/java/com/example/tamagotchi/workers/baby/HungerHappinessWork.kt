@@ -20,6 +20,8 @@ class HungerHappinessWork(
             do {
                 delay(delay)
                 val currentState = repository.getState()
+                if(currentState.sleeping)
+                    continue
 
                 val updatedState = currentState.copy(
                     hunger = if(currentState.hunger > 0) currentState.hunger - 1 else currentState.hunger,

@@ -31,7 +31,6 @@ import com.example.tamagotchi.workers.EvolutionWork
 import com.example.tamagotchi.workers.createSingleWorker
 import java.time.Duration
 
-
 const val NOTIFICATION_PERMISSION_CODE = 100
 const val CHANNEL_ID = "Tamagotchi"
 

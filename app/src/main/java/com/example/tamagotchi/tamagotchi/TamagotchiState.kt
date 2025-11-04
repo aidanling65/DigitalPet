@@ -1,7 +1,5 @@
 package com.example.tamagotchi.tamagotchi
 
-import com.example.tamagotchi.tamagotchi.AgeStage
-
 const val MAX_HUNGER = 4
 const val MAX_WEIGHT = 99
 const val MAX_HAPPINESS = 4

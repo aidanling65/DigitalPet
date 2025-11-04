@@ -7,7 +7,7 @@ import androidx.core.app.NotificationManagerCompat
 @SuppressLint("MissingPermission")
 fun showNotification(content: String) {
     val builder = NotificationCompat.Builder(MyApp.instance, CHANNEL_ID)
-        .setSmallIcon(R.drawable.tamagotchi)
+        .setSmallIcon(R.mipmap.ic_launcher_foreground)
         .setContentTitle("Tamagotchi")
         .setContentText(content)
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)

@@ -137,6 +137,7 @@ class BackgroundWork(
                     misbehaving = !currentState.sleeping && Random.nextInt(1, 4) == 1,
                     poop = !currentState.sleeping && Random.nextInt(1, 4) == 1,
                     sleeping = sleepAgeState.sleeping,
+                    light = if(!currentState.sleeping) true else currentState.light,
                     age = sleepAgeState.age,
                 )
             repository.saveState(updatedState)

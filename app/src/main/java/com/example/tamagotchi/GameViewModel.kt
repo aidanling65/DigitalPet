@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import androidx.work.impl.WorkManagerImpl
 import com.example.tamagotchi.tamagotchi.AgeStage
 import com.example.tamagotchi.tamagotchi.MAX_HAPPINESS
 import com.example.tamagotchi.tamagotchi.MAX_HUNGER

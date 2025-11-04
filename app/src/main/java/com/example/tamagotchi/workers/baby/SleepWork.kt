@@ -25,7 +25,8 @@ class SleepWork(
             delay(delay)
             currentState = repository.getState()
             updatedState = currentState.copy(
-                sleeping = false
+                sleeping = false,
+                age = currentState.age + 1
             )
             repository.saveState(updatedState)
         }
