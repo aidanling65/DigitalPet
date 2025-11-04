@@ -1,8 +1,11 @@
-package com.example.tamagotchi
+package com.example.tamagotchi.tamagotchi
+
+import com.example.tamagotchi.MyApp
+import com.example.tamagotchi.R
 
 fun loadAnimations(prefix: String) : List<Int>{
     val animations = mutableListOf<Int>()
-    val context = MyApp.instance
+    val context = MyApp.Companion.instance
     var index = 0
     while(true){
         val frame = context.resources.getIdentifier(

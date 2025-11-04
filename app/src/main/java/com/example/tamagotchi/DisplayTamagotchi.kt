@@ -33,6 +33,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.tamagotchi.tamagotchi.MAX_DISCIPLINE
+import com.example.tamagotchi.tamagotchi.MAX_HAPPINESS
+import com.example.tamagotchi.tamagotchi.MAX_HUNGER
+import com.example.tamagotchi.tamagotchi.TamagotchiState
 import kotlinx.coroutines.delay
 
 @Composable

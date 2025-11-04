@@ -1,8 +1,6 @@
-package com.example.tamagotchi
+package com.example.tamagotchi.tamagotchi
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import com.example.tamagotchi.tamagotchi.AgeStage
 
 const val MAX_HUNGER = 4
 const val MAX_WEIGHT = 99
@@ -22,7 +20,7 @@ data class TamagotchiState(
     val medicineTaken: Boolean = false,
     val sick: Boolean = false,
 
-    val poop: Boolean = true,
+    val poop: Boolean = false,
     val misbehaving: Boolean = false,
 
     val physicalMistakes: Int = 0,

@@ -1,8 +1,8 @@
 package com.example.tamagotchi
 
+import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -24,13 +24,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
-import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
+import com.example.tamagotchi.tamagotchi.TamagotchiRepository
 import com.example.tamagotchi.ui.theme.TamagotchiTheme
-import java.util.concurrent.TimeUnit
+import com.example.tamagotchi.workers.EvolutionWork
+import com.example.tamagotchi.workers.createSingleWorker
+import java.time.Duration
 
 
 const val NOTIFICATION_PERMISSION_CODE = 100
@@ -40,37 +39,18 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val repository = TamagotchiRepository(MyApp.instance)
+        val repository = TamagotchiRepository(MyApp.Companion.instance)
         val gameViewModel = GameViewModel(repository)
 
         ActivityCompat.requestPermissions(
             this,
-            arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+            arrayOf(Manifest.permission.POST_NOTIFICATIONS),
             NOTIFICATION_PERMISSION_CODE
             )
         createNotificationChannel()
 
-        val periodicWorkRequest = PeriodicWorkRequestBuilder<TamagotchiWork>(
-            15, TimeUnit.MINUTES
-        )
-            .setInitialDelay(2, TimeUnit.SECONDS)
-            .build()
-
-        WorkManager.getInstance(this.applicationContext).enqueueUniquePeriodicWork(
-            "tamagotchi_passive_tasks",
-            ExistingPeriodicWorkPolicy.KEEP,
-            periodicWorkRequest
-        )
-
-        val evolutionRequest = OneTimeWorkRequestBuilder<EvolutionWork>()
-            .setInitialDelay(5, TimeUnit.SECONDS)
-            .build()
-
-        WorkManager.getInstance(this.applicationContext).enqueueUniqueWork(
-            "evolve",
-            ExistingWorkPolicy.KEEP,
-            evolutionRequest
-        )
+        val delay = gameViewModel.tamagotchiState.value.ageStage.stageLength ?: Duration.ZERO
+        createSingleWorker<EvolutionWork>(delay, "evolve", ExistingWorkPolicy.KEEP)
 
         enableEdgeToEdge()
         setContent {
@@ -90,7 +70,7 @@ class MainActivity : ComponentActivity() {
             }
             // Register the channel with the system.
             val notificationManager: NotificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }
@@ -103,8 +83,8 @@ fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
 
     if(showDialog){
         ResetDialog(
-            onDismissRequest = {gameViewModel.onDismissDialog()},
-            onConfirmation = {gameViewModel.confirmReset() }
+            onDismissRequest = { gameViewModel.onDismissDialog() },
+            onConfirmation = { gameViewModel.confirmReset() }
         )
     }
 

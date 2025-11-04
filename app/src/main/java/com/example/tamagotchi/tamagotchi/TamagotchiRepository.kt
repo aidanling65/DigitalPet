@@ -1,4 +1,4 @@
-package com.example.tamagotchi
+package com.example.tamagotchi.tamagotchi
 
 import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.tamagotchi.tamagotchi.AgeStage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -44,7 +45,9 @@ class TamagotchiRepository(private val context: Context) {
                 misbehaving = prefs[MISBEHAVING] ?: defaultState.misbehaving,
                 sleeping = prefs[SLEEPING] ?: defaultState.sleeping,
                 ageStage = AgeStage.valueOf(prefs[AGE_STAGE] ?: defaultState.ageStage.name),
-                animations = EvolutionAnimations.valueOf(prefs[ANIMATIONS] ?: defaultState.animations.name)
+                animations = EvolutionAnimations.valueOf(
+                    prefs[ANIMATIONS] ?: defaultState.animations.name
+                )
             )
 
         }
@@ -82,7 +85,9 @@ class TamagotchiRepository(private val context: Context) {
                     misbehaving = prefs[MISBEHAVING] ?: false,
                     sleeping = prefs[SLEEPING] ?: false,
                     ageStage = AgeStage.valueOf(prefs[AGE_STAGE] ?: AgeStage.EGG.name),
-                    animations = EvolutionAnimations.valueOf(prefs[ANIMATIONS] ?: EvolutionAnimations.EGG.name)
+                    animations = EvolutionAnimations.valueOf(
+                        prefs[ANIMATIONS] ?: EvolutionAnimations.EGG.name
+                    )
                 )
             }
             .first()

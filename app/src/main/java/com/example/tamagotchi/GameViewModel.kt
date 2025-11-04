@@ -1,17 +1,23 @@
 package com.example.tamagotchi
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import com.example.tamagotchi.tamagotchi.AgeStage
+import com.example.tamagotchi.tamagotchi.MAX_HAPPINESS
+import com.example.tamagotchi.tamagotchi.MAX_HUNGER
+import com.example.tamagotchi.tamagotchi.MAX_WEIGHT
+import com.example.tamagotchi.tamagotchi.TamagotchiRepository
+import com.example.tamagotchi.tamagotchi.TamagotchiState
+import com.example.tamagotchi.workers.EvolutionWork
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
+import java.time.Duration
 
 class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() {
     private val _tamagotchiState = MutableStateFlow(TamagotchiState())
@@ -61,6 +67,9 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
 
     fun feed() {
         val current = tamagotchiState.value
+        if(current.ageStage == AgeStage.EGG || current.ageStage == AgeStage.DEAD){
+            return
+        }
         if (current.hunger < MAX_HUNGER) {
             val updatedHunger = current.hunger.inc()
             var updatedWeight = current.weight
@@ -73,19 +82,27 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
 
     fun play() {
         val current = tamagotchiState.value
+        if(current.ageStage == AgeStage.EGG || current.ageStage == AgeStage.DEAD){
+            return
+        }
         if (current.happiness < MAX_HAPPINESS) {
             updateTamagotchiState(happiness = current.happiness.inc())
         }
     }
 
     fun clean() {
-        if (tamagotchiState.value.poop) {
-            updateTamagotchiState(poop = false)
+        val current = tamagotchiState.value
+        if(current.ageStage == AgeStage.EGG || current.ageStage == AgeStage.DEAD){
+            return
         }
+        updateTamagotchiState(poop = false)
     }
 
     fun heal() {
         val current = tamagotchiState.value
+        if(current.ageStage == AgeStage.EGG || current.ageStage == AgeStage.DEAD){
+            return
+        }
         if (current.sick) {
             if (current.medicineTaken) updateTamagotchiState(sick = false, medicineTaken = false)
             else updateTamagotchiState(medicineTaken = true)
@@ -94,11 +111,17 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
 
     fun light() {
         val current = tamagotchiState.value
+        if(current.ageStage == AgeStage.EGG || current.ageStage == AgeStage.DEAD){
+            return
+        }
         updateTamagotchiState(light = !current.light)
     }
 
     fun discipline() {
         val current = tamagotchiState.value
+        if(current.ageStage == AgeStage.EGG || current.ageStage == AgeStage.DEAD){
+            return
+        }
         if (current.misbehaving) {
             updateTamagotchiState(discipline = current.discipline.inc(), misbehaving = false)
         } else if (current.happiness > 0) {
@@ -121,12 +144,12 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
         }
 
         val evolutionRequest = OneTimeWorkRequestBuilder<EvolutionWork>()
-            .setInitialDelay(5, TimeUnit.SECONDS)
+            .setInitialDelay(tamagotchiState.value.ageStage.stageLength ?: Duration.ofMinutes(5))
             .build()
 
         WorkManager.getInstance(MyApp.instance).enqueueUniqueWork(
             "evolve",
-            ExistingWorkPolicy.KEEP,
+            ExistingWorkPolicy.REPLACE,
             evolutionRequest
         )
 

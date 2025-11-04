@@ -1,23 +1,30 @@
-package com.example.tamagotchi
+package com.example.tamagotchi.workers
 
 import android.content.Context
 import android.util.Log
 import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.example.tamagotchi.tamagotchi.AgeStage
+import com.example.tamagotchi.tamagotchi.EvolutionAnimations
+import com.example.tamagotchi.tamagotchi.MAX_HUNGER
+import com.example.tamagotchi.MyApp
+import com.example.tamagotchi.tamagotchi.TamagotchiRepository
+import com.example.tamagotchi.tamagotchi.TamagotchiState
+import com.example.tamagotchi.showNotification
 import kotlinx.coroutines.runBlocking
 import java.time.LocalTime
 import java.time.ZoneId
 import kotlin.random.Random
 
-class TamagotchiWork(
+class BackgroundWork(
     appContext: Context,
     workerParams: WorkerParameters
 ) : Worker(appContext, workerParams) {
 
     private val repository = TamagotchiRepository(appContext)
 
-    fun calculateHappiness(currentState: TamagotchiState): Int {
+    private fun calculateHappiness(currentState: TamagotchiState): Int {
         if (currentState.sleeping && !currentState.light) {
             return currentState.happiness
         }
@@ -35,7 +42,7 @@ class TamagotchiWork(
         return happiness
     }
 
-    fun calculateWeight(currentState: TamagotchiState): Int {
+    private fun calculateWeight(currentState: TamagotchiState): Int {
         if (currentState.sleeping) {
             return currentState.weight
         }
@@ -52,7 +59,7 @@ class TamagotchiWork(
         return if (weight < minimumWeight) minimumWeight else weight
     }
 
-    fun calculatePhysicalMistakes(currentState: TamagotchiState): Int {
+    private fun calculatePhysicalMistakes(currentState: TamagotchiState): Int {
         var currentMistakes = currentState.physicalMistakes
         if (currentState.sleeping) {
             return currentMistakes
@@ -70,7 +77,7 @@ class TamagotchiWork(
         return currentMistakes
     }
 
-    fun calculateMentalMistakes(currentState: TamagotchiState): Int {
+    private fun calculateMentalMistakes(currentState: TamagotchiState): Int {
         var currentMistakes = currentState.mentalMistakes
         if (currentState.happiness == 0 && !currentState.sleeping) {
             currentMistakes++
@@ -81,9 +88,9 @@ class TamagotchiWork(
         return currentMistakes
     }
 
-    fun die(currentState: TamagotchiState) : TamagotchiState{
+    private fun die(currentState: TamagotchiState) : TamagotchiState {
         showNotification("Your Tamagotchi has died!")
-        WorkManager.getInstance(MyApp.instance).cancelAllWorkByTag("evolve")
+        WorkManager.getInstance(MyApp.Companion.instance).cancelAllWorkByTag("evolve")
         val updatedState = currentState.copy(
             ageStage = AgeStage.DEAD,
             weight = AgeStage.DEAD.minimumWeight,
@@ -92,7 +99,7 @@ class TamagotchiWork(
         return updatedState
     }
 
-    fun sleepAndAge(currentState: TamagotchiState) : TamagotchiState{
+    private fun sleepAndAge(currentState: TamagotchiState) : TamagotchiState {
         val currentTime = LocalTime.now(ZoneId.systemDefault())
         val sleeping  = currentTime.isAfter(
             currentState.ageStage.bedTime ?: LocalTime.of(

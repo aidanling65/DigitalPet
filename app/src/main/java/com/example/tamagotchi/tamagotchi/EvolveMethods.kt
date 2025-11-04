@@ -1,6 +1,18 @@
-package com.example.tamagotchi
+package com.example.tamagotchi.tamagotchi
 
-fun baseEvolve(currentState: TamagotchiState) : TamagotchiState{
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.ExistingWorkPolicy
+import com.example.tamagotchi.showNotification
+import com.example.tamagotchi.workers.BackgroundWork
+import com.example.tamagotchi.workers.baby.HungerHappinessWork
+import com.example.tamagotchi.workers.baby.PoopWork
+import com.example.tamagotchi.workers.baby.SickWork
+import com.example.tamagotchi.workers.baby.SleepWork
+import com.example.tamagotchi.workers.createPeriodicWorker
+import com.example.tamagotchi.workers.createSingleWorker
+import java.time.Duration
+
+fun baseEvolve(currentState: TamagotchiState) : TamagotchiState {
     val updatedState =  currentState.copy(
         hunger = 0,
         happiness = 0,
@@ -21,6 +33,12 @@ fun eggBabyEvolve(currentState: TamagotchiState): TamagotchiState {
         weight = AgeStage.BABY.minimumWeight,
         animations = EvolutionAnimations.BABY,
     )
+
+    createSingleWorker<HungerHappinessWork>(Duration.ZERO, "hunger_happiness", ExistingWorkPolicy.KEEP)
+    createSingleWorker<PoopWork>(Duration.ofMinutes(15), "poop", ExistingWorkPolicy.KEEP)
+    createSingleWorker<SickWork>(Duration.ofMinutes(30), "sick", ExistingWorkPolicy.KEEP)
+    createSingleWorker<SleepWork>(Duration.ofMinutes(40), "sleep", ExistingWorkPolicy.KEEP)
+
     return baseEvolve(updatedState)
 }
 
@@ -32,6 +50,13 @@ fun babyChildEvolve(currentState: TamagotchiState): TamagotchiState {
         weight = AgeStage.CHILD.minimumWeight,
         animations = EvolutionAnimations.CHILD,
     )
+    createPeriodicWorker<BackgroundWork>(
+        Duration.ofMinutes(15),
+        Duration.ofMinutes(15),
+        "passive_tasks",
+        ExistingPeriodicWorkPolicy.REPLACE
+    )
+
     return baseEvolve(updatedState)
 }
 
