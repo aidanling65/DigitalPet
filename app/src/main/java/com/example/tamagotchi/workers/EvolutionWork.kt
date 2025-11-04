@@ -36,7 +36,7 @@ class EvolutionWork(
             return Result.success()
         }
 
-        createWorker<EvolutionWork>(delay,"evolve", ExistingWorkPolicy.REPLACE)
+        createSingleWorker<EvolutionWork>(delay,"evolve", ExistingWorkPolicy.REPLACE)
 
         Log.d("EvolutionWork", "next evolution scheduled for in ${delay.seconds}")
 

@@ -27,7 +27,7 @@ class HungerHappinessWork(
                 )
 
                 repository.saveState(updatedState)
-            } while(currentState.ageStage != AgeStage.BABY)
+            } while(currentState.ageStage == AgeStage.BABY)
         }
 
         return Result.success()

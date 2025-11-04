@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import androidx.work.impl.WorkManagerImpl
 import com.example.tamagotchi.tamagotchi.AgeStage
 import com.example.tamagotchi.tamagotchi.MAX_HAPPINESS
 import com.example.tamagotchi.tamagotchi.MAX_HUNGER
@@ -142,6 +143,8 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
         viewModelScope.launch {
             repository.saveState(tamagotchiState.value)
         }
+
+        WorkManager.getInstance(MyApp.instance).cancelAllWork()
 
         val evolutionRequest = OneTimeWorkRequestBuilder<EvolutionWork>()
             .setInitialDelay(tamagotchiState.value.ageStage.stageLength ?: Duration.ofMinutes(5))

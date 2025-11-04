@@ -14,8 +14,8 @@ enum class AgeStage(
         minimumWeight = 0,
         bedTime = null,
         wakeTime = null,
-        stageLength = Duration.ofMinutes(5),
-        //stageLength = Duration.ofSeconds(10),
+        //stageLength = Duration.ofMinutes(5),
+        stageLength = Duration.ofSeconds(10),
         evolve = ::eggBabyEvolve
     ),
     BABY(
