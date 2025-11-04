@@ -69,26 +69,7 @@ class TamagotchiRepository(private val context: Context) {
         }
     }
 
-    suspend fun getState(): TamagotchiState { return context.dataStore.data
-            .map { prefs ->
-                TamagotchiState(
-                    age = prefs[AGE] ?: 0,
-                    weight = prefs[WEIGHT] ?: 5,
-                    hunger = prefs[HUNGER] ?: 0,
-                    happiness = prefs[HAPPINESS] ?: 0,
-                    discipline = prefs[DISCIPLINE] ?: 0,
-                    light = prefs[LIGHT] ?: true,
-                    medicineTaken = prefs[MEDICINE_TAKEN] ?: false,
-                    sick = prefs[SICK] ?: false,
-                    poop = prefs[POOP] ?: false,
-                    misbehaving = prefs[MISBEHAVING] ?: false,
-                    sleeping = prefs[SLEEPING] ?: false,
-                    ageStage = AgeStage.valueOf(prefs[AGE_STAGE] ?: AgeStage.EGG.name),
-                    animations = EvolutionAnimations.valueOf(
-                        prefs[ANIMATIONS] ?: EvolutionAnimations.EGG.name
-                    )
-                )
-            }
-            .first()
+    suspend fun getState(): TamagotchiState {
+        return tamagotchiStateFlow.first()
     }
 }
