@@ -23,7 +23,7 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
     private val _tamagotchiState = MutableStateFlow(TamagotchiState())
     val tamagotchiState: StateFlow<TamagotchiState> = _tamagotchiState.asStateFlow()
 
-    private  val _showResetDialog = MutableStateFlow(false)
+    private val _showResetDialog = MutableStateFlow(false)
     val showResetDialog: StateFlow<Boolean> = _showResetDialog.asStateFlow()
 
     init {
@@ -67,7 +67,7 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
 
     fun feed() {
         val current = tamagotchiState.value
-        if(current.ageStage == AgeStage.EGG || current.ageStage == AgeStage.DEAD){
+        if (current.ageStage == AgeStage.EGG || current.ageStage == AgeStage.DEAD || current.sleeping) {
             return
         }
         if (current.hunger < MAX_HUNGER) {
@@ -82,7 +82,7 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
 
     fun play() {
         val current = tamagotchiState.value
-        if(current.ageStage == AgeStage.EGG || current.ageStage == AgeStage.DEAD){
+        if (current.ageStage == AgeStage.EGG || current.ageStage == AgeStage.DEAD || current.sleeping) {
             return
         }
         if (current.happiness < MAX_HAPPINESS) {
@@ -92,7 +92,7 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
 
     fun clean() {
         val current = tamagotchiState.value
-        if(current.ageStage == AgeStage.EGG || current.ageStage == AgeStage.DEAD){
+        if (current.ageStage == AgeStage.EGG || current.ageStage == AgeStage.DEAD || current.sleeping) {
             return
         }
         updateTamagotchiState(poop = false)
@@ -100,7 +100,7 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
 
     fun heal() {
         val current = tamagotchiState.value
-        if(current.ageStage == AgeStage.EGG || current.ageStage == AgeStage.DEAD){
+        if (current.ageStage == AgeStage.EGG || current.ageStage == AgeStage.DEAD || current.sleeping) {
             return
         }
         if (current.sick) {
@@ -111,7 +111,7 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
 
     fun light() {
         val current = tamagotchiState.value
-        if(current.ageStage == AgeStage.EGG || current.ageStage == AgeStage.DEAD){
+        if (current.ageStage == AgeStage.EGG || current.ageStage == AgeStage.DEAD) {
             return
         }
         updateTamagotchiState(light = !current.light)
@@ -119,25 +119,28 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
 
     fun discipline() {
         val current = tamagotchiState.value
-        if(current.ageStage == AgeStage.EGG || current.ageStage == AgeStage.DEAD){
+        if (current.ageStage == AgeStage.EGG || current.ageStage == AgeStage.DEAD || current.sleeping) {
             return
         }
         if (current.misbehaving) {
-            updateTamagotchiState(discipline = current.discipline.inc(), misbehaving = false)
+            updateTamagotchiState(
+                discipline = if (current.discipline < 4) current.discipline.inc() else current.discipline,
+                misbehaving = false
+            )
         } else if (current.happiness > 0) {
             updateTamagotchiState(happiness = current.happiness.dec())
         }
     }
 
-    fun onResetClicked(){
+    fun onResetClicked() {
         _showResetDialog.value = true
     }
 
-    fun onDismissDialog(){
+    fun onDismissDialog() {
         _showResetDialog.value = false
     }
 
-    fun confirmReset(){
+    fun confirmReset() {
         _tamagotchiState.update { TamagotchiState() }
         viewModelScope.launch {
             repository.saveState(tamagotchiState.value)

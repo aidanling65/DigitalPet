@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -29,6 +30,7 @@ import com.example.tamagotchi.tamagotchi.TamagotchiRepository
 import com.example.tamagotchi.ui.theme.TamagotchiTheme
 import com.example.tamagotchi.workers.EvolutionWork
 import com.example.tamagotchi.workers.createSingleWorker
+import kotlinx.coroutines.runBlocking
 import java.time.Duration
 
 const val NOTIFICATION_PERMISSION_CODE = 100
@@ -45,7 +47,7 @@ class MainActivity : ComponentActivity() {
             this,
             arrayOf(Manifest.permission.POST_NOTIFICATIONS),
             NOTIFICATION_PERMISSION_CODE
-            )
+        )
         createNotificationChannel()
 
         val delay = gameViewModel.tamagotchiState.value.ageStage.stageLength ?: Duration.ZERO
@@ -59,6 +61,15 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        val repository = TamagotchiRepository(MyApp.Companion.instance)
+        runBlocking {
+            val current = repository.getState()
+            Log.d("OnResume", "Mistakes: " + (current.mentalMistakes + current.physicalMistakes).toString())
+        }
+    }
+
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = getString(R.string.tamagotchi)
@@ -67,7 +78,6 @@ class MainActivity : ComponentActivity() {
             val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
                 description = descriptionText
             }
-            // Register the channel with the system.
             val notificationManager: NotificationManager =
                 getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
@@ -80,7 +90,7 @@ fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
     val tamagotchiState by gameViewModel.tamagotchiState.collectAsState()
     val showDialog by gameViewModel.showResetDialog.collectAsState()
 
-    if(showDialog){
+    if (showDialog) {
         ResetDialog(
             onDismissRequest = { gameViewModel.onDismissDialog() },
             onConfirmation = { gameViewModel.confirmReset() }

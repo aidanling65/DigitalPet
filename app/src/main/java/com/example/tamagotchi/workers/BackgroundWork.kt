@@ -88,7 +88,7 @@ class BackgroundWork(
         return currentMistakes
     }
 
-    private fun die(currentState: TamagotchiState) : TamagotchiState {
+    private fun die(currentState: TamagotchiState): TamagotchiState {
         showNotification("Your Tamagotchi has died!")
         WorkManager.getInstance(MyApp.Companion.instance).cancelAllWorkByTag("evolve")
         val updatedState = currentState.copy(
@@ -99,9 +99,9 @@ class BackgroundWork(
         return updatedState
     }
 
-    private fun sleepAndAge(currentState: TamagotchiState) : TamagotchiState {
+    private fun sleepAndAge(currentState: TamagotchiState): TamagotchiState {
         val currentTime = LocalTime.now(ZoneId.systemDefault())
-        val sleeping  = currentTime.isAfter(
+        val sleeping = currentTime.isAfter(
             currentState.ageStage.bedTime ?: LocalTime.of(
                 23,
                 59,
@@ -116,7 +116,7 @@ class BackgroundWork(
         )
 
         return currentState.copy(
-            age = if(currentState.sleeping && !sleeping) currentState.age + 1 else currentState.age,
+            age = if (currentState.sleeping && !sleeping) currentState.age + 1 else currentState.age,
             sleeping = sleeping
         )
     }
@@ -127,18 +127,27 @@ class BackgroundWork(
             val currentState = repository.getState()
             val sleepAgeState = sleepAndAge(currentState).copy()
             val updatedState =
-                if(currentState.physicalMistakes + currentState.mentalMistakes >= 5) die(currentState).copy()
+                if (currentState.physicalMistakes + currentState.mentalMistakes >= 5) die(currentState).copy()
                 else if (currentState.ageStage == AgeStage.DEAD) currentState.copy() else currentState.copy(
                     physicalMistakes = calculatePhysicalMistakes(currentState),
                     mentalMistakes = calculateMentalMistakes(currentState),
                     hunger = if (currentState.hunger > 0 && !currentState.sleeping) currentState.hunger - 1 else currentState.hunger,
                     happiness = calculateHappiness(currentState),
                     weight = calculateWeight(currentState),
-                    misbehaving = if(currentState.misbehaving) currentState.misbehaving else (!currentState.sleeping && Random.nextInt(1, 4) == 1),
-                    poop = if(currentState.poop) currentState.poop else (!currentState.sleeping && Random.nextInt(1, 4) == 1),
-                    sick = if(currentState.sick) currentState.sick else (!currentState.sleeping && Random.nextInt(1,8) == 1),
+                    misbehaving = if (currentState.misbehaving) currentState.misbehaving else (!currentState.sleeping && Random.nextInt(
+                        1,
+                        4
+                    ) == 1),
+                    poop = if (currentState.poop) currentState.poop else (!currentState.sleeping && Random.nextInt(
+                        1,
+                        4
+                    ) == 1),
+                    sick = if (currentState.sick) currentState.sick else (!currentState.sleeping && Random.nextInt(
+                        1,
+                        8
+                    ) == 1),
                     sleeping = sleepAgeState.sleeping,
-                    light = if(!currentState.sleeping) true else currentState.light,
+                    light = if (!currentState.sleeping) true else currentState.light,
                     age = sleepAgeState.age,
                 )
             repository.saveState(updatedState)

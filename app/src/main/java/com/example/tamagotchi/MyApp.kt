@@ -3,7 +3,7 @@ package com.example.tamagotchi
 import android.app.Application
 
 class MyApp : Application() {
-    companion object{
+    companion object {
         lateinit var instance: MyApp
             private set
     }
