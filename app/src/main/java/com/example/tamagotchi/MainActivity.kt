@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val repository = TamagotchiRepository(MyApp.Companion.instance)
+        val repository = TamagotchiRepository(applicationContext)
         val gameViewModel = GameViewModel(repository)
 
         ActivityCompat.requestPermissions(
