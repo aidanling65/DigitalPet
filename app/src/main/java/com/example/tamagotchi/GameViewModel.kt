@@ -2,6 +2,7 @@ package com.example.tamagotchi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.savedstate.savedState
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
@@ -31,6 +32,12 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
             repository.tamagotchiStateFlow.collect { state ->
                 _tamagotchiState.value = state
             }
+        }
+    }
+
+    private fun saveState() {
+        viewModelScope.launch {
+            repository.saveState(_tamagotchiState.value)
         }
     }
 
@@ -67,16 +74,20 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
 
     fun feed() {
         val current = tamagotchiState.value
-        if (current.ageStage == AgeStage.EGG || current.ageStage == AgeStage.DEAD || current.sleeping) {
-            return
-        }
+        if (current.ageStage == AgeStage.EGG || current.ageStage == AgeStage.DEAD || current.sleeping) return
+
         if (current.hunger < MAX_HUNGER) {
             val updatedHunger = current.hunger.inc()
             var updatedWeight = current.weight
             if (current.weight < MAX_WEIGHT) {
                 updatedWeight++
             }
-            updateTamagotchiState(hunger = updatedHunger, weight = updatedWeight)
+            _tamagotchiState.update {
+                it.copy(
+                    hunger = updatedHunger,
+                    weight = updatedWeight
+                )
+            }
         }
     }
 
@@ -86,7 +97,12 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
             return
         }
         if (current.happiness < MAX_HAPPINESS) {
-            updateTamagotchiState(happiness = current.happiness.inc())
+            _tamagotchiState.update{
+                it.copy(
+                    happiness = current.happiness.inc()
+                )
+            }
+            saveState()
         }
     }
 
@@ -95,7 +111,12 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
         if (current.ageStage == AgeStage.EGG || current.ageStage == AgeStage.DEAD || current.sleeping) {
             return
         }
-        updateTamagotchiState(poop = false)
+        _tamagotchiState.update {
+            it.copy(
+                poop=false
+            )
+        }
+        saveState()
     }
 
     fun heal() {
@@ -104,8 +125,22 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
             return
         }
         if (current.sick) {
-            if (current.medicineTaken) updateTamagotchiState(sick = false, medicineTaken = false)
-            else updateTamagotchiState(medicineTaken = true)
+            if (current.medicineTaken) {
+                _tamagotchiState.update {
+                    it.copy(
+                        sick = false,
+                        medicineTaken = false
+                    )
+                }
+            }
+            else{
+                _tamagotchiState.update {
+                    it.copy(
+                        medicineTaken = true
+                    )
+                }
+            }
+            saveState()
         }
     }
 
@@ -114,7 +149,9 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
         if (current.ageStage == AgeStage.EGG || current.ageStage == AgeStage.DEAD) {
             return
         }
-        updateTamagotchiState(light = !current.light)
+        _tamagotchiState.update {
+            it.copy(light = !current.light)
+        }
     }
 
     fun discipline() {
@@ -123,12 +160,18 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
             return
         }
         if (current.misbehaving) {
-            updateTamagotchiState(
-                discipline = if (current.discipline < 4) current.discipline.inc() else current.discipline,
-                misbehaving = false
-            )
+            _tamagotchiState.update{
+                it.copy(
+                    discipline = if (current.discipline < 4) current.discipline.inc() else current.discipline,
+                    misbehaving = false
+                )
+            }
         } else if (current.happiness > 0) {
-            updateTamagotchiState(happiness = current.happiness.dec())
+            _tamagotchiState.update{
+                it.copy(
+                    happiness = current.happiness.dec()
+                )
+            }
         }
     }
 

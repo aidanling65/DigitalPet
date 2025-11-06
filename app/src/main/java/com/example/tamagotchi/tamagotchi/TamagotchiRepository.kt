@@ -45,12 +45,12 @@ class TamagotchiRepository(private val context: Context) {
                 poop = prefs[POOP] ?: defaultState.poop,
                 misbehaving = prefs[MISBEHAVING] ?: defaultState.misbehaving,
                 sleeping = prefs[SLEEPING] ?: defaultState.sleeping,
+                mentalMistakes = prefs[MENTAL_MISTAKES] ?: defaultState.mentalMistakes,
+                physicalMistakes = prefs[PHYSICAL_MISTAKES] ?: defaultState.physicalMistakes,
                 ageStage = AgeStage.valueOf(prefs[AGE_STAGE] ?: defaultState.ageStage.name),
                 animations = EvolutionAnimations.valueOf(
                     prefs[ANIMATIONS] ?: defaultState.animations.name
-                ),
-                mentalMistakes = prefs[MENTAL_MISTAKES] ?: defaultState.mentalMistakes,
-                physicalMistakes = prefs[PHYSICAL_MISTAKES] ?: defaultState.physicalMistakes
+                )
             )
 
         }
@@ -68,10 +68,10 @@ class TamagotchiRepository(private val context: Context) {
             updated[POOP] = current.poop
             updated[MISBEHAVING] = current.misbehaving
             updated[SLEEPING] = current.sleeping
-            updated[AGE_STAGE] = current.ageStage.name
-            updated[ANIMATIONS] = current.animations.name
             updated[PHYSICAL_MISTAKES] = current.physicalMistakes
             updated[MENTAL_MISTAKES] = current.mentalMistakes
+            updated[AGE_STAGE] = current.ageStage.name
+            updated[ANIMATIONS] = current.animations.name
         }
     }
 

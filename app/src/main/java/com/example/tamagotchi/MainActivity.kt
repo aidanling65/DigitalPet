@@ -5,7 +5,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -30,7 +29,6 @@ import com.example.tamagotchi.tamagotchi.TamagotchiRepository
 import com.example.tamagotchi.ui.theme.TamagotchiTheme
 import com.example.tamagotchi.workers.EvolutionWork
 import com.example.tamagotchi.workers.createSingleWorker
-import kotlinx.coroutines.runBlocking
 import java.time.Duration
 
 const val NOTIFICATION_PERMISSION_CODE = 100
@@ -58,15 +56,6 @@ class MainActivity : ComponentActivity() {
             TamagotchiTheme {
                 TamagotchiApp(gameViewModel)
             }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val repository = TamagotchiRepository(MyApp.Companion.instance)
-        runBlocking {
-            val current = repository.getState()
-            Log.d("OnResume", "Mistakes: " + (current.mentalMistakes + current.physicalMistakes).toString())
         }
     }
 

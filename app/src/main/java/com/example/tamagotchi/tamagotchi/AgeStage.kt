@@ -23,7 +23,7 @@ enum class AgeStage(
         bedTime = null,
         wakeTime = null,
         stageLength = Duration.ofMinutes(65),
-        //stageLength = Duration.ofSeconds(10),
+        //stageLength = Duration.ofSeconds(60),
         evolve = ::babyChildEvolve
     ),
     CHILD(

@@ -28,28 +28,28 @@ fun baseEvolve(currentState: TamagotchiState) : TamagotchiState {
 fun eggBabyEvolve(currentState: TamagotchiState): TamagotchiState {
     showNotification("Your Tamagotchi has hatched!")
 
-    val updatedState = currentState.copy(
+    val updatedState = baseEvolve(currentState.copy(
         ageStage = AgeStage.BABY,
         weight = AgeStage.BABY.minimumWeight,
         animations = EvolutionAnimations.BABY,
-    )
+    ))
 
     createSingleWorker<HungerHappinessWork>(Duration.ZERO, "hunger_happiness", ExistingWorkPolicy.KEEP)
     createSingleWorker<PoopWork>(Duration.ofMinutes(15), "poop", ExistingWorkPolicy.KEEP)
     createSingleWorker<SickWork>(Duration.ofMinutes(30), "sick", ExistingWorkPolicy.KEEP)
     createSingleWorker<SleepWork>(Duration.ofMinutes(40), "sleep", ExistingWorkPolicy.KEEP)
 
-    return baseEvolve(updatedState)
+    return updatedState
 }
 
 fun babyChildEvolve(currentState: TamagotchiState): TamagotchiState {
     showNotification("Your Tamagotchi has evolved!")
 
-    val updatedState =  currentState.copy(
+    val updatedState = baseEvolve(currentState.copy(
         ageStage = AgeStage.CHILD,
         weight = AgeStage.CHILD.minimumWeight,
         animations = EvolutionAnimations.CHILD,
-    )
+    ))
     createPeriodicWorker<BackgroundWork>(
         Duration.ofMinutes(15),
         Duration.ofMinutes(15),
@@ -57,7 +57,7 @@ fun babyChildEvolve(currentState: TamagotchiState): TamagotchiState {
         ExistingPeriodicWorkPolicy.REPLACE
     )
 
-    return baseEvolve(updatedState)
+    return updatedState
 }
 
 fun childTeenEvolve(currentState: TamagotchiState): TamagotchiState {
