@@ -1,4 +1,4 @@
-package com.example.tamagotchi
+package com.example.tamagotchi.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -24,6 +24,8 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.tamagotchi.ui.GameViewModel
+import com.example.tamagotchi.R
 
 @Composable
 fun NavButton(painter: Painter,

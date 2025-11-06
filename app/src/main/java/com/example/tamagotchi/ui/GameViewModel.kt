@@ -1,19 +1,18 @@
-package com.example.tamagotchi
+package com.example.tamagotchi.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.savedstate.savedState
 import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.example.tamagotchi.tamagotchi.AgeStage
-import com.example.tamagotchi.tamagotchi.MAX_HAPPINESS
-import com.example.tamagotchi.tamagotchi.MAX_HUNGER
-import com.example.tamagotchi.tamagotchi.MAX_WEIGHT
-import com.example.tamagotchi.tamagotchi.TamagotchiRepository
-import com.example.tamagotchi.tamagotchi.TamagotchiState
-import com.example.tamagotchi.workers.EvolutionWork
-import com.example.tamagotchi.workers.createSingleWorker
+import com.example.tamagotchi.MyApp
+import com.example.tamagotchi.data.model.AgeStage
+import com.example.tamagotchi.data.model.MAX_HAPPINESS
+import com.example.tamagotchi.data.model.MAX_HUNGER
+import com.example.tamagotchi.data.model.MAX_WEIGHT
+import com.example.tamagotchi.data.repository.TamagotchiRepository
+import com.example.tamagotchi.data.model.TamagotchiState
+import com.example.tamagotchi.domain.workers.EvolutionWork
+import com.example.tamagotchi.domain.workers.createSingleWorker
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -40,7 +39,7 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
 
     private fun scheduleEvolutionWork(){
         val delay = _tamagotchiState.value.ageStage.stageLength ?: Duration.ofMinutes(5)
-        createSingleWorker<EvolutionWork>(delay,"evolve", ExistingWorkPolicy.REPLACE)
+        createSingleWorker<EvolutionWork>(delay, "evolve", ExistingWorkPolicy.REPLACE)
     }
 
     private fun saveState() {
@@ -135,6 +134,7 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
         _tamagotchiState.update {
             it.copy(light = !current.light)
         }
+        saveState()
     }
 
     fun discipline() {
@@ -174,7 +174,7 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
             repository.saveState(tamagotchiState.value)
         }
 
-        WorkManager.getInstance(MyApp.instance).cancelAllWork()
+        WorkManager.Companion.getInstance(MyApp.Companion.instance).cancelAllWork()
 
         scheduleEvolutionWork()
 

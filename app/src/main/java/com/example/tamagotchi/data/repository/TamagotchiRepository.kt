@@ -1,4 +1,4 @@
-package com.example.tamagotchi.tamagotchi
+package com.example.tamagotchi.data.repository
 
 import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -6,6 +6,9 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.tamagotchi.data.model.AgeStage
+import com.example.tamagotchi.data.model.EvolutionAnimations
+import com.example.tamagotchi.data.model.TamagotchiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map

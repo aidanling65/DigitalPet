@@ -1,4 +1,4 @@
-package com.example.tamagotchi
+package com.example.tamagotchi.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -34,10 +34,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.tamagotchi.tamagotchi.MAX_DISCIPLINE
-import com.example.tamagotchi.tamagotchi.MAX_HAPPINESS
-import com.example.tamagotchi.tamagotchi.MAX_HUNGER
-import com.example.tamagotchi.tamagotchi.TamagotchiState
+import com.example.tamagotchi.R
+import com.example.tamagotchi.data.model.MAX_DISCIPLINE
+import com.example.tamagotchi.data.model.MAX_HAPPINESS
+import com.example.tamagotchi.data.model.MAX_HUNGER
+import com.example.tamagotchi.data.model.TamagotchiState
 import kotlinx.coroutines.delay
 
 @Composable

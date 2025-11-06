@@ -1,4 +1,4 @@
-package com.example.tamagotchi.workers
+package com.example.tamagotchi.domain.workers
 
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy

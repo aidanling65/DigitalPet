@@ -1,19 +1,23 @@
-package com.example.tamagotchi.tamagotchi
+package com.example.tamagotchi.domain.logic
 
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
-import com.example.tamagotchi.showNotification
-import com.example.tamagotchi.workers.BackgroundWork
-import com.example.tamagotchi.workers.baby.HungerHappinessWork
-import com.example.tamagotchi.workers.baby.PoopWork
-import com.example.tamagotchi.workers.baby.SickWork
-import com.example.tamagotchi.workers.baby.SleepWork
-import com.example.tamagotchi.workers.createPeriodicWorker
-import com.example.tamagotchi.workers.createSingleWorker
+import com.example.tamagotchi.data.model.AgeStage
+import com.example.tamagotchi.data.model.EvolutionAnimations
+import com.example.tamagotchi.data.model.MAX_DISCIPLINE
+import com.example.tamagotchi.data.model.TamagotchiState
+import com.example.tamagotchi.utils.showNotification
+import com.example.tamagotchi.domain.workers.BackgroundWork
+import com.example.tamagotchi.domain.workers.baby.HungerHappinessWork
+import com.example.tamagotchi.domain.workers.baby.PoopWork
+import com.example.tamagotchi.domain.workers.baby.SickWork
+import com.example.tamagotchi.domain.workers.baby.SleepWork
+import com.example.tamagotchi.domain.workers.createPeriodicWorker
+import com.example.tamagotchi.domain.workers.createSingleWorker
 import java.time.Duration
 
 fun baseEvolve(currentState: TamagotchiState) : TamagotchiState {
-    val updatedState =  currentState.copy(
+    return currentState.copy(
         hunger = 0,
         happiness = 0,
         discipline = 0,
@@ -22,34 +26,26 @@ fun baseEvolve(currentState: TamagotchiState) : TamagotchiState {
         poop = false,
         sick = false
     )
-    return  updatedState
 }
 
 fun eggBabyEvolve(currentState: TamagotchiState): TamagotchiState {
     showNotification("Your Tamagotchi has hatched!")
 
-    val updatedState = baseEvolve(currentState.copy(
+    createSingleWorker<HungerHappinessWork>(Duration.ZERO, "hunger_happiness", ExistingWorkPolicy.REPLACE)
+    createSingleWorker<PoopWork>(Duration.ofMinutes(15), "poop", ExistingWorkPolicy.REPLACE)
+    createSingleWorker<SickWork>(Duration.ofMinutes(30), "sick", ExistingWorkPolicy.REPLACE)
+    createSingleWorker<SleepWork>(Duration.ofMinutes(40), "sleep", ExistingWorkPolicy.REPLACE)
+
+    return baseEvolve(currentState).copy(
         ageStage = AgeStage.BABY,
         weight = AgeStage.BABY.minimumWeight,
         animations = EvolutionAnimations.BABY,
-    ))
-
-    createSingleWorker<HungerHappinessWork>(Duration.ZERO, "hunger_happiness", ExistingWorkPolicy.KEEP)
-    createSingleWorker<PoopWork>(Duration.ofMinutes(15), "poop", ExistingWorkPolicy.KEEP)
-    createSingleWorker<SickWork>(Duration.ofMinutes(30), "sick", ExistingWorkPolicy.KEEP)
-    createSingleWorker<SleepWork>(Duration.ofMinutes(40), "sleep", ExistingWorkPolicy.KEEP)
-
-    return updatedState
+    )
 }
 
 fun babyChildEvolve(currentState: TamagotchiState): TamagotchiState {
     showNotification("Your Tamagotchi has evolved!")
 
-    val updatedState = baseEvolve(currentState.copy(
-        ageStage = AgeStage.CHILD,
-        weight = AgeStage.CHILD.minimumWeight,
-        animations = EvolutionAnimations.CHILD,
-    ))
     createPeriodicWorker<BackgroundWork>(
         Duration.ofMinutes(15),
         Duration.ofMinutes(15),
@@ -57,18 +53,21 @@ fun babyChildEvolve(currentState: TamagotchiState): TamagotchiState {
         ExistingPeriodicWorkPolicy.REPLACE
     )
 
-    return updatedState
+    return baseEvolve(currentState).copy(
+        ageStage = AgeStage.CHILD,
+        weight = AgeStage.CHILD.minimumWeight,
+        animations = EvolutionAnimations.CHILD
+    )
 }
 
 fun childTeenEvolve(currentState: TamagotchiState): TamagotchiState {
     showNotification("Your Tamagotchi has evolved!")
 
-    val updatedState = currentState.copy(
+    return baseEvolve(currentState).copy(
         ageStage = AgeStage.TEEN,
         weight = AgeStage.TEEN.minimumWeight,
         animations = if (currentState.physicalMistakes + currentState.mentalMistakes <= 1) EvolutionAnimations.TEEN_1 else EvolutionAnimations.TEEN_2,
     )
-    return  baseEvolve(updatedState)
 }
 
 fun teenAdultEvolve(currentState: TamagotchiState): TamagotchiState {
@@ -94,22 +93,18 @@ fun teenAdultEvolve(currentState: TamagotchiState): TamagotchiState {
     }
 
     showNotification("Your Tamagotchi has evolved!")
-
-    val updatedState = currentState.copy(
+    return baseEvolve(currentState).copy(
         ageStage = AgeStage.ADULT,
         weight = AgeStage.ADULT.minimumWeight,
         animations =  nextAnimation
     )
-
-    return baseEvolve(updatedState)
 }
 
 fun deadEvolve(currentState: TamagotchiState): TamagotchiState {
     showNotification("Your Tamagotchi has died!")
-    val updatedState = currentState.copy(
+    return baseEvolve(currentState).copy(
         ageStage = AgeStage.DEAD,
         weight = AgeStage.DEAD.minimumWeight,
         animations = EvolutionAnimations.DEAD
     )
-    return updatedState
 }

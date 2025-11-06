@@ -1,17 +1,17 @@
-package com.example.tamagotchi.workers
+package com.example.tamagotchi.domain.workers
 
 import android.content.Context
 import android.util.Log
 import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.example.tamagotchi.tamagotchi.AgeStage
-import com.example.tamagotchi.tamagotchi.EvolutionAnimations
-import com.example.tamagotchi.tamagotchi.MAX_HUNGER
+import com.example.tamagotchi.data.model.AgeStage
+import com.example.tamagotchi.data.model.EvolutionAnimations
+import com.example.tamagotchi.data.model.MAX_HUNGER
 import com.example.tamagotchi.MyApp
-import com.example.tamagotchi.tamagotchi.TamagotchiRepository
-import com.example.tamagotchi.tamagotchi.TamagotchiState
-import com.example.tamagotchi.showNotification
+import com.example.tamagotchi.data.repository.TamagotchiRepository
+import com.example.tamagotchi.data.model.TamagotchiState
+import com.example.tamagotchi.utils.showNotification
 import kotlinx.coroutines.runBlocking
 import java.time.LocalTime
 import java.time.ZoneId

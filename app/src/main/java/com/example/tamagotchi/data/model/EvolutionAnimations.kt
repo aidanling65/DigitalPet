@@ -1,4 +1,4 @@
-package com.example.tamagotchi.tamagotchi
+package com.example.tamagotchi.data.model
 
 import com.example.tamagotchi.MyApp
 import com.example.tamagotchi.R

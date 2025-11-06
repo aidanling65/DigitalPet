@@ -1,4 +1,4 @@
-package com.example.tamagotchi.tamagotchi
+package com.example.tamagotchi.data.model
 
 const val MAX_HUNGER = 4
 const val MAX_WEIGHT = 99

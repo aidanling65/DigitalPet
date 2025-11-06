@@ -1,20 +1,20 @@
-package com.example.tamagotchi.workers.baby
+package com.example.tamagotchi.domain.workers.baby
 
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.example.tamagotchi.tamagotchi.TamagotchiRepository
+import com.example.tamagotchi.data.repository.TamagotchiRepository
 
-class PoopWork(
+class SickWork(
     appContext: Context,
     workerParams: WorkerParameters
-) : CoroutineWorker(appContext, workerParams) {
+) : CoroutineWorker(appContext, workerParams){
     private val repository = TamagotchiRepository(appContext)
 
     override suspend fun doWork(): Result {
         val currentState = repository.getState()
         val updatedState = currentState.copy(
-            poop = true
+            sick = true
         )
         repository.saveState(updatedState)
 

@@ -24,12 +24,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
-import androidx.work.ExistingWorkPolicy
-import com.example.tamagotchi.tamagotchi.TamagotchiRepository
+import com.example.tamagotchi.data.repository.TamagotchiRepository
+import com.example.tamagotchi.ui.GameViewModel
+import com.example.tamagotchi.ui.components.BottomNavBar
+import com.example.tamagotchi.ui.components.ResetDialog
+import com.example.tamagotchi.ui.components.StatusBars
+import com.example.tamagotchi.ui.components.TamagotchiAppBar
+import com.example.tamagotchi.ui.components.TamagotchiDisplay
 import com.example.tamagotchi.ui.theme.TamagotchiTheme
-import com.example.tamagotchi.workers.EvolutionWork
-import com.example.tamagotchi.workers.createSingleWorker
-import java.time.Duration
 
 const val NOTIFICATION_PERMISSION_CODE = 100
 const val CHANNEL_ID = "Tamagotchi"

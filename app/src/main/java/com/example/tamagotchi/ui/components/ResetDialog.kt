@@ -1,4 +1,4 @@
-package com.example.tamagotchi
+package com.example.tamagotchi.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.example.tamagotchi.R
 import com.example.tamagotchi.ui.theme.DialogColor
 
 @Composable
