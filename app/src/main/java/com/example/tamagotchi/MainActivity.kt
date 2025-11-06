@@ -48,9 +48,6 @@ class MainActivity : ComponentActivity() {
         )
         createNotificationChannel()
 
-        val delay = gameViewModel.tamagotchiState.value.ageStage.stageLength ?: Duration.ZERO
-        createSingleWorker<EvolutionWork>(delay, "evolve", ExistingWorkPolicy.KEEP)
-
         enableEdgeToEdge()
         setContent {
             TamagotchiTheme {

@@ -13,6 +13,7 @@ import com.example.tamagotchi.tamagotchi.MAX_WEIGHT
 import com.example.tamagotchi.tamagotchi.TamagotchiRepository
 import com.example.tamagotchi.tamagotchi.TamagotchiState
 import com.example.tamagotchi.workers.EvolutionWork
+import com.example.tamagotchi.workers.createSingleWorker
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -33,42 +34,18 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
                 _tamagotchiState.value = state
             }
         }
+
+        scheduleEvolutionWork()
+    }
+
+    private fun scheduleEvolutionWork(){
+        val delay = _tamagotchiState.value.ageStage.stageLength ?: Duration.ofMinutes(5)
+        createSingleWorker<EvolutionWork>(delay,"evolve", ExistingWorkPolicy.KEEP)
     }
 
     private fun saveState() {
         viewModelScope.launch {
             repository.saveState(_tamagotchiState.value)
-        }
-    }
-
-    private fun updateTamagotchiState(
-        age: Int = tamagotchiState.value.age,
-        hunger: Int = tamagotchiState.value.hunger,
-        happiness: Int = tamagotchiState.value.happiness,
-        weight: Int = tamagotchiState.value.weight,
-        discipline: Int = tamagotchiState.value.discipline,
-        light: Boolean = tamagotchiState.value.light,
-        medicineTaken: Boolean = tamagotchiState.value.medicineTaken,
-        sick: Boolean = tamagotchiState.value.sick,
-        misbehaving: Boolean = tamagotchiState.value.misbehaving,
-        poop: Boolean = tamagotchiState.value.poop,
-    ) {
-        _tamagotchiState.update {
-            it.copy(
-                age = age,
-                weight = weight,
-                hunger = hunger,
-                happiness = happiness,
-                discipline = discipline,
-                light = light,
-                medicineTaken = medicineTaken,
-                sick = sick,
-                misbehaving = misbehaving,
-                poop = poop,
-            )
-        }
-        viewModelScope.launch {
-            repository.saveState(tamagotchiState.value)
         }
     }
 
@@ -191,15 +168,7 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
 
         WorkManager.getInstance(MyApp.instance).cancelAllWork()
 
-        val evolutionRequest = OneTimeWorkRequestBuilder<EvolutionWork>()
-            .setInitialDelay(tamagotchiState.value.ageStage.stageLength ?: Duration.ofMinutes(5))
-            .build()
-
-        WorkManager.getInstance(MyApp.instance).enqueueUniqueWork(
-            "evolve",
-            ExistingWorkPolicy.REPLACE,
-            evolutionRequest
-        )
+        scheduleEvolutionWork()
 
         onDismissDialog()
     }
