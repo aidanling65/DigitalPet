@@ -1,9 +1,9 @@
 package com.example.tamagotchi.data.model
 
-import com.example.tamagotchi.domain.logic.babyChildEvolve
-import com.example.tamagotchi.domain.logic.childTeenEvolve
-import com.example.tamagotchi.domain.logic.eggBabyEvolve
-import com.example.tamagotchi.domain.logic.teenAdultEvolve
+import com.example.tamagotchi.domain.workers.evolution.babyChildEvolve
+import com.example.tamagotchi.domain.workers.evolution.childTeenEvolve
+import com.example.tamagotchi.domain.workers.evolution.eggBabyEvolve
+import com.example.tamagotchi.domain.workers.evolution.teenAdultEvolve
 import java.time.Duration
 import java.time.LocalTime
 

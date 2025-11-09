@@ -1,0 +1,31 @@
+package com.example.tamagotchi.domain.workers.evolution
+
+import android.content.Context
+import android.util.Log
+import androidx.work.CoroutineWorker
+import androidx.work.WorkerParameters
+import com.example.tamagotchi.data.model.AgeStage
+import com.example.tamagotchi.data.repository.TamagotchiRepository
+import com.example.tamagotchi.domain.workers.scheduleEvolutionWork
+
+class EvolutionWork(
+    appContext: Context,
+    workerParams: WorkerParameters
+) : CoroutineWorker(appContext, workerParams) {
+    private val repository = TamagotchiRepository(appContext)
+
+    override suspend fun doWork(): Result{
+        val currentState = repository.getState()
+        val updatedState = currentState.ageStage.evolve?.let { it(currentState) }
+        Log.d("EvolutionWork", updatedState?.animations?.name ?: "")
+        repository.saveState(updatedState ?: currentState)
+
+        if(updatedState?.ageStage == AgeStage.DEAD){
+            return Result.success()
+        }
+
+        scheduleEvolutionWork(applicationContext, updatedState ?: currentState,)
+
+        return Result.success()
+    }
+}

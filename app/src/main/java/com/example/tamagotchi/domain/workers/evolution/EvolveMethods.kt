@@ -1,13 +1,14 @@
-package com.example.tamagotchi.domain.logic
+package com.example.tamagotchi.domain.workers.evolution
 
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
+import com.example.tamagotchi.MyApp
 import com.example.tamagotchi.data.model.AgeStage
 import com.example.tamagotchi.data.model.EvolutionAnimations
 import com.example.tamagotchi.data.model.MAX_DISCIPLINE
 import com.example.tamagotchi.data.model.TamagotchiState
 import com.example.tamagotchi.utils.showNotification
-import com.example.tamagotchi.domain.workers.BackgroundWork
+import com.example.tamagotchi.domain.workers.regular.BackgroundWork
 import com.example.tamagotchi.domain.workers.baby.HungerHappinessWork
 import com.example.tamagotchi.domain.workers.baby.PoopWork
 import com.example.tamagotchi.domain.workers.baby.SickWork
@@ -29,12 +30,12 @@ fun baseEvolve(currentState: TamagotchiState) : TamagotchiState {
 }
 
 fun eggBabyEvolve(currentState: TamagotchiState): TamagotchiState {
-    showNotification("Your Tamagotchi has hatched!")
+    showNotification(MyApp.instance,"Your Tamagotchi has hatched!")
 
-    createSingleWorker<HungerHappinessWork>(Duration.ZERO, "hunger_happiness", ExistingWorkPolicy.REPLACE)
-    createSingleWorker<PoopWork>(Duration.ofMinutes(15), "poop", ExistingWorkPolicy.REPLACE)
-    createSingleWorker<SickWork>(Duration.ofMinutes(30), "sick", ExistingWorkPolicy.REPLACE)
-    createSingleWorker<SleepWork>(Duration.ofMinutes(40), "sleep", ExistingWorkPolicy.REPLACE)
+    createSingleWorker<HungerHappinessWork>(MyApp.instance, Duration.ZERO, "hunger_happiness", ExistingWorkPolicy.REPLACE)
+    createSingleWorker<PoopWork>(MyApp.instance, Duration.ofMinutes(15), "poop", ExistingWorkPolicy.REPLACE)
+    createSingleWorker<SickWork>(MyApp.instance, Duration.ofMinutes(30), "sick", ExistingWorkPolicy.REPLACE)
+    createSingleWorker<SleepWork>(MyApp.instance, Duration.ofMinutes(40), "sleep", ExistingWorkPolicy.REPLACE)
 
     return baseEvolve(currentState).copy(
         ageStage = AgeStage.BABY,
@@ -44,9 +45,10 @@ fun eggBabyEvolve(currentState: TamagotchiState): TamagotchiState {
 }
 
 fun babyChildEvolve(currentState: TamagotchiState): TamagotchiState {
-    showNotification("Your Tamagotchi has evolved!")
+    showNotification(MyApp.instance, "Your Tamagotchi has evolved!")
 
     createPeriodicWorker<BackgroundWork>(
+        MyApp.instance,
         Duration.ofMinutes(15),
         Duration.ofMinutes(15),
         "passive_tasks",
@@ -61,7 +63,7 @@ fun babyChildEvolve(currentState: TamagotchiState): TamagotchiState {
 }
 
 fun childTeenEvolve(currentState: TamagotchiState): TamagotchiState {
-    showNotification("Your Tamagotchi has evolved!")
+    showNotification(MyApp.instance, "Your Tamagotchi has evolved!")
 
     return baseEvolve(currentState).copy(
         ageStage = AgeStage.TEEN,
@@ -92,7 +94,7 @@ fun teenAdultEvolve(currentState: TamagotchiState): TamagotchiState {
         }
     }
 
-    showNotification("Your Tamagotchi has evolved!")
+    showNotification(MyApp.instance,"Your Tamagotchi has evolved!")
     return baseEvolve(currentState).copy(
         ageStage = AgeStage.ADULT,
         weight = AgeStage.ADULT.minimumWeight,
@@ -101,7 +103,7 @@ fun teenAdultEvolve(currentState: TamagotchiState): TamagotchiState {
 }
 
 fun deadEvolve(currentState: TamagotchiState): TamagotchiState {
-    showNotification("Your Tamagotchi has died!")
+    showNotification(MyApp.instance,"Your Tamagotchi has died!")
     return baseEvolve(currentState).copy(
         ageStage = AgeStage.DEAD,
         weight = AgeStage.DEAD.minimumWeight,
