@@ -10,14 +10,20 @@ class HungerDecayWork(
     workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
     private val repository = TamagotchiRepository(appContext)
-    var sinceLast = 0
 
     override suspend fun doWork(): Result {
         var state = repository.getState()
-        sinceLast = (state.hungerDecayCounter + 1) % 3
+        if(state.sleeping){
+            return Result.success()
+        }
+        val sinceLast = (state.hungerDecayCounter + 1) % 3
+        var mistakes = state.physicalMistakes
+        if(state.hunger == 0){
+            mistakes++
+        }
 
         state = state.copy(
-            physicalMistakes = if (state.hunger == 0) state.physicalMistakes + 1 else state.physicalMistakes,
+            physicalMistakes = mistakes,
             hunger = if (sinceLast == 0 && state.hunger > 0) state.hunger - 1 else state.hunger,
             hungerDecayCounter = sinceLast
         )

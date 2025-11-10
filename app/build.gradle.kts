@@ -53,6 +53,8 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.1.0")
     implementation("androidx.datastore:datastore-preferences-core:1.1.0")
     implementation("androidx.work:work-runtime:2.10.5")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4")
+
     implementation(libs.androidx.appcompat)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

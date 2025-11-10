@@ -2,15 +2,12 @@ package com.example.tamagotchi.domain.workers.regular
 
 import android.content.Context
 import androidx.work.CoroutineWorker
-import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
 import com.example.tamagotchi.data.repository.TamagotchiRepository
-import com.example.tamagotchi.domain.workers.createSingleWorker
 import com.example.tamagotchi.utils.showNotification
-import java.time.Duration
 import kotlin.random.Random
 
-class MisbehavingWork(
+class DisciplineCheckWork(
     appContext: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
@@ -18,27 +15,14 @@ class MisbehavingWork(
 
     override suspend fun doWork(): Result {
         var state = repository.getState()
-        if(state.misbehaving  || state.sleeping){
-            return Result.success()
-        }
-
-        val misbehaving = Random.nextFloat() < state.ageStage.misbehaviorChances
-        if(misbehaving){
-            showNotification(applicationContext, "Your Tamagotchi is misbehaving!")
+        if(state.misbehaving) {
             state = state.copy(
-                misbehaving = true
-            )
-
-            createSingleWorker<DisciplineCheckWork>(
-                applicationContext,
-                Duration.ofMinutes(15),
-                "discipline_check",
-                ExistingWorkPolicy.REPLACE,
+                misbehaving = false,
+                mentalMistakes = state.mentalMistakes + 1
             )
 
             repository.saveState(state)
         }
-
 
         return Result.success()
     }

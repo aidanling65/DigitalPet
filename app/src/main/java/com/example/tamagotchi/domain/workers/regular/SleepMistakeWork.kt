@@ -5,7 +5,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.tamagotchi.data.repository.TamagotchiRepository
 
-class HappinessDecayWork(
+class SleepMistakeWork(
     appContext: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
@@ -13,19 +13,8 @@ class HappinessDecayWork(
 
     override suspend fun doWork(): Result {
         var state = repository.getState()
-        if(state.sleeping){
-            return Result.success()
-        }
-
-        var mistakes = state.mentalMistakes
-        if(state.hunger == 0){
-            mistakes++
-        }
-        val sinceLast = (state.happinessDecayCounter + 1) % 4
         state = state.copy(
-            mentalMistakes = mistakes,
-            happiness =  if(sinceLast == 0 && state.happiness > 0) state.happiness - 1 else state.happiness,
-            happinessDecayCounter = sinceLast
+            mentalMistakes = if(state.sleeping && state.light) state.mentalMistakes + 1 else  state.mentalMistakes
         )
 
         repository.saveState(state)

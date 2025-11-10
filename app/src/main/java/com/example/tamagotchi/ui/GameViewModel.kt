@@ -2,6 +2,7 @@ package com.example.tamagotchi.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.example.tamagotchi.MyApp
 import com.example.tamagotchi.data.model.AgeStage
@@ -11,11 +12,13 @@ import com.example.tamagotchi.data.model.MAX_WEIGHT
 import com.example.tamagotchi.data.repository.TamagotchiRepository
 import com.example.tamagotchi.data.model.TamagotchiState
 import com.example.tamagotchi.domain.workers.scheduleEvolutionWork
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() {
     private val _tamagotchiState = MutableStateFlow(TamagotchiState())
@@ -31,7 +34,20 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
             }
         }
 
-        scheduleEvolutionWork(MyApp.instance, _tamagotchiState.value)
+        val workManager = WorkManager.getInstance(MyApp.instance)
+        viewModelScope.launch {
+            val workInfos = withContext(Dispatchers.IO) {
+                workManager.getWorkInfosByTag("evolve").get()
+            }
+
+            val isEvolveWorkRunning = workInfos.any { workInfo ->
+                workInfo.state == WorkInfo.State.RUNNING || workInfo.state == WorkInfo.State.ENQUEUED
+            }
+
+            if (!isEvolveWorkRunning) {
+                scheduleEvolutionWork(MyApp.instance, _tamagotchiState.value)
+            }
+        }
     }
 
     private fun saveState() {
