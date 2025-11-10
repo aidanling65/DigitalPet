@@ -14,11 +14,12 @@ class HappinessDecayWork(
 
     override suspend fun doWork(): Result {
         var state = repository.getState()
-        sinceLast = (sinceLast + 1) % 4
+        sinceLast = (state.happinessDecayCounter + 1) % 4
 
         state = state.copy(
             mentalMistakes = if(state.happiness == 0) state.mentalMistakes + 1 else state.mentalMistakes,
-            happiness =  if(sinceLast == 0 && state.happiness > 0) state.happiness - 1 else state.happiness
+            happiness =  if(sinceLast == 0 && state.happiness > 0) state.happiness - 1 else state.happiness,
+            happinessDecayCounter = sinceLast
         )
 
         repository.saveState(state)

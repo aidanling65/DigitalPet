@@ -16,17 +16,24 @@ import com.example.tamagotchi.R
 
 @SuppressLint("MissingPermission")
 fun showNotification(context:Context, text: String) {
-    val contentIntent = PendingIntent.getActivity(
-        context, 0,
-        Intent(context, MainActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT
-    )
+
+    val intent = Intent(context, MainActivity::class.java).apply {
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+    }
+    val pendingIntentFlag = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+    } else {
+        PendingIntent.FLAG_UPDATE_CURRENT
+    }
+    val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, intent, pendingIntentFlag)
 
     val builder = NotificationCompat.Builder(context, CHANNEL_ID)
         .setSmallIcon(R.mipmap.ic_launcher_foreground)
         .setContentTitle("Tamagotchi")
-        .setContentIntent(contentIntent)
         .setContentText(text)
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        .setContentIntent(pendingIntent)
+        .setAutoCancel(true)
 
     with(NotificationManagerCompat.from(context)) {
         notify(1, builder.build())

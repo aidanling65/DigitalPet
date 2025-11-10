@@ -24,14 +24,13 @@ class PoopWork(
             state = state.copy(
                 poop = true
             )
+            createSingleWorker<SickWork>(
+                applicationContext,
+                Duration.ofMinutes(30),
+                "sick",
+                ExistingWorkPolicy.REPLACE
+            )
         }
-
-        createSingleWorker<SickWork>(
-            applicationContext,
-            Duration.ofMinutes(30),
-            "sick",
-            ExistingWorkPolicy.REPLACE
-        )
         repository.saveState(state)
 
         return Result.success()

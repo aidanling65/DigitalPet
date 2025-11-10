@@ -20,7 +20,9 @@ class TamagotchiRepository(private val context: Context) {
     private val AGE = intPreferencesKey("age")
     private val WEIGHT = intPreferencesKey("weight")
     private val HUNGER = intPreferencesKey("hunger")
+    private val HUNGER_DECAY = intPreferencesKey("hunger_decay")
     private val HAPPINESS = intPreferencesKey("happiness")
+    private val HAPPINESS_DECAY = intPreferencesKey("happiness_decay")
     private val DISCIPLINE = intPreferencesKey("discipline")
     private val LIGHT = booleanPreferencesKey("light")
     private val MEDICINE_TAKEN = booleanPreferencesKey("medicineTaken")
@@ -40,7 +42,9 @@ class TamagotchiRepository(private val context: Context) {
                 age = prefs[AGE] ?: defaultState.age,
                 weight = prefs[WEIGHT] ?: defaultState.weight,
                 hunger = prefs[HUNGER] ?: defaultState.hunger,
+                hungerDecayCounter = prefs[HUNGER_DECAY] ?: defaultState.hungerDecayCounter,
                 happiness = prefs[HAPPINESS] ?: defaultState.happiness,
+                happinessDecayCounter = prefs[HAPPINESS_DECAY] ?: defaultState.happinessDecayCounter,
                 discipline = prefs[DISCIPLINE] ?: defaultState.discipline,
                 light = prefs[LIGHT] ?: defaultState.light,
                 medicineTaken = prefs[MEDICINE_TAKEN] ?: defaultState.medicineTaken,
@@ -63,7 +67,9 @@ class TamagotchiRepository(private val context: Context) {
             updated[AGE] = current.age
             updated[WEIGHT] = current.weight
             updated[HUNGER] = current.hunger
+            updated[HUNGER_DECAY] = current.hungerDecayCounter
             updated[HAPPINESS] = current.happiness
+            updated[HAPPINESS_DECAY] = current.happinessDecayCounter
             updated[DISCIPLINE] = current.discipline
             updated[LIGHT] = current.light
             updated[MEDICINE_TAKEN] = current.medicineTaken

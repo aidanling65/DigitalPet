@@ -14,11 +14,12 @@ class HungerDecayWork(
 
     override suspend fun doWork(): Result {
         var state = repository.getState()
-        sinceLast = (sinceLast + 1) % 3
+        sinceLast = (state.hungerDecayCounter + 1) % 3
 
         state = state.copy(
             physicalMistakes = if (state.hunger == 0) state.physicalMistakes + 1 else state.physicalMistakes,
-            hunger = if (sinceLast == 0 && state.hunger > 0) state.hunger - 1 else state.hunger
+            hunger = if (sinceLast == 0 && state.hunger > 0) state.hunger - 1 else state.hunger,
+            hungerDecayCounter = sinceLast
         )
 
         repository.saveState(state)

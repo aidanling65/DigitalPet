@@ -9,7 +9,11 @@ data class TamagotchiState(
     val age: Int = 0,
 
     val hunger: Int = 0,
+    val hungerDecayCounter: Int = 0,
+
     val happiness: Int = 0,
+    val happinessDecayCounter: Int = 0,
+
     val discipline: Int = 0,
 
     val sleeping: Boolean = false,
