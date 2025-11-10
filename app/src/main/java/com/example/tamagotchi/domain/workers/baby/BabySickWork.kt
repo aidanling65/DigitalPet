@@ -4,8 +4,9 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.tamagotchi.data.repository.TamagotchiRepository
+import com.example.tamagotchi.utils.showNotification
 
-class SickWork(
+class BabySickWork(
     appContext: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams){
@@ -16,6 +17,7 @@ class SickWork(
         val updatedState = currentState.copy(
             sick = true
         )
+        showNotification(applicationContext, "You Tamagotchi is sick!")
         repository.saveState(updatedState)
 
         return Result.success()

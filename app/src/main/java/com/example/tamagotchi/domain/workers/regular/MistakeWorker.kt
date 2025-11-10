@@ -22,23 +22,22 @@ class MistakeWork(
         val mistakeType = inputData.getString("mistakeType") ?: "physical"
 
         val current = repository.getState()
-        var updated = current
 
         val statValue = when(statName){
             "hunger" -> current.hunger
             "happiness" -> current.happiness
             "poop" -> if(current.poop) 0 else 1
-            "sick" -> if(current.sick) 0 else 1
             "sleep" -> if(current.sleeping && current.light) 0 else 1
             "misbehaving" -> if(current.misbehaving) 0 else 1
             else -> 0
         }
 
         if(statValue == 0){
-            updated = when(mistakeType){
+            val updated = when(mistakeType){
                 "physical" ->
                     current.copy(
-                        physicalMistakes = current.physicalMistakes + 1
+                        physicalMistakes = current.physicalMistakes + 1,
+                        sick = if(statName == "poop") true else current.sick
                     )
                 "mental" ->
                     current.copy(

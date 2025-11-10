@@ -4,8 +4,9 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.tamagotchi.data.repository.TamagotchiRepository
+import com.example.tamagotchi.utils.showNotification
 
-class PoopWork(
+class BabyPoopWork(
     appContext: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
@@ -17,6 +18,7 @@ class PoopWork(
             poop = true
         )
         repository.saveState(updatedState)
+        showNotification(applicationContext, "You Tamagotchi has pooped!")
 
         return Result.success()
     }

@@ -4,9 +4,10 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.tamagotchi.data.repository.TamagotchiRepository
+import com.example.tamagotchi.utils.showNotification
 import kotlinx.coroutines.delay
 
-class SleepWork(
+class BabySleepWork(
     appContext: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
@@ -19,12 +20,14 @@ class SleepWork(
             sleeping = true
         )
         repository.saveState(updatedState)
+        showNotification(applicationContext, "You Tamagotchi is sleeping")
 
         delay(delay)
         currentState = repository.getState()
         updatedState = currentState.copy(
             sleeping = false,
-            age = currentState.age + 1
+            age = currentState.age + 1,
+            light = true,
         )
         repository.saveState(updatedState)
 

@@ -12,7 +12,8 @@ enum class AgeStage(
     val bedTime: LocalTime?,
     val wakeTime: LocalTime?,
     val stageLength: Duration?,
-    val evolve: ((TamagotchiState) -> TamagotchiState)?
+    val evolve: ((TamagotchiState) -> TamagotchiState)?,
+    val misbehaviorChances: Float,
 ) {
     EGG(
         minimumWeight = 0,
@@ -20,7 +21,8 @@ enum class AgeStage(
         wakeTime = null,
         //stageLength = Duration.ofMinutes(5),
         stageLength = Duration.ofSeconds(10),
-        evolve = ::eggBabyEvolve
+        evolve = ::eggBabyEvolve,
+        misbehaviorChances = 0f,
     ),
     BABY(
         minimumWeight = 5,
@@ -28,7 +30,8 @@ enum class AgeStage(
         wakeTime = null,
         stageLength = Duration.ofMinutes(65),
         //stageLength = Duration.ofSeconds(60),
-        evolve = ::babyChildEvolve
+        evolve = ::babyChildEvolve,
+        misbehaviorChances = 0f,
     ),
     CHILD(
         minimumWeight = 10,
@@ -37,7 +40,9 @@ enum class AgeStage(
         stageLength = Duration.ofHours(2),
         //stageLength = Duration.ofHours(24),
         //stageLength = Duration.ofSeconds(10),
-        evolve = ::childTeenEvolve
+        evolve = ::childTeenEvolve,
+        misbehaviorChances = 0.125f
+
     ),
     TEEN(
         minimumWeight = 20,
@@ -46,20 +51,23 @@ enum class AgeStage(
         stageLength = Duration.ofHours(2),
         //stageLength = Duration.ofHours(72),
         //stageLength = Duration.ofSeconds(10),
-        evolve = ::teenAdultEvolve
+        evolve = ::teenAdultEvolve,
+        misbehaviorChances = 0.2f
     ),
     ADULT(
         minimumWeight = 30,
         bedTime = LocalTime.of(22, 0),
         wakeTime = LocalTime.of(9, 0),
         stageLength = null,
-        evolve = null
+        evolve = null,
+        misbehaviorChances = 0.03f
     ),
     DEAD(
         minimumWeight = 0,
         bedTime = null,
         wakeTime = null,
         stageLength = null,
-        evolve = null
+        evolve = null,
+        misbehaviorChances = 0f
     );
 }
