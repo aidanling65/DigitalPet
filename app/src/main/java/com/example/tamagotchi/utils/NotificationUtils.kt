@@ -17,9 +17,7 @@ import com.example.tamagotchi.R
 @SuppressLint("MissingPermission")
 fun showNotification(context:Context, text: String) {
 
-    val intent = Intent(context, MainActivity::class.java).apply {
-        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-    }
+    val intent = Intent(context, MainActivity::class.java)
     val pendingIntentFlag = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
         PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
     } else {
