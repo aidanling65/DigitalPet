@@ -39,7 +39,7 @@ class BabyHungerHappinessWork(
         }
         createSingleWorker<BabyHungerHappinessWork>(
             applicationContext,
-            Duration.ofMinutes(30),
+            Duration.ofMinutes(3),
             "hunger_happiness",
             ExistingWorkPolicy.REPLACE,
         )

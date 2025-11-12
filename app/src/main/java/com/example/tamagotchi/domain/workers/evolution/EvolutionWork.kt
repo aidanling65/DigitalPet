@@ -2,7 +2,6 @@ package com.example.tamagotchi.domain.workers.evolution
 
 import android.content.Context
 import android.util.Log
-import androidx.compose.ui.unit.plus
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
@@ -29,7 +28,7 @@ class EvolutionWork(
                 } else {
                     Duration.between(currentTime, LocalTime.MAX)
                         .plus(Duration.between(LocalTime.MIN, wakeTime))
-                }
+                }.plus(Duration.ofMinutes(10))
                 Log.d("EvolutionWork", "Sleeping. Rescheduling evolution in ${durationUntilWake.seconds} seconds.")
                 createSingleWorker<EvolutionWork>(
                     applicationContext,
@@ -40,9 +39,13 @@ class EvolutionWork(
                 return Result.success()
             }
         }
-        val updatedState = currentState.ageStage.evolve?.let { it(currentState) }
-        Log.d("EvolutionWork", updatedState?.animations?.name ?: "")
-        repository.saveState(updatedState ?: currentState)
+        val evolutionFunction = currentState.ageStage.evolve
+
+        if(evolutionFunction != null) {
+            val updatedState = evolutionFunction(currentState)
+            Log.d("EvolutionWork", updatedState.animations.name ?: "")
+            repository.saveState(updatedState)
+        }
 
         return Result.success()
     }

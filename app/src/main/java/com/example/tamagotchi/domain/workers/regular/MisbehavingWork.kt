@@ -6,6 +6,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
 import com.example.tamagotchi.data.repository.TamagotchiRepository
 import com.example.tamagotchi.domain.workers.createSingleWorker
+import com.example.tamagotchi.domain.workers.mistakes.DisciplineMistakeWork
 import com.example.tamagotchi.utils.showNotification
 import java.time.Duration
 import kotlin.random.Random
@@ -29,7 +30,7 @@ class MisbehavingWork(
                 misbehaving = true
             )
 
-            createSingleWorker<DisciplineCheckWork>(
+            createSingleWorker<DisciplineMistakeWork>(
                 applicationContext,
                 Duration.ofMinutes(15),
                 "discipline_check",

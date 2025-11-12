@@ -6,6 +6,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
 import com.example.tamagotchi.data.repository.TamagotchiRepository
 import com.example.tamagotchi.domain.workers.createSingleWorker
+import com.example.tamagotchi.domain.workers.mistakes.SleepMistakeWork
 import com.example.tamagotchi.utils.showNotification
 import java.time.Duration
 import java.time.LocalTime
@@ -21,17 +22,9 @@ class SleepWork(
         var state = repository.getState()
         val currentTime = LocalTime.now(ZoneId.systemDefault())
         val sleeping = currentTime.isAfter(
-            state.ageStage.bedTime ?: LocalTime.of(
-                23,
-                59,
-                59
-            )
+            state.ageStage.bedTime ?: LocalTime.MAX
         ) || currentTime.isBefore(
-            state.ageStage.wakeTime ?: LocalTime.of(
-                0,
-                0,
-                0
-            )
+            state.ageStage.wakeTime ?: LocalTime.MIN
         )
 
         if(!state.sleeping && sleeping){

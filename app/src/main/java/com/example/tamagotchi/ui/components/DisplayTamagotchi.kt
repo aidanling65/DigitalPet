@@ -63,8 +63,8 @@ fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifi
             )
             .background(
                 color = if (
-                    currentState.currentAnimation == currentState.animations.lights_out_awake ||
-                    currentState.currentAnimation == currentState.animations.lights_out_sleep
+                    currentState.currentAnimation == currentState.animations.lightsOutAwake ||
+                    currentState.currentAnimation == currentState.animations.lightsOutSleep
                 ) colorResource(R.color.black)
                 else colorResource(R.color.lcd),
                 shape = RoundedCornerShape(48.dp)

@@ -8,9 +8,12 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.ListenableWorker
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.example.tamagotchi.data.model.TamagotchiState
 import com.example.tamagotchi.domain.workers.evolution.EvolutionWork
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.time.Duration
 
 fun scheduleEvolutionWork(context: Context, state: TamagotchiState){
@@ -62,4 +65,21 @@ inline fun <reified T: ListenableWorker> createPeriodicWorker(
         policy,
         periodicWorkRequest
     )
+}
+
+suspend fun isWorkScheduled(context: Context, tag: String) : Boolean {
+    val workManager = WorkManager.getInstance(context)
+
+    return withContext(Dispatchers.IO){
+        try {
+            val workInfos = workManager.getWorkInfosForUniqueWork(tag).get()
+
+            workInfos?.any {
+                it.state == WorkInfo.State.ENQUEUED || it.state == WorkInfo.State.RUNNING
+            } ?: false
+        } catch (e: Exception){
+            e.printStackTrace()
+            false
+        }
+    }
 }

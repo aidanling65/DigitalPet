@@ -6,6 +6,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
 import com.example.tamagotchi.data.repository.TamagotchiRepository
 import com.example.tamagotchi.domain.workers.createSingleWorker
+import com.example.tamagotchi.domain.workers.mistakes.PoopSickWork
 import com.example.tamagotchi.utils.showNotification
 import kotlin.random.Random
 import java.time.Duration
@@ -30,10 +31,10 @@ class PoopWork(
             )
             repository.saveState(state)
 
-            createSingleWorker<SickWork>(
+            createSingleWorker<PoopSickWork>(
                 applicationContext,
                 Duration.ofMinutes(30),
-                "sick",
+                "poop_sick",
                 ExistingWorkPolicy.REPLACE
             )
         }

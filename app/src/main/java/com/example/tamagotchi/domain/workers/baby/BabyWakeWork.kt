@@ -1,23 +1,26 @@
-package com.example.tamagotchi.domain.workers.regular
+package com.example.tamagotchi.domain.workers.baby
 
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.tamagotchi.data.repository.TamagotchiRepository
+import com.example.tamagotchi.utils.showNotification
+import kotlinx.coroutines.delay
 
-class SickMistakeWork(
+class BabyWakeWork(
     appContext: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
     private val repository = TamagotchiRepository(appContext)
 
     override suspend fun doWork(): Result {
-        var state = repository.getState()
-        state = state.copy(
-            physicalMistakes = if(state.sick) state.physicalMistakes + 1 else state.physicalMistakes
+        val currentState = repository.getState()
+        val updatedState = currentState.copy(
+            sleeping = false,
+            age = currentState.age + 1,
+            light = true,
         )
-
-        repository.saveState(state)
+        repository.saveState(updatedState)
 
         return Result.success()
     }

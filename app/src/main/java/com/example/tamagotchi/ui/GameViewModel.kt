@@ -2,7 +2,6 @@ package com.example.tamagotchi.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.example.tamagotchi.MyApp
 import com.example.tamagotchi.data.model.AgeStage
@@ -11,14 +10,13 @@ import com.example.tamagotchi.data.model.MAX_HUNGER
 import com.example.tamagotchi.data.model.MAX_WEIGHT
 import com.example.tamagotchi.data.repository.TamagotchiRepository
 import com.example.tamagotchi.data.model.TamagotchiState
+import com.example.tamagotchi.domain.workers.isWorkScheduled
 import com.example.tamagotchi.domain.workers.scheduleEvolutionWork
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() {
     private val _tamagotchiState = MutableStateFlow(TamagotchiState())
@@ -33,21 +31,6 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
                 _tamagotchiState.value = state
             }
         }
-
-        val workManager = WorkManager.getInstance(MyApp.instance)
-        viewModelScope.launch {
-            val workInfos = withContext(Dispatchers.IO) {
-                workManager.getWorkInfosByTag("evolve").get()
-            }
-
-            val isEvolveWorkRunning = workInfos.any { workInfo ->
-                workInfo.state == WorkInfo.State.RUNNING || workInfo.state == WorkInfo.State.ENQUEUED
-            }
-
-            if (!isEvolveWorkRunning) {
-                scheduleEvolutionWork(MyApp.instance, _tamagotchiState.value)
-            }
-        }
     }
 
     private fun saveState() {
@@ -56,7 +39,7 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
         }
     }
 
-    private fun canInteract(): Boolean{
+    private fun canInteract(): Boolean {
         val current = _tamagotchiState.value
         return current.ageStage != AgeStage.EGG && current.ageStage != AgeStage.DEAD && !current.sleeping
     }
@@ -84,14 +67,14 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
 
     fun play() {
         val current = tamagotchiState.value
-        if(!canInteract())
+        if (!canInteract())
             return
 
         if (current.happiness < MAX_HAPPINESS) {
-            _tamagotchiState.update{
+            _tamagotchiState.update {
                 it.copy(
                     happiness = current.happiness.inc(),
-                    weight = if(current.weight > current.ageStage.minimumWeight) current.weight - 1 else current.weight
+                    weight = if (current.weight > current.ageStage.minimumWeight) current.weight - 1 else current.weight
                 )
             }
             saveState()
@@ -99,12 +82,12 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
     }
 
     fun clean() {
-        if(!canInteract())
+        if (!canInteract())
             return
 
         _tamagotchiState.update {
             it.copy(
-                poop=false
+                poop = false
             )
         }
         saveState()
@@ -112,7 +95,7 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
 
     fun heal() {
         val current = tamagotchiState.value
-        if(!canInteract())
+        if (!canInteract())
             return
 
         if (current.sick) {
@@ -123,8 +106,7 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
                         medicineTaken = false
                     )
                 }
-            }
-            else{
+            } else {
                 _tamagotchiState.update {
                     it.copy(
                         medicineTaken = true
@@ -150,7 +132,7 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
             return
 
         if (current.misbehaving) {
-            _tamagotchiState.update{
+            _tamagotchiState.update {
                 it.copy(
                     discipline = if (current.discipline < 4) current.discipline.inc() else current.discipline,
                     misbehaving = false
@@ -158,7 +140,7 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
             }
             saveState()
         } else if (current.happiness > 0) {
-            _tamagotchiState.update{
+            _tamagotchiState.update {
                 it.copy(
                     happiness = current.happiness.dec()
                 )
@@ -176,10 +158,12 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
     }
 
     fun confirmReset() {
-        _tamagotchiState.update { TamagotchiState() }
-        saveState()
-
         WorkManager.Companion.getInstance(MyApp.instance).cancelAllWork()
+
+        val resetState = TamagotchiState()
+
+        _tamagotchiState.value = resetState
+        saveState()
 
         scheduleEvolutionWork(MyApp.instance, _tamagotchiState.value)
 

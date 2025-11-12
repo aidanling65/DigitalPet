@@ -7,10 +7,12 @@ import com.example.tamagotchi.data.model.AgeStage
 import com.example.tamagotchi.data.model.EvolutionAnimations
 import com.example.tamagotchi.data.model.TamagotchiState
 import com.example.tamagotchi.domain.workers.createPeriodicWorker
+import com.example.tamagotchi.domain.workers.regular.DeathWork
 import com.example.tamagotchi.domain.workers.regular.HappinessDecayWork
 import com.example.tamagotchi.domain.workers.regular.HungerDecayWork
 import com.example.tamagotchi.domain.workers.regular.MisbehavingWork
 import com.example.tamagotchi.domain.workers.regular.PoopWork
+import com.example.tamagotchi.domain.workers.regular.SickWork
 import com.example.tamagotchi.domain.workers.regular.SleepWork
 import com.example.tamagotchi.domain.workers.scheduleEvolutionWork
 import com.example.tamagotchi.utils.showNotification
@@ -19,17 +21,7 @@ import java.time.Duration
 fun babyChildEvolve(currentState: TamagotchiState): TamagotchiState {
     showNotification(MyApp.instance, "Your Tamagotchi has evolved!")
 
-    /*createPeriodicWorker<BackgroundWork>(
-        MyApp.instance,
-        Duration.ofMinutes(15),
-        Duration.ofMinutes(15),
-        "passive_tasks",
-        ExistingPeriodicWorkPolicy.REPLACE
-    )*/
-
-    WorkManager.getInstance(MyApp.instance).cancelAllWorkByTag("sick")
     WorkManager.getInstance(MyApp.instance).cancelAllWorkByTag("hunger_happiness")
-
 
     createPeriodicWorker<PoopWork>(
         MyApp.instance,
@@ -41,14 +33,14 @@ fun babyChildEvolve(currentState: TamagotchiState): TamagotchiState {
     createPeriodicWorker<HappinessDecayWork>(
         MyApp.instance,
         Duration.ofMinutes(15),
-        Duration.ofMinutes(15),
+        Duration.ofMinutes(60),
         "happiness",
         ExistingPeriodicWorkPolicy.REPLACE
     )
     createPeriodicWorker<HungerDecayWork>(
         MyApp.instance,
         Duration.ofMinutes(15),
-        Duration.ofMinutes(15),
+        Duration.ofMinutes(45),
         "hunger",
         ExistingPeriodicWorkPolicy.REPLACE
     )
@@ -64,6 +56,21 @@ fun babyChildEvolve(currentState: TamagotchiState): TamagotchiState {
         Duration.ofMinutes(15),
         Duration.ofMinutes(15),
         "misbehaving",
+        ExistingPeriodicWorkPolicy.REPLACE
+    )
+    createPeriodicWorker<SickWork>(
+        MyApp.instance,
+        Duration.ofMinutes(15),
+        Duration.ofMinutes(15),
+        "sick",
+        ExistingPeriodicWorkPolicy.REPLACE
+    )
+
+    createPeriodicWorker<DeathWork>(
+        MyApp.instance,
+        Duration.ofMinutes(15),
+        Duration.ofMinutes(15),
+        "death",
         ExistingPeriodicWorkPolicy.REPLACE
     )
 
