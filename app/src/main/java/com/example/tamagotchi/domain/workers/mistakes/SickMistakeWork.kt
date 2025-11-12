@@ -21,7 +21,7 @@ class SickMistakeWork(
         if(state.sick) {
             if(Random.Default.nextFloat() < 0.1)
             {
-                state = death(state)
+                state = death(applicationContext,state)
             }
             else
             {

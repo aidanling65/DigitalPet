@@ -1,6 +1,6 @@
 package com.example.tamagotchi.domain.workers.evolution
 
-import com.example.tamagotchi.MyApp
+import android.content.Context
 import com.example.tamagotchi.data.model.AgeStage
 import com.example.tamagotchi.data.model.EvolutionAnimations
 import com.example.tamagotchi.data.model.MAX_DISCIPLINE
@@ -8,7 +8,7 @@ import com.example.tamagotchi.data.model.TamagotchiState
 import com.example.tamagotchi.domain.workers.scheduleEvolutionWork
 import com.example.tamagotchi.utils.showNotification
 
-fun teenAdultEvolve(currentState: TamagotchiState): TamagotchiState {
+fun teenAdultEvolve(context: Context, currentState: TamagotchiState): TamagotchiState {
     val discipline = currentState.discipline
     val mistakes = currentState.mentalMistakes + currentState.physicalMistakes
 
@@ -31,13 +31,12 @@ fun teenAdultEvolve(currentState: TamagotchiState): TamagotchiState {
         }
     }
 
-    showNotification(MyApp.instance, "Your Tamagotchi has evolved!")
+    showNotification(context, "Your Tamagotchi has evolved!")
     val updatedState = baseEvolve(currentState).copy(
         ageStage = AgeStage.ADULT,
         weight = AgeStage.ADULT.minimumWeight,
         animations = nextAnimation
     )
-
-    scheduleEvolutionWork(MyApp.instance, updatedState)
+    scheduleEvolutionWork(context,updatedState)
     return updatedState
 }

@@ -5,8 +5,10 @@ import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
+import com.example.tamagotchi.data.model.AgeStage
 import com.example.tamagotchi.data.repository.TamagotchiRepository
 import com.example.tamagotchi.domain.workers.createSingleWorker
+import com.example.tamagotchi.domain.workers.scheduleEvolutionWork
 import java.time.Duration
 import java.time.LocalTime
 import java.time.ZoneId
@@ -15,7 +17,7 @@ class EvolutionWork(
     appContext: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
-    private val repository = TamagotchiRepository(appContext)
+    private val repository = TamagotchiRepository(applicationContext)
 
     override suspend fun doWork(): Result{
         val currentState = repository.getState()
@@ -29,6 +31,7 @@ class EvolutionWork(
                     Duration.between(currentTime, LocalTime.MAX)
                         .plus(Duration.between(LocalTime.MIN, wakeTime))
                 }.plus(Duration.ofMinutes(10))
+
                 Log.d("EvolutionWork", "Sleeping. Rescheduling evolution in ${durationUntilWake.seconds} seconds.")
                 createSingleWorker<EvolutionWork>(
                     applicationContext,
@@ -42,8 +45,8 @@ class EvolutionWork(
         val evolutionFunction = currentState.ageStage.evolve
 
         if(evolutionFunction != null) {
-            val updatedState = evolutionFunction(currentState)
-            Log.d("EvolutionWork", updatedState.animations.name ?: "")
+            val updatedState = evolutionFunction(applicationContext, currentState)
+            Log.d("EvolutionWork", updatedState.animations.name)
             repository.saveState(updatedState)
         }
 

@@ -2,7 +2,6 @@ package com.example.tamagotchi.domain.workers.evolution
 
 import com.example.tamagotchi.data.model.TamagotchiState
 
-
 fun baseEvolve(currentState: TamagotchiState): TamagotchiState {
     return  currentState.copy(
         hunger = 0,
@@ -11,6 +10,7 @@ fun baseEvolve(currentState: TamagotchiState): TamagotchiState {
         mentalMistakes = 0,
         physicalMistakes = 0,
         poop = false,
-        sick = false
+        sick = false,
+        misbehaving = false
     )
 }

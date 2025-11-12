@@ -21,7 +21,7 @@ fun scheduleEvolutionWork(context: Context, state: TamagotchiState){
     if(delay == Duration.ZERO){
         return
     }
-    Log.d("EvolutionWork", "next evolution scheduled for in ${delay.seconds}")
+    Log.d("EvolutionWork", "next evolution scheduled for in ${delay.seconds} seconds")
     createSingleWorker<EvolutionWork>(context, delay, "evolve", ExistingWorkPolicy.REPLACE)
 }
 

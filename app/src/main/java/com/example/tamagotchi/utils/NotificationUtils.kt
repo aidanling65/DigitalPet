@@ -1,5 +1,6 @@
 package com.example.tamagotchi.utils
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -7,12 +8,14 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.example.tamagotchi.CHANNEL_ID
 import com.example.tamagotchi.MainActivity
+import com.example.tamagotchi.NOTIFICATION_PERMISSION_CODE
 import com.example.tamagotchi.R
 
+const val CHANNEL_ID = "Tamagotchi"
 
 @SuppressLint("MissingPermission")
 fun showNotification(context:Context, text: String) {

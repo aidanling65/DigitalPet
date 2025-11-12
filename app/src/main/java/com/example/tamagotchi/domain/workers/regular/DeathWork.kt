@@ -15,9 +15,9 @@ class DeathWork(
     override suspend fun doWork(): Result {
         var state = repository.getState()
         if(state.physicalMistakes + state.mentalMistakes >= 5) {
-            state = death(state)
+            val updatedState = death(applicationContext, state)
 
-            repository.saveState(state)
+            repository.saveState(updatedState)
         }
 
         return Result.success()

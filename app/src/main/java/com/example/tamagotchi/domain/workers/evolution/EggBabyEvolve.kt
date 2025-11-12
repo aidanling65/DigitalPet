@@ -1,7 +1,7 @@
 package com.example.tamagotchi.domain.workers.evolution
 
+import android.content.Context
 import androidx.work.ExistingWorkPolicy
-import com.example.tamagotchi.MyApp
 import com.example.tamagotchi.data.model.AgeStage
 import com.example.tamagotchi.data.model.EvolutionAnimations
 import com.example.tamagotchi.data.model.TamagotchiState
@@ -14,29 +14,29 @@ import com.example.tamagotchi.domain.workers.scheduleEvolutionWork
 import com.example.tamagotchi.utils.showNotification
 import java.time.Duration
 
-fun eggBabyEvolve(currentState: TamagotchiState): TamagotchiState {
-    showNotification(MyApp.instance, "Your Tamagotchi has hatched!")
+fun eggBabyEvolve(context: Context, currentState: TamagotchiState): TamagotchiState {
+    showNotification(context, "Your Tamagotchi has hatched!")
 
     createSingleWorker<BabyHungerHappinessWork>(
-        MyApp.instance,
+        context,
         Duration.ofMinutes(3),
         "hunger_happiness",
         ExistingWorkPolicy.REPLACE
     )
     createSingleWorker<BabyPoopWork>(
-        MyApp.instance,
+        context,
         Duration.ofMinutes(15),
         "poop",
         ExistingWorkPolicy.REPLACE
     )
     createSingleWorker<BabySickWork>(
-        MyApp.instance,
+        context,
         Duration.ofMinutes(30),
         "sick",
         ExistingWorkPolicy.REPLACE
     )
     createSingleWorker<BabySleepWork>(
-        MyApp.instance,
+        context,
         Duration.ofMinutes(40),
         "sleep",
         ExistingWorkPolicy.REPLACE
@@ -47,7 +47,6 @@ fun eggBabyEvolve(currentState: TamagotchiState): TamagotchiState {
         weight = AgeStage.BABY.minimumWeight,
         animations = EvolutionAnimations.BABY,
     )
-
-    scheduleEvolutionWork(MyApp.instance, updatedState)
+    scheduleEvolutionWork(context,updatedState)
     return updatedState
 }

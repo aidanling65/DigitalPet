@@ -6,13 +6,13 @@ const val MAX_HAPPINESS = 4
 const val MAX_DISCIPLINE = 5
 
 data class TamagotchiState(
+
+    val initial: Boolean = true,
+
     val age: Int = 0,
 
     val hunger: Int = 0,
-    val hungerDecayCounter: Int = 0,
-
     val happiness: Int = 0,
-    val happinessDecayCounter: Int = 0,
 
     val discipline: Int = 0,
 

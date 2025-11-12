@@ -1,5 +1,6 @@
 package com.example.tamagotchi.data.model
 
+import android.content.Context
 import com.example.tamagotchi.domain.workers.evolution.babyChildEvolve
 import com.example.tamagotchi.domain.workers.evolution.childTeenEvolve
 import com.example.tamagotchi.domain.workers.evolution.eggBabyEvolve
@@ -12,7 +13,7 @@ enum class AgeStage(
     val bedTime: LocalTime?,
     val wakeTime: LocalTime?,
     val stageLength: Duration?,
-    val evolve: ((TamagotchiState) -> TamagotchiState)?,
+    val evolve: ((Context, TamagotchiState) -> TamagotchiState)?,
     val misbehaviorChances: Float,
 ) {
     EGG(

@@ -1,24 +1,25 @@
 package com.example.tamagotchi.ui
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
-import com.example.tamagotchi.MyApp
 import com.example.tamagotchi.data.model.AgeStage
 import com.example.tamagotchi.data.model.MAX_HAPPINESS
 import com.example.tamagotchi.data.model.MAX_HUNGER
 import com.example.tamagotchi.data.model.MAX_WEIGHT
-import com.example.tamagotchi.data.repository.TamagotchiRepository
 import com.example.tamagotchi.data.model.TamagotchiState
-import com.example.tamagotchi.domain.workers.isWorkScheduled
+import com.example.tamagotchi.data.repository.TamagotchiRepository
 import com.example.tamagotchi.domain.workers.scheduleEvolutionWork
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() {
+class GameViewModel(private val context: Context, private val repository: TamagotchiRepository) :
+    ViewModel() {
     private val _tamagotchiState = MutableStateFlow(TamagotchiState())
     val tamagotchiState: StateFlow<TamagotchiState> = _tamagotchiState.asStateFlow()
 
@@ -27,10 +28,16 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
 
     init {
         viewModelScope.launch {
+            val initialState = repository.tamagotchiStateFlow.first()
+            if (initialState.initial){
+                confirmReset()
+            }
+
             repository.tamagotchiStateFlow.collect { state ->
                 _tamagotchiState.value = state
             }
         }
+
     }
 
     private fun saveState() {
@@ -158,14 +165,14 @@ class GameViewModel(private val repository: TamagotchiRepository) : ViewModel() 
     }
 
     fun confirmReset() {
-        WorkManager.Companion.getInstance(MyApp.instance).cancelAllWork()
+        WorkManager.Companion.getInstance(context).cancelAllWork()
 
-        val resetState = TamagotchiState()
+        val resetState = TamagotchiState(initial = false)
 
         _tamagotchiState.value = resetState
         saveState()
 
-        scheduleEvolutionWork(MyApp.instance, _tamagotchiState.value)
+        scheduleEvolutionWork(context, _tamagotchiState.value)
 
         onDismissDialog()
     }
