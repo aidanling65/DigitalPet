@@ -38,7 +38,7 @@ enum class AgeStage(
         minimumWeight = 10,
         bedTime = LocalTime.of(20, 0),
         wakeTime = LocalTime.of(9, 0),
-        stageLength = Duration.ofHours(2),
+        stageLength = Duration.ofHours(1),
         //stageLength = Duration.ofHours(24),
         //stageLength = Duration.ofSeconds(10),
         evolve = ::childTeenEvolve,

@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -159,21 +160,22 @@ fun StatusBars(
     modifier: Modifier = Modifier
 ) {
 
-    Column(
+    LazyColumn(
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 32.dp),
         horizontalAlignment = Alignment.Start,
     ) {
         val spacerModifier = Modifier.height(16.dp)
-        StatusBar(tamagotchiState.hunger, MAX_HUNGER, stringResource(R.string.hunger))
-        Spacer(modifier = spacerModifier)
-        StatusBar(tamagotchiState.discipline, MAX_DISCIPLINE, stringResource(R.string.discipline))
-        Spacer(modifier = spacerModifier)
-        StatusBar(tamagotchiState.happiness, MAX_HAPPINESS, stringResource(R.string.happiness))
-        Spacer(modifier = spacerModifier)
-
-        Row(
+        item{StatusBar(tamagotchiState.hunger, MAX_HUNGER, stringResource(R.string.hunger))}
+        item{Spacer(modifier = spacerModifier)}
+        item{StatusBar(tamagotchiState.discipline, MAX_DISCIPLINE, stringResource(R.string.discipline))}
+        item{Spacer(modifier = spacerModifier)}
+        item{StatusBar(tamagotchiState.happiness, MAX_HAPPINESS, stringResource(R.string.happiness))}
+        item{Spacer(modifier = spacerModifier)}
+        item{StatusBar(tamagotchiState.steps, 10_000, stringResource(R.string.steps) +": " +  tamagotchiState.steps.toString() )}
+        item{Spacer(modifier = spacerModifier)}
+        item{Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -232,6 +234,6 @@ fun StatusBars(
                     style = MaterialTheme.typography.bodySmall
                 )
             }
-        }
+        }}
     }
 }

@@ -11,11 +11,10 @@ import com.example.tamagotchi.data.model.MAX_WEIGHT
 import com.example.tamagotchi.data.model.TamagotchiState
 import com.example.tamagotchi.data.repository.TamagotchiRepository
 import com.example.tamagotchi.domain.workers.scheduleEvolutionWork
+import com.example.tamagotchi.utils.StepCounter
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class GameViewModel(private val context: Context, private val repository: TamagotchiRepository) :
@@ -28,26 +27,67 @@ class GameViewModel(private val context: Context, private val repository: Tamago
 
     init {
         viewModelScope.launch {
-            val initialState = repository.tamagotchiStateFlow.first()
-            if (initialState.initial){
-                confirmReset()
+            val initialState = repository.getState()
+            if(initialState.initial){
+                setupNewGame()
             }
-
             repository.tamagotchiStateFlow.collect { state ->
-                _tamagotchiState.value = state
+                if (tamagotchiState.value.resetSteps) {
+                    resetDailySteps()
+                } else{
+                    _tamagotchiState.value = state
+                }
             }
         }
 
     }
 
-    private fun saveState() {
+    private fun updateAndSave(transform: (currentState: TamagotchiState) -> TamagotchiState) {
         viewModelScope.launch {
-            repository.saveState(_tamagotchiState.value)
+            val currentState = repository.getState()
+            val newState = transform(currentState)
+            repository.saveState(newState)
         }
+    }
+
+    private var dailyStepBaseline: Int? = null
+    private val stepCounter = StepCounter(context) { steps ->
+        if (dailyStepBaseline == null) {
+            dailyStepBaseline = steps - tamagotchiState.value.steps
+        }
+        val dailySteps = steps - (dailyStepBaseline!!)
+        updateAndSave {
+            it.copy(
+                steps = dailySteps,
+            )
+        }
+    }
+
+    fun startStepCounter() {
+        stepCounter.startListening()
+    }
+
+    fun stopStepCounter() {
+        stepCounter.stopListening()
+    }
+
+    fun resetDailySteps() {
+        updateAndSave { currentState ->
+            currentState.copy(
+                steps = 0,
+                resetSteps = false
+            )
+        }
+        dailyStepBaseline = null
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        stopStepCounter()
     }
 
     private fun canInteract(): Boolean {
-        val current = _tamagotchiState.value
+        val current = tamagotchiState.value
         return current.ageStage != AgeStage.EGG && current.ageStage != AgeStage.DEAD && !current.sleeping
     }
 
@@ -62,13 +102,12 @@ class GameViewModel(private val context: Context, private val repository: Tamago
             if (current.weight < MAX_WEIGHT) {
                 updatedWeight++
             }
-            _tamagotchiState.update {
+            updateAndSave {
                 it.copy(
                     hunger = updatedHunger,
                     weight = updatedWeight
                 )
             }
-            saveState()
         }
     }
 
@@ -78,13 +117,12 @@ class GameViewModel(private val context: Context, private val repository: Tamago
             return
 
         if (current.happiness < MAX_HAPPINESS) {
-            _tamagotchiState.update {
+            updateAndSave {
                 it.copy(
                     happiness = current.happiness.inc(),
                     weight = if (current.weight > current.ageStage.minimumWeight) current.weight - 1 else current.weight
                 )
             }
-            saveState()
         }
     }
 
@@ -92,12 +130,11 @@ class GameViewModel(private val context: Context, private val repository: Tamago
         if (!canInteract())
             return
 
-        _tamagotchiState.update {
+        updateAndSave {
             it.copy(
                 poop = false
             )
         }
-        saveState()
     }
 
     fun heal() {
@@ -107,30 +144,30 @@ class GameViewModel(private val context: Context, private val repository: Tamago
 
         if (current.sick) {
             if (current.medicineTaken) {
-                _tamagotchiState.update {
+                updateAndSave {
                     it.copy(
                         sick = false,
                         medicineTaken = false
                     )
                 }
             } else {
-                _tamagotchiState.update {
+                updateAndSave {
                     it.copy(
                         medicineTaken = true
                     )
                 }
             }
-            saveState()
         }
     }
 
     fun light() {
         val current = tamagotchiState.value
 
-        _tamagotchiState.update {
-            it.copy(light = !current.light)
+        updateAndSave {
+            it.copy(
+                light = !current.light
+            )
         }
-        saveState()
     }
 
     fun discipline() {
@@ -139,20 +176,18 @@ class GameViewModel(private val context: Context, private val repository: Tamago
             return
 
         if (current.misbehaving) {
-            _tamagotchiState.update {
+            updateAndSave {
                 it.copy(
                     discipline = if (current.discipline < 4) current.discipline.inc() else current.discipline,
                     misbehaving = false
                 )
             }
-            saveState()
         } else if (current.happiness > 0) {
-            _tamagotchiState.update {
+            updateAndSave {
                 it.copy(
                     happiness = current.happiness.dec()
                 )
             }
-            saveState()
         }
     }
 
@@ -165,15 +200,16 @@ class GameViewModel(private val context: Context, private val repository: Tamago
     }
 
     fun confirmReset() {
-        WorkManager.Companion.getInstance(context).cancelAllWork()
-
-        val resetState = TamagotchiState(initial = false)
-
-        _tamagotchiState.value = resetState
-        saveState()
-
-        scheduleEvolutionWork(context, _tamagotchiState.value)
-
+        setupNewGame()
         onDismissDialog()
+    }
+
+    fun setupNewGame() {
+        WorkManager.getInstance(context).cancelAllWork()
+        viewModelScope.launch {
+            val resetState = TamagotchiState(initial = false)
+            repository.saveState(resetState)
+            scheduleEvolutionWork(context, resetState)
+        }
     }
 }
