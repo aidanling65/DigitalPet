@@ -4,7 +4,6 @@ import android.content.Context
 import com.example.tamagotchi.data.model.AgeStage
 import com.example.tamagotchi.data.model.EvolutionAnimations
 import com.example.tamagotchi.data.model.TamagotchiState
-import com.example.tamagotchi.domain.workers.scheduleEvolutionWork
 import com.example.tamagotchi.utils.showNotification
 
 fun childTeenEvolve(context: Context, currentState: TamagotchiState): TamagotchiState {
@@ -16,6 +15,5 @@ fun childTeenEvolve(context: Context, currentState: TamagotchiState): Tamagotchi
         animations = if (currentState.physicalMistakes + currentState.mentalMistakes <= 1) EvolutionAnimations.TEEN_1 else EvolutionAnimations.TEEN_2,
     )
 
-    scheduleEvolutionWork(context,updatedState)
     return updatedState
 }

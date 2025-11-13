@@ -9,7 +9,6 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.example.tamagotchi.data.model.AgeStage
 import com.example.tamagotchi.data.model.EvolutionAnimations
 import com.example.tamagotchi.data.model.TamagotchiState
-import com.example.tamagotchi.utils.showNotification
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -25,6 +24,7 @@ class TamagotchiRepository(private val context: Context) {
     private val HAPPINESS = intPreferencesKey("happiness")
     private val STEPS = intPreferencesKey("steps")
     private val RESET_STEPS = booleanPreferencesKey("reset_steps")
+    private val DAILY_STEP_BASELINE = intPreferencesKey("daily_step_baseline")
     private val DISCIPLINE = intPreferencesKey("discipline")
     private val LIGHT = booleanPreferencesKey("light")
     private val MEDICINE_TAKEN = booleanPreferencesKey("medicineTaken")
@@ -48,6 +48,7 @@ class TamagotchiRepository(private val context: Context) {
                 happiness = prefs[HAPPINESS] ?: defaultState.happiness,
                 steps = prefs[STEPS] ?: defaultState.steps,
                 resetSteps = prefs[RESET_STEPS] ?: defaultState.resetSteps,
+                dailyStepBaseline = prefs[DAILY_STEP_BASELINE] ?: defaultState.dailyStepBaseline,
                 discipline = prefs[DISCIPLINE] ?: defaultState.discipline,
                 light = prefs[LIGHT] ?: defaultState.light,
                 medicineTaken = prefs[MEDICINE_TAKEN] ?: defaultState.medicineTaken,
@@ -74,6 +75,12 @@ class TamagotchiRepository(private val context: Context) {
             updated[HAPPINESS] = current.happiness
             updated[STEPS] = current.steps
             updated[RESET_STEPS] = current.resetSteps
+            val baseline = current.dailyStepBaseline
+            if(baseline != null) {
+                updated[DAILY_STEP_BASELINE] = baseline
+            } else{
+                updated.remove(DAILY_STEP_BASELINE)
+            }
             updated[DISCIPLINE] = current.discipline
             updated[LIGHT] = current.light
             updated[MEDICINE_TAKEN] = current.medicineTaken

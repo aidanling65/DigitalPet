@@ -50,16 +50,24 @@ class GameViewModel(private val context: Context, private val repository: Tamago
         }
     }
 
-    private var dailyStepBaseline: Int? = null
     private val stepCounter = StepCounter(context) { steps ->
-        if (dailyStepBaseline == null) {
-            dailyStepBaseline = steps - tamagotchiState.value.steps
-        }
-        val dailySteps = steps - (dailyStepBaseline!!)
-        updateAndSave {
-            it.copy(
-                steps = dailySteps,
-            )
+        val currentBaseline = tamagotchiState.value.dailyStepBaseline
+        if (currentBaseline == null) {
+            val newBaseline = steps - tamagotchiState.value.steps
+            val dailySteps = steps - newBaseline
+            updateAndSave {
+                it.copy(
+                    steps = dailySteps,
+                    dailyStepBaseline = newBaseline
+                )
+            }
+        }else {
+            val dailySteps = steps - currentBaseline
+            updateAndSave {
+                it.copy(
+                    steps = dailySteps,
+                )
+            }
         }
     }
 
@@ -75,10 +83,10 @@ class GameViewModel(private val context: Context, private val repository: Tamago
         updateAndSave { currentState ->
             currentState.copy(
                 steps = 0,
-                resetSteps = false
+                resetSteps = false,
+                dailyStepBaseline = null
             )
         }
-        dailyStepBaseline = null
     }
 
     override fun onCleared() {

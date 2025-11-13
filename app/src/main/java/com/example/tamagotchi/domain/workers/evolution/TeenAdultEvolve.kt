@@ -5,7 +5,6 @@ import com.example.tamagotchi.data.model.AgeStage
 import com.example.tamagotchi.data.model.EvolutionAnimations
 import com.example.tamagotchi.data.model.MAX_DISCIPLINE
 import com.example.tamagotchi.data.model.TamagotchiState
-import com.example.tamagotchi.domain.workers.scheduleEvolutionWork
 import com.example.tamagotchi.utils.showNotification
 
 fun teenAdultEvolve(context: Context, currentState: TamagotchiState): TamagotchiState {
@@ -37,6 +36,6 @@ fun teenAdultEvolve(context: Context, currentState: TamagotchiState): Tamagotchi
         weight = AgeStage.ADULT.minimumWeight,
         animations = nextAnimation
     )
-    scheduleEvolutionWork(context,updatedState)
+
     return updatedState
 }

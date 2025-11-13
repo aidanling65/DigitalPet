@@ -15,6 +15,7 @@ data class TamagotchiState(
     val happiness: Int = 0,
 
     val steps: Int = 0,
+    val dailyStepBaseline: Int? = null,
     val resetSteps: Boolean = false,
 
     val discipline: Int = 0,
