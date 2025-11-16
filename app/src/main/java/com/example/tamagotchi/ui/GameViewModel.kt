@@ -43,9 +43,7 @@ class GameViewModel(private val context: Context, private val repository: Tamago
 
     private fun updateAndSave(transform: (currentState: TamagotchiState) -> TamagotchiState) {
         viewModelScope.launch {
-            val currentState = repository.getState()
-            val newState = transform(currentState)
-            repository.saveState(newState)
+            repository.updateState(transform)
         }
     }
 

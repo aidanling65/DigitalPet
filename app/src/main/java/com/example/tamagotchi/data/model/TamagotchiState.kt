@@ -3,7 +3,7 @@ package com.example.tamagotchi.data.model
 const val MAX_HUNGER = 4
 const val MAX_WEIGHT = 99
 const val MAX_HAPPINESS = 4
-const val MAX_DISCIPLINE = 5
+const val MAX_DISCIPLINE = 4
 
 data class TamagotchiState(
 

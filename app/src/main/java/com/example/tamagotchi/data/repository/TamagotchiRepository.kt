@@ -70,34 +70,46 @@ class TamagotchiRepository(private val context: Context) {
 
         }
 
-    suspend fun saveState(current: TamagotchiState) {
+    suspend fun updateState(transform: (currentState: TamagotchiState) -> TamagotchiState) {
         saveMutex.withLock {
-            context.dataStore.edit { updated ->
-                updated[INITIAL] = current.initial
-                updated[AGE] = current.age
-                updated[WEIGHT] = current.weight
-                updated[HUNGER] = current.hunger
-                updated[HAPPINESS] = current.happiness
-                updated[STEPS] = current.steps
-                updated[RESET_STEPS] = current.resetSteps
-                val baseline = current.dailyStepBaseline
-                if (baseline != null) {
-                    updated[DAILY_STEP_BASELINE] = baseline
-                } else {
-                    updated.remove(DAILY_STEP_BASELINE)
-                }
-                updated[DISCIPLINE] = current.discipline
-                updated[LIGHT] = current.light
-                updated[MEDICINE_TAKEN] = current.medicineTaken
-                updated[SICK] = current.sick
-                updated[POOP] = current.poop
-                updated[MISBEHAVING] = current.misbehaving
-                updated[SLEEPING] = current.sleeping
-                updated[PHYSICAL_MISTAKES] = current.physicalMistakes
-                updated[MENTAL_MISTAKES] = current.mentalMistakes
-                updated[AGE_STAGE] = current.ageStage.name
-                updated[ANIMATIONS] = current.animations.name
+            val currentState = tamagotchiStateFlow.first()
+            val newState = transform(currentState)
+            saveStateInternal(newState)
+        }
+    }
+
+    suspend fun saveState(currentState: TamagotchiState) {
+        saveMutex.withLock {
+            saveStateInternal(currentState)
+        }
+    }
+
+    private suspend fun saveStateInternal(current: TamagotchiState) {
+        context.dataStore.edit { updated ->
+            updated[INITIAL] = current.initial
+            updated[AGE] = current.age
+            updated[WEIGHT] = current.weight
+            updated[HUNGER] = current.hunger
+            updated[HAPPINESS] = current.happiness
+            updated[STEPS] = current.steps
+            updated[RESET_STEPS] = current.resetSteps
+            val baseline = current.dailyStepBaseline
+            if (baseline != null) {
+                updated[DAILY_STEP_BASELINE] = baseline
+            } else {
+                updated.remove(DAILY_STEP_BASELINE)
             }
+            updated[DISCIPLINE] = current.discipline
+            updated[LIGHT] = current.light
+            updated[MEDICINE_TAKEN] = current.medicineTaken
+            updated[SICK] = current.sick
+            updated[POOP] = current.poop
+            updated[MISBEHAVING] = current.misbehaving
+            updated[SLEEPING] = current.sleeping
+            updated[PHYSICAL_MISTAKES] = current.physicalMistakes
+            updated[MENTAL_MISTAKES] = current.mentalMistakes
+            updated[AGE_STAGE] = current.ageStage.name
+            updated[ANIMATIONS] = current.animations.name
         }
     }
 

@@ -1,6 +1,7 @@
 package com.example.tamagotchi.domain.logic
 
 import com.example.tamagotchi.data.model.AgeStage
+import com.example.tamagotchi.data.model.MAX_DISCIPLINE
 import com.example.tamagotchi.data.model.MAX_HAPPINESS
 import com.example.tamagotchi.data.model.MAX_HUNGER
 import com.example.tamagotchi.data.model.MAX_WEIGHT
@@ -80,7 +81,7 @@ class GameLogicManager {
 
        return if (current.misbehaving) {
             current.copy(
-                discipline = if (current.discipline < 4) current.discipline.inc() else current.discipline,
+                discipline = if (current.discipline < MAX_DISCIPLINE) current.discipline.inc() else current.discipline,
                 misbehaving = false
             )
         } else if (current.happiness > 0) {
