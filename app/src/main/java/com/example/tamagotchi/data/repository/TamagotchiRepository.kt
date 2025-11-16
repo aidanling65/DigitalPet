@@ -12,6 +12,8 @@ import com.example.tamagotchi.data.model.TamagotchiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 val Context.dataStore by preferencesDataStore(name = "tamagotchi_prefs")
 
@@ -36,7 +38,9 @@ class TamagotchiRepository(private val context: Context) {
     private val ANIMATIONS = stringPreferencesKey("animations")
     private val MENTAL_MISTAKES = intPreferencesKey("mental_mistakes")
     private val PHYSICAL_MISTAKES = intPreferencesKey("physical_mistakes")
-    
+
+    private val saveMutex = Mutex()
+
     val tamagotchiStateFlow: Flow<TamagotchiState> = context.dataStore.data
         .map { prefs ->
             val defaultState = TamagotchiState()
@@ -67,31 +71,33 @@ class TamagotchiRepository(private val context: Context) {
         }
 
     suspend fun saveState(current: TamagotchiState) {
-        context.dataStore.edit { updated ->
-            updated[INITIAL] = current.initial
-            updated[AGE] = current.age
-            updated[WEIGHT] = current.weight
-            updated[HUNGER] = current.hunger
-            updated[HAPPINESS] = current.happiness
-            updated[STEPS] = current.steps
-            updated[RESET_STEPS] = current.resetSteps
-            val baseline = current.dailyStepBaseline
-            if(baseline != null) {
-                updated[DAILY_STEP_BASELINE] = baseline
-            } else{
-                updated.remove(DAILY_STEP_BASELINE)
+        saveMutex.withLock {
+            context.dataStore.edit { updated ->
+                updated[INITIAL] = current.initial
+                updated[AGE] = current.age
+                updated[WEIGHT] = current.weight
+                updated[HUNGER] = current.hunger
+                updated[HAPPINESS] = current.happiness
+                updated[STEPS] = current.steps
+                updated[RESET_STEPS] = current.resetSteps
+                val baseline = current.dailyStepBaseline
+                if (baseline != null) {
+                    updated[DAILY_STEP_BASELINE] = baseline
+                } else {
+                    updated.remove(DAILY_STEP_BASELINE)
+                }
+                updated[DISCIPLINE] = current.discipline
+                updated[LIGHT] = current.light
+                updated[MEDICINE_TAKEN] = current.medicineTaken
+                updated[SICK] = current.sick
+                updated[POOP] = current.poop
+                updated[MISBEHAVING] = current.misbehaving
+                updated[SLEEPING] = current.sleeping
+                updated[PHYSICAL_MISTAKES] = current.physicalMistakes
+                updated[MENTAL_MISTAKES] = current.mentalMistakes
+                updated[AGE_STAGE] = current.ageStage.name
+                updated[ANIMATIONS] = current.animations.name
             }
-            updated[DISCIPLINE] = current.discipline
-            updated[LIGHT] = current.light
-            updated[MEDICINE_TAKEN] = current.medicineTaken
-            updated[SICK] = current.sick
-            updated[POOP] = current.poop
-            updated[MISBEHAVING] = current.misbehaving
-            updated[SLEEPING] = current.sleeping
-            updated[PHYSICAL_MISTAKES] = current.physicalMistakes
-            updated[MENTAL_MISTAKES] = current.mentalMistakes
-            updated[AGE_STAGE] = current.ageStage.name
-            updated[ANIMATIONS] = current.animations.name
         }
     }
 
