@@ -41,7 +41,7 @@ fun StatusBars(
         item{Spacer(modifier = spacerModifier)}
         item{StatusBar(tamagotchiState.happiness, MAX_HAPPINESS, stringResource(R.string.happiness))}
         item{Spacer(modifier = spacerModifier)}
-        item{StatusBar(tamagotchiState.steps, 10_000, stringResource(R.string.steps) +": " +  tamagotchiState.steps.toString() )}
+        item{FitnessBar(tamagotchiState)}
         item{Spacer(modifier = spacerModifier)}
         item{Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -65,13 +65,6 @@ fun StatusBars(
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodySmall
                 )
-                Text(
-                    text = if (tamagotchiState.light) stringResource(R.string.lights_on) else stringResource(
-                        R.string.lights_out
-                    ),
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.bodySmall
-                )
             }
             Column()
             {
@@ -83,13 +76,6 @@ fun StatusBars(
                 Text(
                     text = if (tamagotchiState.poop) stringResource(R.string.dirty) else stringResource(
                         R.string.clean
-                    ),
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.bodySmall
-                )
-                Text(
-                    text = if (tamagotchiState.sleeping) stringResource(R.string.sleeping) else stringResource(
-                        R.string.awake
                     ),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodySmall

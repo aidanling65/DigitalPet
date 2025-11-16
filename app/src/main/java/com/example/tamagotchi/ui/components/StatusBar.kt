@@ -1,6 +1,8 @@
 package com.example.tamagotchi.ui.components
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.R
 
@@ -19,7 +22,9 @@ import com.example.tamagotchi.R
 fun StatusBar(
     progress: Int,
     maximum: Int,
-    label: String
+    label: String,
+    height: Dp = 24.dp,
+    modifier: Modifier = Modifier,
 ) {
     val progressBar: Float = progress.toFloat() / maximum
     val color = when {
@@ -42,23 +47,29 @@ fun StatusBar(
         }
     }
 
-    LinearProgressIndicator(
-        progress = { progressBar },
-        color = color,
-        trackColor = Color(0x00000000),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(24.dp)
-            .border(
-                width = 2.dp,
-                color = colorResource(R.color.black),
-                shape = RoundedCornerShape(16.dp)
-            )
-    )
-    Text(
-        text = label,
-        color = MaterialTheme.colorScheme.primary,
-        textAlign = TextAlign.Left,
-        style = MaterialTheme.typography.bodySmall
-    )
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        LinearProgressIndicator(
+            progress = { progressBar },
+            color = color,
+            trackColor = Color(0x00000000),
+            modifier = modifier
+                .fillMaxWidth()
+                .height(height)
+                .border(
+                    width = 2.dp,
+                    color = colorResource(R.color.black),
+                    shape = RoundedCornerShape(16.dp)
+                )
+        )
+        Text(
+            text = label,
+            color = MaterialTheme.colorScheme.primary,
+            textAlign = TextAlign.Left,
+            style = MaterialTheme.typography.bodySmall,
+            modifier = modifier
+        )
+    }
 }

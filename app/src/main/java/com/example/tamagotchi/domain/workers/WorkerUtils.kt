@@ -18,6 +18,7 @@ import com.example.tamagotchi.domain.workers.baby.BabySickWork
 import com.example.tamagotchi.domain.workers.baby.BabySleepWork
 import com.example.tamagotchi.domain.workers.evolution.EvolutionWork
 import com.example.tamagotchi.domain.workers.regular.DeathWork
+import com.example.tamagotchi.domain.workers.regular.FitnessWork
 import com.example.tamagotchi.domain.workers.regular.HappinessDecayWork
 import com.example.tamagotchi.domain.workers.regular.HungerDecayWork
 import com.example.tamagotchi.domain.workers.regular.MisbehavingWork
@@ -181,6 +182,13 @@ fun scheduleEssentialWorkers(context: Context, currentState: TamagotchiState){
                 Duration.between(currentTime, LocalTime.MAX),
                 Duration.ofHours(24),
                 "step_reset",
+                ExistingPeriodicWorkPolicy.REPLACE
+            )
+            createPeriodicWorker<FitnessWork>(
+                context,
+                Duration.ofHours(24),
+                Duration.ofHours(48),
+                "fitness",
                 ExistingPeriodicWorkPolicy.REPLACE
             )
             createPeriodicWorker<DeathWork>(

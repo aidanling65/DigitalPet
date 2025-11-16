@@ -4,6 +4,7 @@ const val MAX_HUNGER = 4
 const val MAX_WEIGHT = 99
 const val MAX_HAPPINESS = 4
 const val MAX_DISCIPLINE = 4
+const val MAX_FITNESS = 4
 
 data class TamagotchiState(
 
@@ -14,6 +15,8 @@ data class TamagotchiState(
     val hunger: Int = 0,
     val happiness: Int = 0,
 
+    val fitness: Int = 2,
+    val stepGoal: Int = 10_000,
     val steps: Int = 0,
     val dailyStepBaseline: Int? = null,
     val resetSteps: Boolean = false,

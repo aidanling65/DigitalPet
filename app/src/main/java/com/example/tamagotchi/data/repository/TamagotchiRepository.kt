@@ -27,6 +27,8 @@ class TamagotchiRepository(private val context: Context) {
     private val STEPS = intPreferencesKey("steps")
     private val RESET_STEPS = booleanPreferencesKey("reset_steps")
     private val DAILY_STEP_BASELINE = intPreferencesKey("daily_step_baseline")
+    private val FITNESS = intPreferencesKey("fitness")
+    private val STEP_GOAL = intPreferencesKey("step_goal")
     private val DISCIPLINE = intPreferencesKey("discipline")
     private val LIGHT = booleanPreferencesKey("light")
     private val MEDICINE_TAKEN = booleanPreferencesKey("medicineTaken")
@@ -53,6 +55,8 @@ class TamagotchiRepository(private val context: Context) {
                 steps = prefs[STEPS] ?: defaultState.steps,
                 resetSteps = prefs[RESET_STEPS] ?: defaultState.resetSteps,
                 dailyStepBaseline = prefs[DAILY_STEP_BASELINE] ?: defaultState.dailyStepBaseline,
+                fitness = prefs[FITNESS] ?: defaultState.fitness,
+                stepGoal =  prefs[STEP_GOAL] ?: defaultState.stepGoal,
                 discipline = prefs[DISCIPLINE] ?: defaultState.discipline,
                 light = prefs[LIGHT] ?: defaultState.light,
                 medicineTaken = prefs[MEDICINE_TAKEN] ?: defaultState.medicineTaken,
@@ -99,6 +103,8 @@ class TamagotchiRepository(private val context: Context) {
             } else {
                 updated.remove(DAILY_STEP_BASELINE)
             }
+            updated[FITNESS] = current.fitness
+            updated[STEP_GOAL] = current.stepGoal
             updated[DISCIPLINE] = current.discipline
             updated[LIGHT] = current.light
             updated[MEDICINE_TAKEN] = current.medicineTaken

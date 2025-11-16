@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
+import com.example.tamagotchi.data.model.MAX_FITNESS
 import com.example.tamagotchi.data.model.TamagotchiState
 import com.example.tamagotchi.data.repository.TamagotchiRepository
 import com.example.tamagotchi.domain.logic.GameLogicManager
@@ -58,7 +59,10 @@ class GameViewModel(private val context: Context, private val repository: Tamago
                 )
             } else {
                 val dailySteps = stepsSinceReboot - persistentBaseline
-                currentState.copy(steps = dailySteps)
+                currentState.copy(
+                    steps = dailySteps,
+                    fitness = if (dailySteps > currentState.stepGoal && currentState.fitness < MAX_FITNESS) currentState.fitness + 1 else currentState.fitness
+                )
             }
         }
     }
