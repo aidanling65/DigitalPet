@@ -11,4 +11,7 @@
     <color name="blue">#4949A7</color>
     <color name="gold">#AA9864</color>
     <color name="lcd">#869484</color>
+    <color name="colorPrimary">#6ead3a</color>
+    <color name="colorPrimaryDark">#236416</color>
+    <color name="colorAccent">#793aad</color>
 </resources>
