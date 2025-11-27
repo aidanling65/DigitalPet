@@ -1,6 +1,6 @@
 package com.example.tamagotchi.sudoku.game
 
-class Cell(
+data class Cell(
     val row: Int,
     val col: Int,
     var value: Int,

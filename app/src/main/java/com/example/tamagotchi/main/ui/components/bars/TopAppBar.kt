@@ -15,7 +15,7 @@ import com.example.tamagotchi.main.ui.GameViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopAppBar(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
+fun TopAppBar(gameViewModel: GameViewModel? = null,) {
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             titleContentColor = colorResource(R.color.gold),
@@ -28,12 +28,14 @@ fun TopAppBar(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
             )
         },
         actions = {
-            BarButton(
-                painter=painterResource(R.drawable.reset_button),
-                contentDescription = stringResource(R.string.reset_tamagotchi),
-                onClick = {gameViewModel.onResetClicked()},
-                modifier = Modifier
-            )
+            if(gameViewModel != null) {
+                BarButton(
+                    painter = painterResource(R.drawable.reset_button),
+                    contentDescription = stringResource(R.string.reset_tamagotchi),
+                    onClick = { gameViewModel.onResetClicked() },
+                    modifier = Modifier
+                )
+            }
         }
     )
 }

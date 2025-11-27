@@ -12,10 +12,11 @@ import android.view.View
 import com.example.tamagotchi.sudoku.game.Cell
 import kotlin.math.min
 
-class SudokuBoardView(context: Context, attributeSet: AttributeSet) : View(context, attributeSet) {
+class SudokuBoardView(context: Context, attributeSet: AttributeSet?) : View(context, attributeSet) {
 
     private var sqrtSize = 3
     private var size = 9
+
 
     // these are set in onDraw
     private var cellSizePixels = 0F
@@ -31,7 +32,7 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet) : View(conte
     private val thickLinePaint = Paint().apply {
         style = Paint.Style.STROKE
         color = Color.BLACK
-        strokeWidth = 4F
+        strokeWidth = 6F
     }
 
     private val thinLinePaint = Paint().apply {
@@ -42,7 +43,7 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet) : View(conte
 
     private val selectedCellPaint = Paint().apply {
         style = Paint.Style.FILL_AND_STROKE
-        color = Color.parseColor("#6ead3a")
+        color = Color.parseColor("#bb86fc")
     }
 
     private val conflictingCellPaint = Paint().apply {
@@ -68,13 +69,40 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet) : View(conte
 
     private val startingCellPaint = Paint().apply {
         style = Paint.Style.FILL_AND_STROKE
-        color = Color.parseColor("#acacac")
+        color = Color.parseColor("#ffffff")
+    }
+
+    fun setLineColor(color: Int) {
+        thickLinePaint.color = color
+        thinLinePaint.color = color
+        invalidate()
+    }
+
+    fun setSelectedCellColor(color: Int) {
+        selectedCellPaint.color = color
+        invalidate()
+    }
+
+    fun setConflictingCellColor(color: Int) {
+        conflictingCellPaint.color = color
+        invalidate()
+    }
+
+    fun setTextColor(color: Int) {
+        textPaint.color = color
+        startingCellTextPaint.color = color
+        noteTextPaint.color = color
+        invalidate()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val sizePixels = min(widthMeasureSpec, heightMeasureSpec)
         setMeasuredDimension(sizePixels, sizePixels)
+        if(width > 0){
+            updateMeasurements(width)
+        }
+
     }
 
     override fun onDraw(canvas: Canvas) {

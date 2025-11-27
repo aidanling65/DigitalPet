@@ -41,7 +41,14 @@ val Typography = Typography(
         fontSize = 18.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.sp,
-    )
+    ) ,
+    bodyMedium = TextStyle(
+        fontFamily = pixelifySans,
+        fontWeight = FontWeight.Normal,
+        fontSize = 24.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.sp,
+    ),
 /*
     labelSmall = TextStyle(
         fontFamily = FontFamily.Default,

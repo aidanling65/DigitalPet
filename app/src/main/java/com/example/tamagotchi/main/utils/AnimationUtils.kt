@@ -1,16 +1,23 @@
 package com.example.tamagotchi.main.utils
 
-import com.example.tamagotchi.R
+import com.example.tamagotchi.MyApp
 
 fun loadAnimations(prefix: String) : List<Int>{
-    val drawableFields = R.drawable::class.java.declaredFields
-    return drawableFields
-        .filter { it.name.startsWith(prefix)  }
-        .mapNotNull {
-            try {
-                it.getInt(null )
-            } catch(e: Exception){
-                null
-            }
+    val animations = mutableListOf<Int>()
+    val context = MyApp.Companion.instance
+    var index = 0
+    while(true){
+        val frame = context.resources.getIdentifier(
+            "${prefix}$index",
+            "drawable",
+            context.packageName
+        )
+        if(frame == 0) break
+        else{
+            animations.add(frame)
         }
+        index++
+    }
+
+    return animations
 }

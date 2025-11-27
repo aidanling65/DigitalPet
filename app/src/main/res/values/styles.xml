@@ -1,0 +1,10 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="Theme.Tamagotchi.AppCompat" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="android:colorBackground">@color/purple_500</item>
+        <item name="fontFamily">@font/pixelifysans_regular</item>
+    </style>
+
+</resources>

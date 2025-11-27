@@ -14,9 +14,9 @@ import com.example.tamagotchi.main.data.repository.TamagotchiRepository
 import com.example.tamagotchi.main.ui.GameViewModel
 import com.example.tamagotchi.main.ui.components.TamagotchiApp
 import com.example.tamagotchi.main.ui.theme.TamagotchiTheme
+import com.example.tamagotchi.main.utils.NOTIFICATION_PERMISSION_CODE
 import com.example.tamagotchi.main.utils.createNotificationChannel
 
-const val NOTIFICATION_PERMISSION_CODE = 100
 
 class MainActivity : ComponentActivity() {
 

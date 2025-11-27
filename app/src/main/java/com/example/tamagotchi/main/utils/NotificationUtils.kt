@@ -13,18 +13,15 @@ import com.example.tamagotchi.main.MainActivity
 import com.example.tamagotchi.R
 
 const val CHANNEL_ID = "Tamagotchi"
+const val NOTIFICATION_PERMISSION_CODE = 100
 
 @SuppressLint("MissingPermission")
 fun showNotification(context: Context, text: String) {
 
     val intent = Intent(context, MainActivity::class.java).apply{
-        Intent.setFlags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
     }
-    val pendingIntentFlag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-    } else {
-        PendingIntent.FLAG_UPDATE_CURRENT
-    }
+    val pendingIntentFlag = PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
     val pendingIntent: PendingIntent =
         PendingIntent.getActivity(context, 0, intent, pendingIntentFlag)
 

@@ -1,15 +1,17 @@
 package com.example.tamagotchi.main.ui
 
 import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
+import com.example.tamagotchi.domain.logic.GameLogicManager
+import com.example.tamagotchi.domain.workers.utils.scheduleEvolutionWork
 import com.example.tamagotchi.main.data.model.MAX_FITNESS
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
-import com.example.tamagotchi.domain.logic.GameLogicManager
-import com.example.tamagotchi.domain.workers.utils.scheduleEvolutionWork
 import com.example.tamagotchi.main.utils.StepCounter
+import com.example.tamagotchi.sudoku.view.PlaySudokuActivity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -91,7 +93,12 @@ class GameViewModel(private val context: Context, private val repository: Tamago
     }
 
     fun feed() { updateAndSave { gameLogicManager.feed(it) } }
-    fun play() { updateAndSave { gameLogicManager.play(it) } }
+    fun play() {
+        val intent = Intent(context, PlaySudokuActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intent)
+        updateAndSave { gameLogicManager.play(it) }
+    }
     fun clean() { updateAndSave { gameLogicManager.clean(it) }}
     fun heal() { updateAndSave { gameLogicManager.heal(it) } }
     fun light() { updateAndSave { gameLogicManager.light(it) } }
