@@ -1,4 +1,4 @@
-package com.example.tamagotchi.domain.workers.utils
+package com.example.tamagotchi.main.domain.workers.utils
 
 import android.content.Context
 import androidx.work.Data

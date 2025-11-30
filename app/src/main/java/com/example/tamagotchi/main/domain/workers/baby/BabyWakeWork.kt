@@ -1,4 +1,4 @@
-package com.example.tamagotchi.domain.workers.baby
+package com.example.tamagotchi.main.domain.workers.baby
 
 import android.content.Context
 import androidx.work.CoroutineWorker
@@ -12,13 +12,13 @@ class BabyWakeWork(
     private val repository = TamagotchiRepository(appContext)
 
     override suspend fun doWork(): Result {
-        val currentState = repository.getState()
-        val updatedState = currentState.copy(
-            sleeping = false,
-            age = currentState.age + 1,
-            light = true,
-        )
-        repository.saveState(updatedState)
+        repository.updateState {
+            it.copy(
+                sleeping = false,
+                age = it.age + 1,
+                light = true
+            )
+        }
 
         return Result.success()
     }

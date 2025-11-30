@@ -5,8 +5,8 @@ import androidx.work.CoroutineWorker
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
-import com.example.tamagotchi.domain.workers.utils.createSingleWorker
-import com.example.tamagotchi.domain.workers.mistake.HungerMistakeWork
+import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
+import com.example.tamagotchi.main.domain.workers.mistake.HungerMistakeWork
 import com.example.tamagotchi.main.utils.showNotification
 import java.time.Duration
 
@@ -17,16 +17,17 @@ class HungerDecayWork(
     private val repository = TamagotchiRepository(appContext)
 
     override suspend fun doWork(): Result {
-        var state = repository.getState()
-        if(state.sleeping){
-            return Result.success()
+        val updatedState = repository.updateState { current ->
+            if (current.sleeping) {
+                current
+            } else {
+                current.copy(
+                    hunger = if (current.hunger > 0) current.hunger - 1 else current.hunger,
+                )
+            }
         }
 
-        val updatedState = state.copy(
-            hunger = if(state.hunger > 0) state.hunger - 1 else state.hunger,
-        )
-
-        if(updatedState.hunger == 0){
+        if (updatedState.hunger == 0) {
             showNotification(applicationContext, "You Tamagotchi is hungry!")
             createSingleWorker<HungerMistakeWork>(
                 applicationContext,
@@ -35,8 +36,6 @@ class HungerDecayWork(
                 ExistingWorkPolicy.REPLACE
             )
         }
-
-        repository.saveState(updatedState)
 
         return Result.success()
     }

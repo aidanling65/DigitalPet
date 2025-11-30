@@ -1,4 +1,4 @@
-package com.example.tamagotchi.sudoku.game
+package com.example.tamagotchi.sudoku.domain
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData

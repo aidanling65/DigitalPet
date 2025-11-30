@@ -1,4 +1,4 @@
-package com.example.tamagotchi.sudoku.ui
+package com.example.tamagotchi.sudoku.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -24,11 +24,11 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.example.tamagotchi.R
 import com.example.tamagotchi.main.ui.components.bars.TopAppBar
 import com.example.tamagotchi.main.ui.theme.TamagotchiTheme
-import com.example.tamagotchi.sudoku.view.custom.SudokuBoardView
-import com.example.tamagotchi.sudoku.viewmodel.PlaySudokuViewModel
+import com.example.tamagotchi.sudoku.ui.SudokuBoardView
+import com.example.tamagotchi.sudoku.ui.SudokuViewModel
 
 @Composable
-fun SudokuScreen(viewModel: PlaySudokuViewModel, onCellTouched: (Int, Int) -> Unit) {
+fun SudokuScreen(viewModel: SudokuViewModel, onCellTouched: (Int, Int) -> Unit) {
     val cells by viewModel.sudokuGame.cellsFlow.collectAsState()
     val selectedCell by viewModel.sudokuGame.selectedCellLiveData.observeAsState()
 
@@ -37,7 +37,6 @@ fun SudokuScreen(viewModel: PlaySudokuViewModel, onCellTouched: (Int, Int) -> Un
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .safeDrawingPadding()
             .background(color = MaterialTheme.colorScheme.background),
         topBar = { TopAppBar(null) }
     ) { innerPadding ->
@@ -45,6 +44,7 @@ fun SudokuScreen(viewModel: PlaySudokuViewModel, onCellTouched: (Int, Int) -> Un
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
+                .safeDrawingPadding()
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
@@ -86,7 +86,7 @@ fun SudokuScreen(viewModel: PlaySudokuViewModel, onCellTouched: (Int, Int) -> Un
 fun SudokuScreenPreview() {
     TamagotchiTheme {
         SudokuScreen(
-            viewModel = PlaySudokuViewModel(),
+            viewModel = SudokuViewModel(),
             onCellTouched = { _, _ -> }
         )
     }

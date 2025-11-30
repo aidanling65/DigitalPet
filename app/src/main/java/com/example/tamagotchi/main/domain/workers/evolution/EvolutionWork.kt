@@ -1,4 +1,4 @@
-package com.example.tamagotchi.domain.workers.evolution
+package com.example.tamagotchi.main.domain.workers.evolution
 
 import android.content.Context
 import android.util.Log
@@ -6,8 +6,8 @@ import androidx.work.CoroutineWorker
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
-import com.example.tamagotchi.domain.workers.utils.createSingleWorker
-import com.example.tamagotchi.domain.workers.utils.scheduleEssentialWorkers
+import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
+import com.example.tamagotchi.main.domain.workers.utils.scheduleEssentialWorkers
 import java.time.Duration
 import java.time.LocalTime
 import java.time.ZoneId
@@ -44,11 +44,13 @@ class EvolutionWork(
         val evolutionFunction = currentState.ageStage.evolve
 
         if(evolutionFunction != null) {
-            val updatedState = evolutionFunction(applicationContext, currentState)
-            Log.d("EvolutionWork", updatedState.animations.name)
-            repository.saveState(updatedState)
+            repository.updateState{
+                val updatedState = evolutionFunction(applicationContext, it)
+                Log.d("EvolutionWork", updatedState.animations.name)
+                scheduleEssentialWorkers(applicationContext, updatedState)
+                updatedState
+            }
 
-            scheduleEssentialWorkers(applicationContext, updatedState)
         }
 
         return Result.success()

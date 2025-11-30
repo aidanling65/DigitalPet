@@ -1,10 +1,10 @@
-package com.example.tamagotchi.domain.workers.baby
+package com.example.tamagotchi.main.domain.workers.baby
 
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
-import com.example.tamagotchi.domain.workers.utils.createSingleWorker
+import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
 import com.example.tamagotchi.main.utils.showNotification
@@ -20,22 +20,24 @@ class BabyHungerHappinessWork(
     override suspend fun doWork(): Result {
         val currentState = repository.getState()
 
-        if(currentState.ageStage != AgeStage.BABY){
+        if (currentState.ageStage != AgeStage.BABY) {
             return Result.success()
         }
 
         if (!currentState.sleeping) {
-            val updatedState = currentState.copy(
-                hunger = if (currentState.hunger > 0) currentState.hunger - 1 else currentState.hunger,
-                happiness = if (currentState.happiness > 0) currentState.happiness - 1 else currentState.happiness
-            )
-            if (updatedState.hunger == 0) {
-                showNotification(applicationContext, "You Tamagotchi is hungry!")
+            repository.updateState { currentState ->
+                val updatedState = currentState.copy(
+                    hunger = if (currentState.hunger > 0) currentState.hunger - 1 else currentState.hunger,
+                    happiness = if (currentState.happiness > 0) currentState.happiness - 1 else currentState.happiness
+                )
+                if (updatedState.hunger == 0) {
+                    showNotification(applicationContext, "You Tamagotchi is hungry!")
+                }
+                if (updatedState.happiness == 0) {
+                    showNotification(applicationContext, "You Tamagotchi is sad!")
+                }
+                updatedState
             }
-            if (updatedState.happiness == 0) {
-                showNotification(applicationContext, "You Tamagotchi is sad!")
-            }
-            repository.saveState(updatedState)
         }
         createSingleWorker<BabyHungerHappinessWork>(
             applicationContext,

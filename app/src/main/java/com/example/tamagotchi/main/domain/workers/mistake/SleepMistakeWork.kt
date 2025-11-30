@@ -1,4 +1,4 @@
-package com.example.tamagotchi.domain.workers.mistake
+package com.example.tamagotchi.main.domain.workers.mistake
 
 import android.content.Context
 import androidx.work.CoroutineWorker
@@ -12,12 +12,11 @@ class SleepMistakeWork(
     private val repository = TamagotchiRepository(appContext)
 
     override suspend fun doWork(): Result {
-        var state = repository.getState()
-        state = state.copy(
-            mentalMistakes = if(state.sleeping && state.light) state.mentalMistakes + 1 else  state.mentalMistakes
-        )
-
-        repository.saveState(state)
+        repository.updateState {
+            it.copy(
+                mentalMistakes = if (it.sleeping && it.light) it.mentalMistakes + 1 else it.mentalMistakes
+            )
+        }
 
         return Result.success()
     }

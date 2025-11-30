@@ -1,4 +1,4 @@
-package com.example.tamagotchi.domain.workers.mistake
+package com.example.tamagotchi.main.domain.workers.mistake
 
 import android.content.Context
 import androidx.work.CoroutineWorker
@@ -12,12 +12,15 @@ class HungerMistakeWork(
     private val repository = TamagotchiRepository(appContext)
 
     override suspend fun doWork(): Result {
-        val currentState = repository.getState()
-        if(currentState.hunger == 0) {
-            val updatedState = currentState.copy(
-                physicalMistakes = currentState.physicalMistakes + 1
-            )
-            repository.saveState(updatedState)
+        repository.updateState {
+            if (it.hunger == 0) {
+                it.copy(
+                    physicalMistakes = it.physicalMistakes + 1
+                )
+            }
+            else{
+                it
+            }
         }
 
         return Result.success()

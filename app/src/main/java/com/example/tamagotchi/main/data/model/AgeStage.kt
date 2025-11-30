@@ -1,10 +1,10 @@
 package com.example.tamagotchi.main.data.model
 
 import android.content.Context
-import com.example.tamagotchi.domain.workers.evolution.babyChildEvolve
-import com.example.tamagotchi.domain.workers.evolution.childTeenEvolve
-import com.example.tamagotchi.domain.workers.evolution.eggBabyEvolve
-import com.example.tamagotchi.domain.workers.evolution.teenAdultEvolve
+import com.example.tamagotchi.main.domain.workers.evolution.babyChildEvolve
+import com.example.tamagotchi.main.domain.workers.evolution.childTeenEvolve
+import com.example.tamagotchi.main.domain.workers.evolution.eggBabyEvolve
+import com.example.tamagotchi.main.domain.workers.evolution.teenAdultEvolve
 import java.time.Duration
 import java.time.LocalTime
 

@@ -1,11 +1,11 @@
-package com.example.tamagotchi.domain.workers.baby
+package com.example.tamagotchi.main.domain.workers.baby
 
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
-import com.example.tamagotchi.domain.workers.utils.createSingleWorker
+import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
 import com.example.tamagotchi.main.utils.showNotification
 import java.time.Duration
 
@@ -16,11 +16,11 @@ class BabySleepWork(
     private val repository = TamagotchiRepository(appContext)
 
     override suspend fun doWork(): Result {
-        var currentState = repository.getState()
-        var updatedState = currentState.copy(
-            sleeping = true
-        )
-        repository.saveState(updatedState)
+        repository.updateState {
+            it.copy(
+                sleeping = true
+            )
+        }
         showNotification(applicationContext, "You Tamagotchi is sleeping")
 
         createSingleWorker<BabyWakeWork>(

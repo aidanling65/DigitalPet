@@ -1,6 +1,7 @@
 package com.example.tamagotchi.main.data.repository
 
 import android.content.Context
+import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -12,8 +13,6 @@ import com.example.tamagotchi.main.data.model.TamagotchiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 
 val Context.dataStore by preferencesDataStore(name = "tamagotchi_prefs")
 
@@ -30,6 +29,7 @@ class TamagotchiRepository(private val context: Context) {
     private val FITNESS = intPreferencesKey("fitness")
     private val STEP_GOAL = intPreferencesKey("step_goal")
     private val DISCIPLINE = intPreferencesKey("discipline")
+    private val INTELLIGENCE = intPreferencesKey("intelligence")
     private val LIGHT = booleanPreferencesKey("light")
     private val MEDICINE_TAKEN = booleanPreferencesKey("medicineTaken")
     private val SICK = booleanPreferencesKey("sick")
@@ -40,8 +40,6 @@ class TamagotchiRepository(private val context: Context) {
     private val ANIMATIONS = stringPreferencesKey("animations")
     private val MENTAL_MISTAKES = intPreferencesKey("mental_mistakes")
     private val PHYSICAL_MISTAKES = intPreferencesKey("physical_mistakes")
-
-    private val saveMutex = Mutex()
 
     val tamagotchiStateFlow: Flow<TamagotchiState> = context.dataStore.data
         .map { prefs ->
@@ -56,7 +54,7 @@ class TamagotchiRepository(private val context: Context) {
                 resetSteps = prefs[RESET_STEPS] ?: defaultState.resetSteps,
                 dailyStepBaseline = prefs[DAILY_STEP_BASELINE] ?: defaultState.dailyStepBaseline,
                 fitness = prefs[FITNESS] ?: defaultState.fitness,
-                stepGoal =  prefs[STEP_GOAL] ?: defaultState.stepGoal,
+                stepGoal = prefs[STEP_GOAL] ?: defaultState.stepGoal,
                 discipline = prefs[DISCIPLINE] ?: defaultState.discipline,
                 light = prefs[LIGHT] ?: defaultState.light,
                 medicineTaken = prefs[MEDICINE_TAKEN] ?: defaultState.medicineTaken,
@@ -74,49 +72,51 @@ class TamagotchiRepository(private val context: Context) {
 
         }
 
-    suspend fun updateState(transform: (currentState: TamagotchiState) -> TamagotchiState) {
-        saveMutex.withLock {
+    suspend fun updateState(transform: (currentState: TamagotchiState) -> TamagotchiState) : TamagotchiState{
+        var newState: TamagotchiState? = null
+        context.dataStore.edit {
             val currentState = tamagotchiStateFlow.first()
-            val newState = transform(currentState)
-            saveStateInternal(newState)
+            val transformedState = transform(currentState)
+            saveStateInternal(transformedState, it)
+            newState = transformedState
         }
+
+        return newState !!
     }
 
     suspend fun saveState(newState: TamagotchiState) {
-        saveMutex.withLock {
-            saveStateInternal(newState)
+        context.dataStore.edit {
+            saveStateInternal(newState, it)
         }
     }
 
-    private suspend fun saveStateInternal(current: TamagotchiState) {
-        context.dataStore.edit { updated ->
-            updated[INITIAL] = current.initial
-            updated[AGE] = current.age
-            updated[WEIGHT] = current.weight
-            updated[HUNGER] = current.hunger
-            updated[HAPPINESS] = current.happiness
-            updated[STEPS] = current.steps
-            updated[RESET_STEPS] = current.resetSteps
-            val baseline = current.dailyStepBaseline
-            if (baseline != null) {
-                updated[DAILY_STEP_BASELINE] = baseline
-            } else {
-                updated.remove(DAILY_STEP_BASELINE)
-            }
-            updated[FITNESS] = current.fitness
-            updated[STEP_GOAL] = current.stepGoal
-            updated[DISCIPLINE] = current.discipline
-            updated[LIGHT] = current.light
-            updated[MEDICINE_TAKEN] = current.medicineTaken
-            updated[SICK] = current.sick
-            updated[POOP] = current.poop
-            updated[MISBEHAVING] = current.misbehaving
-            updated[SLEEPING] = current.sleeping
-            updated[PHYSICAL_MISTAKES] = current.physicalMistakes
-            updated[MENTAL_MISTAKES] = current.mentalMistakes
-            updated[AGE_STAGE] = current.ageStage.name
-            updated[ANIMATIONS] = current.animations.name
+    private fun saveStateInternal(current: TamagotchiState, updated: MutablePreferences) {
+        updated[INITIAL] = current.initial
+        updated[AGE] = current.age
+        updated[WEIGHT] = current.weight
+        updated[HUNGER] = current.hunger
+        updated[HAPPINESS] = current.happiness
+        updated[STEPS] = current.steps
+        updated[RESET_STEPS] = current.resetSteps
+        val baseline = current.dailyStepBaseline
+        if (baseline != null) {
+            updated[DAILY_STEP_BASELINE] = baseline
+        } else {
+            updated.remove(DAILY_STEP_BASELINE)
         }
+        updated[FITNESS] = current.fitness
+        updated[STEP_GOAL] = current.stepGoal
+        updated[DISCIPLINE] = current.discipline
+        updated[LIGHT] = current.light
+        updated[MEDICINE_TAKEN] = current.medicineTaken
+        updated[SICK] = current.sick
+        updated[POOP] = current.poop
+        updated[MISBEHAVING] = current.misbehaving
+        updated[SLEEPING] = current.sleeping
+        updated[PHYSICAL_MISTAKES] = current.physicalMistakes
+        updated[MENTAL_MISTAKES] = current.mentalMistakes
+        updated[AGE_STAGE] = current.ageStage.name
+        updated[ANIMATIONS] = current.animations.name
     }
 
     suspend fun getState(): TamagotchiState {

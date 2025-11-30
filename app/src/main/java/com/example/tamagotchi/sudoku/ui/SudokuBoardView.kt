@@ -1,4 +1,4 @@
-package com.example.tamagotchi.sudoku.view.custom
+package com.example.tamagotchi.sudoku.ui
 
 import android.content.Context
 import android.graphics.Canvas
@@ -9,7 +9,7 @@ import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import com.example.tamagotchi.sudoku.game.Cell
+import com.example.tamagotchi.sudoku.domain.Cell
 import kotlin.math.min
 
 class SudokuBoardView(context: Context, attributeSet: AttributeSet?) : View(context, attributeSet) {
@@ -25,7 +25,7 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet?) : View(cont
     private var selectedRow = 0
     private var selectedCol = 0
 
-    private var listener: SudokuBoardView.OnTouchListener? = null
+    private var listener: OnTouchListener? = null
 
     private var cells: List<Cell>? = null
 
@@ -234,7 +234,7 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet?) : View(cont
         invalidate()
     }
 
-    fun registerListener(listener: SudokuBoardView.OnTouchListener) {
+    fun registerListener(listener: OnTouchListener) {
         this.listener = listener
     }
 

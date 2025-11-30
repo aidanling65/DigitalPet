@@ -1,4 +1,4 @@
-package com.example.tamagotchi.domain.workers.periodic
+package com.example.tamagotchi.main.domain.workers.periodic
 
 import android.content.Context
 import androidx.work.CoroutineWorker
@@ -12,11 +12,11 @@ class StepWork(
     private val repository = TamagotchiRepository(appContext)
 
     override suspend fun doWork(): Result {
-        var state = repository.getState()
-        val updatedState = state.copy(
-            resetSteps = true,
-        )
-        repository.saveState(updatedState)
+        repository.updateState {
+            it.copy(
+                resetSteps = true,
+            )
+        }
         return Result.success()
     }
 }

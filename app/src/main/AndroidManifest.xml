@@ -28,8 +28,8 @@
         </activity>
 
         <activity
-            android:name=".sudoku.view.PlaySudokuActivity"
-            android:theme="@style/Theme.Tamagotchi.AppCompat"/>
+            android:name=".sudoku.SudokuActivity"
+            android:theme="@style/Theme.Tamagotchi.AppCompat" />
 
     </application>
 

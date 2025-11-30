@@ -1,4 +1,4 @@
-package com.example.tamagotchi.domain.workers.baby
+package com.example.tamagotchi.main.domain.workers.baby
 
 import android.content.Context
 import androidx.work.CoroutineWorker
@@ -13,12 +13,12 @@ class BabySickWork(
     private val repository = TamagotchiRepository(appContext)
 
     override suspend fun doWork(): Result {
-        val currentState = repository.getState()
-        val updatedState = currentState.copy(
-            sick = true
-        )
+        repository.updateState {
+            it.copy(
+                sick = true
+            )
+        }
         showNotification(applicationContext, "You Tamagotchi is sick!")
-        repository.saveState(updatedState)
 
         return Result.success()
     }

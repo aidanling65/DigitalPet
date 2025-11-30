@@ -1,4 +1,4 @@
-package com.example.tamagotchi.domain.logic
+package com.example.tamagotchi.main.domain.logic
 
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.MAX_DISCIPLINE

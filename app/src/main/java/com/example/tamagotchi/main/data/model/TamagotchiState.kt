@@ -22,6 +22,7 @@ data class TamagotchiState(
     val resetSteps: Boolean = false,
 
     val discipline: Int = 0,
+    val intelligence: Int = 0,
 
     val sleeping: Boolean = false,
     val light: Boolean = true,

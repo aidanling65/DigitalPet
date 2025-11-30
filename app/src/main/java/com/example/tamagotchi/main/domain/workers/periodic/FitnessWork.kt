@@ -1,4 +1,4 @@
-package com.example.tamagotchi.domain.workers.periodic
+package com.example.tamagotchi.main.domain.workers.periodic
 
 import android.content.Context
 import androidx.work.CoroutineWorker
@@ -6,8 +6,8 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
 import com.example.tamagotchi.main.data.model.MAX_FITNESS
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
-import com.example.tamagotchi.domain.workers.utils.createSingleWorker
-import com.example.tamagotchi.domain.workers.mistake.FitnessMistakeWork
+import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
+import com.example.tamagotchi.main.domain.workers.mistake.FitnessMistakeWork
 import java.time.Duration
 
 class FitnessWork(
@@ -17,15 +17,15 @@ class FitnessWork(
     private val repository = TamagotchiRepository(appContext)
 
     override suspend fun doWork(): Result {
-        var state = repository.getState()
 
-        state = state.copy(
-            fitness = state.fitness - 1,
-            weight =  if(state.fitness == MAX_FITNESS && state.weight > state.ageStage.minimumWeight) state.weight - 1 else state.weight
-        )
-        repository.saveState(state)
+        val updatedState = repository.updateState { current ->
+            current.copy(
+                fitness = current.fitness - 1,
+                weight =  if(current.fitness == MAX_FITNESS && current.weight > current.ageStage.minimumWeight) current.weight - 1 else current.weight
+            )
+        }
 
-        if(state.fitness == 0){
+        if(updatedState.fitness == 0){
             createSingleWorker<FitnessMistakeWork>(
                 applicationContext,
                 Duration.ofHours(24),

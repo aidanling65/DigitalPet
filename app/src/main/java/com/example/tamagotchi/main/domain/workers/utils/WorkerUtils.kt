@@ -1,4 +1,4 @@
-package com.example.tamagotchi.domain.workers.utils
+package com.example.tamagotchi.main.domain.workers.utils
 
 import android.content.Context
 import android.util.Log
@@ -6,7 +6,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.example.tamagotchi.main.data.model.TamagotchiState
-import com.example.tamagotchi.domain.workers.evolution.EvolutionWork
+import com.example.tamagotchi.main.domain.workers.evolution.EvolutionWork
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.Duration

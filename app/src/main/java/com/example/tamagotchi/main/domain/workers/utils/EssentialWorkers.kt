@@ -1,30 +1,30 @@
-package com.example.tamagotchi.domain.workers.utils
+package com.example.tamagotchi.main.domain.workers.utils
 
 import android.content.Context
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.TamagotchiState
-import com.example.tamagotchi.domain.workers.baby.BabyHungerHappinessWork
-import com.example.tamagotchi.domain.workers.baby.BabyPoopWork
-import com.example.tamagotchi.domain.workers.baby.BabySickWork
-import com.example.tamagotchi.domain.workers.baby.BabySleepWork
-import com.example.tamagotchi.domain.workers.periodic.DeathWork
-import com.example.tamagotchi.domain.workers.periodic.FitnessWork
-import com.example.tamagotchi.domain.workers.periodic.HappinessDecayWork
+import com.example.tamagotchi.main.domain.workers.baby.BabyHungerHappinessWork
+import com.example.tamagotchi.main.domain.workers.baby.BabyPoopWork
+import com.example.tamagotchi.main.domain.workers.baby.BabySickWork
+import com.example.tamagotchi.main.domain.workers.baby.BabySleepWork
+import com.example.tamagotchi.main.domain.workers.periodic.DeathWork
+import com.example.tamagotchi.main.domain.workers.periodic.FitnessWork
+import com.example.tamagotchi.main.domain.workers.periodic.HappinessDecayWork
 import com.example.tamagotchi.domain.workers.periodic.HungerDecayWork
-import com.example.tamagotchi.domain.workers.periodic.MisbehavingWork
-import com.example.tamagotchi.domain.workers.periodic.PoopWork
-import com.example.tamagotchi.domain.workers.periodic.SickWork
-import com.example.tamagotchi.domain.workers.periodic.SleepWork
-import com.example.tamagotchi.domain.workers.periodic.StepWork
+import com.example.tamagotchi.main.domain.workers.periodic.MisbehavingWork
+import com.example.tamagotchi.main.domain.workers.periodic.PoopWork
+import com.example.tamagotchi.main.domain.workers.periodic.SickWork
+import com.example.tamagotchi.main.domain.workers.periodic.SleepWork
+import com.example.tamagotchi.main.domain.workers.periodic.StepWork
 import java.time.Duration
 import java.time.LocalTime
 import java.time.ZoneId
 
 fun scheduleEssentialWorkers(context: Context, currentState: TamagotchiState){
 
-    scheduleEvolutionWork(context,currentState)
+    scheduleEvolutionWork(context, currentState)
 
     when(currentState.ageStage){
         AgeStage.EGG -> return

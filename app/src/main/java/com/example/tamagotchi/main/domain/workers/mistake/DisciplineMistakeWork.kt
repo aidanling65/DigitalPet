@@ -1,4 +1,4 @@
-package com.example.tamagotchi.domain.workers.mistake
+package com.example.tamagotchi.main.domain.workers.mistake
 
 import android.content.Context
 import androidx.work.CoroutineWorker
@@ -13,13 +13,13 @@ class DisciplineMistakeWork(
 
     override suspend fun doWork(): Result {
         var state = repository.getState()
-        if(state.misbehaving) {
-            state = state.copy(
-                misbehaving = false,
-                mentalMistakes = state.mentalMistakes + 1
-            )
-
-            repository.saveState(state)
+        if (state.misbehaving) {
+            repository.updateState {
+                it.copy(
+                    misbehaving = false,
+                    mentalMistakes = state.mentalMistakes + 1
+                )
+            }
         }
 
         return Result.success()

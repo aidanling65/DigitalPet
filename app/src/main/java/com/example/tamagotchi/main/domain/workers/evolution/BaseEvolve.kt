@@ -1,4 +1,4 @@
-package com.example.tamagotchi.domain.workers.evolution
+package com.example.tamagotchi.main.domain.workers.evolution
 
 import com.example.tamagotchi.main.data.model.TamagotchiState
 

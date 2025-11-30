@@ -1,4 +1,4 @@
-package com.example.tamagotchi.sudoku.ui
+package com.example.tamagotchi.sudoku.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.main.ui.theme.TamagotchiTheme
-import com.example.tamagotchi.sudoku.viewmodel.PlaySudokuViewModel
+import com.example.tamagotchi.sudoku.ui.SudokuViewModel
 
 @Composable
 fun SudokuController(
@@ -81,7 +81,7 @@ fun SudokuController(
 fun SudokuControllerPreview() {
     TamagotchiTheme {
         SudokuScreen(
-            viewModel = PlaySudokuViewModel(),
+            viewModel = SudokuViewModel(),
             onCellTouched = { _, _ -> }
         )
     }
