@@ -14,10 +14,9 @@ class SickMistakeWork(
     appContext: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
-    private val repository = TamagotchiRepository(appContext)
+    private val repository = TamagotchiRepository.getInstance(appContext)
 
     override suspend fun doWork(): Result {
-        var state = repository.getState()
         repository.updateState {
             if (it.sick) {
                 if (Random.Default.nextFloat() < 0.1) {
@@ -31,7 +30,7 @@ class SickMistakeWork(
                         ExistingWorkPolicy.REPLACE,
                     )
                     it.copy(
-                        physicalMistakes = state.physicalMistakes + 1
+                        physicalMistakes = it.physicalMistakes + 1
                     )
                 }
             }

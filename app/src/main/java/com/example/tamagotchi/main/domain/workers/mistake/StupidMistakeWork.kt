@@ -5,27 +5,17 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
 
-class FitnessMistakeWork(
+class StupidMistakeWork(
     appContext: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
     private val repository = TamagotchiRepository.getInstance(appContext)
 
     override suspend fun doWork(): Result {
-
         repository.updateState {
-            if (it.sleeping) {
-                it
-            }
-
-            if (it.fitness == 0) {
-                it.copy(
-                    physicalMistakes = it.physicalMistakes + 1,
-                    weight = it.weight + 2
-                )
-            }
-
-            it
+            it.copy(
+                mentalMistakes = if (it.intelligence ==0) it.mentalMistakes + 1 else it.mentalMistakes
+            )
         }
 
         return Result.success()

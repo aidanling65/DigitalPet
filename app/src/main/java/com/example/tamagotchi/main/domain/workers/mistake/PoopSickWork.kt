@@ -13,28 +13,29 @@ class PoopSickWork(
     appContext: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
-    private val repository = TamagotchiRepository(appContext)
+    private val repository = TamagotchiRepository.getInstance(appContext)
 
     override suspend fun doWork(): Result {
-        var state = repository.getState()
-        if(state.sleeping){
-            return Result.success()
-        }
-
-        if (state.poop && !state.sick) {
-            showNotification(applicationContext, "Your tamagotchi is sick!")
-            repository.updateState({currentState ->
-                currentState.copy(
+        repository.updateState { it ->
+            if (it.sleeping) {
+                it
+            }
+            else if (it.poop && !it.sick) {
+                showNotification(applicationContext, "Your tamagotchi is sick!")
+                createSingleWorker<SickMistakeWork>(
+                    applicationContext,
+                    Duration.ofMinutes(15),
+                    "sick_mistake",
+                    ExistingWorkPolicy.REPLACE
+                )
+                it.copy(
                     sick = true
                 )
-            })
 
-            createSingleWorker<SickMistakeWork>(
-                applicationContext,
-                Duration.ofMinutes(15),
-                "sick_mistake",
-                ExistingWorkPolicy.REPLACE
-            )
+            }
+            else{
+                it
+            }
         }
 
         return Result.success()

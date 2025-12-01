@@ -9,16 +9,18 @@ class DisciplineMistakeWork(
     appContext: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
-    private val repository = TamagotchiRepository(appContext)
+    private val repository = TamagotchiRepository.getInstance(appContext)
 
     override suspend fun doWork(): Result {
-        var state = repository.getState()
-        if (state.misbehaving) {
-            repository.updateState {
+        repository.updateState {
+            if (it.misbehaving) {
                 it.copy(
                     misbehaving = false,
-                    mentalMistakes = state.mentalMistakes + 1
+                    mentalMistakes = it.mentalMistakes + 1
                 )
+            }
+            else{
+                it
             }
         }
 

@@ -20,7 +20,7 @@ class SudokuActivity : ComponentActivity(), SudokuBoardView.OnTouchListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val repository = TamagotchiRepository(applicationContext)
+        val repository = TamagotchiRepository.getInstance(applicationContext)
         viewModel = ViewModelProvider(this)[SudokuViewModel::class.java]
         viewModel.sudokuGame.gameWonLiveData.observe(this) { isWon ->
             if (isWon) {

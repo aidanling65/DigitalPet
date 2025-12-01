@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.map
 
 val Context.dataStore by preferencesDataStore(name = "tamagotchi_prefs")
 
-class TamagotchiRepository(private val context: Context) {
+class TamagotchiRepository private constructor(private val context: Context) {
 
     private val INITIAL = booleanPreferencesKey("initial")
     private val AGE = intPreferencesKey("age")
@@ -56,6 +56,7 @@ class TamagotchiRepository(private val context: Context) {
                 fitness = prefs[FITNESS] ?: defaultState.fitness,
                 stepGoal = prefs[STEP_GOAL] ?: defaultState.stepGoal,
                 discipline = prefs[DISCIPLINE] ?: defaultState.discipline,
+                intelligence = prefs[INTELLIGENCE] ?: defaultState.intelligence,
                 light = prefs[LIGHT] ?: defaultState.light,
                 medicineTaken = prefs[MEDICINE_TAKEN] ?: defaultState.medicineTaken,
                 sick = prefs[SICK] ?: defaultState.sick,
@@ -107,6 +108,7 @@ class TamagotchiRepository(private val context: Context) {
         updated[FITNESS] = current.fitness
         updated[STEP_GOAL] = current.stepGoal
         updated[DISCIPLINE] = current.discipline
+        updated[INTELLIGENCE] = current.intelligence
         updated[LIGHT] = current.light
         updated[MEDICINE_TAKEN] = current.medicineTaken
         updated[SICK] = current.sick
@@ -121,5 +123,18 @@ class TamagotchiRepository(private val context: Context) {
 
     suspend fun getState(): TamagotchiState {
         return tamagotchiStateFlow.first()
+    }
+
+    companion object {
+        @Volatile
+        private var INSTANCE: TamagotchiRepository? = null
+
+        fun getInstance(context: Context): TamagotchiRepository {
+            return INSTANCE ?: synchronized(this) {
+                val instance = TamagotchiRepository(context.applicationContext)
+                INSTANCE = instance
+                instance
+            }
+        }
     }
 }

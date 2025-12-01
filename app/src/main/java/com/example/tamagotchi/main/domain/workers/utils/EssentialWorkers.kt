@@ -10,6 +10,7 @@ import com.example.tamagotchi.main.domain.workers.baby.BabyHungerHappinessWork
 import com.example.tamagotchi.main.domain.workers.baby.BabyPoopWork
 import com.example.tamagotchi.main.domain.workers.baby.BabySickWork
 import com.example.tamagotchi.main.domain.workers.baby.BabySleepWork
+import com.example.tamagotchi.main.domain.workers.periodic.BrainrotWork
 import com.example.tamagotchi.main.domain.workers.periodic.DeathWork
 import com.example.tamagotchi.main.domain.workers.periodic.FitnessWork
 import com.example.tamagotchi.main.domain.workers.periodic.HappinessDecayWork
@@ -19,6 +20,8 @@ import com.example.tamagotchi.main.domain.workers.periodic.SickWork
 import com.example.tamagotchi.main.domain.workers.periodic.SleepWork
 import com.example.tamagotchi.step_tracker.StepCounterWorker
 import java.time.Duration
+import java.time.Instant
+import java.time.LocalTime
 
 fun scheduleEssentialWorkers(context: Context, currentState: TamagotchiState, policy: ExistingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.REPLACE){
 
@@ -87,6 +90,13 @@ fun scheduleEssentialWorkers(context: Context, currentState: TamagotchiState, po
                 Duration.ofMinutes(15),
                 Duration.ofMinutes(30),
                 "misbehaving",
+                policy
+            )
+            createPeriodicWorker<BrainrotWork>(
+                context,
+                Duration.between(Instant.now(), LocalTime.MAX),
+                Duration.ofHours(24),
+                "brainrot",
                 policy
             )
             createPeriodicWorker<SickWork>(

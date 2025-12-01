@@ -15,14 +15,9 @@ class PoopWork(
     appContext: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
-    private val repository = TamagotchiRepository(appContext)
+    private val repository = TamagotchiRepository.getInstance(appContext)
 
     override suspend fun doWork(): Result {
-        var state = repository.getState()
-
-        if(state.sleeping){
-            return Result.success()
-        }
 
         val updatedState = repository.updateState { current->
             if(current.sleeping || current.poop) {

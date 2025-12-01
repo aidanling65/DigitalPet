@@ -16,7 +16,7 @@ class EvolutionWork(
     appContext: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
-    private val repository = TamagotchiRepository(applicationContext)
+    private val repository = TamagotchiRepository.getInstance(applicationContext)
 
     override suspend fun doWork(): Result{
         val currentState = repository.getState()

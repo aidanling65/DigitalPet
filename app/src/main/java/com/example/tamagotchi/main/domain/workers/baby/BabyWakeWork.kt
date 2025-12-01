@@ -9,7 +9,7 @@ class BabyWakeWork(
     appContext: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
-    private val repository = TamagotchiRepository(appContext)
+    private val repository = TamagotchiRepository.getInstance(appContext)
 
     override suspend fun doWork(): Result {
         repository.updateState {

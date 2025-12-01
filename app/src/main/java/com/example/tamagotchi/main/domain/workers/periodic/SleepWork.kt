@@ -16,17 +16,15 @@ class SleepWork(
     appContext: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
-    private val repository = TamagotchiRepository(appContext)
+    private val repository = TamagotchiRepository.getInstance(appContext)
 
     override suspend fun doWork(): Result {
-        var state = repository.getState()
         val currentTime = LocalTime.now(ZoneId.systemDefault())
 
         repository.updateState { current ->
             val isBedTime = current.ageStage.bedTime ?: LocalTime.MAX
-            val isWakeTime = state.ageStage.wakeTime ?: LocalTime.MIN
+            val isWakeTime = current.ageStage.wakeTime ?: LocalTime.MIN
             val shouldBeSleeping = currentTime.isAfter(isBedTime) || currentTime.isBefore(isWakeTime)
-
 
             if (!current.sleeping && shouldBeSleeping) {
                 showNotification(applicationContext, "Your tamagotchi has gone to sleep")
@@ -36,7 +34,7 @@ class SleepWork(
                     "sleep_mistake",
                     ExistingWorkPolicy.REPLACE
                 )
-            } else if (state.sleeping && !shouldBeSleeping) {
+            } else if (current.sleeping && !shouldBeSleeping) {
                 showNotification(applicationContext, "Your tamagotchi has awoken")
             }
 

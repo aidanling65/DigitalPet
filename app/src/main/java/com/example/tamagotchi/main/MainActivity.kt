@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
     private val gameViewModel: GameViewModel by viewModels {
         object : ViewModelProvider.Factory{
             override fun<T: ViewModel> create(modelClass: Class<T>): T{
-                val repository = TamagotchiRepository(applicationContext)
+                val repository = TamagotchiRepository.getInstance(applicationContext)
                 return GameViewModel(applicationContext, repository) as T
             }
         }
