@@ -20,6 +20,7 @@ import com.example.tamagotchi.R
 import com.example.tamagotchi.main.data.model.MAX_DISCIPLINE
 import com.example.tamagotchi.main.data.model.MAX_HAPPINESS
 import com.example.tamagotchi.main.data.model.MAX_HUNGER
+import com.example.tamagotchi.main.data.model.MAX_INTELLIGENCE
 import com.example.tamagotchi.main.data.model.TamagotchiState
 
 @Composable
@@ -38,6 +39,8 @@ fun StatusBars(
         item{StatusBar(tamagotchiState.hunger, MAX_HUNGER, stringResource(R.string.hunger))}
         item{Spacer(modifier = spacerModifier)}
         item{StatusBar(tamagotchiState.discipline, MAX_DISCIPLINE, stringResource(R.string.discipline))}
+        item{Spacer(modifier = spacerModifier)}
+        item{StatusBar(progress = tamagotchiState.intelligence, MAX_INTELLIGENCE, stringResource(R.string.intelligence))}
         item{Spacer(modifier = spacerModifier)}
         item{StatusBar(tamagotchiState.happiness, MAX_HAPPINESS, stringResource(R.string.happiness))}
         item{Spacer(modifier = spacerModifier)}

@@ -5,12 +5,12 @@ import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
-import com.example.tamagotchi.main.domain.logic.GameLogicManager
-import com.example.tamagotchi.main.domain.workers.utils.scheduleEvolutionWork
-import com.example.tamagotchi.main.data.model.MAX_FITNESS
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
-import com.example.tamagotchi.main.utils.StepCounter
+import com.example.tamagotchi.main.domain.logic.GameLogicManager
+import com.example.tamagotchi.main.domain.workers.utils.scheduleEvolutionWork
+import com.example.tamagotchi.step_tracker.repository.StepDatabase
+import com.example.tamagotchi.step_tracker.repository.StepRepository
 import com.example.tamagotchi.sudoku.SudokuActivity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,6 +26,8 @@ class GameViewModel(private val context: Context, private val repository: Tamago
     val showResetDialog: StateFlow<Boolean> = _showResetDialog.asStateFlow()
 
     private val gameLogicManager = GameLogicManager()
+    private val stepDb = StepDatabase.getDatabase(context)
+    private val stepRepository = StepRepository(stepDb.stepsDao())
 
     init {
         viewModelScope.launch {
@@ -34,14 +36,20 @@ class GameViewModel(private val context: Context, private val repository: Tamago
                 setupNewGame()
             }
             repository.tamagotchiStateFlow.collect { state ->
-                if (tamagotchiState.value.resetSteps) {
+                /*if (tamagotchiState.value.resetSteps) {
                     resetDailySteps()
                 } else {
                     _tamagotchiState.value = state
-                }
+                }*/
+                _tamagotchiState.value = state
             }
         }
 
+        viewModelScope.launch {
+            stepRepository.loadTodaysSteps().collect { steps ->
+                updateAndSave { it.copy(steps=steps.toInt()) }
+            }
+        }
     }
 
     private fun updateAndSave(transform: (currentState: TamagotchiState) -> TamagotchiState) {
@@ -50,7 +58,7 @@ class GameViewModel(private val context: Context, private val repository: Tamago
         }
     }
 
-    private val stepCounter = StepCounter(context) { stepsSinceReboot ->
+    /*private val stepCounter = StepCounter(context) { stepsSinceReboot ->
         updateAndSave { currentState ->
             val persistentBaseline = currentState.dailyStepBaseline
 
@@ -90,7 +98,7 @@ class GameViewModel(private val context: Context, private val repository: Tamago
     override fun onCleared() {
         super.onCleared()
         stopStepCounter()
-    }
+    }*/
 
     fun feed() { updateAndSave { gameLogicManager.feed(it) } }
     fun play() {

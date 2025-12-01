@@ -5,6 +5,7 @@ const val MAX_WEIGHT = 99
 const val MAX_HAPPINESS = 4
 const val MAX_DISCIPLINE = 4
 const val MAX_FITNESS = 4
+const val MAX_INTELLIGENCE = 4
 
 data class TamagotchiState(
 
