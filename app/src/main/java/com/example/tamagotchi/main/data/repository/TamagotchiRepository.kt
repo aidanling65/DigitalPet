@@ -1,6 +1,7 @@
 package com.example.tamagotchi.main.data.repository
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
@@ -75,6 +76,7 @@ class TamagotchiRepository private constructor(private val context: Context) {
 
     suspend fun updateState(transform: (currentState: TamagotchiState) -> TamagotchiState) : TamagotchiState{
         var newState: TamagotchiState? = null
+        Log.d("Repository", "Updating state")
         context.dataStore.edit {
             val currentState = tamagotchiStateFlow.first()
             val transformedState = transform(currentState)

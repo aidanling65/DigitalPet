@@ -2,6 +2,7 @@ package com.example.tamagotchi.main.ui
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
@@ -41,12 +42,13 @@ class GameViewModel(private val context: Context, private val repository: Tamago
                 } else {
                     _tamagotchiState.value = state
                 }*/
-                _tamagotchiState.value = state
+                _tamagotchiState.value = state.copy()
             }
         }
 
         viewModelScope.launch {
             stepRepository.loadTodaysSteps().collect { steps ->
+                Log.d("Steps", "Loaded steps: $steps")
                 updateAndSave { it.copy(steps=steps.toInt()) }
             }
         }

@@ -11,6 +11,7 @@ import com.example.tamagotchi.main.domain.workers.utils.scheduleEssentialWorkers
 import java.time.Duration
 import java.time.LocalTime
 import java.time.ZoneId
+import java.time.temporal.ChronoUnit
 
 class EvolutionWork(
     appContext: Context,
@@ -24,13 +25,11 @@ class EvolutionWork(
         if(currentState.sleeping){
             val wakeTime = currentState.ageStage.wakeTime
             if(wakeTime != null){
-                val durationUntilWake = if (currentTime.isBefore(wakeTime)) {
-                    Duration.between(currentTime, wakeTime)
-                } else {
-                    Duration.between(currentTime, LocalTime.MAX)
-                        .plus(Duration.between(LocalTime.MIN, wakeTime))
-                }.plus(Duration.ofMinutes(10))
-
+                var hoursUntilWake = ChronoUnit.HOURS.between(currentTime,wakeTime)
+                if(hoursUntilWake < 0){
+                    hoursUntilWake += 24
+                }
+                val durationUntilWake = Duration.ofHours(hoursUntilWake).plusMinutes(10)
                 Log.d("EvolutionWork", "Sleeping. Rescheduling evolution in ${durationUntilWake.seconds} seconds.")
                 createSingleWorker<EvolutionWork>(
                     applicationContext,

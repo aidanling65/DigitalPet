@@ -9,6 +9,7 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.ZoneId
 
 class StepRepository(
     private val stepsDao: StepsDao
@@ -23,7 +24,7 @@ class StepRepository(
     }
 
     fun loadTodaysSteps(): Flow<Long> {
-        val todayAtMidnight = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT).toString()
+        val todayAtMidnight = LocalDateTime.of(LocalDate.now(ZoneId.systemDefault()), LocalTime.MIDNIGHT).toString()
         return stepsDao.loadAllStepsFromToday(startDateTime = todayAtMidnight).map { todayDataPoints ->
             when {
                 todayDataPoints.isEmpty() -> 0
@@ -37,7 +38,5 @@ class StepRepository(
                 }
             }
         }
-
-
     }
 }

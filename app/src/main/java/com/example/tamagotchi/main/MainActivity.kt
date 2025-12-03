@@ -10,9 +10,7 @@ import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.work.ExistingPeriodicWorkPolicy
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
-import com.example.tamagotchi.main.domain.workers.utils.scheduleEssentialWorkers
 import com.example.tamagotchi.main.ui.GameViewModel
 import com.example.tamagotchi.main.ui.components.TamagotchiApp
 import com.example.tamagotchi.main.ui.theme.TamagotchiTheme
@@ -48,14 +46,4 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
-
-    override fun onRestart() {
-        super.onRestart()
-        scheduleEssentialWorkers(applicationContext, gameViewModel.tamagotchiState.value, ExistingPeriodicWorkPolicy.UPDATE)
-    }
-    /*override fun onResume() {
-        super.onResume()
-        gameViewModel.startStepCounter()
-    }*/
 }

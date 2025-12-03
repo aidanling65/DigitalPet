@@ -11,7 +11,7 @@ interface StepsDao {
     @Query("SELECT * FROM steps")
     suspend fun getAll(): List<StepCount>
 
-    @Query("SELECT * FROM steps WHERE created_at >= date(:startDateTime) " +
+    @Query("SELECT * FROM steps WHERE created_at >= :startDateTime " +
             "AND created_at < date(:startDateTime, '+1 day')")
     fun loadAllStepsFromToday(startDateTime: String): Flow<List<StepCount>>
 

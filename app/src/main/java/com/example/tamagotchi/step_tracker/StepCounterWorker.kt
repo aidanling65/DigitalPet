@@ -23,6 +23,5 @@ class StepCounterWorker(
         stepRepository.storeSteps(stepsSinceLastReboot)
 
         return  Result.success()
-
     }
 }

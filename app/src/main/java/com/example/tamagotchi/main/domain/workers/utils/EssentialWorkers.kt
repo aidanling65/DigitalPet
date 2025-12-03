@@ -21,7 +21,8 @@ import com.example.tamagotchi.main.domain.workers.periodic.SleepWork
 import com.example.tamagotchi.step_tracker.StepCounterWorker
 import java.time.Duration
 import java.time.Instant
-import java.time.LocalTime
+import java.time.LocalDate
+import java.time.ZoneId
 
 fun scheduleEssentialWorkers(context: Context, currentState: TamagotchiState, policy: ExistingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.REPLACE){
 
@@ -55,8 +56,19 @@ fun scheduleEssentialWorkers(context: Context, currentState: TamagotchiState, po
                 "sleep",
                 ExistingWorkPolicy.REPLACE
             )
+            createPeriodicWorker<StepCounterWorker>(
+                context,
+                Duration.ofSeconds(5),
+                Duration.ofMinutes(15),
+                "step_worker",
+                policy
+            )
         }
         else -> {
+            val now = Instant.now()
+            val midnightTonight = LocalDate.now(ZoneId.systemDefault()).plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant()
+            val initialDelay = Duration.between(now, midnightTonight)
+
             createPeriodicWorker<PoopWork>(
                 context,
                 Duration.ofMinutes(30),
@@ -94,7 +106,7 @@ fun scheduleEssentialWorkers(context: Context, currentState: TamagotchiState, po
             )
             createPeriodicWorker<BrainrotWork>(
                 context,
-                Duration.between(Instant.now(), LocalTime.MAX),
+                initialDelay,
                 Duration.ofHours(24),
                 "brainrot",
                 policy
