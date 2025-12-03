@@ -16,7 +16,7 @@ class SleepWork(
     appContext: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
-    private val repository = TamagotchiRepository.getInstance(appContext)
+    private val repository = TamagotchiRepository(appContext)
 
     override suspend fun doWork(): Result {
         val currentTime = LocalTime.now(ZoneId.systemDefault())

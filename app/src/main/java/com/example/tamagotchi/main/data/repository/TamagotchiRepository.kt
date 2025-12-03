@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.map
 
 val Context.dataStore by preferencesDataStore(name = "tamagotchi_prefs")
 
-class TamagotchiRepository private constructor(private val context: Context) {
+class TamagotchiRepository (private val context: Context) {
 
     private val INITIAL = booleanPreferencesKey("initial")
     private val AGE = intPreferencesKey("age")
@@ -127,7 +127,7 @@ class TamagotchiRepository private constructor(private val context: Context) {
         return tamagotchiStateFlow.first()
     }
 
-    companion object {
+    /*companion object {
         @Volatile
         private var INSTANCE: TamagotchiRepository? = null
 
@@ -138,5 +138,5 @@ class TamagotchiRepository private constructor(private val context: Context) {
                 instance
             }
         }
-    }
+    }*/
 }

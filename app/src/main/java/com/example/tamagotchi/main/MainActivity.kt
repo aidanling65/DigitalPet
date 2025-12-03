@@ -21,10 +21,14 @@ import com.example.tamagotchi.main.utils.createNotificationChannel
 class MainActivity : ComponentActivity() {
 
     private val gameViewModel: GameViewModel by viewModels {
-        object : ViewModelProvider.Factory{
-            override fun<T: ViewModel> create(modelClass: Class<T>): T{
-                val repository = TamagotchiRepository.getInstance(applicationContext)
-                return GameViewModel(applicationContext, repository) as T
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                if (modelClass.isAssignableFrom(GameViewModel::class.java)) {
+                    val repository = TamagotchiRepository(applicationContext)
+                    @Suppress("UNCHECKED_CAST")
+                    return GameViewModel(applicationContext, repository) as T
+                }
+                throw IllegalArgumentException("Unknown ViewModel class")
             }
         }
     }
@@ -34,7 +38,7 @@ class MainActivity : ComponentActivity() {
 
         ActivityCompat.requestPermissions(
             this,
-            arrayOf(ACTIVITY_RECOGNITION,Manifest.permission.POST_NOTIFICATIONS),
+            arrayOf(ACTIVITY_RECOGNITION, Manifest.permission.POST_NOTIFICATIONS),
             NOTIFICATION_PERMISSION_CODE
         )
         createNotificationChannel(applicationContext)
