@@ -1,7 +1,6 @@
 package com.example.tamagotchi.main.ui
 
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,7 +11,6 @@ import com.example.tamagotchi.main.domain.logic.GameLogicManager
 import com.example.tamagotchi.main.domain.workers.utils.scheduleEvolutionWork
 import com.example.tamagotchi.step_tracker.repository.StepDatabase
 import com.example.tamagotchi.step_tracker.repository.StepRepository
-import com.example.tamagotchi.sudoku.SudokuActivity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -37,11 +35,6 @@ class GameViewModel(private val context: Context, private val repository: Tamago
                 setupNewGame()
             }
             repository.tamagotchiStateFlow.collect { state ->
-                /*if (tamagotchiState.value.resetSteps) {
-                    resetDailySteps()
-                } else {
-                    _tamagotchiState.value = state
-                }*/
                 _tamagotchiState.value = state.copy()
             }
         }
@@ -60,54 +53,12 @@ class GameViewModel(private val context: Context, private val repository: Tamago
         }
     }
 
-    /*private val stepCounter = StepCounter(context) { stepsSinceReboot ->
-        updateAndSave { currentState ->
-            val persistentBaseline = currentState.dailyStepBaseline
-
-            if (persistentBaseline == null) {
-                currentState.copy(
-                    steps = 0,
-                    dailyStepBaseline = stepsSinceReboot
-                )
-            } else {
-                val dailySteps = stepsSinceReboot - persistentBaseline
-                currentState.copy(
-                    steps = dailySteps,
-                    fitness = if (dailySteps > currentState.stepGoal && currentState.fitness < MAX_FITNESS) currentState.fitness + 1 else currentState.fitness
-                )
-            }
-        }
-    }
-
-    fun startStepCounter() {
-        stepCounter.startListening()
-    }
-
-    fun stopStepCounter() {
-        stepCounter.stopListening()
-    }
-
-    fun resetDailySteps() {
-        updateAndSave { currentState ->
-            currentState.copy(
-                steps = 0,
-                resetSteps = false,
-                dailyStepBaseline = null
-            )
-        }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        stopStepCounter()
-    }*/
-
     fun feed() { updateAndSave { gameLogicManager.feed(it) } }
     fun play() {
-        val intent = Intent(context, SudokuActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(intent)
         updateAndSave { gameLogicManager.play(it) }
+    }
+    fun learning(){
+        updateAndSave { gameLogicManager.learning(it) }
     }
     fun clean() { updateAndSave { gameLogicManager.clean(it) }}
     fun heal() { updateAndSave { gameLogicManager.heal(it) } }

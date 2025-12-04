@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-@Database(entities = [StepCount::class], version = 1)
+@Database(entities = [StepCount::class], version = 2)
 abstract class StepDatabase: RoomDatabase() {
     abstract fun stepsDao(): StepsDao
 
@@ -18,7 +18,9 @@ abstract class StepDatabase: RoomDatabase() {
                     context.applicationContext,
                     StepDatabase::class.java,
                     "step_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
                 INSTANCE = instance
                 instance
             }

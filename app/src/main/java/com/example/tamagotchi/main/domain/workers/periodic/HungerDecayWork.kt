@@ -1,4 +1,4 @@
-package com.example.tamagotchi.domain.workers.periodic
+package com.example.tamagotchi.main.domain.workers.periodic
 
 import android.content.Context
 import androidx.work.CoroutineWorker

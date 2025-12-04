@@ -6,7 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "steps")
 data class StepCount(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+
     @ColumnInfo(name="steps") val steps: Long,
 
     @ColumnInfo(name="created_at") val createdAt: String,

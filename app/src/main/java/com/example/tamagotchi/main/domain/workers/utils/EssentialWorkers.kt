@@ -3,7 +3,7 @@ package com.example.tamagotchi.main.domain.workers.utils
 import android.content.Context
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
-import com.example.tamagotchi.domain.workers.periodic.HungerDecayWork
+import com.example.tamagotchi.main.domain.workers.periodic.HungerDecayWork
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.domain.workers.baby.BabyHungerHappinessWork
@@ -121,7 +121,7 @@ fun scheduleEssentialWorkers(context: Context, currentState: TamagotchiState, po
             createPeriodicWorker<StepCounterWorker>(
                 context,
                 Duration.ofMinutes(5),
-                Duration.ofHours(15),
+                Duration.ofMinutes(15),
                 "step_worker",
                 policy
             )

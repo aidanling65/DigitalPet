@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -20,7 +21,7 @@ import com.example.tamagotchi.main.ui.components.bars.BottomBar
 import com.example.tamagotchi.main.ui.components.bars.TopAppBar
 
 @Composable
-fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
+fun TamagotchiApp(gameViewModel: GameViewModel, onSudokuClick: () -> Unit, modifier: Modifier = Modifier) {
     val tamagotchiState by gameViewModel.tamagotchiState.collectAsState()
     val showDialog by gameViewModel.showResetDialog.collectAsState()
 
@@ -36,7 +37,7 @@ fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.background),
         topBar = { TopAppBar(gameViewModel) },
-        bottomBar = { BottomBar(gameViewModel) }
+        bottomBar = { BottomBar(gameViewModel, onSudokuClick) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -47,7 +48,7 @@ fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
             Spacer(Modifier.height(16.dp))
-            TamagotchiDisplay(tamagotchiState)
+            TamagotchiDisplay(tamagotchiState, modifier.size(256.dp))
             Spacer(Modifier.height(16.dp))
             StatusBars(tamagotchiState)
         }

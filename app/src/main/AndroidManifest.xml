@@ -27,10 +27,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".sudoku.SudokuActivity"
-            android:theme="@style/Theme.Tamagotchi.AppCompat" />
-
     </application>
 
 </manifest>

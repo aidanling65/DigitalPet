@@ -4,6 +4,7 @@ import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.MAX_DISCIPLINE
 import com.example.tamagotchi.main.data.model.MAX_HAPPINESS
 import com.example.tamagotchi.main.data.model.MAX_HUNGER
+import com.example.tamagotchi.main.data.model.MAX_INTELLIGENCE
 import com.example.tamagotchi.main.data.model.MAX_WEIGHT
 import com.example.tamagotchi.main.data.model.TamagotchiState
 
@@ -91,5 +92,11 @@ class GameLogicManager {
         }else{
             current
         }
+    }
+
+    fun learning(current: TamagotchiState): TamagotchiState {
+        return current.copy(
+            intelligence = (current.intelligence + 1).coerceAtMost(MAX_INTELLIGENCE)
+        )
     }
 }

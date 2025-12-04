@@ -4,10 +4,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -28,23 +29,23 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifier) {
-    var currentFrame by remember(currentState.currentAnimation){mutableStateOf(0)}
+    var currentFrame by remember(currentState.currentAnimation) { mutableStateOf(0) }
 
     LaunchedEffect(currentState.currentAnimation) {
         currentFrame = 0
-        while(true){
+        while (true) {
             delay(500)
             currentFrame = ((currentFrame + 1) % currentState.currentAnimation.size)
         }
     }
 
     Row(
-        Modifier
-            .clip(RoundedCornerShape(48.dp))
+        modifier
+            .clip(RoundedCornerShape(percent = 25))
             .border(
                 width = 2.dp,
                 color = colorResource(R.color.black),
-                shape = RoundedCornerShape(48.dp)
+                shape = RoundedCornerShape(25)
             )
             .background(
                 color = if (
@@ -52,9 +53,9 @@ fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifi
                     currentState.currentAnimation == currentState.animations.lightsOutSleep
                 ) colorResource(R.color.black)
                 else colorResource(R.color.lcd),
-                shape = RoundedCornerShape(48.dp)
+                shape = RoundedCornerShape(percent = 25)
             )
-            .padding(32.dp)
+            .padding(8.dp)
     ) {
         Box(
             Modifier
@@ -65,17 +66,24 @@ fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifi
                 painter = painterResource(currentState.currentAnimation[currentFrame]),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(200.dp)
+                    .fillMaxSize()
             )
             if (currentState.poop) {
-                Image(
-                    painter = painterResource(R.drawable.poop0),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .offset((-10).dp, (-10).dp)
-                        .size(128.dp)
-                )
+                BoxWithConstraints(modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .fillMaxSize(0.6f)) {
+
+                    val offsetX = maxWidth * -0.05f
+                    val offsetY = maxHeight * -0.05f
+                    Image(
+                        painter = painterResource(R.drawable.poop0),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .offset(offsetX,offsetY)
+                            .fillMaxSize()
+                    )
+                }
             }
         }
     }

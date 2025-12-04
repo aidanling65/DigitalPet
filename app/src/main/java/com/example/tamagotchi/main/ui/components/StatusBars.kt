@@ -35,7 +35,7 @@ fun StatusBars(
             .padding(horizontal = 32.dp),
         horizontalAlignment = Alignment.Start,
     ) {
-        val spacerModifier = Modifier.height(16.dp)
+        val spacerModifier = Modifier.height(8.dp)
         item{StatusBar(tamagotchiState.hunger, MAX_HUNGER, stringResource(R.string.hunger))}
         item{Spacer(modifier = spacerModifier)}
         item{StatusBar(tamagotchiState.discipline, MAX_DISCIPLINE, stringResource(R.string.discipline))}
@@ -68,11 +68,6 @@ fun StatusBars(
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodySmall
                 )
-                Text(
-                    text = stringResource(R.string.mistakes) + ": " + (tamagotchiState.mentalMistakes + tamagotchiState.physicalMistakes).toString(),
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.bodySmall
-                )
             }
             Column()
             {
@@ -82,16 +77,14 @@ fun StatusBars(
                     style = MaterialTheme.typography.bodySmall
                 )
                 Text(
-                    text = if (tamagotchiState.poop) stringResource(R.string.dirty) else stringResource(
-                        R.string.clean
+                    text = if(tamagotchiState.sick) stringResource(R.string.sick) else stringResource(
+                        R.string.healthy
                     ),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodySmall
                 )
                 Text(
-                    text = if(tamagotchiState.sick) stringResource(R.string.sick) else stringResource(
-                        R.string.healthy
-                    ),
+                    text = stringResource(R.string.mistakes) + ": " + (tamagotchiState.mentalMistakes + tamagotchiState.physicalMistakes).toString(),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodySmall
                 )

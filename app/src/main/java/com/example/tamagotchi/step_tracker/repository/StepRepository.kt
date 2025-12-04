@@ -16,8 +16,8 @@ class StepRepository(
 ) {
     suspend fun storeSteps(stepsSinceLastReboot: Long) = withContext(Dispatchers.IO) {
         val stepCount = StepCount(
-            stepsSinceLastReboot,
-            Instant.now().toString()
+            steps=stepsSinceLastReboot,
+            createdAt=Instant.now().toString()
         )
         Log.d("StepCount", "Storing steps: $stepCount")
         stepsDao.insertAll(stepCount)

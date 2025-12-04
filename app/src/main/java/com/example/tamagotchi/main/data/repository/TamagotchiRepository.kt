@@ -126,17 +126,4 @@ class TamagotchiRepository (private val context: Context) {
     suspend fun getState(): TamagotchiState {
         return tamagotchiStateFlow.first()
     }
-
-    /*companion object {
-        @Volatile
-        private var INSTANCE: TamagotchiRepository? = null
-
-        fun getInstance(context: Context): TamagotchiRepository {
-            return INSTANCE ?: synchronized(this) {
-                val instance = TamagotchiRepository(context.applicationContext)
-                INSTANCE = instance
-                instance
-            }
-        }
-    }*/
 }
