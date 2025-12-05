@@ -1,4 +1,4 @@
-package com.example.tamagotchi.main.ui.components
+package com.example.tamagotchi.main.ui.components.status_bars
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,15 +36,33 @@ fun StatusBars(
         horizontalAlignment = Alignment.Start,
     ) {
         val spacerModifier = Modifier.height(8.dp)
-        item{StatusBar(tamagotchiState.hunger, MAX_HUNGER, stringResource(R.string.hunger))}
+        item{ StatusBar(tamagotchiState.hunger, MAX_HUNGER, stringResource(R.string.hunger)) }
         item{Spacer(modifier = spacerModifier)}
-        item{StatusBar(tamagotchiState.discipline, MAX_DISCIPLINE, stringResource(R.string.discipline))}
+        item{
+            StatusBar(
+                tamagotchiState.discipline,
+                MAX_DISCIPLINE,
+                stringResource(R.string.discipline)
+            )
+        }
         item{Spacer(modifier = spacerModifier)}
-        item{StatusBar(progress = tamagotchiState.intelligence, MAX_INTELLIGENCE, stringResource(R.string.intelligence))}
+        item{
+            StatusBar(
+                progress = tamagotchiState.intelligence,
+                MAX_INTELLIGENCE,
+                stringResource(R.string.intelligence)
+            )
+        }
         item{Spacer(modifier = spacerModifier)}
-        item{StatusBar(tamagotchiState.happiness, MAX_HAPPINESS, stringResource(R.string.happiness))}
+        item{
+            StatusBar(
+                tamagotchiState.happiness,
+                MAX_HAPPINESS,
+                stringResource(R.string.happiness)
+            )
+        }
         item{Spacer(modifier = spacerModifier)}
-        item{FitnessBar(tamagotchiState)}
+        item{ FitnessBar(tamagotchiState) }
         item{Spacer(modifier = spacerModifier)}
         item{Row(
             horizontalArrangement = Arrangement.SpaceBetween,

@@ -5,24 +5,33 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
+import com.example.tamagotchi.main.data.model.MAX_FITNESS
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
 import com.example.tamagotchi.main.domain.logic.GameLogicManager
 import com.example.tamagotchi.main.domain.workers.utils.scheduleEvolutionWork
 import com.example.tamagotchi.step_tracker.repository.StepDatabase
 import com.example.tamagotchi.step_tracker.repository.StepRepository
+import com.example.tamagotchi.sudoku.ui.SudokuViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class GameViewModel(private val context: Context, private val repository: TamagotchiRepository) :
+class GameViewModel(private val context: Context, val sudokuViewModel: SudokuViewModel,  val repository: TamagotchiRepository) :
     ViewModel() {
     private val _tamagotchiState = MutableStateFlow(TamagotchiState())
     val tamagotchiState: StateFlow<TamagotchiState> = _tamagotchiState.asStateFlow()
 
     private val _showResetDialog = MutableStateFlow(false)
     val showResetDialog: StateFlow<Boolean> = _showResetDialog.asStateFlow()
+
+    private val _showGame = MutableStateFlow(false)
+    val showGame: StateFlow<Boolean> = _showGame.asStateFlow()
+
+    private val _showSudoku = MutableStateFlow(false)
+    val showSudoku: StateFlow<Boolean> = _showSudoku.asStateFlow()
+
 
     private val gameLogicManager = GameLogicManager()
     private val stepDb = StepDatabase.getDatabase(context)
@@ -42,7 +51,19 @@ class GameViewModel(private val context: Context, private val repository: Tamago
         viewModelScope.launch {
             stepRepository.loadTodaysSteps().collect { steps ->
                 Log.d("Steps", "Loaded steps: $steps")
-                updateAndSave { it.copy(steps=steps.toInt()) }
+                val stepGoal = tamagotchiState.value.stepGoal
+                if (tamagotchiState.value.steps < stepGoal && steps > stepGoal) {
+                    updateAndSave {
+                        it.copy(
+                            steps = steps.toInt(), fitness = (it.fitness + 1).coerceAtMost(
+                                MAX_FITNESS
+                            )
+                        )
+                    }
+                }
+                else{
+                    updateAndSave { it.copy(steps = steps.toInt()) }
+                }
             }
         }
     }
@@ -53,19 +74,52 @@ class GameViewModel(private val context: Context, private val repository: Tamago
         }
     }
 
-    fun feed() { updateAndSave { gameLogicManager.feed(it) } }
+    fun feed() {
+        updateAndSave { gameLogicManager.feed(it) }
+    }
+
     fun play() {
+        _showGame.value = true
         updateAndSave { gameLogicManager.play(it) }
     }
-    fun learning(){
+
+    fun onDismissGame(){
+        _showGame.value = false
+    }
+
+    fun launchSudoku(){
+        sudokuViewModel.sudokuGame.fetchNewSudoku()
+        _showSudoku.value = true
+    }
+
+    fun onDismissSudoku(){
+        _showSudoku.value = false
+    }
+
+    fun learning() {
+        _showSudoku.value = false
         updateAndSave { gameLogicManager.learning(it) }
     }
-    fun clean() { updateAndSave { gameLogicManager.clean(it) }}
-    fun heal() { updateAndSave { gameLogicManager.heal(it) } }
-    fun light() { updateAndSave { gameLogicManager.light(it) } }
-    fun discipline() { updateAndSave { gameLogicManager.discipline(it) } }
-    
-    fun onResetClicked() { _showResetDialog.value = true }
+
+    fun clean() {
+        updateAndSave { gameLogicManager.clean(it) }
+    }
+
+    fun heal() {
+        updateAndSave { gameLogicManager.heal(it) }
+    }
+
+    fun light() {
+        updateAndSave { gameLogicManager.light(it) }
+    }
+
+    fun discipline() {
+        updateAndSave { gameLogicManager.discipline(it) }
+    }
+
+    fun onResetClicked() {
+        _showResetDialog.value = true
+    }
 
     fun onDismissDialog() {
         _showResetDialog.value = false

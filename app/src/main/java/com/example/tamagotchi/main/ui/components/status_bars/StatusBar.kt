@@ -1,4 +1,4 @@
-package com.example.tamagotchi.main.ui.components
+package com.example.tamagotchi.main.ui.components.status_bars
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement

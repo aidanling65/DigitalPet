@@ -19,25 +19,19 @@ import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.main.ui.GameViewModel
 import com.example.tamagotchi.main.ui.components.bars.BottomBar
 import com.example.tamagotchi.main.ui.components.bars.TopAppBar
+import com.example.tamagotchi.main.ui.components.status_bars.StatusBars
 
 @Composable
-fun TamagotchiApp(gameViewModel: GameViewModel, onSudokuClick: () -> Unit, modifier: Modifier = Modifier) {
+fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
     val tamagotchiState by gameViewModel.tamagotchiState.collectAsState()
-    val showDialog by gameViewModel.showResetDialog.collectAsState()
-
-    if (showDialog) {
-        ResetDialog(
-            onDismissRequest = { gameViewModel.onDismissDialog() },
-            onConfirmation = { gameViewModel.confirmReset() }
-        )
-    }
+    Dialogs(gameViewModel)
 
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.background),
         topBar = { TopAppBar(gameViewModel) },
-        bottomBar = { BottomBar(gameViewModel, onSudokuClick) }
+        bottomBar = { BottomBar(gameViewModel) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
