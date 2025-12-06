@@ -1,6 +1,6 @@
 package com.example.tamagotchi.main.ui.components
 
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -27,7 +27,7 @@ fun Dialogs(gameViewModel: GameViewModel){
         GameDialog(
             tamagotchiState,
             onDismissRequest = {gameViewModel.onDismissGame()},
-            Modifier.fillMaxSize()
+            Modifier.fillMaxWidth(0.95f)
         )
     }
     if(showSudoku){
@@ -35,9 +35,7 @@ fun Dialogs(gameViewModel: GameViewModel){
             viewModel = gameViewModel.sudokuViewModel,
             tamagotchiState = tamagotchiState,
             onDismissRequest = { gameViewModel.onDismissSudoku() },
-            onGameWon = {
-                gameViewModel.learning()
-            }
+            onGameWon = { gameViewModel.learning() }
         )
     }
 }
