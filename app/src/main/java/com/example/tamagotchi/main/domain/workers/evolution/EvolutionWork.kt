@@ -40,16 +40,18 @@ class EvolutionWork(
                 return Result.success()
             }
         }
-        val evolutionFunction = currentState.ageStage.evolve
 
-        if(evolutionFunction != null) {
-            repository.updateState{
-                val updatedState = evolutionFunction(applicationContext, it)
+        repository.updateState { state ->
+            val evolutionFunction = state.ageStage.evolve
+
+            if (evolutionFunction != null) {
+                val updatedState = evolutionFunction(applicationContext, state)
                 Log.d("EvolutionWork", updatedState.animations.name)
                 scheduleEssentialWorkers(applicationContext, updatedState)
                 updatedState
+            } else {
+                state
             }
-
         }
 
         return Result.success()

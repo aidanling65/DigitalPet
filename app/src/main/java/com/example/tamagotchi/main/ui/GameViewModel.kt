@@ -80,7 +80,10 @@ class GameViewModel(private val context: Context, val sudokuViewModel: SudokuVie
 
     fun play() {
         _showGame.value = true
-        updateAndSave { gameLogicManager.play(it) }
+    }
+
+    fun gameScore(score: Int){
+        updateAndSave { gameLogicManager.play(it, score) }
     }
 
     fun onDismissGame(){

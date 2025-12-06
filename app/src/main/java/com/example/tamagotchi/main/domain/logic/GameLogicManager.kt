@@ -32,19 +32,21 @@ class GameLogicManager {
         return current
     }
 
-    fun play(current: TamagotchiState): TamagotchiState {
-        if (!canInteract(current))
-            return current
+    fun play(current: TamagotchiState, score: Int): TamagotchiState {
+        val happinessGain = when {
+            score < 50 ->(-1)
+            score < 100 -> 0
+            score < 150 -> 1
+            score < 200 -> 2
+            else -> 3
+        }
 
-        return if (current.happiness < MAX_HAPPINESS) {
-            current.copy(
-                happiness = current.happiness.inc(),
-                weight = if (current.weight > current.ageStage.minimumWeight) current.weight - 1 else current.weight
-            )
-        }
-        else{
-            current
-        }
+        return current.copy(
+            happiness = (current.happiness + happinessGain)
+                .coerceAtMost(MAX_HAPPINESS)
+                .coerceAtLeast(0),
+            weight = if (current.weight > current.ageStage.minimumWeight) current.weight - 1 else current.weight
+        )
     }
 
     fun clean(current: TamagotchiState): TamagotchiState {
@@ -80,7 +82,7 @@ class GameLogicManager {
         if (!canInteract(current))
             return current
 
-       return if (current.misbehaving) {
+        return if (current.misbehaving) {
             current.copy(
                 discipline = if (current.discipline < MAX_DISCIPLINE) current.discipline.inc() else current.discipline,
                 misbehaving = false
@@ -89,7 +91,7 @@ class GameLogicManager {
             current.copy(
                 happiness = current.happiness - 1
             )
-        }else{
+        } else {
             current
         }
     }

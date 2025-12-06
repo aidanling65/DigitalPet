@@ -26,6 +26,7 @@ fun Dialogs(gameViewModel: GameViewModel){
     if(showGame){
         GameDialog(
             tamagotchiState,
+            gameViewModel,
             onDismissRequest = {gameViewModel.onDismissGame()},
             Modifier.fillMaxWidth(0.95f)
         )

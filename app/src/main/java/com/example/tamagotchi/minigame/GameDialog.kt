@@ -14,10 +14,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.main.ui.GameViewModel
 
 @Composable
 fun GameDialog(
     tamagotchiState: TamagotchiState,
+    gameViewModel: GameViewModel,
     onDismissRequest: () -> Unit,
     modifier: Modifier
 ) {
@@ -38,7 +40,7 @@ fun GameDialog(
                 .clip(RoundedCornerShape(10))
                 .background(MaterialTheme.colorScheme.background)
         ) {
-                PlatformerGameCanvas(tamagotchiState)
+                PlatformerGameCanvas(tamagotchiState, gameViewModel)
         }
     }
 }
