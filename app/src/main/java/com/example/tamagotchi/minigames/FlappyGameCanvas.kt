@@ -1,4 +1,4 @@
-package com.example.tamagotchi.minigame
+package com.example.tamagotchi.minigames
 
 import android.util.Log
 import androidx.compose.foundation.Canvas
@@ -23,7 +23,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -46,7 +45,7 @@ import com.example.tamagotchi.main.ui.GameViewModel
 import kotlinx.coroutines.delay
 
 @Composable
-fun PlatformerGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewModel) {
+fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewModel) {
     var canvasHeight by remember { mutableFloatStateOf(1000f) }
     var canvasWidth by remember { mutableFloatStateOf(1000f) }
 
@@ -54,24 +53,28 @@ fun PlatformerGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameVi
     var currentFrame by remember { mutableIntStateOf(0) }
     val playerBitmap = ImageBitmap.imageResource(tamagotchiState.animations.play[currentFrame])
     val playerRenderSize = IntSize(
-        playerBitmap.width * 3,
-        playerBitmap.height * 3
+        playerBitmap.width * 2,
+        playerBitmap.height * 2
     )
     val playerRenderedHeight = playerRenderSize.height
     val playerRenderedWidth = playerRenderSize.width
 
     var playerX by remember { mutableFloatStateOf(100f) }
-    var playerY by remember { mutableFloatStateOf(canvasHeight - playerRenderedHeight) }
+    var playerY by remember { mutableFloatStateOf((canvasHeight/2) - playerRenderedHeight) }
     var playerYVelocity by remember { mutableFloatStateOf(0f) }
-    val gravity = 4f
+    val gravity = 0.75f
 
-    var obstacleHeight = canvasHeight / 7
-    val obstacleWidth = 30f
+    val obstacleWidth = 80f
+
+    var obstacleHeightOffset by remember { mutableFloatStateOf(0f) }
+    var obstacleHeight = canvasHeight / 2
     var obstacleX by remember { mutableFloatStateOf(canvasWidth * 2) }
     var obstacleY by remember { mutableFloatStateOf(0f) }
-    var obstacleXVelocity by remember { mutableFloatStateOf(9f) }
+    var obstacle2y by remember{ mutableFloatStateOf(60f)}
 
-    var timer by remember { mutableLongStateOf(0L) }
+    var obstacleXVelocity by remember { mutableFloatStateOf(5f) }
+
+    var score by remember { mutableIntStateOf(0) }
     var isGameOver by remember { mutableStateOf(false) }
     var isGameOverScreen by remember { mutableStateOf(false) }
     var isGameStarted by remember { mutableStateOf(false) }
@@ -82,42 +85,49 @@ fun PlatformerGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameVi
         LaunchedEffect(Unit) {
             while (true) {
                 if (isGameOver) {
-                    gameViewModel.gameScore((timer / 200L).toInt())
+                    gameViewModel.gameScore(score * 50)
                     return@LaunchedEffect
                 }
                 playerY =
-                    (playerY + playerYVelocity).coerceAtMost(canvasHeight - playerRenderedHeight)
-                playerYVelocity += gravity
+                    (playerY + playerYVelocity)
+                playerYVelocity = (playerYVelocity + gravity).coerceAtMost(10f)
 
                 obstacleX -= obstacleXVelocity
-                obstacleHeight = canvasHeight / 10
                 if (obstacleX < 0) {
                     obstacleX = canvasWidth
+                    obstacleHeightOffset = ((-100..100).random()).toFloat()
                 }
                 laps += 1
                 if (laps % frameRate == 0L) {
                     currentFrame = (currentFrame + 1) % tamagotchiState.animations.play.size
                     laps = 0
-                    obstacleXVelocity += 0.02f
                 }
 
                 val playerRight = playerX + playerRenderedWidth
                 val playerBottom = playerY + playerRenderedHeight
 
                 val collisionX = playerRight > obstacleX && playerX < obstacleX + obstacleWidth
-                val collisionY = playerBottom > obstacleY
+                val topCollision = playerY < obstacleHeight && playerY > 0
+                val bottomCollision = playerBottom > obstacle2y
+                val collisionY = topCollision || bottomCollision
 
                 if (collisionX && collisionY) {
                     Log.d(
                         "Collision",
-                        "Player: (${playerX}, ${playerY})\nObstacle: (${obstacleX}, ${obstacleY}"
+                        "Player: ($playerX, $playerY)\nObstacle: ($obstacleX, $obstacleY"
                     )
                     isGameOver = true
                     delay(500L)
                     isGameOverScreen = true
                 }
-
-                timer += 10L
+                else if(playerY > canvasHeight + 200){
+                    isGameOver = true
+                    delay(500L)
+                    isGameOverScreen = true
+                }
+                if(playerX > obstacleX){
+                    score += 1
+                }
 
                 delay(delay)
             }
@@ -127,7 +137,7 @@ fun PlatformerGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameVi
     var countdown by remember { mutableIntStateOf(3) }
     if (!isGameStarted) {
         obstacleX = canvasWidth
-        playerY = canvasHeight - playerRenderedHeight
+        playerY = canvasHeight / 2 - playerRenderedHeight
         LaunchedEffect(Unit) {
             while (countdown > 0) {
                 delay(1000L)
@@ -143,11 +153,13 @@ fun PlatformerGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameVi
     ) {
         Row(
             horizontalArrangement = Arrangement.Start,
-            modifier = Modifier.fillMaxWidth(0.9f).padding(bottom = 8.dp)
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .padding(bottom = 8.dp)
         ) {
             if (isGameStarted && !isGameOver) {
                 Text(
-                    "Score: ${timer / 200}",
+                    "Score: $score",
                     style = MaterialTheme.typography.bodyMedium,
                     color = colorResource(R.color.white),
                     textAlign = TextAlign.Start
@@ -167,8 +179,10 @@ fun PlatformerGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameVi
             Canvas(modifier = Modifier.matchParentSize()) {
                 canvasHeight = size.height
                 canvasWidth = size.width
-                obstacleHeight = canvasHeight / 10
-                obstacleY = canvasHeight - obstacleHeight
+                val gapSize = playerRenderedHeight * 4f
+                obstacleHeight = (canvasHeight / 2 - 150) + obstacleHeightOffset
+                obstacleY = 0f
+                obstacle2y = obstacleY + obstacleHeight + gapSize
 
                 if (!isGameOverScreen) {
                     if (isGameStarted) {
@@ -176,6 +190,11 @@ fun PlatformerGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameVi
                             Color(0xFF000000),
                             topLeft = Offset(obstacleX, obstacleY),
                             size = Size(obstacleWidth, obstacleHeight)
+                        )
+                        drawRect(
+                            Color(0xFF000000),
+                            topLeft = Offset(obstacleX, obstacle2y),
+                            size = Size(obstacleWidth, canvasHeight - obstacle2y)
                         )
                     }
 
@@ -195,7 +214,7 @@ fun PlatformerGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameVi
                 ) {
                     Column {
                         Text("Game Over", style = MaterialTheme.typography.bodyLarge)
-                        Text("Score: ${timer / 200}", style = MaterialTheme.typography.bodySmall)
+                        Text("Score: $score", style = MaterialTheme.typography.bodySmall)
                     }
                 }
             }
@@ -204,7 +223,7 @@ fun PlatformerGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameVi
                     modifier = Modifier.matchParentSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("${countdown}", style = MaterialTheme.typography.bodyLarge)
+                    Text("$countdown", style = MaterialTheme.typography.bodyLarge)
                 }
             }
         }
@@ -212,7 +231,11 @@ fun PlatformerGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameVi
     Spacer(modifier = Modifier.height(16.dp))
     if (!isGameOverScreen) {
         Button(
-            onClick = { if (isGameStarted) playerYVelocity = -70f },
+            onClick = {
+                if (isGameStarted) {
+                    playerYVelocity = -10f
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth(0.7f)
                 .fillMaxHeight(0.5f)
@@ -225,7 +248,7 @@ fun PlatformerGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameVi
                 isGameOver = false
                 isGameStarted = false
                 isGameOverScreen = false
-                timer = 0
+                score = 0
             },
             modifier = Modifier
                 .fillMaxWidth(0.7f)

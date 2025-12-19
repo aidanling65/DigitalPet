@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
+import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.MAX_FITNESS
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
@@ -79,7 +80,11 @@ class GameViewModel(private val context: Context, val sudokuViewModel: SudokuVie
     }
 
     fun play() {
-        _showGame.value = true
+        if(!tamagotchiState.value.sleeping &&
+            tamagotchiState.value.ageStage != AgeStage.DEAD &&
+            tamagotchiState.value.ageStage != AgeStage.EGG) {
+            _showGame.value = true
+        }
     }
 
     fun gameScore(score: Int){
@@ -124,13 +129,13 @@ class GameViewModel(private val context: Context, val sudokuViewModel: SudokuVie
         _showResetDialog.value = true
     }
 
-    fun onDismissDialog() {
+    fun onDismissResetDialog() {
         _showResetDialog.value = false
     }
 
     fun confirmReset() {
         setupNewGame()
-        onDismissDialog()
+        onDismissResetDialog()
     }
 
     fun setupNewGame() {

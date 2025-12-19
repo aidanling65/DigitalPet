@@ -6,7 +6,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.example.tamagotchi.main.ui.GameViewModel
-import com.example.tamagotchi.minigame.GameDialog
+import com.example.tamagotchi.minigames.GameDialog
 import com.example.tamagotchi.sudoku.ui.components.SudokuDialog
 
 @Composable
@@ -19,7 +19,7 @@ fun Dialogs(gameViewModel: GameViewModel){
 
     if (showDialog) {
         ResetDialog(
-            onDismissRequest = { gameViewModel.onDismissDialog() },
+            onDismissRequest = { gameViewModel.onDismissResetDialog() },
             onConfirmation = { gameViewModel.confirmReset() }
         )
     }

@@ -1,4 +1,4 @@
-package com.example.tamagotchi.minigame
+package com.example.tamagotchi.minigames
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -15,6 +15,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.GameViewModel
+import kotlin.random.Random
 
 @Composable
 fun GameDialog(
@@ -23,6 +24,8 @@ fun GameDialog(
     onDismissRequest: () -> Unit,
     modifier: Modifier
 ) {
+    val gameChoice = Random.nextInt(0,2)
+
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(
@@ -40,7 +43,10 @@ fun GameDialog(
                 .clip(RoundedCornerShape(10))
                 .background(MaterialTheme.colorScheme.background)
         ) {
-                PlatformerGameCanvas(tamagotchiState, gameViewModel)
+            when(gameChoice) {
+                0 -> JumpGameCanvas(tamagotchiState, gameViewModel)
+                1 -> FlappyGameCanvas(tamagotchiState, gameViewModel)
+            }
         }
     }
 }
