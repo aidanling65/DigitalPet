@@ -66,7 +66,7 @@ fun JumpGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMode
     val gravity = 4f
     var playerJumped by remember { mutableStateOf(false) }
 
-    var obstacleHeight = canvasHeight / 7
+    var obstacleHeight: Float
     val obstacleWidth = 30f
     var obstacleX by remember { mutableFloatStateOf(canvasWidth * 2) }
     var obstacleY by remember { mutableFloatStateOf(0f) }

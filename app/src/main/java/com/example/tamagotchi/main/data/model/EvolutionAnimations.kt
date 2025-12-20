@@ -27,7 +27,7 @@ enum class EvolutionAnimations(
         sleep = loadAnimations("baby_sleep"),
         lightsOutSleep = loadAnimations("lights_out_sleep"),
         lightsOutAwake = listOf(R.drawable.lights_out_awake),
-        sick = listOf(R.drawable.tamagotchi),
+        sick = loadAnimations("baby_sick"),
         play = loadAnimations("baby_play")
     ),
     CHILD(
@@ -36,7 +36,7 @@ enum class EvolutionAnimations(
         sleep = loadAnimations("child_sleep"),
         lightsOutSleep = loadAnimations("lights_out_sleep"),
         lightsOutAwake = listOf(R.drawable.lights_out_awake),
-        sick = listOf(R.drawable.tamagotchi),
+        sick = loadAnimations("child_sick"),
         play = loadAnimations("child_play")
     ),
     TEEN_1(
@@ -45,7 +45,7 @@ enum class EvolutionAnimations(
         sleep = loadAnimations("teen_1_sleep"),
         lightsOutSleep = loadAnimations("lights_out_sleep"),
         lightsOutAwake = listOf(R.drawable.lights_out_awake),
-        sick = listOf(R.drawable.tamagotchi),
+        sick = loadAnimations("teen_1_sick"),
         play = loadAnimations("teen_1_play")
     ),
     TEEN_2(
@@ -54,7 +54,7 @@ enum class EvolutionAnimations(
         sleep = loadAnimations("teen_2_sleep"),
         lightsOutSleep = loadAnimations("lights_out_sleep"),
         lightsOutAwake = listOf(R.drawable.lights_out_awake),
-        sick = listOf(R.drawable.tamagotchi),
+        sick = loadAnimations("teen_2_sick"),
         play = loadAnimations("teen_2_play")
     ),
     ADULT_1(
@@ -63,7 +63,7 @@ enum class EvolutionAnimations(
         sleep = loadAnimations("adult_1_sleep"),
         lightsOutSleep = loadAnimations("lights_out_sleep"),
         lightsOutAwake = listOf(R.drawable.lights_out_awake),
-        sick = listOf(R.drawable.tamagotchi),
+        sick = loadAnimations("adult_1_sick"),
         play = loadAnimations("adult_1_play")
     ),
     ADULT_2(
@@ -72,7 +72,7 @@ enum class EvolutionAnimations(
         sleep = loadAnimations("adult_2_sleep"),
         lightsOutSleep = loadAnimations("lights_out_sleep"),
         lightsOutAwake = listOf(R.drawable.lights_out_awake),
-        sick = listOf(R.drawable.tamagotchi),
+        sick = loadAnimations("adult_2_sick"),
         play = loadAnimations("adult_2_play")
     ),
     ADULT_3(
@@ -81,7 +81,7 @@ enum class EvolutionAnimations(
         sleep = loadAnimations("adult_3_sleep"),
         lightsOutSleep = loadAnimations("lights_out_sleep"),
         lightsOutAwake = listOf(R.drawable.lights_out_awake),
-        sick = listOf(R.drawable.tamagotchi),
+        sick = loadAnimations("adult_3_sick"),
         play = loadAnimations("adult_3_play")
     ),
     ADULT_4(
@@ -90,7 +90,7 @@ enum class EvolutionAnimations(
         sleep = loadAnimations("adult_4_sleep"),
         lightsOutSleep = loadAnimations("lights_out_sleep"),
         lightsOutAwake = listOf(R.drawable.lights_out_awake),
-        sick = listOf(R.drawable.tamagotchi),
+        sick = loadAnimations("adult_4_sick"),
         play = loadAnimations("adult_4_play")
     ),
     ADULT_5(
@@ -99,7 +99,7 @@ enum class EvolutionAnimations(
         sleep = loadAnimations("adult_5_sleep"),
         lightsOutSleep = loadAnimations("lights_out_sleep"),
         lightsOutAwake = listOf(R.drawable.lights_out_awake),
-        sick = listOf(R.drawable.tamagotchi),
+        sick = loadAnimations("adult_5_sick"),
         play = loadAnimations("adult_5_play")
     ),
     ADULT_6(
@@ -108,7 +108,7 @@ enum class EvolutionAnimations(
         sleep = loadAnimations("adult_6_sleep"),
         lightsOutSleep = loadAnimations("lights_out_sleep"),
         lightsOutAwake = listOf(R.drawable.lights_out_awake),
-        sick = listOf(R.drawable.tamagotchi),
+        sick = loadAnimations("adult_6_sick"),
         play = loadAnimations("adult_6_play")
     ),
     DEAD(
