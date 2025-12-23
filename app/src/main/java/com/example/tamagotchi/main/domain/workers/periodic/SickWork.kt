@@ -33,7 +33,7 @@ class SickWork(
 
         }
 
-        if(updatedState.sick){
+        if(updatedState.sick && !updatedState.sleeping){
             showNotification(applicationContext, "Your Tamagotchi is sick!")
 
             createSingleWorker<SickMistakeWork>(

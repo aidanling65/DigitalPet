@@ -13,7 +13,7 @@ class DisciplineMistakeWork(
 
     override suspend fun doWork(): Result {
         repository.updateState {
-            if (it.misbehaving) {
+            if (it.misbehaving && !it.sleeping) {
                 it.copy(
                     misbehaving = false,
                     mentalMistakes = it.mentalMistakes + 1

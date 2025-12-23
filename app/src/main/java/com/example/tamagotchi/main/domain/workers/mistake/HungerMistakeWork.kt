@@ -13,7 +13,7 @@ class HungerMistakeWork(
 
     override suspend fun doWork(): Result {
         repository.updateState {
-            if (it.hunger == 0) {
+            if (it.hunger == 0 && !it.sleeping) {
                 it.copy(
                     physicalMistakes = it.physicalMistakes + 1
                 )

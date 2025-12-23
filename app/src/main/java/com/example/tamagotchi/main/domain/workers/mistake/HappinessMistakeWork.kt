@@ -13,7 +13,7 @@ class HappinessMistakeWork(
 
     override suspend fun doWork(): Result {
         repository.updateState {
-            if (it.happiness == 0) {
+            if (it.happiness == 0  && !it.sleeping) {
                 it.copy(
                     mentalMistakes = it.mentalMistakes + 1
                 )

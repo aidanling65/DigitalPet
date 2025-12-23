@@ -36,7 +36,7 @@ class MisbehavingWork(
         }
 
 
-        if(updatedState.misbehaving){
+        if(updatedState.misbehaving && !updatedState.sleeping){
             showNotification(applicationContext, "Your Tamagotchi is misbehaving!")
 
             createSingleWorker<DisciplineMistakeWork>(

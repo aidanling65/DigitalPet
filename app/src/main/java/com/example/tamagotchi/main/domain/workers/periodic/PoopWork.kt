@@ -33,7 +33,7 @@ class PoopWork(
             }
         }
 
-        if(updatedState.poop){
+        if(updatedState.poop && !updatedState.sleeping){
             showNotification(applicationContext, "Your Tamagotchi has pooped!")
 
             createSingleWorker<PoopSickWork>(

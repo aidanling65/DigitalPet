@@ -18,7 +18,7 @@ class SickMistakeWork(
 
     override suspend fun doWork(): Result {
         repository.updateState {
-            if (it.sick) {
+            if (it.sick && !it.sleeping) {
                 if (Random.Default.nextFloat() < 0.1) {
                     death(applicationContext, it)
                 } else {
