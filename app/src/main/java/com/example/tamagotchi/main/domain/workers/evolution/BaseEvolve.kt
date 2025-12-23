@@ -12,6 +12,7 @@ fun baseEvolve(currentState: TamagotchiState): TamagotchiState {
         poop = false,
         sick = false,
         misbehaving = false,
-        initial = false
+        initial = false,
+        hasEvolved = true,
     )
 }

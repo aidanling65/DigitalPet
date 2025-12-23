@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.main.ui.GameViewModel
 import com.example.tamagotchi.main.ui.components.bars.BottomBar
 import com.example.tamagotchi.main.ui.components.bars.TopAppBar
+import com.example.tamagotchi.main.ui.components.dialogs.Dialogs
 import com.example.tamagotchi.main.ui.components.status_bars.StatusBars
 
 @Composable

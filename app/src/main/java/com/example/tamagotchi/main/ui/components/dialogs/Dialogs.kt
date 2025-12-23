@@ -1,4 +1,4 @@
-package com.example.tamagotchi.main.ui.components
+package com.example.tamagotchi.main.ui.components.dialogs
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
@@ -17,6 +17,13 @@ fun Dialogs(gameViewModel: GameViewModel){
     val showGame by gameViewModel.showGame.collectAsState()
     val showSudoku by gameViewModel.showSudoku.collectAsState()
 
+
+    if(tamagotchiState.hasEvolved){
+        EvolutionDialog(
+            tamagotchiState,
+            onDismissRequest = { gameViewModel.onDismissEvolution() }
+        )
+    }
     if (showDialog) {
         ResetDialog(
             onDismissRequest = { gameViewModel.onDismissResetDialog() },

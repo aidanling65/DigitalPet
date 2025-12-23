@@ -41,6 +41,8 @@ data class TamagotchiState(
     val animations: EvolutionAnimations = EvolutionAnimations.EGG,
 
     val weight: Int = ageStage.minimumWeight,
+
+    val hasEvolved: Boolean = false,
 ){
     val currentAnimation : List<Int>
         get() = when{

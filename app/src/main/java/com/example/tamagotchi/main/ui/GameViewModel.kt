@@ -19,7 +19,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class GameViewModel(private val context: Context, val sudokuViewModel: SudokuViewModel,  val repository: TamagotchiRepository) :
+class GameViewModel(
+    private val context: Context,
+    val sudokuViewModel: SudokuViewModel,
+    val repository: TamagotchiRepository
+) :
     ViewModel() {
     private val _tamagotchiState = MutableStateFlow(TamagotchiState())
     val tamagotchiState: StateFlow<TamagotchiState> = _tamagotchiState.asStateFlow()
@@ -61,8 +65,7 @@ class GameViewModel(private val context: Context, val sudokuViewModel: SudokuVie
                             )
                         )
                     }
-                }
-                else{
+                } else {
                     updateAndSave { it.copy(steps = steps.toInt()) }
                 }
             }
@@ -80,27 +83,28 @@ class GameViewModel(private val context: Context, val sudokuViewModel: SudokuVie
     }
 
     fun play() {
-        if(!tamagotchiState.value.sleeping &&
+        if (!tamagotchiState.value.sleeping &&
             tamagotchiState.value.ageStage != AgeStage.DEAD &&
-            tamagotchiState.value.ageStage != AgeStage.EGG) {
+            tamagotchiState.value.ageStage != AgeStage.EGG
+        ) {
             _showGame.value = true
         }
     }
 
-    fun gameScore(score: Int){
+    fun gameScore(score: Int) {
         updateAndSave { gameLogicManager.play(it, score) }
     }
 
-    fun onDismissGame(){
+    fun onDismissGame() {
         _showGame.value = false
     }
 
-    fun launchSudoku(){
+    fun launchSudoku() {
         sudokuViewModel.sudokuGame.fetchNewSudoku()
         _showSudoku.value = true
     }
 
-    fun onDismissSudoku(){
+    fun onDismissSudoku() {
         _showSudoku.value = false
     }
 
@@ -123,6 +127,10 @@ class GameViewModel(private val context: Context, val sudokuViewModel: SudokuVie
 
     fun discipline() {
         updateAndSave { gameLogicManager.discipline(it) }
+    }
+
+    fun onDismissEvolution() {
+        updateAndSave { it -> it.copy(hasEvolved = false) }
     }
 
     fun onResetClicked() {
