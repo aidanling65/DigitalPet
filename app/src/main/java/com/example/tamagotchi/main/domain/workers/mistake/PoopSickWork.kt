@@ -6,7 +6,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
 import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
-import com.example.tamagotchi.main.utils.showNotification
+import com.example.tamagotchi.main.utils.attentionNotification
 import java.time.Duration
 
 class PoopSickWork(
@@ -21,7 +21,7 @@ class PoopSickWork(
                 it
             }
             else if (it.poop && !it.sick) {
-                showNotification(applicationContext, "Your tamagotchi is sick!")
+                attentionNotification(applicationContext, "Your tamagotchi is sick!")
                 createSingleWorker<SickMistakeWork>(
                     applicationContext,
                     Duration.ofMinutes(15),

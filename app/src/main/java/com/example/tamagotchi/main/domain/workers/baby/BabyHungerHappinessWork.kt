@@ -4,10 +4,10 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
-import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
-import com.example.tamagotchi.main.utils.showNotification
+import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
+import com.example.tamagotchi.main.utils.attentionNotification
 import java.time.Duration
 
 class BabyHungerHappinessWork(
@@ -31,10 +31,10 @@ class BabyHungerHappinessWork(
                     happiness = if (currentState.happiness > 0) currentState.happiness - 1 else currentState.happiness
                 )
                 if (updatedState.hunger == 0) {
-                    showNotification(applicationContext, "You Tamagotchi is hungry!")
+                    attentionNotification(applicationContext, "You Tamagotchi is hungry!")
                 }
                 if (updatedState.happiness == 0) {
-                    showNotification(applicationContext, "You Tamagotchi is sad!")
+                    attentionNotification(applicationContext, "You Tamagotchi is sad!")
                 }
                 updatedState
             }

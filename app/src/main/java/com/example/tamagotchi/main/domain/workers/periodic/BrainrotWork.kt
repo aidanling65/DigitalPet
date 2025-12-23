@@ -7,7 +7,7 @@ import androidx.work.WorkerParameters
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
 import com.example.tamagotchi.main.domain.workers.mistake.StupidMistakeWork
 import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
-import com.example.tamagotchi.main.utils.showNotification
+import com.example.tamagotchi.main.utils.attentionNotification
 import java.time.Duration
 
 class BrainrotWork(
@@ -24,7 +24,7 @@ class BrainrotWork(
         }
 
         if(updatedState.intelligence == 0){
-            showNotification(applicationContext, "Your Tamagotchi is stupid!")
+            attentionNotification(applicationContext, "Your Tamagotchi is stupid!")
 
             createSingleWorker<StupidMistakeWork>(
                 applicationContext,

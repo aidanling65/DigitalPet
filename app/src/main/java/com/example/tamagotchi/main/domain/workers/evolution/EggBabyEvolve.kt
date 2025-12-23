@@ -4,10 +4,11 @@ import android.content.Context
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.EvolutionAnimations
 import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.main.utils.EVOLVE_ID
 import com.example.tamagotchi.main.utils.showNotification
 
 fun eggBabyEvolve(context: Context, currentState: TamagotchiState): TamagotchiState {
-    showNotification(context, "Your Tamagotchi has hatched!")
+    showNotification(context, "Your Tamagotchi has hatched!", EVOLVE_ID)
 
     val updatedState =  baseEvolve(currentState).copy(
         ageStage = AgeStage.BABY,

@@ -5,6 +5,7 @@ import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.EvolutionAnimations
 import com.example.tamagotchi.main.data.model.MAX_DISCIPLINE
 import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.main.utils.EVOLVE_ID
 import com.example.tamagotchi.main.utils.showNotification
 
 fun teenAdultEvolve(context: Context, currentState: TamagotchiState): TamagotchiState {
@@ -19,7 +20,7 @@ fun teenAdultEvolve(context: Context, currentState: TamagotchiState): Tamagotchi
             discipline <= MAX_DISCIPLINE / 2 && mistakes <= 2 -> EvolutionAnimations.ADULT_3
             discipline <= MAX_DISCIPLINE / 2 && mistakes > 2 -> EvolutionAnimations.ADULT_6
 
-            discipline < MAX_DISCIPLINE && discipline > MAX_DISCIPLINE / 2  && mistakes<= 2 -> EvolutionAnimations.ADULT_2
+            discipline < MAX_DISCIPLINE && mistakes<= 2 -> EvolutionAnimations.ADULT_2
             else -> EvolutionAnimations.ADULT_5
         }
 
@@ -30,7 +31,7 @@ fun teenAdultEvolve(context: Context, currentState: TamagotchiState): Tamagotchi
         }
     }
 
-    showNotification(context, "Your Tamagotchi has evolved!")
+    showNotification(context, "Your Tamagotchi has evolved!", EVOLVE_ID)
     val updatedState = baseEvolve(currentState).copy(
         ageStage = AgeStage.ADULT,
         weight = AgeStage.ADULT.minimumWeight,

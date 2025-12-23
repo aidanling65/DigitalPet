@@ -17,6 +17,7 @@ import com.example.tamagotchi.main.ui.GameViewModel
 import com.example.tamagotchi.main.ui.components.TamagotchiApp
 import com.example.tamagotchi.main.ui.theme.TamagotchiTheme
 import com.example.tamagotchi.main.utils.NOTIFICATION_PERMISSION_CODE
+import com.example.tamagotchi.main.utils.cancelNotifications
 import com.example.tamagotchi.main.utils.createNotificationChannel
 import com.example.tamagotchi.step_tracker.StepCounterWorker
 import com.example.tamagotchi.sudoku.ui.SudokuViewModel
@@ -58,6 +59,11 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
+    }
+
+    override fun onResume(){
+        super.onResume()
+        cancelNotifications(applicationContext)
     }
 
     override fun onRestart(){

@@ -5,9 +5,9 @@ import androidx.work.CoroutineWorker
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
-import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
 import com.example.tamagotchi.main.domain.workers.mistake.DisciplineMistakeWork
-import com.example.tamagotchi.main.utils.showNotification
+import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
+import com.example.tamagotchi.main.utils.attentionNotification
 import java.time.Duration
 import kotlin.random.Random
 
@@ -37,7 +37,7 @@ class MisbehavingWork(
 
 
         if(updatedState.misbehaving && !updatedState.sleeping){
-            showNotification(applicationContext, "Your Tamagotchi is misbehaving!")
+            attentionNotification(applicationContext, "Your Tamagotchi is misbehaving!")
 
             createSingleWorker<DisciplineMistakeWork>(
                 applicationContext,

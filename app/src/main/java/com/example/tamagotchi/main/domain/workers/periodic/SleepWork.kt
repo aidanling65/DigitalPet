@@ -5,9 +5,9 @@ import androidx.work.CoroutineWorker
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
-import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
 import com.example.tamagotchi.main.domain.workers.mistake.SleepMistakeWork
-import com.example.tamagotchi.main.utils.showNotification
+import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
+import com.example.tamagotchi.main.utils.attentionNotification
 import java.time.Duration
 import java.time.LocalTime
 import java.time.ZoneId
@@ -27,7 +27,7 @@ class SleepWork(
             val shouldBeSleeping = currentTime.isAfter(isBedTime) || currentTime.isBefore(isWakeTime)
 
             if (!current.sleeping && shouldBeSleeping) {
-                showNotification(applicationContext, "Your tamagotchi has gone to sleep")
+                attentionNotification(applicationContext, "Your tamagotchi has gone to sleep")
                 createSingleWorker<SleepMistakeWork>(
                     applicationContext,
                     Duration.ofMinutes(15),
@@ -35,7 +35,7 @@ class SleepWork(
                     ExistingWorkPolicy.REPLACE
                 )
             } else if (current.sleeping && !shouldBeSleeping) {
-                showNotification(applicationContext, "Your tamagotchi has awoken")
+                attentionNotification(applicationContext, "Your tamagotchi has awoken")
             }
 
             current.copy(

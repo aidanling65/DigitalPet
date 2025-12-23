@@ -14,9 +14,11 @@ import com.example.tamagotchi.R
 
 const val CHANNEL_ID = "Tamagotchi"
 const val NOTIFICATION_PERMISSION_CODE = 100
+const val EVOLVE_ID = 0
+const val ATTENTION_ID = 1
 
 @SuppressLint("MissingPermission")
-fun showNotification(context: Context, text: String) {
+fun showNotification(context: Context, text: String, id: Int = ATTENTION_ID) {
 
     val intent = Intent(context, MainActivity::class.java).apply{
         flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -32,12 +34,29 @@ fun showNotification(context: Context, text: String) {
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         .setContentIntent(pendingIntent)
         .setAutoCancel(true)
+        .setOnlyAlertOnce(true)
 
     with(NotificationManagerCompat.from(context)) {
-        notify(System.currentTimeMillis().toInt(), builder.build())
+        notify(id, builder.build())
     }
 }
 
+fun attentionNotification(context: Context, text: String){
+    val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    val isShowing = notificationManager.activeNotifications.any { it.id == ATTENTION_ID }
+    var contentText = text
+    if(isShowing){
+        contentText == "Your tamagotchi needs attention"
+    }
+
+    showNotification(context, contentText, ATTENTION_ID)
+}
+
+fun cancelNotifications(context: Context){
+    with(NotificationManagerCompat.from(context)){
+        cancelAll()
+    }
+}
 
 fun createNotificationChannel(context: Context) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

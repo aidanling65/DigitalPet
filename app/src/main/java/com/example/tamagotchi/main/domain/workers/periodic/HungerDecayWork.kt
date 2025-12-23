@@ -7,7 +7,7 @@ import androidx.work.WorkerParameters
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
 import com.example.tamagotchi.main.domain.workers.mistake.HungerMistakeWork
 import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
-import com.example.tamagotchi.main.utils.showNotification
+import com.example.tamagotchi.main.utils.attentionNotification
 import java.time.Duration
 
 class HungerDecayWork(
@@ -28,7 +28,7 @@ class HungerDecayWork(
         }
 
         if (updatedState.hunger == 0 && !updatedState.sleeping) {
-            showNotification(applicationContext, "You Tamagotchi is hungry!")
+            attentionNotification(applicationContext, "You Tamagotchi is hungry!")
             createSingleWorker<HungerMistakeWork>(
                 applicationContext,
                 Duration.ofMinutes(15),

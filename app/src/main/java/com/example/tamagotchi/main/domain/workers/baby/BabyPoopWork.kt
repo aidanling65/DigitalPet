@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
-import com.example.tamagotchi.main.utils.showNotification
+import com.example.tamagotchi.main.utils.attentionNotification
 
 class BabyPoopWork(
     appContext: Context,
@@ -19,7 +19,7 @@ class BabyPoopWork(
             )
             updatedState
         }
-        showNotification(applicationContext, "You Tamagotchi has pooped!")
+        attentionNotification(applicationContext, "You Tamagotchi has pooped!")
 
         return Result.success()
     }

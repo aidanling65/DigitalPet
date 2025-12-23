@@ -5,9 +5,9 @@ import androidx.work.CoroutineWorker
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
-import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
 import com.example.tamagotchi.main.domain.workers.mistake.HappinessMistakeWork
-import com.example.tamagotchi.main.utils.showNotification
+import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
+import com.example.tamagotchi.main.utils.attentionNotification
 import java.time.Duration
 
 class HappinessDecayWork(
@@ -29,7 +29,7 @@ class HappinessDecayWork(
         }
 
         if (updatedState.happiness == 0 && !updatedState.sleeping) {
-            showNotification(applicationContext, "Your Tamagotchi is sad!")
+            attentionNotification(applicationContext, "Your Tamagotchi is sad!")
             createSingleWorker<HappinessMistakeWork>(
                 applicationContext,
                 Duration.ofMinutes(15),
