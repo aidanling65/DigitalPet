@@ -7,11 +7,11 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.Typeface
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import com.example.tamagotchi.sudoku.domain.Cell
 import kotlin.math.min
+import androidx.core.graphics.toColorInt
 
 class SudokuBoardView(context: Context, attributeSet: AttributeSet?) : View(context, attributeSet) {
 
@@ -44,17 +44,27 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet?) : View(cont
 
     private val selectedCellPaint = Paint().apply {
         style = Paint.Style.FILL_AND_STROKE
-        color = Color.parseColor("#bb86fc")
+        color = "#bb86fc".toColorInt()
     }
 
     private val conflictingCellPaint = Paint().apply {
         style = Paint.Style.FILL_AND_STROKE
-        color = Color.parseColor("#efedef")
+        color = "#efedef".toColorInt()
     }
 
-    private val incorrectCellPaint = Paint().apply{
+    private val conflictingIncorrectCellPaint = Paint().apply{
         style = Paint.Style.FILL_AND_STROKE
-        color = Color.parseColor("#db6b5c")
+        color = "#db8e84".toColorInt()
+    }
+
+    private val incorrectCellPaint = Paint().apply {
+        style = Paint.Style.FILL_AND_STROKE
+        color = "#db6b5c".toColorInt()
+    }
+
+    private val sameValueCellPaint = Paint().apply {
+        style = Paint.Style.FILL_AND_STROKE
+        color = "#d0b3f5".toColorInt()
     }
 
     private val textPaint = Paint().apply {
@@ -75,7 +85,7 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet?) : View(cont
 
     private val startingCellPaint = Paint().apply {
         style = Paint.Style.FILL_AND_STROKE
-        color = Color.parseColor("#ffffff")
+        color = "#ffffff".toColorInt()
     }
 
     fun setLineColor(color: Int) {
@@ -84,28 +94,11 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet?) : View(cont
         invalidate()
     }
 
-    fun setSelectedCellColor(color: Int) {
-        selectedCellPaint.color = color
-        invalidate()
-    }
-
-    fun setConflictingCellColor(color: Int) {
-        conflictingCellPaint.color = color
-        invalidate()
-    }
-
-    fun setTextColor(color: Int) {
-        textPaint.color = color
-        startingCellTextPaint.color = color
-        noteTextPaint.color = color
-        invalidate()
-    }
-
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val sizePixels = min(widthMeasureSpec, heightMeasureSpec)
         setMeasuredDimension(sizePixels, sizePixels)
-        if(width > 0){
+        if (width > 0) {
             updateMeasurements(width)
         }
 
@@ -127,28 +120,40 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet?) : View(cont
     }
 
     private fun fillCells(canvas: Canvas) {
+        val cellIndex = selectedRow * 9 + selectedCol
+        val currentCell = cells?.getOrNull(cellIndex)?.value
         cells?.forEach {
             val r = it.row
             val c = it.col
-
-            if (it.isStartingCell) {
-                fillCell(canvas, r, c, startingCellPaint)
-            } else if(!it.isCorrectOrEmpty){
-                Log.d("Sudoku", "Here")
-                fillCell(canvas,r,c, incorrectCellPaint)
-            }
-            else if (r == selectedRow && c == selectedCol) {
+            val conflicting =
+                ((r == selectedRow) xor (c == selectedCol)) || (r / sqrtSize == selectedRow / sqrtSize && c / sqrtSize == selectedCol / sqrtSize)
+            if (!it.isCorrectOrEmpty) {
+                fillCell(canvas, r, c, incorrectCellPaint)
+            } else if (r == selectedRow && c == selectedCol) {
                 fillCell(canvas, r, c, selectedCellPaint)
-            } else if (r == selectedRow || c == selectedCol) {
+            }
+            else if (it.value == currentCell && currentCell > 0) {
+                if (conflicting) {
+                    fillCell(canvas, r, c, conflictingIncorrectCellPaint)
+                } else {
+                    fillCell(canvas, r, c, sameValueCellPaint)
+                }
+            } else if (conflicting) {
                 fillCell(canvas, r, c, conflictingCellPaint)
-            } else if (r / sqrtSize == selectedRow / sqrtSize && c / sqrtSize == selectedCol / sqrtSize) {
-                fillCell(canvas, r, c, conflictingCellPaint)
+            } else if (it.isStartingCell) {
+                fillCell(canvas, r, c, startingCellPaint)
             }
         }
     }
 
     private fun fillCell(canvas: Canvas, r: Int, c: Int, paint: Paint) {
-        canvas.drawRect(c * cellSizePixels, r * cellSizePixels, (c + 1) * cellSizePixels, (r + 1) * cellSizePixels, paint)
+        canvas.drawRect(
+            c * cellSizePixels,
+            r * cellSizePixels,
+            (c + 1) * cellSizePixels,
+            (r + 1) * cellSizePixels,
+            paint
+        )
     }
 
     private fun drawLines(canvas: Canvas) {
@@ -161,19 +166,19 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet?) : View(cont
             }
 
             canvas.drawLine(
-                    i * cellSizePixels,
-                    0F,
-                    i * cellSizePixels,
-                    height.toFloat(),
-                    paintToUse
+                i * cellSizePixels,
+                0F,
+                i * cellSizePixels,
+                height.toFloat(),
+                paintToUse
             )
 
             canvas.drawLine(
-                    0F,
-                    i * cellSizePixels,
-                    width.toFloat(),
-                    i * cellSizePixels,
-                    paintToUse
+                0F,
+                i * cellSizePixels,
+                width.toFloat(),
+                i * cellSizePixels,
+                paintToUse
             )
         }
     }
@@ -211,8 +216,10 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet?) : View(cont
                 val textWidth = paintToUse.measureText(valueString)
                 val textHeight = textBounds.height()
 
-                canvas.drawText(valueString, (col * cellSizePixels) + cellSizePixels / 2 - textWidth / 2,
-                        (row * cellSizePixels) + cellSizePixels / 2 + textHeight / 2, paintToUse)
+                canvas.drawText(
+                    valueString, (col * cellSizePixels) + cellSizePixels / 2 - textWidth / 2,
+                    (row * cellSizePixels) + cellSizePixels / 2 + textHeight / 2, paintToUse
+                )
             }
         }
     }
@@ -223,6 +230,7 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet?) : View(cont
                 handleTouchEvent(event.x, event.y)
                 true
             }
+
             else -> false
         }
     }
