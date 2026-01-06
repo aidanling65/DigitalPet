@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.Typeface
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import com.example.tamagotchi.sudoku.domain.Cell
@@ -49,6 +50,11 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet?) : View(cont
     private val conflictingCellPaint = Paint().apply {
         style = Paint.Style.FILL_AND_STROKE
         color = Color.parseColor("#efedef")
+    }
+
+    private val incorrectCellPaint = Paint().apply{
+        style = Paint.Style.FILL_AND_STROKE
+        color = Color.parseColor("#db6b5c")
     }
 
     private val textPaint = Paint().apply {
@@ -127,7 +133,11 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet?) : View(cont
 
             if (it.isStartingCell) {
                 fillCell(canvas, r, c, startingCellPaint)
-            } else if (r == selectedRow && c == selectedCol) {
+            } else if(!it.isCorrectOrEmpty){
+                Log.d("Sudoku", "Here")
+                fillCell(canvas,r,c, incorrectCellPaint)
+            }
+            else if (r == selectedRow && c == selectedCol) {
                 fillCell(canvas, r, c, selectedCellPaint)
             } else if (r == selectedRow || c == selectedCol) {
                 fillCell(canvas, r, c, conflictingCellPaint)

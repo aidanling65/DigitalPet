@@ -82,7 +82,10 @@ class SudokuGame {
             newCells[cellIndex] = currentCell.copy(notes = newNotes)
             highlightedKeysLiveData.postValue(cell.notes)
         } else {
-            newCells[cellIndex] = currentCell.copy(value = number)
+            newCells[cellIndex] = currentCell.copy(
+                value = number,
+                isCorrectOrEmpty = correctCells[cellIndex].value == number
+            )
         }
 
         board = board.copy(cells = newCells)
@@ -130,7 +133,7 @@ class SudokuGame {
             newCells[cellIndex] = currentCell.copy(notes = mutableSetOf())
             highlightedKeysLiveData.postValue(setOf())
         } else {
-            newCells[cellIndex] = currentCell.copy(value = 0)
+            newCells[cellIndex] = currentCell.copy(value = 0, isCorrectOrEmpty = true)
         }
 
         board = board.copy(cells = newCells)
