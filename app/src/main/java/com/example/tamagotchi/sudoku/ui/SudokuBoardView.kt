@@ -18,8 +18,6 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet?) : View(cont
     private var sqrtSize = 3
     private var size = 9
 
-
-    // these are set in onDraw
     private var cellSizePixels = 0F
     private var noteSizePixels = 0F
 
@@ -120,7 +118,7 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet?) : View(cont
     }
 
     private fun fillCells(canvas: Canvas) {
-        val cellIndex = selectedRow * 9 + selectedCol
+        val cellIndex = selectedRow * size + selectedCol
         val currentCell = cells?.getOrNull(cellIndex)?.value
         cells?.forEach {
             val r = it.row

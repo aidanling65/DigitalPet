@@ -14,10 +14,10 @@ class DeathWork(
 
     override suspend fun doWork(): Result {
         repository.updateState {
-            if(it.sleeping){
+            if(it.ageStage.mistakesLimit == null || it.sleeping){
                 it
             }
-            else if (it.physicalMistakes + it.mentalMistakes >= 5) {
+            else if (it.physicalMistakes + it.mentalMistakes >= it.ageStage.mistakesLimit) {
                 death(applicationContext, it)
             } else{
                 it
