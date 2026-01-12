@@ -14,13 +14,13 @@ fun teenAdultEvolve(context: Context, currentState: TamagotchiState): Tamagotchi
 
     val nextAnimation = when (currentState.animations) {
         EvolutionAnimations.TEEN_1 -> when {
-            discipline == MAX_DISCIPLINE && mistakes <= 2 -> EvolutionAnimations.ADULT_1
-            discipline == MAX_DISCIPLINE && mistakes > 2 -> EvolutionAnimations.ADULT_2
+            discipline == MAX_DISCIPLINE && mistakes <= 4 -> EvolutionAnimations.ADULT_1
+            discipline == MAX_DISCIPLINE && mistakes > 4 -> EvolutionAnimations.ADULT_2
 
-            discipline <= MAX_DISCIPLINE / 2 && mistakes <= 2 -> EvolutionAnimations.ADULT_3
-            discipline <= MAX_DISCIPLINE / 2 && mistakes > 2 -> EvolutionAnimations.ADULT_6
+            discipline <= MAX_DISCIPLINE / 2 && mistakes <= 4 -> EvolutionAnimations.ADULT_3
+            discipline <= MAX_DISCIPLINE / 2 && mistakes > 4 -> EvolutionAnimations.ADULT_6
 
-            discipline < MAX_DISCIPLINE && mistakes<= 2 -> EvolutionAnimations.ADULT_2
+            discipline < MAX_DISCIPLINE && mistakes <= 4 -> EvolutionAnimations.ADULT_2
             else -> EvolutionAnimations.ADULT_5
         }
 
