@@ -97,8 +97,10 @@ class GameLogicManager {
     }
 
     fun learning(current: TamagotchiState): TamagotchiState {
+        val updatedIntelligence = (current.intelligence + 1).coerceAtMost(MAX_INTELLIGENCE)
         return current.copy(
-            intelligence = (current.intelligence + 1).coerceAtMost(MAX_INTELLIGENCE)
+            intelligence = updatedIntelligence,
+            mentalMistakes = if(updatedIntelligence == MAX_INTELLIGENCE) (current.mentalMistakes - 1).coerceAtLeast(0) else current.mentalMistakes
         )
     }
 }

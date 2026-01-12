@@ -59,10 +59,13 @@ class GameViewModel(
                 val stepGoal = tamagotchiState.value.stepGoal
                 if (tamagotchiState.value.steps < stepGoal && steps > stepGoal) {
                     updateAndSave {
+                        val updatedFitness = (it.fitness + 1).coerceAtMost(MAX_FITNESS)
                         it.copy(
-                            steps = steps.toInt(), fitness = (it.fitness + 1).coerceAtMost(
-                                MAX_FITNESS
-                            )
+                            steps = steps.toInt(),
+                            fitness = updatedFitness,
+                            physicalMistakes = if (updatedFitness == MAX_FITNESS) (it.physicalMistakes - 1).coerceAtLeast(
+                                0
+                            ) else it.physicalMistakes
                         )
                     }
                 } else {

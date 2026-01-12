@@ -21,11 +21,13 @@ class FitnessWork(
         val updatedState = repository.updateState { current ->
             current.copy(
                 fitness = current.fitness - 1,
-                weight =  if(current.fitness == MAX_FITNESS && current.weight > current.ageStage.minimumWeight) current.weight - 1 else current.weight
+                weight = if (current.fitness == MAX_FITNESS) (current.weight - 1).coerceAtLeast(
+                    current.ageStage.minimumWeight
+                ) else current.weight
             )
         }
 
-        if(updatedState.fitness == 0){
+        if (updatedState.fitness == 0) {
             createSingleWorker<FitnessMistakeWork>(
                 applicationContext,
                 Duration.ofHours(24),
