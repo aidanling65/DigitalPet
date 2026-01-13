@@ -14,7 +14,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
-import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
@@ -40,14 +39,14 @@ fun ConfettiView(source: ConfettiSource = ConfettiSource.CENTER, quantity: Int =
             confettiList = confettiList.map { confetti ->
                 confetti.y += confetti.velocityY
                 confetti.x += confetti.velocityX
-                confetti.velocityY += 0.5f // Gravity
-                if (confetti.y > screenHeightPx * 1.2f || confetti.x < -100f || confetti.x > screenWidthPx + 100f) { // Reset confetti when it goes off screen
+                confetti.velocityY += 0.5f
+                if (confetti.y > screenHeightPx * 1.2f || confetti.x < -100f || confetti.x > screenWidthPx + 100f) {
                     createConfetti(source, screenWidthPx, screenHeightPx)
                 } else {
                     confetti
                 }
             }
-            delay(16) // ~60 FPS
+            delay(16)
         }
     }
 
@@ -74,7 +73,7 @@ fun createConfetti(source: ConfettiSource, screenWidth: Float, screenHeight: Flo
         ConfettiSource.TOP -> -50f
         ConfettiSource.BOTTOM -> screenHeight + 50f
         ConfettiSource.CENTER -> Random.nextFloat() * screenHeight
-        else -> if (source == ConfettiSource.LEFT || source == ConfettiSource.RIGHT) Random.nextFloat() * screenHeight else -50f //Left or Right defaults to random Y
+        else -> if (source == ConfettiSource.LEFT || source == ConfettiSource.RIGHT) Random.nextFloat() * screenHeight else -50f
     }
     val velocityX = when (source) {
         ConfettiSource.LEFT -> Random.nextFloat() * 10 + 5

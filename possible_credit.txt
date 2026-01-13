@@ -1,0 +1,1 @@
+Confetti animation: https://medium.rspsrn.com/jetpack-compose-confetti-7ad0629290fd
