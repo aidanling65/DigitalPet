@@ -27,8 +27,6 @@ import com.example.tamagotchi.main.ui.components.status_bars.StatusBars
 fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
     val tamagotchiState by gameViewModel.tamagotchiState.collectAsState()
 
-    Dialogs(gameViewModel)
-
     Box(Modifier.fillMaxSize()) {
         Scaffold(
             modifier = Modifier
@@ -37,6 +35,7 @@ fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
             topBar = { TopAppBar(gameViewModel) },
             bottomBar = { BottomBar(gameViewModel) }
         ) { innerPadding ->
+            Dialogs(gameViewModel)
             Column(
                 modifier = Modifier
                     .fillMaxSize()

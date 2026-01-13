@@ -23,15 +23,6 @@ import com.example.tamagotchi.main.data.model.TamagotchiState
 
 @Composable
 fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifier) {
-    /*var currentFrame by remember(currentState.currentAnimation) { mutableStateOf(0) }
-
-    LaunchedEffect(currentState.currentAnimation) {
-        currentFrame = 0
-        while (true) {
-            delay(500)
-            currentFrame = ((currentFrame + 1) % currentState.currentAnimation.size)
-        }
-    }*/
 
     Row(
         modifier
@@ -60,12 +51,6 @@ fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifi
                 drawableRes=currentState.currentAnimation,
                 modifier = Modifier.fillMaxSize()
             )
-            /*Image(
-                painter = painterResource(currentState.currentAnimation[currentFrame]),
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxSize()
-            )*/
             if (currentState.poop) {
                 BoxWithConstraints(modifier = Modifier
                     .align(Alignment.BottomEnd)
@@ -86,13 +71,3 @@ fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifi
         }
     }
 }
-
-/*@Composable
-fun PlayAnimation(animation: Int){
-    val img = findViewById<ImageView>(animation)
-    img.setBackgroundResource(animation)
-
-    val frameAnimation = img.background as AnimationDrawable
-    frameAnimation.start()
-}*/
-

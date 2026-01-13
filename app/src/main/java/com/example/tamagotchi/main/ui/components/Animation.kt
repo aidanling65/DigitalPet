@@ -18,6 +18,12 @@ fun AnimateDrawable(drawableRes: Int, modifier: Modifier = Modifier) {
                 animation = background as? AnimationDrawable
             }
         },
+        update = { imageView ->
+            (imageView.background as? AnimationDrawable)?.stop()
+
+            imageView.setBackgroundResource(drawableRes)
+            (imageView.background as? AnimationDrawable)?.start()
+        },
         modifier = modifier
     )
 

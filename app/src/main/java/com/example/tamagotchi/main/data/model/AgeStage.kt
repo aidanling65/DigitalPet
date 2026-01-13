@@ -51,8 +51,7 @@ enum class AgeStage(
     ),
     TEEN(
         minimumWeight = 20,
-        //bedTime = LocalTime.of(21, 0),
-        bedTime = LocalTime.of(23,59),
+        bedTime = LocalTime.of(21, 0),
         wakeTime = LocalTime.of(9, 0),
         //stageLength = Duration.ofHours(2),
         stageLength = Duration.ofHours(72),
