@@ -12,11 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,11 +20,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.R
 import com.example.tamagotchi.main.data.model.TamagotchiState
-import kotlinx.coroutines.delay
 
 @Composable
 fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifier) {
-    var currentFrame by remember(currentState.currentAnimation) { mutableStateOf(0) }
+    /*var currentFrame by remember(currentState.currentAnimation) { mutableStateOf(0) }
 
     LaunchedEffect(currentState.currentAnimation) {
         currentFrame = 0
@@ -37,7 +31,7 @@ fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifi
             delay(500)
             currentFrame = ((currentFrame + 1) % currentState.currentAnimation.size)
         }
-    }
+    }*/
 
     Row(
         modifier
@@ -62,12 +56,16 @@ fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifi
                 .background(colorResource(R.color.lcd))
                 .wrapContentSize()
         ) {
-            Image(
+            AnimateDrawable(
+                drawableRes=currentState.currentAnimation,
+                modifier = Modifier.fillMaxSize()
+            )
+            /*Image(
                 painter = painterResource(currentState.currentAnimation[currentFrame]),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()
-            )
+            )*/
             if (currentState.poop) {
                 BoxWithConstraints(modifier = Modifier
                     .align(Alignment.BottomEnd)

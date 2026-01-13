@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.work.ExistingWorkPolicy
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
+import com.example.tamagotchi.main.domain.workers.periodic.SleepWork
 import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
 import com.example.tamagotchi.main.ui.GameViewModel
 import com.example.tamagotchi.main.ui.components.TamagotchiApp
@@ -64,6 +65,13 @@ class MainActivity : ComponentActivity() {
     override fun onResume(){
         super.onResume()
         cancelNotifications(applicationContext)
+
+        createSingleWorker<SleepWork>(
+            applicationContext,
+            Duration.ZERO,
+            "sleep_worker_temp",
+            ExistingWorkPolicy.REPLACE
+        )
     }
 
     override fun onRestart(){

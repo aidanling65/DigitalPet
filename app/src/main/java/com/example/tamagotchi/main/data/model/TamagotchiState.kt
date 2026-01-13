@@ -44,7 +44,7 @@ data class TamagotchiState(
 
     val hasEvolved: Boolean = false,
 ){
-    val currentAnimation : List<Int>
+    val currentAnimation : Int
         get() = when{
             sick -> animations.sick ?: animations.idle
             sleeping && !light && animations.lightsOutSleep != null -> animations.lightsOutSleep

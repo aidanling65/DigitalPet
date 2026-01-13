@@ -32,9 +32,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
@@ -42,19 +41,24 @@ import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.R
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.GameViewModel
+import com.example.tamagotchi.main.utils.getAnimationFrames
 import kotlinx.coroutines.delay
 
 @Composable
 fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewModel) {
+    val context = LocalContext.current
     var canvasHeight by remember { mutableFloatStateOf(1000f) }
     var canvasWidth by remember { mutableFloatStateOf(1000f) }
 
     var laps = 0L
     var currentFrame by remember { mutableIntStateOf(0) }
-    val playerBitmap = ImageBitmap.imageResource(tamagotchiState.animations.play[currentFrame])
+    val playerAnimationFrames = remember(tamagotchiState.animations.play){
+        getAnimationFrames(context, tamagotchiState.animations.play)
+    }
+    val playerBitmap = playerAnimationFrames[currentFrame]
     val playerRenderSize = IntSize(
-        playerBitmap.width * 2,
-        playerBitmap.height * 2
+        playerBitmap.width,
+        playerBitmap.height
     )
     val playerRenderedHeight = playerRenderSize.height
     val playerRenderedWidth = playerRenderSize.width
@@ -83,6 +87,7 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
 
     if (isGameStarted) {
         LaunchedEffect(Unit) {
+            Log.d("Flappy", "CanvasHeigh: $canvasHeight")
             while (true) {
                 if (isGameOver) {
                     gameViewModel.gameScore(score * 50)
@@ -95,11 +100,11 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
                 obstacleX -= obstacleXVelocity
                 if (obstacleX < 0) {
                     obstacleX = canvasWidth
-                    obstacleHeightOffset = ((-100..100).random()).toFloat()
+                    obstacleHeightOffset = ((-(canvasHeight/2).toInt()..100).random()).toFloat()
                 }
                 laps += 1
                 if (laps % frameRate == 0L) {
-                    currentFrame = (currentFrame + 1) % tamagotchiState.animations.play.size
+                    currentFrame = (currentFrame + 1) % playerAnimationFrames.size
                     laps = 0
                 }
 
@@ -107,9 +112,7 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
                 val playerBottom = playerY + playerRenderedHeight
 
                 val collisionX = playerRight > obstacleX && playerX < obstacleX + obstacleWidth
-                val topCollision = playerY < obstacleHeight && playerY > 0
-                val bottomCollision = playerBottom > obstacle2y
-                val collisionY = topCollision || bottomCollision
+                val collisionY = playerBottom < obstacleY + obstacleHeight || playerY > obstacle2y
 
                 if (collisionX && collisionY) {
                     Log.d(
@@ -179,7 +182,7 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
             Canvas(modifier = Modifier.matchParentSize()) {
                 canvasHeight = size.height
                 canvasWidth = size.width
-                val gapSize = playerRenderedHeight * 4f
+                val gapSize = playerRenderedHeight * 2.5f
                 obstacleHeight = (canvasHeight / 2 - 150) + obstacleHeightOffset
                 obstacleY = 0f
                 obstacle2y = obstacleY + obstacleHeight + gapSize
@@ -258,5 +261,3 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
         }
     }
 }
-
-

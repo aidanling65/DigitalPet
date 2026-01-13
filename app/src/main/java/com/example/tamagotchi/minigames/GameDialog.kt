@@ -24,8 +24,6 @@ fun GameDialog(
     onDismissRequest: () -> Unit,
     modifier: Modifier
 ) {
-    val gameChoice = Random.nextInt(0,2)
-
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(
@@ -43,7 +41,7 @@ fun GameDialog(
                 .clip(RoundedCornerShape(10))
                 .background(MaterialTheme.colorScheme.background)
         ) {
-            when(gameChoice) {
+            when(Random.nextInt(0,2)) {
                 0 -> JumpGameCanvas(tamagotchiState, gameViewModel)
                 1 -> FlappyGameCanvas(tamagotchiState, gameViewModel)
             }

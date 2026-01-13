@@ -33,9 +33,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
@@ -43,19 +42,32 @@ import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.R
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.GameViewModel
+import com.example.tamagotchi.main.utils.getAnimationFrames
 import kotlinx.coroutines.delay
 
 @Composable
 fun JumpGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewModel) {
+
+    val context = LocalContext.current
+    val playerAnimationFrames = remember(tamagotchiState.animations.play){
+        getAnimationFrames(context, tamagotchiState.animations.play)
+    }
+
+
     var canvasHeight by remember { mutableFloatStateOf(1000f) }
     var canvasWidth by remember { mutableFloatStateOf(1000f) }
 
     var laps = 0L
     var currentFrame by remember { mutableIntStateOf(0) }
-    val playerBitmap = ImageBitmap.imageResource(tamagotchiState.animations.play[currentFrame])
+    if (playerAnimationFrames.isEmpty()) {
+        Text("Error: Could not load player animation.")
+        return
+    }
+
+    val playerBitmap = playerAnimationFrames[currentFrame]
     val playerRenderSize = IntSize(
-        playerBitmap.width * 3,
-        playerBitmap.height * 3
+        playerBitmap.width,
+        playerBitmap.height
     )
     val playerRenderedHeight = playerRenderSize.height
     val playerRenderedWidth = playerRenderSize.width
@@ -101,7 +113,7 @@ fun JumpGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMode
                 }
                 laps += 1
                 if (laps % frameRate == 0L) {
-                    currentFrame = (currentFrame + 1) % tamagotchiState.animations.play.size
+                    currentFrame = (currentFrame + 1) % playerAnimationFrames.size
                     laps = 0
                     obstacleXVelocity += 0.02f
                 }
