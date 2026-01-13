@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android" android:oneshot="false">
+    <item android:drawable="@drawable/adult_6_play0" android:duration="500"/>
+    <item android:drawable="@drawable/adult_6_play1" android:duration="500"/>
+    <item android:drawable="@drawable/adult_6_play2" android:duration="500"/>
+    <item android:drawable="@drawable/adult_6_play3" android:duration="500"/>
+    <item android:drawable="@drawable/adult_6_play4" android:duration="500"/>
+    <item android:drawable="@drawable/adult_6_play5" android:duration="500"/>
+    <item android:drawable="@drawable/adult_6_play6" android:duration="500"/>
+    <item android:drawable="@drawable/adult_6_play7" android:duration="500"/>
+    <item android:drawable="@drawable/adult_6_play8" android:duration="500"/>
+    <item android:drawable="@drawable/adult_6_play9" android:duration="500"/>
+    <item android:drawable="@drawable/adult_6_play10" android:duration="500"/>
+    <item android:drawable="@drawable/adult_6_play11" android:duration="500"/>
+    <item android:drawable="@drawable/adult_6_play12" android:duration="500"/>
+    <item android:drawable="@drawable/adult_6_play13" android:duration="500"/>
+    <item android:drawable="@drawable/adult_6_play14" android:duration="500"/>
+    <item android:drawable="@drawable/adult_6_play15" android:duration="500"/>
+</animation-list>
