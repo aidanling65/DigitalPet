@@ -29,4 +29,8 @@
     <string name="mistakes">Mistakes</string>
     <string name="intelligence">Intelligence</string>
     <string name="learning">Learning</string>
+    <string name="hatched_dialog">Congratulations!\nYour Tamagotchi has hatched!</string>
+    <string name="death_dialog">Your Tamagotchi has died! :(</string>
+    <string name="evolved_dialog">Congratulations! Your Tamagotchi has evolved!</string>
+    <string name="hints">Hints</string>
 </resources>

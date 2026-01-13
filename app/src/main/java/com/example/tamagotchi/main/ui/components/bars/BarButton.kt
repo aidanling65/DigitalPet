@@ -9,27 +9,34 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.FilterQuality
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun BarButton(painter: Painter,
-              contentDescription: String,
-              onClick: () -> Unit= {},
-              modifier: Modifier = Modifier) {
+fun BarButton(
+    painterId: Int,
+    contentDescription: String,
+    onClick: () -> Unit = {},
+    modifier: Modifier = Modifier
+) {
+
+    val bitmap = ImageBitmap.imageResource(painterId)
     Box(
         modifier = modifier
             .size(48.dp)
             .clickable(onClick = onClick)
-            .padding(4.dp),
+            .padding(horizontal = 4.dp),
         contentAlignment = Alignment.Center
-    ){
+    ) {
         Image(
-            painter = painter,
+            bitmap = bitmap,
             contentDescription = contentDescription,
             modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Fit
+            contentScale = ContentScale.Fit,
+            filterQuality = FilterQuality.None
         )
     }
 }

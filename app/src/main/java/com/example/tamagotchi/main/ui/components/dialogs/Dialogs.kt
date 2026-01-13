@@ -17,7 +17,6 @@ fun Dialogs(gameViewModel: GameViewModel){
     val showGame by gameViewModel.showGame.collectAsState()
     val showSudoku by gameViewModel.showSudoku.collectAsState()
 
-
     if(tamagotchiState.hasEvolved){
         EvolutionDialog(
             tamagotchiState,
@@ -34,7 +33,7 @@ fun Dialogs(gameViewModel: GameViewModel){
         GameDialog(
             tamagotchiState,
             gameViewModel,
-            onDismissRequest = {gameViewModel.onDismissGame()},
+            onDismissRequest = { gameViewModel.onDismissGame() },
             Modifier.fillMaxWidth(0.95f)
         )
     }

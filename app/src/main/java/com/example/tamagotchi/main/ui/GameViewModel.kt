@@ -30,7 +30,7 @@ class GameViewModel(
 
     private val _showResetDialog = MutableStateFlow(false)
     val showResetDialog: StateFlow<Boolean> = _showResetDialog.asStateFlow()
-
+ 
     private val _showGame = MutableStateFlow(false)
     val showGame: StateFlow<Boolean> = _showGame.asStateFlow()
 
@@ -130,6 +130,10 @@ class GameViewModel(
 
     fun discipline() {
         updateAndSave { gameLogicManager.discipline(it) }
+    }
+
+    fun hints(){
+
     }
 
     fun onDismissEvolution() {
