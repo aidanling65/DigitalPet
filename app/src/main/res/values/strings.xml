@@ -50,4 +50,7 @@
     <string name="sick_description">"Heal your tamagotchi to cure sickness.\nIf your tamagotchi is sick too long it will register a mistake or even die! "</string>
     <string name="sickness">Sickness</string>
     <string name="cleanliness">Cleanliness</string>
+    <string name="evolution_introduction">Every so often your Tamagotchi will evolve to a new stage</string>
+    <string name="evolution_explanation">Values like your tamagotchi\'s discipline or the number of mistakes you\'ve made affect which form your tamagotchi will evolve to!</string>
+    <string name="evolution">Evolution</string>
 </resources>

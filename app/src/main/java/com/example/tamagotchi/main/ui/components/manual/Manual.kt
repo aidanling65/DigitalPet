@@ -94,11 +94,18 @@ fun ManualDrawer(onDismissRequest: () -> Unit) {
                         ManualEntry(
                             title = stringResource(R.string.mistakes),
                             content = {
-                                MistakeDescription()
+                                MistakeContent()
                             }
                         )
                     }
-
+                    item{
+                        ManualEntry(
+                            title = stringResource(R.string.evolution),
+                            content = {
+                                EvolutionContent()
+                            }
+                        )
+                    }
                     item {
                         ManualEntry(
                             title = stringResource(R.string.happiness),

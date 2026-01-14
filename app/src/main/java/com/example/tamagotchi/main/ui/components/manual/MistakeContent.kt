@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.sp
 import com.example.tamagotchi.R
 
 @Composable
-fun MistakeDescription() {
+fun MistakeContent() {
     Column(
         modifier = Modifier.padding(top = 4.dp, start = 8.dp, bottom = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
