@@ -49,7 +49,7 @@ import kotlinx.coroutines.delay
 fun JumpGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewModel) {
 
     val context = LocalContext.current
-    val playerAnimationFrames = remember(tamagotchiState.animations.play){
+    val playerAnimationFrames = remember(tamagotchiState.animations.play) {
         getAnimationFrames(context, tamagotchiState.animations.play)
     }
 
@@ -101,7 +101,7 @@ fun JumpGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMode
                 val maxY = canvasHeight - playerRenderedHeight
                 playerY =
                     (playerY + playerYVelocity).coerceAtMost(maxY)
-                if(playerY == maxY){
+                if (playerY == maxY) {
                     playerJumped = false
                 }
                 playerYVelocity += gravity
@@ -223,7 +223,11 @@ fun JumpGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMode
                     modifier = Modifier.matchParentSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("${countdown}", style = MaterialTheme.typography.bodyLarge)
+                    Text(
+                        "${countdown}",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = Color.Black
+                    )
                 }
             }
         }
