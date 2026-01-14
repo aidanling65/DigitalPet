@@ -29,7 +29,7 @@ fun TopAppBar(gameViewModel: GameViewModel) {
             BarButton(
                 painterId = R.drawable.question_mark,
                 contentDescription = stringResource(R.string.hints),
-                onClick = { gameViewModel.hints() },
+                onClick = { gameViewModel.onManualClicked() },
             )
         },
         actions = {

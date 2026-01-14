@@ -35,6 +35,13 @@ val Typography = Typography(
         lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
+    headlineMedium = TextStyle(
+        fontFamily = pixelifySans,
+        fontWeight = FontWeight.Bold,
+        fontSize = 36.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.sp
+    ),
     bodySmall = TextStyle(
         fontFamily = pixelifySans,
         fontWeight = FontWeight.Normal,

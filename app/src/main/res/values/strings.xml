@@ -33,4 +33,21 @@
     <string name="death_dialog">Your Tamagotchi has died! :(</string>
     <string name="evolved_dialog">Congratulations! Your Tamagotchi has evolved!</string>
     <string name="hints">Hints</string>
+    <string name="happiness_description">Your Tamagotchi will regularly lose happiness, play games with it to maintain happiness.</string>
+    <string name="discipline_description">Your tamagotchi will often misbehave, talk to it to improve discipline</string>
+    <string name="hunger_description">Feed your tamagotchi to increase its hunger</string>
+    <string name="mistakes_into">Collecting too many mistakes can cause your tamagotchi to die!</string>
+    <string name="mistakes_possible">Possible mistakes are:</string>
+    <string name="mistakes_list">Forgetting to feed\nForgetting to play\nForgetting to discipline\nForgetting to heal\nForgetting to put the lights out</string>
+    <string name="mistakes_redeem">You can redeem mistakes by:</string>
+    <string name="mistakes_redeem_list">Building high intelligence\nMaintaining high fitness</string>
+    <string name="mistakes_evolution">Your number of mistakes can affect your tamagotchi\'s next evolution!</string>
+    <string name="intelligence_description">Engage in puzzles to boost your Tamagotchi\'s intelligence. Building high intelligence can reduce your mistakes!</string>
+    <string name="sleep">Sleep</string>
+    <string name="fitness_description">Reach your fitness goals to build fitness, maintaining a high fitness can redeem mistakes!</string>
+    <string name="sleep_description">Turn the lights out for your Tamagotchi when it goes to sleep!</string>
+    <string name="clean_description">Clean your tamagotchi when it is dirty. Leaving your tamagotchi unclean for too long can result in sickness!</string>
+    <string name="sick_description">"Heal your tamagotchi to cure sickness.\nIf your tamagotchi is sick too long it will register a mistake or even die! "</string>
+    <string name="sickness">Sickness</string>
+    <string name="cleanliness">Cleanliness</string>
 </resources>

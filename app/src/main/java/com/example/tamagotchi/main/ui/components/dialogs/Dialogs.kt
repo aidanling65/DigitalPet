@@ -6,6 +6,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.example.tamagotchi.main.ui.GameViewModel
+import com.example.tamagotchi.main.ui.components.manual.ManualDrawer
 import com.example.tamagotchi.minigames.GameDialog
 import com.example.tamagotchi.sudoku.ui.components.SudokuDialog
 
@@ -16,6 +17,7 @@ fun Dialogs(gameViewModel: GameViewModel){
     val showDialog by gameViewModel.showResetDialog.collectAsState()
     val showGame by gameViewModel.showGame.collectAsState()
     val showSudoku by gameViewModel.showSudoku.collectAsState()
+    val showManual by gameViewModel.showManual.collectAsState()
 
     if(tamagotchiState.hasEvolved){
         EvolutionDialog(
@@ -44,5 +46,9 @@ fun Dialogs(gameViewModel: GameViewModel){
             onDismissRequest = { gameViewModel.onDismissSudoku() },
             onGameWon = { gameViewModel.learning() }
         )
+    }
+    if(showManual){
+        ManualDrawer(onDismissRequest = { gameViewModel.onDismissManual() })
+
     }
 }

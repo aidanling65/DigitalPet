@@ -37,6 +37,8 @@ class GameViewModel(
     private val _showSudoku = MutableStateFlow(false)
     val showSudoku: StateFlow<Boolean> = _showSudoku.asStateFlow()
 
+    private val _showManual = MutableStateFlow(false)
+    val showManual: StateFlow<Boolean> = _showManual.asStateFlow()
 
     private val gameLogicManager = GameLogicManager()
     private val stepDb = StepDatabase.getDatabase(context)
@@ -132,8 +134,12 @@ class GameViewModel(
         updateAndSave { gameLogicManager.discipline(it) }
     }
 
-    fun hints(){
+    fun onManualClicked(){
+        _showManual.value = true
+    }
 
+    fun onDismissManual(){
+        _showManual.value = false
     }
 
     fun onDismissEvolution() {
