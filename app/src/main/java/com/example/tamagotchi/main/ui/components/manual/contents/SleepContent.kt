@@ -1,0 +1,73 @@
+package com.example.tamagotchi.main.ui.components.manual.contents
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.tamagotchi.R
+import com.example.tamagotchi.main.data.model.AgeStage
+import com.example.tamagotchi.main.data.model.EvolutionAnimations
+import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
+
+@Composable
+fun SleepContent() {
+    Column(
+        modifier = Modifier.padding(top = 4.dp, bottom = 8.dp, start = 8.dp, end = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Text(
+            text = stringResource(R.string.sleep_description),
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.padding(
+                top = 4.dp,
+                start = 8.dp,
+                bottom = 8.dp
+            ),
+            color = MaterialTheme.colorScheme.background,
+            lineHeight = 16.sp
+        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            val sampleState = TamagotchiState(
+                ageStage = AgeStage.ADULT,
+                animations = EvolutionAnimations.ADULT_6,
+                sleeping = true,
+                light = true
+            )
+            TamagotchiDisplay(
+                sampleState,
+                modifier = Modifier
+                    .fillMaxWidth(0.5f)
+                    .padding(horizontal=16.dp)
+                    .aspectRatio(1f)
+                    .weight(1f)
+            )
+            val sampleState2 = TamagotchiState(
+                ageStage = AgeStage.ADULT,
+                animations = EvolutionAnimations.ADULT_6,
+                sleeping = true,
+                light = false
+            )
+            TamagotchiDisplay(
+                sampleState2,
+                modifier = Modifier
+                    .fillMaxWidth(0.5f)
+                    .padding(horizontal = 16.dp)
+                    .aspectRatio(1f)
+                    .weight(1f)
+            )
+
+        }
+    }
+}

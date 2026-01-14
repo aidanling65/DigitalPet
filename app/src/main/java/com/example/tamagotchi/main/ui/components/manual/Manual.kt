@@ -34,6 +34,14 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.tamagotchi.R
+import com.example.tamagotchi.main.ui.components.manual.contents.CleanContent
+import com.example.tamagotchi.main.ui.components.manual.contents.DeathContent
+import com.example.tamagotchi.main.ui.components.manual.contents.EvolutionContent
+import com.example.tamagotchi.main.ui.components.manual.contents.HappinessContent
+import com.example.tamagotchi.main.ui.components.manual.contents.HungerContent
+import com.example.tamagotchi.main.ui.components.manual.contents.MistakeContent
+import com.example.tamagotchi.main.ui.components.manual.contents.SickContent
+import com.example.tamagotchi.main.ui.components.manual.contents.SleepContent
 import kotlinx.coroutines.delay
 
 @Composable
@@ -98,7 +106,7 @@ fun ManualDrawer(onDismissRequest: () -> Unit) {
                             }
                         )
                     }
-                    item{
+                    item {
                         ManualEntry(
                             title = stringResource(R.string.evolution),
                             content = {
@@ -108,16 +116,18 @@ fun ManualDrawer(onDismissRequest: () -> Unit) {
                     }
                     item {
                         ManualEntry(
+                            title = stringResource(R.string.death),
+                            content = {
+                                DeathContent()
+                            }
+                        )
+                    }
+                    item {
+                        ManualEntry(
                             title = stringResource(R.string.happiness),
                             painterId = R.drawable.play,
                             content = {
-                                Text(
-                                    text = stringResource(R.string.happiness_description),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    modifier = Modifier.padding(top = 4.dp, start = 8.dp, bottom = 8.dp),
-                                    color = MaterialTheme.colorScheme.background,
-                                    lineHeight = 16.sp
-                                )
+                                HappinessContent()
                             }
                         )
                     }
@@ -126,13 +136,7 @@ fun ManualDrawer(onDismissRequest: () -> Unit) {
                             title = stringResource(R.string.hunger),
                             painterId = R.drawable.knife_fork,
                             content = {
-                                Text(
-                                    text = stringResource(R.string.hunger_description),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    modifier = Modifier.padding(top = 4.dp, start = 8.dp),
-                                    color = MaterialTheme.colorScheme.background,
-                                    lineHeight = 16.sp
-                                )
+                                HungerContent()
                             }
                         )
                     }
@@ -144,7 +148,11 @@ fun ManualDrawer(onDismissRequest: () -> Unit) {
                                 Text(
                                     text = stringResource(R.string.discipline_description),
                                     style = MaterialTheme.typography.bodySmall,
-                                    modifier = Modifier.padding(top = 4.dp, start = 8.dp, bottom = 8.dp),
+                                    modifier = Modifier.padding(
+                                        top = 4.dp,
+                                        start = 8.dp,
+                                        bottom = 8.dp
+                                    ),
                                     color = MaterialTheme.colorScheme.background,
                                     lineHeight = 16.sp
                                 )
@@ -159,7 +167,11 @@ fun ManualDrawer(onDismissRequest: () -> Unit) {
                                 Text(
                                     text = stringResource(R.string.intelligence_description),
                                     style = MaterialTheme.typography.bodySmall,
-                                    modifier = Modifier.padding(top = 4.dp, start = 8.dp, bottom = 8.dp),
+                                    modifier = Modifier.padding(
+                                        top = 4.dp,
+                                        start = 8.dp,
+                                        bottom = 8.dp
+                                    ),
                                     color = MaterialTheme.colorScheme.background,
                                     lineHeight = 16.sp
                                 )
@@ -173,7 +185,11 @@ fun ManualDrawer(onDismissRequest: () -> Unit) {
                                 Text(
                                     text = stringResource(R.string.fitness_description),
                                     style = MaterialTheme.typography.bodySmall,
-                                    modifier = Modifier.padding(top = 4.dp, start = 8.dp, bottom = 8.dp),
+                                    modifier = Modifier.padding(
+                                        top = 4.dp,
+                                        start = 8.dp,
+                                        bottom = 8.dp
+                                    ),
                                     color = MaterialTheme.colorScheme.background,
                                     lineHeight = 16.sp
                                 )
@@ -185,13 +201,7 @@ fun ManualDrawer(onDismissRequest: () -> Unit) {
                             title = stringResource(R.string.sleep),
                             painterId = R.drawable.light_bulb,
                             content = {
-                                Text(
-                                    text = stringResource(R.string.sleep_description),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    modifier = Modifier.padding(top = 4.dp, start = 8.dp, bottom = 8.dp),
-                                    color = MaterialTheme.colorScheme.background,
-                                    lineHeight = 16.sp
-                                )
+                                SleepContent()
                             }
                         )
                     }
@@ -200,13 +210,7 @@ fun ManualDrawer(onDismissRequest: () -> Unit) {
                             title = stringResource(R.string.cleanliness),
                             painterId = R.drawable.clean,
                             content = {
-                                Text(
-                                    text = stringResource(R.string.clean_description),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    modifier = Modifier.padding(top = 4.dp, start = 8.dp, bottom = 8.dp),
-                                    color = MaterialTheme.colorScheme.background,
-                                    lineHeight = 16.sp
-                                )
+                                CleanContent()
                             }
                         )
                     }
@@ -215,13 +219,7 @@ fun ManualDrawer(onDismissRequest: () -> Unit) {
                             title = stringResource(R.string.sickness),
                             painterId = R.drawable.heal,
                             content = {
-                                Text(
-                                    text = stringResource(R.string.sick_description),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    modifier = Modifier.padding(top = 4.dp, start = 8.dp, bottom = 8.dp),
-                                    color = MaterialTheme.colorScheme.background,
-                                    lineHeight = 16.sp
-                                )
+                                SickContent()
                             }
                         )
                     }

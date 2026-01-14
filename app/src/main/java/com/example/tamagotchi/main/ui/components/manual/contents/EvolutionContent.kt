@@ -1,4 +1,4 @@
-package com.example.tamagotchi.main.ui.components.manual
+package com.example.tamagotchi.main.ui.components.manual.contents
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

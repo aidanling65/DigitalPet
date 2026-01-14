@@ -34,7 +34,6 @@ fun ManualEntry(
     title: String,
     content: @Composable () -> Unit,
     painterId: Int? = null,
-    modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
     var bitmap: ImageBitmap? = null
@@ -45,43 +44,47 @@ fun ManualEntry(
     if (expanded) {
         textColor = MaterialTheme.colorScheme.background
     }
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 8.dp)
-            .clip(RoundedCornerShape(12.dp))
-            .background(color = if (expanded) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.background)
-            .clickable(onClick = { expanded = !expanded })
-    ) {
-        Column(
-            Modifier.fillMaxWidth().padding(top=8.dp, bottom = 8.dp)
+    Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
+                .clip(RoundedCornerShape(12.dp))
+                .background(color = if (expanded) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.background)
+                .clickable(onClick = { expanded = !expanded })
         ) {
-            Row(
-                Modifier.wrapContentHeight(),
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp, bottom = 8.dp)
             ) {
-                Spacer(Modifier.width(8.dp))
-                if (bitmap != null) {
-                    Image(
-                        bitmap = bitmap,
-                        contentDescription = null,
-                        modifier = Modifier.size(32.dp),
-                        contentScale = ContentScale.Fit,
-                        filterQuality = FilterQuality.None
-                    )
+                Row(
+                    Modifier.wrapContentHeight(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Spacer(Modifier.width(8.dp))
-                } else {
-                    Spacer(Modifier.width(40.dp))
+                    if (bitmap != null) {
+                        Image(
+                            bitmap = bitmap,
+                            contentDescription = null,
+                            modifier = Modifier.size(32.dp),
+                            contentScale = ContentScale.Fit,
+                            filterQuality = FilterQuality.None
+                        )
+                        Spacer(Modifier.width(8.dp))
+                    } else {
+                        Spacer(Modifier.width(40.dp))
+                    }
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = textColor,
+                        modifier = Modifier.weight(1f),
+                    )
                 }
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = textColor,
-                    modifier = Modifier.weight(1f),
-                )
-            }
-            AnimatedVisibility(visible = expanded) {
-                content()
+                AnimatedVisibility(visible = expanded) {
+                    content()
+                }
             }
         }
     }

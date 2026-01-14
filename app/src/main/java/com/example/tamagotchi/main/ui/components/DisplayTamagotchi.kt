@@ -54,7 +54,7 @@ fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifi
             if (currentState.poop) {
                 BoxWithConstraints(modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .fillMaxSize(0.6f)) {
+                    .fillMaxSize(0.7f)) {
 
                     val offsetX = maxWidth * -0.05f
                     val offsetY = maxHeight * -0.05f

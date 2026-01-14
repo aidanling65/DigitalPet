@@ -1,4 +1,4 @@
-package com.example.tamagotchi.main.ui.components.manual
+package com.example.tamagotchi.main.ui.components.manual.contents
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tamagotchi.R
+import com.example.tamagotchi.main.ui.components.manual.BulletPointItem
 
 @Composable
 fun MistakeContent() {
