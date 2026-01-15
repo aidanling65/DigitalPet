@@ -36,77 +36,79 @@ fun StatusBars(
         horizontalAlignment = Alignment.Start,
     ) {
         val spacerModifier = Modifier.height(8.dp)
-        item{ StatusBar(tamagotchiState.hunger, MAX_HUNGER, stringResource(R.string.hunger)) }
-        item{Spacer(modifier = spacerModifier)}
-        item{
+        item { StatusBar(tamagotchiState.hunger, MAX_HUNGER, stringResource(R.string.hunger)) }
+        item { Spacer(modifier = spacerModifier) }
+        item {
             StatusBar(
                 tamagotchiState.discipline,
                 MAX_DISCIPLINE,
                 stringResource(R.string.discipline)
             )
         }
-        item{Spacer(modifier = spacerModifier)}
-        item{
+        item { Spacer(modifier = spacerModifier) }
+        item {
             StatusBar(
                 progress = tamagotchiState.intelligence,
                 MAX_INTELLIGENCE,
                 stringResource(R.string.intelligence)
             )
         }
-        item{Spacer(modifier = spacerModifier)}
-        item{
+        item { Spacer(modifier = spacerModifier) }
+        item {
             StatusBar(
                 tamagotchiState.happiness,
                 MAX_HAPPINESS,
                 stringResource(R.string.happiness)
             )
         }
-        item{Spacer(modifier = spacerModifier)}
-        item{ FitnessBar(tamagotchiState) }
-        item{Spacer(modifier = spacerModifier)}
-        item{Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Column() {
-                Text(
-                    text = "State: ${tamagotchiState.ageStage.name}",
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.bodySmall
-                )
-                Text(
-                    text = "${tamagotchiState.age} yr",
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.bodySmall
-                )
-                Text(
-                    text = if (tamagotchiState.misbehaving) stringResource(R.string.misbehaving) else stringResource(
-                        R.string.well_behaved
-                    ),
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.bodySmall
-                )
+        item { Spacer(modifier = spacerModifier) }
+        item { FitnessBar(tamagotchiState) }
+        item { Spacer(modifier = spacerModifier) }
+        item {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column() {
+                    Text(
+                        text = "State: ${tamagotchiState.ageStage.name}",
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    Text(
+                        text = "${tamagotchiState.age} yr",
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    Text(
+                        text = if (tamagotchiState.misbehaving) stringResource(R.string.misbehaving) else stringResource(
+                            R.string.well_behaved
+                        ),
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+                Column()
+                {
+                    Text(
+                        text = "${tamagotchiState.weight} Ib",
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    Text(
+                        text = if (tamagotchiState.sick) stringResource(R.string.sick) else stringResource(
+                            R.string.healthy
+                        ),
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    Text(
+                        text = stringResource(R.string.mistakes) + ": " + (tamagotchiState.mentalMistakes + tamagotchiState.physicalMistakes).toString(),
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
             }
-            Column()
-            {
-                Text(
-                    text = "${tamagotchiState.weight} Ib",
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.bodySmall
-                )
-                Text(
-                    text = if(tamagotchiState.sick) stringResource(R.string.sick) else stringResource(
-                        R.string.healthy
-                    ),
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.bodySmall
-                )
-                Text(
-                    text = stringResource(R.string.mistakes) + ": " + (tamagotchiState.mentalMistakes + tamagotchiState.physicalMistakes).toString(),
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
-        }}
+        }
     }
 }

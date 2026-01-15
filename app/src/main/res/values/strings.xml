@@ -34,7 +34,7 @@
     <string name="evolved_dialog">Congratulations! Your Tamagotchi has evolved!</string>
     <string name="hints">Hints</string>
     <string name="happiness_description">Your Tamagotchi will regularly lose happiness, play games with it to maintain happiness.</string>
-    <string name="discipline_description">Your tamagotchi will often misbehave, talk to it to improve discipline</string>
+    <string name="discipline_description">Your tamagotchi will often misbehave, talk to it to improve discipline\nYour tamagotchi\'s discipline can affect which form your tamagotchi will evolve to next!</string>
     <string name="hunger_description">Feed your tamagotchi to increase its hunger</string>
     <string name="mistakes_into">Collecting too many mistakes can cause your tamagotchi to die!</string>
     <string name="mistakes_possible">Possible mistakes are:</string>
