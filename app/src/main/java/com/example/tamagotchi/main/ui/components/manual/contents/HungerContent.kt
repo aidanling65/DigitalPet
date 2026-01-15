@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,7 +48,7 @@ fun HungerContent() {
                 start = 8.dp,
                 bottom = 8.dp
             ),
-            color = MaterialTheme.colorScheme.background,
+            color = Color.Black,
             lineHeight = 16.sp
         )
         StatusBar(progress = progress, maximum = maximum, label = "", modifier = Modifier.padding(bottom=0.dp))

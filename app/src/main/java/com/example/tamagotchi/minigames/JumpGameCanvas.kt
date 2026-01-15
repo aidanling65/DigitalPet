@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -241,11 +242,18 @@ fun JumpGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMode
                     playerJumped = true
                 }
             },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.secondary
+            ),
             modifier = Modifier
                 .fillMaxWidth(0.7f)
                 .fillMaxHeight(0.5f)
         ) {
-            Text("Jump", style = MaterialTheme.typography.bodyMedium)
+            Text(
+                "Jump",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.primary
+            )
         }
     } else if (isGameOverScreen) {
         Button(
@@ -255,11 +263,18 @@ fun JumpGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMode
                 isGameOverScreen = false
                 timer = 0
             },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.secondary
+            ),
             modifier = Modifier
                 .fillMaxWidth(0.7f)
                 .fillMaxHeight(0.5f)
         ) {
-            Text("Restart", style = MaterialTheme.typography.bodyMedium)
+            Text(
+                "Restart",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.primary
+            )
         }
     }
 }

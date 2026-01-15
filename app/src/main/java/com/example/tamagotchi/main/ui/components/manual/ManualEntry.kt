@@ -23,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -42,7 +43,7 @@ fun ManualEntry(
     }
     var textColor = MaterialTheme.colorScheme.primary
     if (expanded) {
-        textColor = MaterialTheme.colorScheme.background
+        textColor = Color.Black
     }
     Column {
         Row(
@@ -50,7 +51,7 @@ fun ManualEntry(
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
                 .clip(RoundedCornerShape(12.dp))
-                .background(color = if (expanded) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.background)
+                .background(color = if (expanded) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.secondary)
                 .clickable(onClick = { expanded = !expanded })
         ) {
             Column(

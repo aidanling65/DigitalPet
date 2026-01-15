@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,7 +53,7 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
 
     var laps = 0L
     var currentFrame by remember { mutableIntStateOf(0) }
-    val playerAnimationFrames = remember(tamagotchiState.animations.play){
+    val playerAnimationFrames = remember(tamagotchiState.animations.play) {
         getAnimationFrames(context, tamagotchiState.animations.play)
     }
     val playerBitmap = playerAnimationFrames[currentFrame]
@@ -64,7 +65,7 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
     val playerRenderedWidth = playerRenderSize.width
 
     var playerX by remember { mutableFloatStateOf(100f) }
-    var playerY by remember { mutableFloatStateOf((canvasHeight/2) - playerRenderedHeight) }
+    var playerY by remember { mutableFloatStateOf((canvasHeight / 2) - playerRenderedHeight) }
     var playerYVelocity by remember { mutableFloatStateOf(0f) }
     val gravity = 0.75f
 
@@ -74,7 +75,7 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
     var obstacleHeight = canvasHeight / 2
     var obstacleX by remember { mutableFloatStateOf(canvasWidth * 2) }
     val obstacleY = 0f
-    var obstacle2y by remember{ mutableFloatStateOf(60f)}
+    var obstacle2y by remember { mutableFloatStateOf(60f) }
 
     var obstacleXVelocity by remember { mutableFloatStateOf(5f) }
 
@@ -85,7 +86,7 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
     val delay = 10L
     val frameRate = 500L / delay
 
-    var collisionX by remember {mutableStateOf(false)}
+    var collisionX by remember { mutableStateOf(false) }
     var collisionY by remember { mutableStateOf(false) }
 
     if (isGameStarted) {
@@ -103,7 +104,7 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
                 obstacleX -= obstacleXVelocity
                 if (obstacleX < 0) {
                     obstacleX = canvasWidth
-                    obstacleHeightOffset = ((-(canvasHeight/2).toInt()..100).random()).toFloat()
+                    obstacleHeightOffset = ((-(canvasHeight / 2).toInt()..100).random()).toFloat()
                 }
                 laps += 1
                 if (laps % frameRate == 0L) {
@@ -115,7 +116,8 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
                 val playerBottom = playerY + playerRenderedHeight
 
                 collisionX = playerRight > obstacleX && playerX < obstacleX + obstacleWidth
-                collisionY = playerY <= obstacleY + obstacleHeight - 10f || playerBottom >= obstacle2y + 10f
+                collisionY =
+                    playerY <= obstacleY + obstacleHeight - 10f || playerBottom >= obstacle2y + 10f
 
                 if (collisionX && collisionY) {
                     Log.d(
@@ -125,13 +127,12 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
                     isGameOver = true
                     delay(500L)
                     isGameOverScreen = true
-                }
-                else if(playerY > canvasHeight + 200){
+                } else if (playerY > canvasHeight + 200) {
                     isGameOver = true
                     delay(500L)
                     isGameOverScreen = true
                 }
-                if(playerX > obstacleX){
+                if (playerX > obstacleX) {
                     score += 1
                 }
 
@@ -186,7 +187,7 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
                 canvasHeight = size.height
                 canvasWidth = size.width
                 val gapSize = playerRenderedHeight * 2.5f
-                obstacleHeight = (canvasHeight / 2 ) + obstacleHeightOffset
+                obstacleHeight = (canvasHeight / 2) + obstacleHeightOffset
                 obstacle2y = obstacleY + obstacleHeight + gapSize
 
                 if (!isGameOverScreen) {
@@ -219,8 +220,16 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
                     contentAlignment = Alignment.Center
                 ) {
                     Column {
-                        Text("Game Over", style = MaterialTheme.typography.bodyLarge, color = Color.Black)
-                        Text("Score: $score", style = MaterialTheme.typography.bodySmall, color = Color.Black)
+                        Text(
+                            "Game Over",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Color.Black
+                        )
+                        Text(
+                            "Score: $score",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color.Black
+                        )
                     }
                 }
             }
@@ -229,7 +238,11 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
                     modifier = Modifier.matchParentSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("$countdown", style = MaterialTheme.typography.bodyLarge, color = Color.Black)
+                    Text(
+                        "$countdown",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = Color.Black
+                    )
                 }
             }
         }
@@ -242,11 +255,18 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
                     playerYVelocity = -10f
                 }
             },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.secondary
+            ),
             modifier = Modifier
                 .fillMaxWidth(0.7f)
                 .fillMaxHeight(0.5f)
         ) {
-            Text("Jump", style = MaterialTheme.typography.bodyMedium)
+            Text(
+                "Jump",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.primary
+            )
         }
     } else if (isGameOverScreen) {
         Button(
@@ -256,11 +276,18 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
                 isGameOverScreen = false
                 score = 0
             },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.secondary
+            ),
             modifier = Modifier
                 .fillMaxWidth(0.7f)
                 .fillMaxHeight(0.5f)
         ) {
-            Text("Restart", style = MaterialTheme.typography.bodyMedium)
+            Text(
+                "Restart",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.primary
+            )
         }
     }
 }

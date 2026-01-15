@@ -36,6 +36,7 @@ data class TamagotchiState(
 
     val physicalMistakes: Int = 0,
     val mentalMistakes: Int = 0,
+    val mistakes: Int = 0,
 
     val ageStage: AgeStage = AgeStage.EGG,
     val animations: EvolutionAnimations = EvolutionAnimations.EGG,

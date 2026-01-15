@@ -41,6 +41,7 @@ class TamagotchiRepository (private val context: Context) {
     private val ANIMATIONS = stringPreferencesKey("animations")
     private val MENTAL_MISTAKES = intPreferencesKey("mental_mistakes")
     private val PHYSICAL_MISTAKES = intPreferencesKey("physical_mistakes")
+    private val MISTAKES = intPreferencesKey("mistakes")
     private val HAS_EVOLVED = booleanPreferencesKey("has_evolved")
 
     val tamagotchiStateFlow: Flow<TamagotchiState> = context.dataStore.data
@@ -67,6 +68,7 @@ class TamagotchiRepository (private val context: Context) {
                 sleeping = prefs[SLEEPING] ?: defaultState.sleeping,
                 mentalMistakes = prefs[MENTAL_MISTAKES] ?: defaultState.mentalMistakes,
                 physicalMistakes = prefs[PHYSICAL_MISTAKES] ?: defaultState.physicalMistakes,
+                mistakes = prefs[MISTAKES] ?: defaultState.mistakes,
                 ageStage = AgeStage.valueOf(prefs[AGE_STAGE] ?: defaultState.ageStage.name),
                 animations = EvolutionAnimations.valueOf(
                     prefs[ANIMATIONS] ?: defaultState.animations.name
@@ -121,6 +123,7 @@ class TamagotchiRepository (private val context: Context) {
         updated[SLEEPING] = current.sleeping
         updated[PHYSICAL_MISTAKES] = current.physicalMistakes
         updated[MENTAL_MISTAKES] = current.mentalMistakes
+        updated[MISTAKES] = current.mistakes
         updated[AGE_STAGE] = current.ageStage.name
         updated[ANIMATIONS] = current.animations.name
         updated[HAS_EVOLVED] = current.hasEvolved

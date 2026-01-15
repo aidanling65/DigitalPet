@@ -24,7 +24,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.example.tamagotchi.R
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
-import com.example.tamagotchi.main.ui.theme.TamagotchiTheme
+import com.example.tamagotchi.theme.TamagotchiTheme
 import com.example.tamagotchi.sudoku.ui.SudokuBoardView
 import com.example.tamagotchi.sudoku.ui.SudokuViewModel
 

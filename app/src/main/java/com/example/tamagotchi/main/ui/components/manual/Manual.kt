@@ -28,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -93,14 +94,16 @@ fun ManualDrawer(onDismissRequest: () -> Unit) {
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(topEnd = 24.dp, bottomEnd = 24.dp))
                         .background(MaterialTheme.colorScheme.background)
-                        .padding(16.dp),
+                        .padding(12.dp),
                     horizontalAlignment = Alignment.Start
                 ) {
                     item { Spacer(modifier = Modifier.height(16.dp)) }
-                    item { Text("Manual", style = MaterialTheme.typography.headlineMedium) }
+                    item { Text("Manual", style = MaterialTheme.typography.headlineMedium, color= MaterialTheme.colorScheme.primary) }
+                    item { Spacer(modifier = Modifier.height(8.dp)) }
                     item {
                         ManualEntry(
                             title = stringResource(R.string.mistakes),
+                            painterId = R.drawable.sad_face,
                             content = {
                                 MistakeContent()
                             }
@@ -109,6 +112,7 @@ fun ManualDrawer(onDismissRequest: () -> Unit) {
                     item {
                         ManualEntry(
                             title = stringResource(R.string.evolution),
+                            painterId = R.drawable.chromosome,
                             content = {
                                 EvolutionContent()
                             }
@@ -117,6 +121,7 @@ fun ManualDrawer(onDismissRequest: () -> Unit) {
                     item {
                         ManualEntry(
                             title = stringResource(R.string.death),
+                            painterId = R.drawable.skull,
                             content = {
                                 DeathContent()
                             }
@@ -153,7 +158,7 @@ fun ManualDrawer(onDismissRequest: () -> Unit) {
                                         start = 8.dp,
                                         bottom = 8.dp
                                     ),
-                                    color = MaterialTheme.colorScheme.background,
+                                    color = Color.Black,
                                     lineHeight = 16.sp
                                 )
                             }
@@ -172,25 +177,7 @@ fun ManualDrawer(onDismissRequest: () -> Unit) {
                                         start = 8.dp,
                                         bottom = 8.dp
                                     ),
-                                    color = MaterialTheme.colorScheme.background,
-                                    lineHeight = 16.sp
-                                )
-                            }
-                        )
-                    }
-                    item {
-                        ManualEntry(
-                            title = stringResource(R.string.fitness),
-                            content = {
-                                Text(
-                                    text = stringResource(R.string.fitness_description),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    modifier = Modifier.padding(
-                                        top = 4.dp,
-                                        start = 8.dp,
-                                        bottom = 8.dp
-                                    ),
-                                    color = MaterialTheme.colorScheme.background,
+                                    color = Color.Black,
                                     lineHeight = 16.sp
                                 )
                             }
@@ -220,6 +207,25 @@ fun ManualDrawer(onDismissRequest: () -> Unit) {
                             painterId = R.drawable.heal,
                             content = {
                                 SickContent()
+                            }
+                        )
+                    }
+                    item {
+                        ManualEntry(
+                            title = stringResource(R.string.fitness),
+                            painterId = R.drawable.dumpbell,
+                            content = {
+                                Text(
+                                    text = stringResource(R.string.fitness_description),
+                                    style = MaterialTheme.typography.bodySmall,
+                                    modifier = Modifier.padding(
+                                        top = 4.dp,
+                                        start = 8.dp,
+                                        bottom = 8.dp
+                                    ),
+                                    color = Color.Black,
+                                    lineHeight = 16.sp
+                                )
                             }
                         )
                     }

@@ -23,7 +23,8 @@ class FitnessWork(
                 fitness = current.fitness - 1,
                 weight = if (current.fitness == MAX_FITNESS) (current.weight - 1).coerceAtLeast(
                     current.ageStage.minimumWeight
-                ) else current.weight
+                ) else current.weight,
+                physicalMistakes = if(current.fitness == MAX_FITNESS) (current.physicalMistakes - 1).coerceAtLeast(0) else current.physicalMistakes
             )
         }
 
@@ -35,7 +36,6 @@ class FitnessWork(
                 ExistingWorkPolicy.REPLACE,
             )
         }
-
         return Result.success()
     }
 }

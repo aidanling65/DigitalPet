@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.tamagotchi.R
-import com.example.tamagotchi.main.ui.theme.DialogColor
+import com.example.tamagotchi.theme.DialogColor
 
 @Composable
 fun ResetDialog(

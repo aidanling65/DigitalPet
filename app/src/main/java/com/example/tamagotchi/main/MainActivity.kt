@@ -15,7 +15,7 @@ import com.example.tamagotchi.main.data.repository.TamagotchiRepository
 import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
 import com.example.tamagotchi.main.ui.GameViewModel
 import com.example.tamagotchi.main.ui.components.TamagotchiApp
-import com.example.tamagotchi.main.ui.theme.TamagotchiTheme
+import com.example.tamagotchi.theme.TamagotchiTheme
 import com.example.tamagotchi.main.utils.NOTIFICATION_PERMISSION_CODE
 import com.example.tamagotchi.main.utils.cancelNotifications
 import com.example.tamagotchi.main.utils.createNotificationChannel

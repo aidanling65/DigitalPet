@@ -1,4 +1,4 @@
-package com.example.tamagotchi.main.ui.theme
+package com.example.tamagotchi.theme
 
 import com.example.tamagotchi.R
 import androidx.compose.material3.Typography
