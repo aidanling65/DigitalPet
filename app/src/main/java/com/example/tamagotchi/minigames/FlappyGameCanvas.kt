@@ -62,7 +62,6 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
 
     val player = remember {
         Player(
-            playerBitmap,
             100f,
             canvasSize.value.height / 2,
             playerBitmap.width.toFloat(),
@@ -202,7 +201,7 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
                         }
 
                         drawImage(
-                            image = player.bitmap,
+                            image = playerAnimationFrames[currentFrame],
                             srcOffset = IntOffset.Zero,
                             srcSize = IntSize(playerBitmap.width, playerBitmap.height),
                             dstOffset = IntOffset(player.x.toInt(), player.y.toInt()),
