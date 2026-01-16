@@ -94,7 +94,7 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
             Log.d("Flappy", "CanvasHeigh: $canvasHeight")
             while (true) {
                 if (isGameOver) {
-                    gameViewModel.gameScore(score * 50)
+                    gameViewModel.gameScore(score)
                     return@LaunchedEffect
                 }
                 playerY =
@@ -115,17 +115,13 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
                 val playerRight = playerX + playerRenderedWidth
                 val playerBottom = playerY + playerRenderedHeight
 
-                collisionX = playerRight > obstacleX && playerX < obstacleX + obstacleWidth
-                collisionY =
-                    playerY <= obstacleY + obstacleHeight - 10f || playerBottom >= obstacle2y + 10f
+                collisionX = playerRight > obstacleX && playerX < (obstacleX + obstacleWidth)
+                collisionY = playerY < obstacleY + obstacleHeight - 10f || playerBottom > obstacle2y + 10f
 
                 if (collisionX && collisionY) {
-                    Log.d(
-                        "Collision",
-                        "Player: ($playerX, $playerY)\nObstacle: ($obstacleX, $obstacleY"
-                    )
                     isGameOver = true
                     delay(500L)
+                    isGameOverScreen = true
                     isGameOverScreen = true
                 } else if (playerY > canvasHeight + 200) {
                     isGameOver = true
@@ -196,6 +192,26 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
                             Color(0xFF000000),
                             topLeft = Offset(obstacleX, obstacleY),
                             size = Size(obstacleWidth, obstacleHeight)
+                        )
+                        drawLine(
+                            if(playerX + playerRenderedWidth > obstacleX && collisionX) Color.Red else Color(0xFF000000),
+                            start = Offset(obstacleX, canvasHeight),
+                            end = Offset(obstacleX,0f)
+                        )
+                        drawLine(
+                            if(playerX < obstacleX + obstacleWidth && collisionX) Color.Red else Color(0xFF000000),
+                            start = Offset(obstacleX + obstacleWidth, canvasHeight),
+                            end = Offset(obstacleX + obstacleWidth,0f)
+                        )
+                        drawLine(
+                            if(playerY < obstacleY + obstacleHeight) Color.Red else Color(0xFF000000),
+                            start = Offset(0f, obstacleY + obstacleHeight),
+                            end = Offset(canvasWidth,obstacleY + obstacleHeight)
+                        )
+                        drawLine(
+                            if(playerY + playerRenderedHeight > obstacle2y && collisionY) Color.Red else Color(0xFF000000),
+                            start = Offset(0f, obstacleY + obstacleHeight + gapSize),
+                            end = Offset(canvasWidth,obstacleY + obstacleHeight + gapSize)
                         )
 
                         drawRect(

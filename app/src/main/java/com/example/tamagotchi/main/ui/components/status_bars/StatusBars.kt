@@ -36,13 +36,13 @@ fun StatusBars(
         horizontalAlignment = Alignment.Start,
     ) {
         val spacerModifier = Modifier.height(8.dp)
-        item { StatusBar(tamagotchiState.hunger, MAX_HUNGER, stringResource(R.string.hunger)) }
+        item { StatusBar(tamagotchiState.hunger, MAX_HUNGER, label=stringResource(R.string.hunger)) }
         item { Spacer(modifier = spacerModifier) }
         item {
             StatusBar(
                 tamagotchiState.discipline,
                 MAX_DISCIPLINE,
-                stringResource(R.string.discipline)
+                label=stringResource(R.string.discipline)
             )
         }
         item { Spacer(modifier = spacerModifier) }
@@ -50,7 +50,7 @@ fun StatusBars(
             StatusBar(
                 progress = tamagotchiState.intelligence,
                 MAX_INTELLIGENCE,
-                stringResource(R.string.intelligence)
+                label=stringResource(R.string.intelligence)
             )
         }
         item { Spacer(modifier = spacerModifier) }
@@ -58,7 +58,7 @@ fun StatusBars(
             StatusBar(
                 tamagotchiState.happiness,
                 MAX_HAPPINESS,
-                stringResource(R.string.happiness)
+                label=stringResource(R.string.happiness)
             )
         }
         item { Spacer(modifier = spacerModifier) }
