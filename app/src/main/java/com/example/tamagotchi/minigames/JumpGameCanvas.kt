@@ -214,8 +214,8 @@ fun JumpGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMode
                     contentAlignment = Alignment.Center
                 ) {
                     Column {
-                        Text("Game Over", style = MaterialTheme.typography.bodyLarge)
-                        Text("Score: ${timer / 200}", style = MaterialTheme.typography.bodySmall)
+                        Text("Game Over", style = MaterialTheme.typography.bodyLarge, color = Color.Black)
+                        Text("Score: ${timer / 200}", style = MaterialTheme.typography.bodySmall, color = Color.Black)
                     }
                 }
             }
@@ -238,7 +238,7 @@ fun JumpGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMode
         Button(
             onClick = {
                 if (isGameStarted && !playerJumped) {
-                    playerYVelocity = -70f
+                    playerYVelocity = -80f
                     playerJumped = true
                 }
             },
