@@ -22,10 +22,10 @@ import com.example.tamagotchi.R
 fun StatusBar(
     progress: Int,
     maximum: Int,
-    label: String = "",
+    modifier: Modifier = Modifier,
+    label: String? = null,
     labelComplex: (@Composable () -> Unit)? = null,
     height: Dp = 16.dp,
-    modifier: Modifier = Modifier,
 ) {
     val progressBar: Float = progress.toFloat() / maximum
     val color = when {
@@ -52,6 +52,17 @@ fun StatusBar(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
+        if(labelComplex != null){
+            labelComplex()
+        }else if(label != null){
+            Text(
+                text = label,
+                color = MaterialTheme.colorScheme.primary,
+                textAlign = TextAlign.Left,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = modifier
+            )
+        }
         LinearProgressIndicator(
             progress = { progressBar },
             color = color,
@@ -65,16 +76,6 @@ fun StatusBar(
                     shape = RoundedCornerShape(16.dp)
                 )
         )
-        if(labelComplex != null){
-            labelComplex()
-        }else {
-            Text(
-                text = label,
-                color = MaterialTheme.colorScheme.primary,
-                textAlign = TextAlign.Left,
-                style = MaterialTheme.typography.bodySmall,
-                modifier = modifier
-            )
-        }
+
     }
 }

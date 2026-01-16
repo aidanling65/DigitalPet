@@ -20,7 +20,7 @@ import com.example.tamagotchi.main.ui.GameViewModel
 fun BottomBar(gameViewModel: GameViewModel) {
     BottomAppBar(
         containerColor = MaterialTheme.colorScheme.background,
-        contentPadding = PaddingValues(bottom=8.dp,top=0.dp),
+        contentPadding = PaddingValues(bottom=8.dp,top=4.dp),
         modifier = Modifier.height(56.dp),
         actions = {
             Row(

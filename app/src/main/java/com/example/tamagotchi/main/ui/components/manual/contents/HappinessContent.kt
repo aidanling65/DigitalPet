@@ -36,7 +36,7 @@ fun HappinessContent() {
     }
 
     Column(
-        modifier = Modifier.padding(top = 4.dp, start = 8.dp, end = 8.dp),
+        modifier = Modifier.padding(top = 4.dp, start = 8.dp, end = 8.dp, bottom=8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -46,11 +46,10 @@ fun HappinessContent() {
             modifier = Modifier.padding(
                 top = 4.dp,
                 start = 8.dp,
-                bottom = 8.dp
             ),
             color = Color.Black,
             lineHeight = 16.sp
         )
-        StatusBar(progress = progress, maximum = maximum, label = "", modifier = Modifier.padding(bottom=0.dp))
+        StatusBar(progress = progress, maximum = maximum)
     }
 }
