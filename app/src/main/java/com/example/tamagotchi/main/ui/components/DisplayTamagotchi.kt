@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -46,6 +47,7 @@ fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifi
             Modifier
                 .background(colorResource(R.color.lcd))
                 .wrapContentSize()
+                .aspectRatio(1f)
         ) {
             AnimateDrawable(
                 drawableRes=currentState.currentAnimation,

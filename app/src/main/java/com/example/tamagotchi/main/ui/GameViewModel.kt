@@ -30,7 +30,7 @@ class GameViewModel(
 
     private val _showResetDialog = MutableStateFlow(false)
     val showResetDialog: StateFlow<Boolean> = _showResetDialog.asStateFlow()
- 
+
     private val _showGame = MutableStateFlow(false)
     val showGame: StateFlow<Boolean> = _showGame.asStateFlow()
 
@@ -40,15 +40,19 @@ class GameViewModel(
     private val _showManual = MutableStateFlow(false)
     val showManual: StateFlow<Boolean> = _showManual.asStateFlow()
 
+    private val _showStartup = MutableStateFlow(false)
+    val showStartup: StateFlow<Boolean> = _showStartup.asStateFlow()
+
     private val gameLogicManager = GameLogicManager()
     private val stepDb = StepDatabase.getDatabase(context)
     private val stepRepository = StepRepository(stepDb.stepsDao())
+
 
     init {
         viewModelScope.launch {
             val initialState = repository.getState()
             if (initialState.initial) {
-                setupNewGame()
+                _showStartup.value = true
             }
             repository.tamagotchiStateFlow.collect { state ->
                 _tamagotchiState.value = state.copy()
@@ -134,11 +138,11 @@ class GameViewModel(
         updateAndSave { gameLogicManager.discipline(it) }
     }
 
-    fun onManualClicked(){
+    fun onManualClicked() {
         _showManual.value = true
     }
 
-    fun onDismissManual(){
+    fun onDismissManual() {
         _showManual.value = false
     }
 
@@ -155,16 +159,48 @@ class GameViewModel(
     }
 
     fun confirmReset() {
-        setupNewGame()
+        _showStartup.value = true
+        updateAndSave {
+            TamagotchiState()
+        }
         onDismissResetDialog()
+    }
+
+    fun submitStepsGoal(stepGoal: Int) {
+        updateAndSave {
+            it.copy(
+                stepGoal = stepGoal
+            )
+        }
+    }
+
+    fun incrementStepsGoal() {
+        updateAndSave {
+            it.copy(
+                stepGoal = it.stepGoal + 1000
+            )
+        }
+    }
+
+    fun decrementStepsGoal() {
+        updateAndSave {
+            it.copy(
+                stepGoal = (it.stepGoal - 1000).coerceAtLeast(0)
+            )
+        }
     }
 
     fun setupNewGame() {
         WorkManager.getInstance(context).cancelAllWork()
+        _showStartup.value = false
+
         viewModelScope.launch {
-            val resetState = TamagotchiState(initial = false)
-            repository.saveState(resetState)
-            scheduleEvolutionWork(context, resetState)
+            updateAndSave {
+                it.copy(
+                    initial = false
+                )
+            }
+            scheduleEvolutionWork(context, tamagotchiState.value)
         }
     }
 }

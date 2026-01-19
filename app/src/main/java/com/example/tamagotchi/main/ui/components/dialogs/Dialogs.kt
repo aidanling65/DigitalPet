@@ -14,10 +14,21 @@ import com.example.tamagotchi.sudoku.ui.components.SudokuDialog
 fun Dialogs(gameViewModel: GameViewModel){
     val tamagotchiState by gameViewModel.tamagotchiState.collectAsState()
 
-    val showDialog by gameViewModel.showResetDialog.collectAsState()
+    val showStartup by gameViewModel.showStartup.collectAsState()
+    val showReset by gameViewModel.showResetDialog.collectAsState()
     val showGame by gameViewModel.showGame.collectAsState()
     val showSudoku by gameViewModel.showSudoku.collectAsState()
     val showManual by gameViewModel.showManual.collectAsState()
+
+    if(showStartup){
+        StartupDialog(
+            tamagotchiState,
+            onDismissRequest = { gameViewModel.setupNewGame() },
+            submitSteps={gameViewModel.submitStepsGoal(it)},
+            incrementStepGoal = {gameViewModel.incrementStepsGoal()},
+            decrementStepGoal = {gameViewModel.decrementStepsGoal()}
+        )
+    }
 
     if(tamagotchiState.hasEvolved){
         EvolutionDialog(
@@ -25,7 +36,7 @@ fun Dialogs(gameViewModel: GameViewModel){
             onDismissRequest = { gameViewModel.onDismissEvolution() }
         )
     }
-    if (showDialog) {
+    if (showReset) {
         ResetDialog(
             onDismissRequest = { gameViewModel.onDismissResetDialog() },
             onConfirmation = { gameViewModel.confirmReset() }
@@ -49,6 +60,5 @@ fun Dialogs(gameViewModel: GameViewModel){
     }
     if(showManual){
         ManualDrawer(onDismissRequest = { gameViewModel.onDismissManual() })
-
     }
 }

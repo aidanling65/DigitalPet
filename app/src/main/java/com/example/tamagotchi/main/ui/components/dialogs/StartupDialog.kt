@@ -5,51 +5,52 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.compose.ui.zIndex
-import com.example.tamagotchi.R
-import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.TamagotchiState
-import com.example.tamagotchi.main.ui.ConfettiSource
-import com.example.tamagotchi.main.ui.ConfettiView
 import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
 
 @Composable
-fun EvolutionDialog(
+fun StartupDialog(
     tamagotchiState: TamagotchiState,
     onDismissRequest: () -> Unit,
+    submitSteps: (Int) -> Unit,
+    incrementStepGoal: () -> Unit,
+    decrementStepGoal: () -> Unit
 ) {
-    val ageStage = tamagotchiState.ageStage
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(
-            dismissOnBackPress = true,
+            dismissOnBackPress = false,
             dismissOnClickOutside = false,
             usePlatformDefaultWidth = false
         )
     ) {
         Box(
-            Modifier.fillMaxSize(),
+            Modifier.fillMaxSize().padding(horizontal = 8.dp),
             contentAlignment = Alignment.Center
         ) {
             Column(
@@ -61,24 +62,43 @@ fun EvolutionDialog(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Spacer(modifier = Modifier.weight(0.1f))
+                TamagotchiDisplay(tamagotchiState, modifier = Modifier.padding(16.dp))
                 Text(
-                    text = when (ageStage) {
-                        AgeStage.BABY -> stringResource(R.string.hatched_dialog)
-                        AgeStage.DEAD -> stringResource(R.string.death_dialog)
-                        else -> stringResource(R.string.evolved_dialog)
-                    },
+                    text = "Set your Step goal",
                     style = MaterialTheme.typography.bodyLarge,
                     color = Color(0xffffffff),
                     textAlign = TextAlign.Center
                 )
-                TamagotchiDisplay(
-                    tamagotchiState,
-                    modifier = Modifier
-                        .fillMaxWidth(0.9f)
-                        .aspectRatio(1f)
-                        .weight(1f)
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    TextField(
+                        value = tamagotchiState.stepGoal.toString(),
+                        onValueChange = { newValue: String ->
+                            submitSteps(
+                                newValue.toIntOrNull() ?: 0
+                            )
+                        },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        modifier = Modifier.weight(0.1f).padding(horizontal = 8.dp),
+                        singleLine = true
+                    )
+                    Column() {
+                        IconButton(onClick = incrementStepGoal) {
+                            Icon(
+                                Icons.Default.KeyboardArrowUp,
+                                contentDescription = "Increment Step Goal"
+                            )
+                        }
+                        IconButton(onClick = decrementStepGoal) {
+                            Icon(
+                                Icons.Default.KeyboardArrowDown,
+                                contentDescription = "Decrement Step Goal"
+                            )
+                        }
+                    }
+                }
+
                 IconButton(
                     onClick = onDismissRequest,
                     content = {
@@ -87,26 +107,19 @@ fun EvolutionDialog(
                                 .clip(RoundedCornerShape(10))
                                 .background(Color(0xFF396C39))
                                 .fillMaxHeight()
-                                .fillMaxWidth()
-                                .weight(0.2f),
+                                .fillMaxWidth(),
                             horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Check,
-                                contentDescription = "Dismiss"
+                                contentDescription = "Submit"
                             )
                         }
                     },
                     modifier = Modifier.fillMaxWidth(0.75f)
                 )
-                Spacer(modifier = Modifier.weight(0.1f))
             }
-            ConfettiView(
-                source = ConfettiSource.TOP,
-                quantity = 100,
-                modifier = Modifier.zIndex(1f)
-            )
         }
     }
 }
