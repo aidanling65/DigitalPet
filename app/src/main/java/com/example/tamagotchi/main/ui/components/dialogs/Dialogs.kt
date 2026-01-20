@@ -11,7 +11,7 @@ import com.example.tamagotchi.minigames.GameDialog
 import com.example.tamagotchi.sudoku.ui.components.SudokuDialog
 
 @Composable
-fun Dialogs(gameViewModel: GameViewModel){
+fun Dialogs(gameViewModel: GameViewModel) {
     val tamagotchiState by gameViewModel.tamagotchiState.collectAsState()
 
     val showStartup by gameViewModel.showStartup.collectAsState()
@@ -20,17 +20,21 @@ fun Dialogs(gameViewModel: GameViewModel){
     val showSudoku by gameViewModel.showSudoku.collectAsState()
     val showManual by gameViewModel.showManual.collectAsState()
 
-    if(showStartup){
+    if (showStartup) {
         StartupDialog(
             tamagotchiState,
-            onDismissRequest = { gameViewModel.setupNewGame() },
-            submitSteps={gameViewModel.submitStepsGoal(it)},
-            incrementStepGoal = {gameViewModel.incrementStepsGoal()},
-            decrementStepGoal = {gameViewModel.decrementStepsGoal()}
+            onDismissRequest = {
+                if (tamagotchiState.initial) gameViewModel.setupNewGame()
+                else gameViewModel.onDismissStartup()
+            },
+            submitSteps = { gameViewModel.submitStepsGoal(it) },
+            incrementStepGoal = { gameViewModel.incrementStepsGoal() },
+            decrementStepGoal = { gameViewModel.decrementStepsGoal() },
+            backPressDismiss = if(tamagotchiState.initial) false else true
         )
     }
 
-    if(tamagotchiState.hasEvolved){
+    if (tamagotchiState.hasEvolved) {
         EvolutionDialog(
             tamagotchiState,
             onDismissRequest = { gameViewModel.onDismissEvolution() }
@@ -42,7 +46,7 @@ fun Dialogs(gameViewModel: GameViewModel){
             onConfirmation = { gameViewModel.confirmReset() }
         )
     }
-    if(showGame){
+    if (showGame) {
         GameDialog(
             tamagotchiState,
             gameViewModel,
@@ -50,7 +54,7 @@ fun Dialogs(gameViewModel: GameViewModel){
             Modifier.fillMaxWidth(0.95f)
         )
     }
-    if(showSudoku){
+    if (showSudoku) {
         SudokuDialog(
             viewModel = gameViewModel.sudokuViewModel,
             tamagotchiState = tamagotchiState,
@@ -58,7 +62,7 @@ fun Dialogs(gameViewModel: GameViewModel){
             onGameWon = { gameViewModel.learning() }
         )
     }
-    if(showManual){
+    if (showManual) {
         ManualDrawer(onDismissRequest = { gameViewModel.onDismissManual() })
     }
 }

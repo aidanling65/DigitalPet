@@ -55,4 +55,7 @@
     <string name="evolution">Evolution</string>
     <string name="death">Death</string>
     <string name="death_description">Your tamagotchi may die if you make too many mistakes or it is sick for too long.</string>
+    <string name="manual">Manual</string>
+    <string name="settings">Settings</string>
+    <string name="reset">Reset</string>
 </resources>

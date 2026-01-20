@@ -138,6 +138,14 @@ class GameViewModel(
         updateAndSave { gameLogicManager.discipline(it) }
     }
 
+    fun onStartupOpen(){
+        _showStartup.value = true
+    }
+
+    fun onDismissStartup(){
+        _showStartup.value = false
+    }
+
     fun onManualClicked() {
         _showManual.value = true
     }
@@ -164,6 +172,7 @@ class GameViewModel(
             TamagotchiState()
         }
         onDismissResetDialog()
+        WorkManager.getInstance(context).cancelAllWork()
     }
 
     fun submitStepsGoal(stepGoal: Int) {
@@ -191,7 +200,6 @@ class GameViewModel(
     }
 
     fun setupNewGame() {
-        WorkManager.getInstance(context).cancelAllWork()
         _showStartup.value = false
 
         viewModelScope.launch {

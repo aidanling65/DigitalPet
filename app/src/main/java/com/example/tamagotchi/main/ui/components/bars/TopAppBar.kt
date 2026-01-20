@@ -12,6 +12,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import com.example.tamagotchi.R
 import com.example.tamagotchi.main.ui.GameViewModel
+import com.example.tamagotchi.main.ui.components.MinimalDropDownMenu
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,19 +28,8 @@ fun TopAppBar(gameViewModel: GameViewModel) {
                 style = MaterialTheme.typography.titleLarge
             )
         },
-        navigationIcon = {
-            BarButton(
-                painterId = R.drawable.question_mark,
-                contentDescription = stringResource(R.string.hints),
-                onClick = { gameViewModel.onManualClicked() },
-            )
-        },
         actions = {
-            BarButton(
-                painterId = R.drawable.reset_button,
-                contentDescription = stringResource(R.string.reset_tamagotchi),
-                onClick = { gameViewModel.onResetClicked() },
-            )
+            MinimalDropDownMenu(gameViewModel)
         },
         modifier = Modifier.wrapContentHeight(),
     )

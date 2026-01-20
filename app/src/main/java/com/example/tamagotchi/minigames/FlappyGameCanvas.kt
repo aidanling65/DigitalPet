@@ -140,7 +140,7 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
             obstacle2.x = canvasSize.value.width
             player.width = playerAnimationFrames[0].width.toFloat()
             player.height = playerAnimationFrames[0].height.toFloat()
-            gapSize = player.height * 2.5f
+            gapSize = player.height * 3f
             while (countdown > 0) {
                 delay(1000L)
                 countdown -= 1

@@ -98,7 +98,7 @@ fun ManualDrawer(onDismissRequest: () -> Unit) {
                     horizontalAlignment = Alignment.Start
                 ) {
                     item { Spacer(modifier = Modifier.height(16.dp)) }
-                    item { Text("Manual", style = MaterialTheme.typography.headlineMedium, color= MaterialTheme.colorScheme.primary) }
+                    item { Text(stringResource(R.string.manual), style = MaterialTheme.typography.headlineMedium, color= MaterialTheme.colorScheme.primary) }
                     item { Spacer(modifier = Modifier.height(8.dp)) }
                     item {
                         ManualEntry(
