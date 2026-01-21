@@ -22,8 +22,8 @@ class SleepWork(
         val currentTime = LocalTime.now(ZoneId.systemDefault())
 
         repository.updateState { current ->
-            val isBedTime = current.ageStage.bedTime ?: LocalTime.MAX
-            val isWakeTime = current.ageStage.wakeTime ?: LocalTime.MIN
+            val isBedTime = current.bedTime
+            val isWakeTime = current.wakeTime
             val shouldBeSleeping = currentTime.isAfter(isBedTime) || currentTime.isBefore(isWakeTime)
 
             if (!current.sleeping && shouldBeSleeping) {

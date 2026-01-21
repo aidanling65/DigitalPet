@@ -19,26 +19,27 @@ class EvolutionWork(
 ) : CoroutineWorker(appContext, workerParams) {
     private val repository = TamagotchiRepository(applicationContext)
 
-    override suspend fun doWork(): Result{
+    override suspend fun doWork(): Result {
         val currentState = repository.getState()
         val currentTime = LocalTime.now(ZoneId.systemDefault())
-        if(currentState.sleeping){
-            val wakeTime = currentState.ageStage.wakeTime
-            if(wakeTime != null){
-                var hoursUntilWake = ChronoUnit.HOURS.between(currentTime,wakeTime)
-                if(hoursUntilWake < 0){
-                    hoursUntilWake += 24
-                }
-                val durationUntilWake = Duration.ofHours(hoursUntilWake).plusMinutes(10)
-                Log.d("EvolutionWork", "Sleeping. Rescheduling evolution in ${durationUntilWake.seconds} seconds.")
-                createSingleWorker<EvolutionWork>(
-                    applicationContext,
-                    durationUntilWake,
-                    "evolve",
-                    ExistingWorkPolicy.REPLACE
-                )
-                return Result.success()
+        if (currentState.sleeping) {
+            val wakeTime = currentState.wakeTime
+            var hoursUntilWake = ChronoUnit.HOURS.between(currentTime, wakeTime)
+            if (hoursUntilWake < 0) {
+                hoursUntilWake += 24
             }
+            val durationUntilWake = Duration.ofHours(hoursUntilWake).plusMinutes(10)
+            Log.d(
+                "EvolutionWork",
+                "Sleeping. Rescheduling evolution in ${durationUntilWake.seconds} seconds."
+            )
+            createSingleWorker<EvolutionWork>(
+                applicationContext,
+                durationUntilWake,
+                "evolve",
+                ExistingWorkPolicy.REPLACE
+            )
+            return Result.success()
         }
 
         repository.updateState { state ->
