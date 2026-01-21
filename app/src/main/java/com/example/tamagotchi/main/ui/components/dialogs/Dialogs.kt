@@ -6,6 +6,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.example.tamagotchi.main.ui.GameViewModel
+import com.example.tamagotchi.main.ui.components.dialogs.startup.StartupDialog
 import com.example.tamagotchi.main.ui.components.manual.ManualDrawer
 import com.example.tamagotchi.minigames.GameDialog
 import com.example.tamagotchi.sudoku.ui.components.SudokuDialog
@@ -22,15 +23,15 @@ fun Dialogs(gameViewModel: GameViewModel) {
 
     if (showStartup) {
         StartupDialog(
-            tamagotchiState,
+            gameViewModel,
             onDismissRequest = {
-                if (tamagotchiState.initial) gameViewModel.setupNewGame()
-                else gameViewModel.onDismissStartup()
+                if (tamagotchiState.initial) {
+                    gameViewModel.setupNewGame()
+                } else {
+                    gameViewModel.onDismissStartup()
+                }
             },
-            submitSteps = { gameViewModel.submitStepsGoal(it) },
-            incrementStepGoal = { gameViewModel.incrementStepsGoal() },
-            decrementStepGoal = { gameViewModel.decrementStepsGoal() },
-            backPressDismiss = if(tamagotchiState.initial) false else true
+            backPressDismiss = if (tamagotchiState.initial) false else true
         )
     }
 

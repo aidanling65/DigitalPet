@@ -12,6 +12,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.tamagotchi.main.data.model.TamagotchiState
@@ -47,4 +48,15 @@ fun SudokuDialog(
             )
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SudokuPreview(){
+    SudokuDialog(
+        viewModel = SudokuViewModel(),
+        tamagotchiState = TamagotchiState(),
+        onDismissRequest = {},
+        {}
+    )
 }

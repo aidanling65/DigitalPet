@@ -1,4 +1,4 @@
-package com.example.tamagotchi.main.ui.components
+package com.example.tamagotchi.main.ui.components.menu
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row

@@ -14,6 +14,7 @@ import com.example.tamagotchi.main.data.model.TamagotchiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import java.time.LocalTime
 
 val Context.dataStore by preferencesDataStore(name = "tamagotchi_prefs")
 
@@ -43,6 +44,8 @@ class TamagotchiRepository (private val context: Context) {
     private val PHYSICAL_MISTAKES = intPreferencesKey("physical_mistakes")
     private val MISTAKES = intPreferencesKey("mistakes")
     private val HAS_EVOLVED = booleanPreferencesKey("has_evolved")
+    private val BED_TIME = stringPreferencesKey("bed_time")
+    private val WAKE_TIME = stringPreferencesKey("wake_time")
 
     val tamagotchiStateFlow: Flow<TamagotchiState> = context.dataStore.data
         .map { prefs ->
@@ -73,7 +76,9 @@ class TamagotchiRepository (private val context: Context) {
                 animations = EvolutionAnimations.valueOf(
                     prefs[ANIMATIONS] ?: defaultState.animations.name
                 ),
-                hasEvolved = prefs[HAS_EVOLVED] ?: defaultState.hasEvolved
+                hasEvolved = prefs[HAS_EVOLVED] ?: defaultState.hasEvolved,
+                bedTime = LocalTime.parse(prefs[BED_TIME] ?: defaultState.bedTime.toString()),
+                wakeTime = LocalTime.parse(prefs[WAKE_TIME] ?: defaultState.wakeTime.toString())
             )
 
         }
@@ -89,12 +94,6 @@ class TamagotchiRepository (private val context: Context) {
         }
 
         return newState !!
-    }
-
-    suspend fun saveState(newState: TamagotchiState) {
-        context.dataStore.edit {
-            saveStateInternal(newState, it)
-        }
     }
 
     private fun saveStateInternal(current: TamagotchiState, updated: MutablePreferences) {
@@ -127,6 +126,8 @@ class TamagotchiRepository (private val context: Context) {
         updated[AGE_STAGE] = current.ageStage.name
         updated[ANIMATIONS] = current.animations.name
         updated[HAS_EVOLVED] = current.hasEvolved
+        updated[BED_TIME] = current.bedTime.toString()
+        updated[WAKE_TIME] = current.wakeTime.toString()
     }
 
     suspend fun getState(): TamagotchiState {

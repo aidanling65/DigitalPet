@@ -12,7 +12,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import com.example.tamagotchi.R
 import com.example.tamagotchi.main.ui.GameViewModel
-import com.example.tamagotchi.main.ui.components.MinimalDropDownMenu
+import com.example.tamagotchi.main.ui.components.menu.MinimalDropDownMenu
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

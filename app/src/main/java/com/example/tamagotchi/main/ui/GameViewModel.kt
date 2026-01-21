@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalTime
 
 class GameViewModel(
     private val context: Context,
@@ -46,7 +47,6 @@ class GameViewModel(
     private val gameLogicManager = GameLogicManager()
     private val stepDb = StepDatabase.getDatabase(context)
     private val stepRepository = StepRepository(stepDb.stepsDao())
-
 
     init {
         viewModelScope.launch {
@@ -143,6 +143,7 @@ class GameViewModel(
     }
 
     fun onDismissStartup(){
+        Log.d("StartupDialog","here")
         _showStartup.value = false
     }
 
@@ -183,20 +184,12 @@ class GameViewModel(
         }
     }
 
-    fun incrementStepsGoal() {
-        updateAndSave {
-            it.copy(
-                stepGoal = it.stepGoal + 1000
-            )
-        }
+    fun updateBedTime(bedTime: LocalTime) {
+        updateAndSave { it.copy(bedTime = bedTime)  }
     }
 
-    fun decrementStepsGoal() {
-        updateAndSave {
-            it.copy(
-                stepGoal = (it.stepGoal - 1000).coerceAtLeast(0)
-            )
-        }
+    fun updateWakeTime(wakeTime: LocalTime) {
+        updateAndSave { it.copy(wakeTime = wakeTime) }
     }
 
     fun setupNewGame() {

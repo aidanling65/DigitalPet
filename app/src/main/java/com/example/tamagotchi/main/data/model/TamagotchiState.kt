@@ -1,5 +1,7 @@
 package com.example.tamagotchi.main.data.model
 
+import java.time.LocalTime
+
 const val MAX_HUNGER = 4
 const val MAX_WEIGHT = 99
 const val MAX_HAPPINESS = 4
@@ -37,6 +39,9 @@ data class TamagotchiState(
     val physicalMistakes: Int = 0,
     val mentalMistakes: Int = 0,
     val mistakes: Int = 0,
+
+    val wakeTime: LocalTime = LocalTime.of(9,0),
+    val bedTime: LocalTime = LocalTime.of(22,0),
 
     val ageStage: AgeStage = AgeStage.EGG,
     val animations: EvolutionAnimations = EvolutionAnimations.EGG,
