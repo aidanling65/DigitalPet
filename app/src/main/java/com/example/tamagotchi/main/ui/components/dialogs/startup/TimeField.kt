@@ -1,31 +1,107 @@
 package com.example.tamagotchi.main.ui.components.dialogs.startup
 
-import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.TimeInput
+import androidx.compose.material3.Text
 import androidx.compose.material3.TimePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TimeField(
     state: TimePickerState,
-    modifier: Modifier = Modifier
-){
+    modifier: Modifier = Modifier,
+    height: Dp = 48.dp
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.height(IntrinsicSize.Max)
+        modifier = modifier
+            .height(height)
+            .clip(RoundedCornerShape(25))
+            .padding(vertical = 8.dp)
     ) {
-        CompositionLocalProvider(LocalTextStyle provides MaterialTheme.typography.bodyMedium) {
-            TimeInput(state, modifier=Modifier.height(64.dp))
+        UpDownButtons(
+            { state.hour = if (state.hour == 0) 23 else (state.hour - 1) % 24 },
+            { state.hour = (state.hour + 1) % 24 },
+            modifier = Modifier.fillMaxHeight()
+        )
+        BasicTextField(
+            value = state.hour.toString().padStart(2, '0'),
+            onValueChange = { newValue: String ->
+                state.hour = newValue.toIntOrNull() ?: state.hour
+            },
+            textStyle = MaterialTheme.typography.bodySmall.copy(
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.primary
+            ),
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(0.5f),
+            singleLine = true,
+            cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        ){ innerTextField ->
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .clip(RoundedCornerShape(25))
+                    .background(MaterialTheme.colorScheme.secondary)
+            ){
+                innerTextField()
+            }
         }
+        Text(
+            text = ":",
+            style = MaterialTheme.typography.bodyLarge
+        )
+        BasicTextField(
+            value = "${state.minute}",
+            onValueChange = { newValue: String ->
+                state.minute = newValue.toIntOrNull() ?: state.minute
+            },
+            textStyle = MaterialTheme.typography.bodySmall.copy(
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.primary
+            ),
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(0.5f),
+            singleLine = true,
+            cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        ){ innerTextField ->
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .clip(RoundedCornerShape(25))
+                    .background(MaterialTheme.colorScheme.secondary)
+            ){
+                innerTextField()
+            }
+        }
+        UpDownButtons(
+            { state.minute = if (state.minute == 0) 23 else (state.minute - 1) % 60 },
+            { state.minute = (state.minute + 1) % 60 },
+            modifier = Modifier.fillMaxHeight()
+        )
     }
 }

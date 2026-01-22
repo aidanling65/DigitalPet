@@ -1,27 +1,23 @@
 package com.example.tamagotchi.main.ui.components.dialogs.startup
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -34,51 +30,42 @@ fun StepGoalField(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.height(IntrinsicSize.Max)
+        modifier = modifier
+            .fillMaxWidth(0.5f)
+            .height(48.dp)
+            .padding(vertical=8.dp)
     ) {
-        TextField(
+        BasicTextField(
             value = newStepGoal.toString(),
             onValueChange = { newValue: String ->
                 onStepGoalChange(newValue.toIntOrNull() ?: newStepGoal)
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier
+                .padding(start = 8.dp)
                 .clip(RoundedCornerShape(25))
-                .weight(1f),
+                .fillMaxHeight()
+                .weight(0.8f),
             singleLine = true,
-            textStyle = MaterialTheme.typography.bodySmall
-        )
-        Spacer(modifier = Modifier.width(4.dp))
-        Column(
-            modifier = Modifier
-                .weight(0.2f),
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            IconButton(
-                onClick = onIncrement,
+            textStyle = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.primary, textAlign = TextAlign.Center),
+        ){ innerTextField ->
+            Box(
+                contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .clip(RoundedCornerShape(30))
+                    .fillMaxHeight()
+                    .clip(RoundedCornerShape(25))
                     .background(MaterialTheme.colorScheme.secondary)
-                    .weight(1f)
-            ) {
-                Icon(
-                    Icons.Default.KeyboardArrowUp,
-                    contentDescription = "Increment Step Goal"
-                )
+            ){
+                innerTextField()
             }
-            Spacer(modifier = Modifier.height(2.dp))
-            IconButton(
-                onClick = onDecrement,
-                modifier = Modifier
-                    .clip(RoundedCornerShape(30))
-                    .background(MaterialTheme.colorScheme.secondary)
-                    .weight(1f)
-            ) {
-                Icon(
-                    Icons.Default.KeyboardArrowDown,
-                    contentDescription = "Decrement Step Goal"
-                )
-            }
+
         }
+        UpDownButtons(onDecrement, onIncrement, modifier = Modifier.fillMaxHeight())
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun StepGoalPreview() {
+    StepGoalField(1000, {}, {}, {})
 }

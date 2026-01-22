@@ -18,7 +18,7 @@ class HungerDecayWork(
 
     override suspend fun doWork(): Result {
         val updatedState = repository.updateState { current ->
-            if (current.sleeping) {
+            if (current.sleeping || current.paused) {
                 current
             } else {
                 current.copy(

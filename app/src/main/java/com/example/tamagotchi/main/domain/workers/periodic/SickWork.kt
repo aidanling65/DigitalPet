@@ -19,7 +19,7 @@ class SickWork(
 
     override suspend fun doWork(): Result {
         val updatedState = repository.updateState{ current ->
-            if(current.sleeping || current.sick){
+            if(current.sleeping || current.sick || current.paused){
                 current
             }
             else if(Random.nextFloat() < 0.05f){

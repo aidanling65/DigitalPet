@@ -20,7 +20,7 @@ class PoopWork(
     override suspend fun doWork(): Result {
 
         val updatedState = repository.updateState { current->
-            if(current.sleeping || current.poop) {
+            if(current.sleeping || current.poop || current.paused) {
                 current
             }
             else if(Random.nextFloat() < 0.5f){

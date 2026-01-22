@@ -20,7 +20,7 @@ class MisbehavingWork(
     override suspend fun doWork(): Result {
 
         val updatedState = repository.updateState { current ->
-            if (current.misbehaving || current.sleeping) {
+            if (current.misbehaving || current.sleeping || current.paused) {
                 current
             }
             else{

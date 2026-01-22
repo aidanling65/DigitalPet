@@ -2,8 +2,11 @@ package com.example.tamagotchi.main.domain.workers.mistake
 
 import android.content.Context
 import androidx.work.CoroutineWorker
+import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
+import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
+import java.time.Duration
 
 class FitnessMistakeWork(
     appContext: Context,
@@ -14,7 +17,13 @@ class FitnessMistakeWork(
     override suspend fun doWork(): Result {
 
         repository.updateState {
-            if (it.sleeping) {
+            if (it.sleeping || it.paused) {
+                createSingleWorker<FitnessMistakeWork>(
+                    applicationContext,
+                    Duration.ofHours(1),
+                    "fitness_check",
+                    ExistingWorkPolicy.REPLACE
+                )
                 it
             }
 
