@@ -44,6 +44,8 @@ class TamagotchiRepository (private val context: Context) {
     private val PHYSICAL_MISTAKES = intPreferencesKey("physical_mistakes")
     private val MISTAKES = intPreferencesKey("mistakes")
     private val HAS_EVOLVED = booleanPreferencesKey("has_evolved")
+    private val PAUSED = booleanPreferencesKey("paused")
+
     private val BED_TIME = stringPreferencesKey("bed_time")
     private val WAKE_TIME = stringPreferencesKey("wake_time")
 
@@ -77,6 +79,7 @@ class TamagotchiRepository (private val context: Context) {
                     prefs[ANIMATIONS] ?: defaultState.animations.name
                 ),
                 hasEvolved = prefs[HAS_EVOLVED] ?: defaultState.hasEvolved,
+                paused = prefs[PAUSED] ?: defaultState.paused,
                 bedTime = LocalTime.parse(prefs[BED_TIME] ?: defaultState.bedTime.toString()),
                 wakeTime = LocalTime.parse(prefs[WAKE_TIME] ?: defaultState.wakeTime.toString())
             )
@@ -126,6 +129,7 @@ class TamagotchiRepository (private val context: Context) {
         updated[AGE_STAGE] = current.ageStage.name
         updated[ANIMATIONS] = current.animations.name
         updated[HAS_EVOLVED] = current.hasEvolved
+        updated[PAUSED] = current.paused
         updated[BED_TIME] = current.bedTime.toString()
         updated[WAKE_TIME] = current.wakeTime.toString()
     }

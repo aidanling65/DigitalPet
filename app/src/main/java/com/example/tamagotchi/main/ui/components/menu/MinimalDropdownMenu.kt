@@ -11,6 +11,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,6 +26,7 @@ import com.example.tamagotchi.main.ui.GameViewModel
 @Composable
 fun MinimalDropDownMenu(gameViewModel: GameViewModel) {
     var expanded by remember { mutableStateOf(false) }
+    val tamagotchiState by gameViewModel.tamagotchiState.collectAsState()
 
     Box {
         IconButton(onClick = { expanded = !expanded }) {
@@ -63,6 +65,19 @@ fun MinimalDropDownMenu(gameViewModel: GameViewModel) {
                 onClick = {
                     expanded = false
                     gameViewModel.onStartupOpen()
+                }
+            )
+            DropdownMenuItem(
+                text = {
+                    MenuEntry(
+                        imageId = R.drawable.question_mark,
+                        text = if (tamagotchiState.paused) stringResource(R.string.unpause) else stringResource(
+                            R.string.pause
+                        )
+                    )
+                },
+                onClick = {
+                    gameViewModel.pauseGame()
                 }
             )
             DropdownMenuItem(

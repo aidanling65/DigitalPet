@@ -159,6 +159,10 @@ class GameViewModel(
         updateAndSave { it -> it.copy(hasEvolved = false) }
     }
 
+    fun pauseGame() {
+        updateAndSave { it.copy(paused = !it.paused) }
+    }
+
     fun onResetClicked() {
         _showResetDialog.value = true
     }
@@ -166,6 +170,7 @@ class GameViewModel(
     fun onDismissResetDialog() {
         _showResetDialog.value = false
     }
+
 
     fun confirmReset() {
         _showStartup.value = true

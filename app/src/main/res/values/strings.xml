@@ -58,4 +58,6 @@
     <string name="manual">Manual</string>
     <string name="settings">Settings</string>
     <string name="reset">Reset</string>
+    <string name="pause">Pause</string>
+    <string name="unpause">Unpause</string>
 </resources>
