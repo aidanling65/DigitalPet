@@ -16,8 +16,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.DialogWindowProvider
 import com.example.tamagotchi.main.ui.GameViewModel
 import kotlinx.coroutines.delay
 
@@ -27,27 +29,28 @@ fun Manual(gameViewModel: GameViewModel) {
     var visible by remember { mutableStateOf(false) }
 
     LaunchedEffect(showManual) {
-        if(showManual) {
+        if (showManual) {
             delay(50)
             visible = true
         }
     }
 
     LaunchedEffect(visible) {
-        if(!visible){
+        if (!visible) {
             delay(200)
             gameViewModel.onDismissManual()
         }
     }
 
-    if(showManual) {
+    if (showManual) {
         Dialog(
             onDismissRequest = { visible = false },
             properties = DialogProperties(
                 usePlatformDefaultWidth = false,
-                decorFitsSystemWindows = false
+                decorFitsSystemWindows = false,
             )
         ) {
+            (LocalView.current.parent as DialogWindowProvider).window.setDimAmount(0f)
             Box(
                 Modifier
                     .fillMaxSize(),
@@ -56,12 +59,12 @@ fun Manual(gameViewModel: GameViewModel) {
                 AnimatedVisibility(
                     visible = visible,
                     enter = slideInHorizontally(
-                                animationSpec = spring(
-                                    dampingRatio = Spring.DampingRatioNoBouncy,
-                                    stiffness = Spring.StiffnessLow
-                                )
-                            ) { fullWidth -> 2 * fullWidth },
-                    exit =  slideOutHorizontally(
+                        animationSpec = spring(
+                            dampingRatio = Spring.DampingRatioNoBouncy,
+                            stiffness = Spring.StiffnessLow
+                        )
+                    ) { fullWidth -> 2 * fullWidth },
+                    exit = slideOutHorizontally(
                         animationSpec = spring(
                             dampingRatio = Spring.DampingRatioNoBouncy,
                             stiffness = Spring.StiffnessLow

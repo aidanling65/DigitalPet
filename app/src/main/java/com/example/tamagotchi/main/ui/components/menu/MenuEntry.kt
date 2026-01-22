@@ -7,6 +7,8 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,77 +23,107 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.tamagotchi.R
 
 @Composable
-fun MenuEntry(imageId: Int, text: String, visible: Boolean) {
+fun MenuEntry(
+    imageId: Int,
+    text: String,
+    visible: Boolean,
+    moving: Boolean,
+    onClick: () -> Unit = {}
+) {
     val bitmap = ImageBitmap.imageResource(imageId)
+    val visible = !moving && visible
+
     AnimatedVisibility(
         visible = visible,
         enter = slideInHorizontally(
             animationSpec = spring(
-                dampingRatio = Spring.DampingRatioLowBouncy,
-                stiffness = Spring.StiffnessVeryLow
+                dampingRatio = if(moving) Spring.DampingRatioNoBouncy else Spring.DampingRatioLowBouncy,
+                stiffness = if(moving) Spring.StiffnessLow else Spring.StiffnessHigh
             ),
-            initialOffsetX = { fullWidth -> 2 * fullWidth }
+            initialOffsetX = { fullWidth -> if (moving) -fullWidth else 2 * fullWidth }
         ),
         exit = slideOutHorizontally(
             animationSpec = spring(
-                dampingRatio = Spring.DampingRatioLowBouncy,
-                stiffness = Spring.StiffnessVeryLow
+                dampingRatio = if(moving) Spring.DampingRatioNoBouncy else Spring.DampingRatioLowBouncy,
+                stiffness = if(moving) Spring.StiffnessLow else Spring.StiffnessVeryLow
             ),
-            targetOffsetX = { fullWidth -> 2 * fullWidth }
+            targetOffsetX = { fullWidth -> if (moving) -fullWidth else 2 * fullWidth }
         )
     ) {
-        Box(
-            modifier = Modifier.clipToBounds().padding(start = 16.dp)
+
+        Row(
+            horizontalArrangement = Arrangement.End,
+            modifier = Modifier
+                .fillMaxWidth()
         ) {
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 4.dp)
+            Box(
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .fillMaxWidth(0.5f)
+                    .clickable(
+                        interactionSource = null,
+                        enabled = true,
+                        onClick = onClick),
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .height(48.dp)
-                        .clip(
-                            RoundedCornerShape(
-                                topStart = 50f,
-                                bottomStart = 50f,
-                                topEnd = 0f,
-                                bottomEnd = 0f
-                            )
-                        )
-                        .background(MaterialTheme.colorScheme.secondary)
+                Column(
+                    Modifier
                         .fillMaxWidth()
-                        .padding(start = 16.dp, end=36.dp)
+                        .padding(bottom = 8.dp),
+                    horizontalAlignment = Alignment.End
                 ) {
-                    Image(
-                        bitmap = bitmap,
-                        contentDescription = null,
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
-                            .fillMaxHeight()
+                            .height(48.dp)
+                            .clip(
+                                RoundedCornerShape(
+                                    topStart = 50f,
+                                    bottomStart = 50f,
+                                    topEnd = 0f,
+                                    bottomEnd = 0f
+                                )
+                            )
+                            .background(MaterialTheme.colorScheme.secondary)
                             .fillMaxWidth()
-                            .weight(0.25f)
-                            .padding(end = 8.dp),
-                        contentScale = ContentScale.Fit,
-                        filterQuality = FilterQuality.None
-                    )
-                    Text(
-                        text = text,
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(0.75f)
-                    )
+                            .padding(start = 16.dp)
+                    ) {
+                        Image(
+                            bitmap = bitmap,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .fillMaxWidth()
+                                .weight(0.25f)
+                                .padding(end = 8.dp),
+                            contentScale = ContentScale.Fit,
+                            filterQuality = FilterQuality.None
+                        )
+                        Text(
+                            text = text,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(0.75f)
+                        )
+                    }
                 }
             }
         }
     }
+}
+
+@Preview()
+@Composable
+fun MenuEntryPreview() {
+    MenuEntry(R.drawable.question_mark, "Question", true, false)
 }
