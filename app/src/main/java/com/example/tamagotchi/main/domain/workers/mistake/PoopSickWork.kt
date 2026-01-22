@@ -17,7 +17,13 @@ class PoopSickWork(
 
     override suspend fun doWork(): Result {
         repository.updateState { it ->
-            if (it.sleeping) {
+            if (it.sleeping || it.paused) {
+                createSingleWorker<PoopSickWork>(
+                    applicationContext,
+                    Duration.ofMinutes(15),
+                    "poop_check",
+                    ExistingWorkPolicy.REPLACE
+                )
                 it
             }
             else if (it.poop && !it.sick) {

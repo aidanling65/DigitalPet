@@ -23,8 +23,9 @@ class HappinessMistakeWork(
                     "happiness_check",
                     ExistingWorkPolicy.REPLACE
                 )
+                it
             }
-            if (it.happiness == 0  && !it.sleeping) {
+            else if (it.happiness == 0) {
                 it.copy(
                     mentalMistakes = it.mentalMistakes + 1
                 )

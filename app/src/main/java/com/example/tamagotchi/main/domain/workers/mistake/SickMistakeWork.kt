@@ -18,6 +18,15 @@ class SickMistakeWork(
 
     override suspend fun doWork(): Result {
         repository.updateState {
+            if(it.sleeping || it.paused){
+                createSingleWorker<SickMistakeWork>(
+                    applicationContext,
+                    Duration.ofHours(1),
+                    "sick_mistake",
+                    ExistingWorkPolicy.REPLACE,
+                )
+                it
+            }
             if (it.sick && !it.sleeping) {
                 if (Random.Default.nextFloat() < 0.1) {
                     death(applicationContext, it)
