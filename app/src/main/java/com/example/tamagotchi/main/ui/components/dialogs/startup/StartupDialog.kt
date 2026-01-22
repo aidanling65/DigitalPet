@@ -28,8 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import com.example.tamagotchi.main.ui.GameViewModel
 import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
 import java.time.LocalTime
@@ -39,7 +37,6 @@ import java.time.LocalTime
 fun StartupDialog(
     gameViewModel: GameViewModel,
     onDismissRequest: () -> Unit,
-    backPressDismiss: Boolean = false
 ) {
     val tamagotchiState by gameViewModel.tamagotchiState.collectAsState()
     var newStepGoal by remember { mutableIntStateOf(tamagotchiState.stepGoal) }
@@ -55,96 +52,90 @@ fun StartupDialog(
         is24Hour = true
     )
 
-    Dialog(
-        onDismissRequest = onDismissRequest,
-        properties = DialogProperties(
-            dismissOnBackPress = backPressDismiss,
-            dismissOnClickOutside = false,
-            usePlatformDefaultWidth = false
-        ),
+    Box(
+        Modifier
+            .fillMaxWidth(0.95f)
+            .fillMaxHeight(0.9f),
+        contentAlignment = Alignment.Center
     ) {
-        Box(
-            Modifier
-                .fillMaxWidth(0.95f)
-                .fillMaxHeight(0.9f),
-            contentAlignment = Alignment.Center
+        Column(
+            modifier = Modifier
+                .clip(RoundedCornerShape(10))
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+                .padding(horizontal = 8.dp, vertical = 16.dp),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Center
         ) {
             Column(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(10))
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background)
-                    .padding(horizontal = 8.dp, vertical = 16.dp),
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.Center
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally, modifier=Modifier.fillMaxWidth()) {
-                    Spacer(modifier = Modifier.height(16.dp))
-                    TamagotchiDisplay(tamagotchiState, modifier = Modifier.size(256.dp))
-                    Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
+                TamagotchiDisplay(tamagotchiState, modifier = Modifier.size(256.dp))
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+            LazyColumn {
+                item {
+                    Text(
+                        text = "Step goal",
+                        style = MaterialTheme.typography.bodySmall,
+                        textAlign = TextAlign.Start,
+                        color = MaterialTheme.colorScheme.primary
+                    )
                 }
-                LazyColumn {
-                    item{
-                        Text(
-                            text = "Step goal",
-                            style = MaterialTheme.typography.bodySmall,
-                            textAlign = TextAlign.Start,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    item {
-                        StepGoalField(
-                            newStepGoal = newStepGoal,
-                            onStepGoalChange = { newStepGoal = it },
-                            onIncrement = { newStepGoal += 1000 },
-                            onDecrement = { newStepGoal = (newStepGoal - 1000).coerceAtLeast(0) }
-                        )
-                    }
-                    item {
-                        Text(
-                            text = "Bed time",
-                            style = MaterialTheme.typography.bodySmall,
-                            textAlign = TextAlign.Start,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    item {
-                        TimeField(
-                            bedTimeState,
-                        )
-                    }
-                    item {
-                        Text(
-                            text = "Wake time",
-                            style = MaterialTheme.typography.bodySmall,
-                            textAlign = TextAlign.Start,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    item {
-                        TimeField(
-                            wakeTimeState,
-                        )
-                    }
-
-                    item{Spacer(modifier = Modifier.height(8.dp))}
-                    item {
-                        SubmitButton(
-                            newStepGoal,
-                            onDismissRequest,
-                            {
-                                gameViewModel.submitStepsGoal(it)
-                                val bedTime = LocalTime.of(bedTimeState.hour, bedTimeState.minute)
-                                gameViewModel.updateBedTime(bedTime)
-
-                                val wakeTime =
-                                    LocalTime.of(wakeTimeState.hour, wakeTimeState.minute)
-                                gameViewModel.updateWakeTime(wakeTime)
-                            }
-                        )
-                    }
-                    item{Spacer(modifier = Modifier.height(16.dp))}
+                item {
+                    StepGoalField(
+                        newStepGoal = newStepGoal,
+                        onStepGoalChange = { newStepGoal = it },
+                        onIncrement = { newStepGoal += 1000 },
+                        onDecrement = { newStepGoal = (newStepGoal - 1000).coerceAtLeast(0) }
+                    )
                 }
+                item {
+                    Text(
+                        text = "Bed time",
+                        style = MaterialTheme.typography.bodySmall,
+                        textAlign = TextAlign.Start,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                item {
+                    TimeField(
+                        bedTimeState,
+                    )
+                }
+                item {
+                    Text(
+                        text = "Wake time",
+                        style = MaterialTheme.typography.bodySmall,
+                        textAlign = TextAlign.Start,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                item {
+                    TimeField(
+                        wakeTimeState,
+                    )
+                }
+
+                item { Spacer(modifier = Modifier.height(8.dp)) }
+                item {
+                    SubmitButton(
+                        newStepGoal,
+                        onDismissRequest,
+                        {
+                            gameViewModel.submitStepsGoal(it)
+                            val bedTime = LocalTime.of(bedTimeState.hour, bedTimeState.minute)
+                            gameViewModel.updateBedTime(bedTime)
+
+                            val wakeTime =
+                                LocalTime.of(wakeTimeState.hour, wakeTimeState.minute)
+                            gameViewModel.updateWakeTime(wakeTime)
+                        }
+                    )
+                }
+                item { Spacer(modifier = Modifier.height(16.dp)) }
             }
         }
     }

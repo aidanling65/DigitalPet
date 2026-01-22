@@ -13,8 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.sudoku.ui.SudokuViewModel
 
@@ -22,7 +20,6 @@ import com.example.tamagotchi.sudoku.ui.SudokuViewModel
 fun SudokuDialog(
     viewModel: SudokuViewModel,
     tamagotchiState: TamagotchiState,
-    onDismissRequest: () -> Unit,
     onGameWon: () -> Unit
 ) {
     val isGameWon by viewModel.sudokuGame.gameWonLiveData.observeAsState(initial = false)
@@ -34,29 +31,25 @@ fun SudokuDialog(
             onGameWon()
         }
     }
-    Dialog(onDismissRequest = onDismissRequest, properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = false, usePlatformDefaultWidth = false)){
-        Box(
-            modifier = Modifier
-                .clip(RoundedCornerShape(10))
-                .fillMaxWidth(0.95f)
-                .fillMaxHeight(0.9f)
-        ) {
-            SudokuScreen(
-                viewModel = viewModel,
-                tamagotchiState = tamagotchiState,
-                onCellTouched = { row, col -> viewModel.sudokuGame.updateSelectedCell(row, col) }
-            )
-        }
+    Box(
+        modifier = Modifier
+            .clip(RoundedCornerShape(10))
+            .fillMaxWidth(0.95f)
+            .fillMaxHeight(0.9f)
+    ) {
+        SudokuScreen(
+            viewModel = viewModel,
+            tamagotchiState = tamagotchiState,
+            onCellTouched = { row, col -> viewModel.sudokuGame.updateSelectedCell(row, col) }
+        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun SudokuPreview(){
+fun SudokuPreview() {
     SudokuDialog(
         viewModel = SudokuViewModel(),
-        tamagotchiState = TamagotchiState(),
-        onDismissRequest = {},
-        {}
+        tamagotchiState = TamagotchiState(), {},
     )
 }

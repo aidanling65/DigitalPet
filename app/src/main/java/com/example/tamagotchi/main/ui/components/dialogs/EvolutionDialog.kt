@@ -24,8 +24,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
 import com.example.tamagotchi.R
 import com.example.tamagotchi.main.data.model.AgeStage
@@ -40,73 +38,64 @@ fun EvolutionDialog(
     onDismissRequest: () -> Unit,
 ) {
     val ageStage = tamagotchiState.ageStage
-    Dialog(
-        onDismissRequest = onDismissRequest,
-        properties = DialogProperties(
-            dismissOnBackPress = true,
-            dismissOnClickOutside = false,
-            usePlatformDefaultWidth = false
-        )
+    Box(
+        Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
-        Box(
-            Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+        Column(
+            modifier = Modifier
+                .clip(RoundedCornerShape(10))
+                .fillMaxWidth(0.9f)
+                .fillMaxHeight(0.8f)
+                .background(MaterialTheme.colorScheme.background),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Column(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(10))
-                    .fillMaxWidth(0.9f)
-                    .fillMaxHeight(0.8f)
-                    .background(MaterialTheme.colorScheme.background),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Spacer(modifier = Modifier.weight(0.1f))
-                Text(
-                    text = when (ageStage) {
-                        AgeStage.BABY -> stringResource(R.string.hatched_dialog)
-                        AgeStage.DEAD -> stringResource(R.string.death_dialog)
-                        else -> stringResource(R.string.evolved_dialog)
-                    },
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = Color(0xffffffff),
-                    textAlign = TextAlign.Center
-                )
-                TamagotchiDisplay(
-                    tamagotchiState,
-                    modifier = Modifier
-                        .fillMaxWidth(0.9f)
-                        .aspectRatio(1f)
-                        .weight(1f)
-                )
-                IconButton(
-                    onClick = onDismissRequest,
-                    content = {
-                        Row(
-                            Modifier
-                                .clip(RoundedCornerShape(10))
-                                .background(Color(0xFF396C39))
-                                .fillMaxHeight()
-                                .fillMaxWidth()
-                                .weight(0.2f),
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Check,
-                                contentDescription = "Dismiss"
-                            )
-                        }
-                    },
-                    modifier = Modifier.fillMaxWidth(0.75f)
-                )
-                Spacer(modifier = Modifier.weight(0.1f))
-            }
-            ConfettiView(
-                source = ConfettiSource.TOP,
-                quantity = 100,
-                modifier = Modifier.zIndex(1f)
+            Spacer(modifier = Modifier.weight(0.1f))
+            Text(
+                text = when (ageStage) {
+                    AgeStage.BABY -> stringResource(R.string.hatched_dialog)
+                    AgeStage.DEAD -> stringResource(R.string.death_dialog)
+                    else -> stringResource(R.string.evolved_dialog)
+                },
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color(0xffffffff),
+                textAlign = TextAlign.Center
             )
+            TamagotchiDisplay(
+                tamagotchiState,
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .aspectRatio(1f)
+                    .weight(1f)
+            )
+            IconButton(
+                onClick = onDismissRequest,
+                content = {
+                    Row(
+                        Modifier
+                            .clip(RoundedCornerShape(10))
+                            .background(Color(0xFF396C39))
+                            .fillMaxHeight()
+                            .fillMaxWidth()
+                            .weight(0.2f),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = "Dismiss"
+                        )
+                    }
+                },
+                modifier = Modifier.fillMaxWidth(0.75f)
+            )
+            Spacer(modifier = Modifier.weight(0.1f))
         }
+        ConfettiView(
+            source = ConfettiSource.TOP,
+            quantity = 100,
+            modifier = Modifier.zIndex(1f)
+        )
     }
 }

@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.example.tamagotchi.R
 import com.example.tamagotchi.theme.DialogColor
 
@@ -27,54 +26,52 @@ fun ResetDialog(
     onDismissRequest: () -> Unit,
     onConfirmation: () -> Unit,
 ) {
-    Dialog(onDismissRequest = { onDismissRequest() }) {
-        Card(
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+            .padding(16.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardColors(
+            contentColor = MaterialTheme.typography.bodySmall.color,
+            disabledContentColor = MaterialTheme.typography.bodySmall.color,
+            containerColor = DialogColor,
+            disabledContainerColor = DialogColor
+        )
+    ) {
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-                .padding(16.dp),
-            shape = RoundedCornerShape(16.dp),
-            colors = CardColors(
-                contentColor = MaterialTheme.typography.bodySmall.color,
-                disabledContentColor = MaterialTheme.typography.bodySmall.color,
-                containerColor = DialogColor,
-                disabledContainerColor = DialogColor
-            )
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Column(
+            Text(
+                text = "Are you sure you want to reset your Tamagotchi?\nYou won't be able to get it back.",
+                modifier = Modifier.padding(16.dp),
+                style = MaterialTheme.typography.bodySmall
+            )
+            Row(
                 modifier = Modifier
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
             ) {
-                Text(
-                    text = "Are you sure you want to reset your Tamagotchi?\nYou won't be able to get it back.",
-                    modifier = Modifier.padding(16.dp),
-                    style = MaterialTheme.typography.bodySmall
-                )
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center,
+                TextButton(
+                    onClick = { onDismissRequest() },
+                    modifier = Modifier.padding(8.dp),
                 ) {
-                    TextButton(
-                        onClick = { onDismissRequest() },
-                        modifier = Modifier.padding(8.dp),
-                    ) {
-                        Text(
-                            stringResource(R.string.dismiss),
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    }
-                    TextButton(
-                        onClick = { onConfirmation() },
-                        modifier = Modifier.padding(8.dp),
-                    ) {
-                        Text(
-                            stringResource(R.string.confirm),
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    }
+                    Text(
+                        stringResource(R.string.dismiss),
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+                TextButton(
+                    onClick = { onConfirmation() },
+                    modifier = Modifier.padding(8.dp),
+                ) {
+                    Text(
+                        stringResource(R.string.confirm),
+                        style = MaterialTheme.typography.bodySmall
+                    )
                 }
             }
         }

@@ -11,8 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.GameViewModel
 import kotlin.random.Random
@@ -21,30 +19,19 @@ import kotlin.random.Random
 fun GameDialog(
     tamagotchiState: TamagotchiState,
     gameViewModel: GameViewModel,
-    onDismissRequest: () -> Unit,
-    modifier: Modifier
 ) {
-    Dialog(
-        onDismissRequest = onDismissRequest,
-        properties = DialogProperties(
-            dismissOnBackPress = true,
-            dismissOnClickOutside = false,
-            usePlatformDefaultWidth = false
-        )
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxWidth(0.95f)
+            .fillMaxHeight(0.9f)
+            .clip(RoundedCornerShape(10))
+            .background(MaterialTheme.colorScheme.background)
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = modifier
-                .fillMaxWidth(0.95f)
-                .fillMaxHeight(0.9f)
-                .clip(RoundedCornerShape(10))
-                .background(MaterialTheme.colorScheme.background)
-        ) {
-            when(Random.nextInt(0,2)) {
-                0 -> JumpGameCanvas(tamagotchiState, gameViewModel)
-                1 -> FlappyGameCanvas(tamagotchiState, gameViewModel)
-            }
+        when (Random.nextInt(0, 2)) {
+            0 -> JumpGameCanvas(tamagotchiState, gameViewModel)
+            1 -> FlappyGameCanvas(tamagotchiState, gameViewModel)
         }
     }
 }

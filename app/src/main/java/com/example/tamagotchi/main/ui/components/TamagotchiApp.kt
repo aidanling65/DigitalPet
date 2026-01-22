@@ -35,7 +35,6 @@ fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
             topBar = { TopAppBar(gameViewModel) },
             bottomBar = { BottomBar(gameViewModel) }
         ) { innerPadding ->
-            Dialogs(gameViewModel)
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -49,6 +48,8 @@ fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
                 Spacer(Modifier.height(16.dp))
                 StatusBars(tamagotchiState)
             }
+
+            Dialogs(gameViewModel)
         }
     }
 }

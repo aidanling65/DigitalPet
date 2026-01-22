@@ -35,23 +35,6 @@ import com.example.tamagotchi.main.data.model.TamagotchiState
 @Composable
 fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifier) {
 
-    /*        modifier
-                .clip(RoundedCornerShape(percent = 25))
-                .border(
-                    width = 2.dp,
-                    color = colorResource(R.color.black),
-                    shape = RoundedCornerShape(25)
-                )
-                .background(
-                    color = if (
-                        currentState.currentAnimation == currentState.animations.lightsOutAwake ||
-                        currentState.currentAnimation == currentState.animations.lightsOutSleep
-                    ) colorResource(R.color.black)
-                    else colorResource(R.color.lcd),
-                    shape = RoundedCornerShape(percent = 25)
-                )
-                .padding(8.dp)
-        ) {*/
     Box(modifier) {
         Box(
             Modifier
