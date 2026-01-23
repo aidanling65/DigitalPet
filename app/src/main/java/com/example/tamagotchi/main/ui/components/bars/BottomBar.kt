@@ -5,11 +5,13 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.R
@@ -19,14 +21,15 @@ import com.example.tamagotchi.main.ui.GameViewModel
 @Composable
 fun BottomBar(gameViewModel: GameViewModel) {
     BottomAppBar(
-        containerColor = MaterialTheme.colorScheme.background,
-        contentPadding = PaddingValues(bottom=8.dp,top=4.dp),
-        modifier = Modifier.height(56.dp),
+        containerColor = MaterialTheme.colorScheme.surface,
+        contentPadding = PaddingValues(bottom = 8.dp, top = 4.dp),
+        modifier = Modifier.height(64.dp).shadow(4.dp),
         actions = {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(48.dp),
+                    .height(48.dp)
+                    .padding(top = 10.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 listOf(

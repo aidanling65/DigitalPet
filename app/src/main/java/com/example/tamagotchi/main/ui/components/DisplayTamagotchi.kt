@@ -118,6 +118,14 @@ fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifi
                 }
             }
 
+            if(currentState.lightAnimationState == 1 && !currentState.light){
+                Box(
+                    modifier = Modifier
+                        .background(Color.Black)
+                        .fillMaxSize()
+                        .zIndex(3f)
+                )
+            }
             AnimatedVisibility(
                 visible = currentState.lightAnimationState > 0,
                 modifier = Modifier.zIndex(3f),

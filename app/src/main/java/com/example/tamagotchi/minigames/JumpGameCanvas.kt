@@ -7,13 +7,11 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -36,7 +34,6 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
@@ -157,25 +154,9 @@ fun JumpGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMode
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Row(
-            horizontalArrangement = Arrangement.Start,
-            modifier = Modifier
-                .fillMaxWidth(0.9f)
-                .padding(bottom = 8.dp)
-        ) {
-            if (isGameStarted && !isGameOver) {
-                Text(
-                    "Score: ${timer / 200}",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = colorResource(R.color.white),
-                    textAlign = TextAlign.Start
-                )
-            } else {
-                Text("", style = MaterialTheme.typography.bodyMedium)
-            }
-        }
+        ScoreBoard((timer / 200).toInt(), isGameStarted && !isGameOver)
         Box(
             Modifier
                 .clip(RoundedCornerShape(10))
@@ -214,8 +195,16 @@ fun JumpGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMode
                     contentAlignment = Alignment.Center
                 ) {
                     Column {
-                        Text("Game Over", style = MaterialTheme.typography.bodyLarge, color = Color.Black)
-                        Text("Score: ${timer / 200}", style = MaterialTheme.typography.bodySmall, color = Color.Black)
+                        Text(
+                            "Game Over",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Color.Black
+                        )
+                        Text(
+                            "Score: ${timer / 200}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color.Black
+                        )
                     }
                 }
             }

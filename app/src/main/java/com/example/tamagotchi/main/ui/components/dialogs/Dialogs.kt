@@ -33,30 +33,31 @@ fun Dialogs(gameViewModel: GameViewModel) {
     }
     Box(Modifier.fillMaxSize().background(Color.Transparent)) {
         DialogBase(
-            showStartup, onDismissRequest = { gameViewModel.onDismissStartup() },
+            showStartup, onDismissRequest = { startupDismiss() },
             DialogProperties(
                 dismissOnBackPress = !tamagotchiState.initial,
                 dismissOnClickOutside = false,
                 usePlatformDefaultWidth = false
             )
-        ) {
+        ) { onDismissRequest ->
             StartupDialog(
                 gameViewModel,
-                onDismissRequest = startupDismiss,
+                onDismissRequest = onDismissRequest,
             )
         }
 
         DialogBase(
             tamagotchiState.hasEvolved,
-            onDismissRequest = { gameViewModel.onDismissEvolution() }) {
+            onDismissRequest = { gameViewModel.onDismissEvolution() }) { onDismissRequest ->
             EvolutionDialog(
                 tamagotchiState,
-                onDismissRequest = { gameViewModel.onDismissEvolution() }
+                onDismissRequest = onDismissRequest
             )
         }
         DialogBase(showReset, onDismissRequest = { gameViewModel.onDismissResetDialog() }) {
+            onDismissRequest ->
             ResetDialog(
-                onDismissRequest = { gameViewModel.onDismissResetDialog() },
+                onDismissRequest = onDismissRequest,
                 onConfirmation = { gameViewModel.confirmReset() }
             )
         }
@@ -67,13 +68,14 @@ fun Dialogs(gameViewModel: GameViewModel) {
                 dismissOnClickOutside = false,
                 usePlatformDefaultWidth = false
             )
-        ) {
+        ) { onDismissRequest ->
             GameDialog(
                 tamagotchiState,
                 gameViewModel,
             )
         }
         DialogBase(showSudoku, onDismissRequest = { gameViewModel.onDismissSudoku() }) {
+            onDismissRequest ->
             SudokuDialog(
                 viewModel = gameViewModel.sudokuViewModel,
                 tamagotchiState = tamagotchiState,

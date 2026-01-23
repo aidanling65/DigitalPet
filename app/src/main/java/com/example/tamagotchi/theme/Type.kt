@@ -31,8 +31,8 @@ val Typography = Typography(
     titleLarge = TextStyle(
         fontFamily = pottaOne,
         fontWeight = FontWeight.Normal,
-        fontSize = 40.sp,
-        lineHeight = 28.sp,
+        fontSize = 36.sp,
+        lineHeight = 24.sp,
         letterSpacing = 0.sp
     ),
     headlineMedium = TextStyle(

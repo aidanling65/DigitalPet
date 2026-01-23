@@ -1,16 +1,21 @@
 package com.example.tamagotchi.main.ui.components.dialogs
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import kotlinx.coroutines.delay
@@ -24,19 +29,20 @@ fun DialogBase(
         dismissOnClickOutside = false,
         usePlatformDefaultWidth = false
     ),
-    content: @Composable () -> Unit
+    content: @Composable (onDismissRequest: () -> Unit) -> Unit
 ) {
     var animationVisible by remember { mutableStateOf(false) }
     LaunchedEffect(visible){
+        Log.d("DialogBase", "visibility changed")
         if(visible){
-            delay(200)
+            delay(50)
             animationVisible = true
         }
     }
 
     LaunchedEffect(animationVisible) {
         if(!animationVisible) {
-            delay(500)
+            delay(150)
             onDismissRequest()
         }
     }
@@ -48,20 +54,26 @@ fun DialogBase(
         ) {
             AnimatedVisibility(
                 visible = animationVisible,
-                enter = fadeIn(
+                enter = slideInVertically(
                     animationSpec = spring(
                         dampingRatio = Spring.DampingRatioNoBouncy,
                         stiffness = Spring.StiffnessLow
-                    )
+                    ),
+                    initialOffsetY = {fullHeight -> 3*fullHeight}
                 ),
-                exit = fadeOut(
+                exit = slideOutVertically(
                     animationSpec = spring(
                         dampingRatio = Spring.DampingRatioNoBouncy,
-                        stiffness = Spring.StiffnessMedium
-                    )
+                        stiffness = Spring.StiffnessLow
+                    ),
+                    targetOffsetY = { fullHeight -> -2 * fullHeight }
                 )
             ) {
-                content()
+                Box(modifier= Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    content() {
+                        animationVisible = false
+                    }
+                }
             }
         }
     }

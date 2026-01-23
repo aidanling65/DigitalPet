@@ -2,7 +2,6 @@ package com.example.tamagotchi.main.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,29 +26,28 @@ import com.example.tamagotchi.main.ui.components.status_bars.StatusBars
 fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
     val tamagotchiState by gameViewModel.tamagotchiState.collectAsState()
 
-    Box(Modifier.fillMaxSize()) {
-        Scaffold(
+    Scaffold(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.background),
+        topBar = { TopAppBar(gameViewModel) },
+        bottomBar = { BottomBar(gameViewModel) }
+    ) { innerPadding ->
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = MaterialTheme.colorScheme.background),
-            topBar = { TopAppBar(gameViewModel) },
-            bottomBar = { BottomBar(gameViewModel) }
-        ) { innerPadding ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = MaterialTheme.colorScheme.background)
-                    .padding(innerPadding),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Spacer(Modifier.height(16.dp))
-                TamagotchiDisplay(tamagotchiState, modifier.size(256.dp))
-                Spacer(Modifier.height(16.dp))
-                StatusBars(tamagotchiState)
-            }
-
-            Dialogs(gameViewModel)
+                .background(color = MaterialTheme.colorScheme.background)
+                .padding(innerPadding),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Spacer(Modifier.height(16.dp))
+            TamagotchiDisplay(tamagotchiState, modifier.size(256.dp))
+            Spacer(Modifier.height(16.dp))
+            StatusBars(tamagotchiState)
+            Spacer(Modifier.height(16.dp))
         }
+
+        Dialogs(gameViewModel)
     }
 }

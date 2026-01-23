@@ -60,4 +60,6 @@
     <string name="reset">Reset</string>
     <string name="pause">Pause</string>
     <string name="unpause">Unpause</string>
+    <string name="scores_explained">Score\n0 - 50\n50 - 100\n100 - 150\n150 - 200\n200+</string>
+    <string name="happiness_scores">Happiness\n-1\n0\n+1\n+2\n+3</string>
 </resources>

@@ -2,6 +2,7 @@ package com.example.tamagotchi.main.ui.components.menu
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -9,6 +10,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -37,20 +39,30 @@ fun MinimalDropDownMenu(gameViewModel: GameViewModel) {
     var visibleIndex by remember { mutableIntStateOf(-1) }
     val showManual by gameViewModel.showManual.collectAsState()
 
+    val onDismiss = { expanded = false }
 
+    val maxIndex = 3
     LaunchedEffect(expanded) {
         if (expanded) {
             expandedMenu = true
-            while (visibleIndex < 3) {
-                delay(100)
+            while (visibleIndex < maxIndex) {
+                if (visibleIndex < 0) {
+                    delay(5)
+                } else {
+                    delay(100)
+                }
                 visibleIndex++
             }
         } else {
             while (visibleIndex > -1) {
-                delay(100)
+                if (visibleIndex < 0) {
+                    delay(50)
+                } else {
+                    delay(100)
+                }
                 visibleIndex--
             }
-            delay(400)
+            delay(300)
             expandedMenu = false
         }
     }
@@ -63,7 +75,9 @@ fun MinimalDropDownMenu(gameViewModel: GameViewModel) {
         IconButton(onClick = { expanded = !expanded }) {
             Icon(
                 Icons.Default.Menu,
-                contentDescription = "Menu"
+                contentDescription = "Menu",
+                modifier = Modifier.fillMaxHeight(),
+                tint = MaterialTheme.colorScheme.primary
             )
         }
         DropdownMenu(
@@ -91,7 +105,8 @@ fun MinimalDropDownMenu(gameViewModel: GameViewModel) {
                 showManual,
                 onClick = {
                     gameViewModel.onManualClicked()
-                }
+                },
+                onDismiss
             )
             MenuEntry(
                 imageId = R.drawable.settings,
@@ -100,10 +115,11 @@ fun MinimalDropDownMenu(gameViewModel: GameViewModel) {
                 showManual,
                 onClick = {
                     gameViewModel.onStartupOpen()
-                }
+                },
+                onDismiss
             )
             MenuEntry(
-                imageId = if(tamagotchiState.paused) R.drawable.play_button else R.drawable.pause_button,
+                imageId = if (tamagotchiState.paused) R.drawable.play_button else R.drawable.pause_button,
                 text = if (tamagotchiState.paused) stringResource(R.string.unpause) else stringResource(
                     R.string.pause
                 ),
@@ -112,6 +128,7 @@ fun MinimalDropDownMenu(gameViewModel: GameViewModel) {
                 onClick = {
                     gameViewModel.pauseGame()
                 },
+                onDismiss
             )
             MenuEntry(
                 imageId = R.drawable.reset_button,
@@ -120,7 +137,8 @@ fun MinimalDropDownMenu(gameViewModel: GameViewModel) {
                 showManual,
                 onClick = {
                     gameViewModel.onResetClicked()
-                }
+                },
+                onDismiss
             )
         }
     }

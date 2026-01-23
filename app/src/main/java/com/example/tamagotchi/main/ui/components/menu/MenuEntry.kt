@@ -37,7 +37,8 @@ fun MenuEntry(
     text: String,
     visible: Boolean,
     moving: Boolean,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    onDismiss: () -> Unit = {}
 ) {
     val bitmap = ImageBitmap.imageResource(imageId)
     val visible = !moving && visible
@@ -64,6 +65,12 @@ fun MenuEntry(
             horizontalArrangement = Arrangement.End,
             modifier = Modifier
                 .fillMaxWidth()
+                .clickable(
+                    interactionSource = null,
+                    indication = null,
+                    enabled = true,
+                    onClick = onDismiss
+                )
         ) {
             Box(
                 modifier = Modifier
@@ -72,7 +79,8 @@ fun MenuEntry(
                     .clickable(
                         interactionSource = null,
                         enabled = true,
-                        onClick = onClick),
+                        onClick = onClick
+                    ),
             ) {
                 Column(
                     Modifier
@@ -92,7 +100,7 @@ fun MenuEntry(
                                     bottomEnd = 0f
                                 )
                             )
-                            .background(MaterialTheme.colorScheme.secondary)
+                            .background(MaterialTheme.colorScheme.secondary.copy(alpha=0.85f))
                             .fillMaxWidth()
                             .padding(start = 16.dp)
                     ) {
