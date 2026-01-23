@@ -3,8 +3,8 @@ package com.example.tamagotchi.main.ui.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -34,14 +34,13 @@ import com.example.tamagotchi.main.data.model.TamagotchiState
 
 @Composable
 fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifier) {
-
     Box(modifier) {
         Box(
             Modifier
                 .clip(RoundedCornerShape(percent = 25))
                 .border(
                     width = 2.dp,
-                    color = colorResource(R.color.black),
+                    color = Color.Black,
                     shape = RoundedCornerShape(25)
                 )
                 .background(colorResource(R.color.lcd))
@@ -53,56 +52,91 @@ fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifi
                 modifier = Modifier.fillMaxSize()
             )
             if (currentState.poop) {
-                BoxWithConstraints(
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .fillMaxSize(0.7f)
+                AnimatedVisibility(
+                    visible = currentState.paused,
+                    enter = fadeIn(
+                        animationSpec = spring(
+                            dampingRatio = Spring.DampingRatioNoBouncy,
+                            stiffness = Spring.StiffnessVeryLow
+                        )
+                    ),
+                    exit = fadeOut(
+                        animationSpec = spring(
+                            dampingRatio = Spring.DampingRatioNoBouncy,
+                            stiffness = Spring.StiffnessVeryLow
+                        )
+                    )
                 ) {
-
-                    val offsetX = maxWidth * -0.05f
-                    val offsetY = maxHeight * -0.05f
-                    Image(
-                        painter = painterResource(R.drawable.poop0),
-                        contentDescription = null,
+                    BoxWithConstraints(
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
-                            .offset(offsetX, offsetY)
+                            .fillMaxSize(0.7f)
+                    ) {
+
+                        val offsetX = maxWidth * -0.05f
+                        val offsetY = maxHeight * -0.05f
+                        Image(
+                            painter = painterResource(R.drawable.poop0),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .align(Alignment.BottomEnd)
+                                .offset(offsetX, offsetY)
+                                .fillMaxSize()
+                        )
+                    }
+                }
+            }
+            AnimatedVisibility(
+                visible = currentState.paused,
+                modifier = Modifier.zIndex(2f),
+                enter = fadeIn(
+                    animationSpec = spring(
+                        stiffness = Spring.StiffnessVeryLow
+                    )
+                ),
+                exit = fadeOut(
+                    animationSpec = spring(
+                        stiffness = Spring.StiffnessVeryLow
+                    )
+                )
+            ) {
+                Box(
+                    modifier = Modifier
+                        .background(
+                            Color.Black.copy(alpha = 0.5f),
+                        )
+                        .fillMaxSize()
+                ) {
+                    Image(
+                        bitmap = ImageBitmap.imageResource(R.drawable.paused),
+                        contentDescription = null,
+                        modifier = Modifier
                             .fillMaxSize()
+                            .padding(32.dp),
+                        filterQuality = FilterQuality.None,
                     )
                 }
             }
-        }
-        AnimatedVisibility(
-            visible = currentState.paused,
-            enter = slideInVertically(
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioNoBouncy,
-                    stiffness = Spring.StiffnessLow
-                )
-            ) { fullHeight -> -fullHeight },
-            exit = fadeOut(
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioNoBouncy,
-                    stiffness = Spring.StiffnessLow
-                )
-            )
-        ) {
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(percent = 25))
-                    .background(
-                        Color.Black.copy(alpha = 0.5f),
+
+            AnimatedVisibility(
+                visible = currentState.lightAnimationState > 0,
+                modifier = Modifier.zIndex(3f),
+                enter = fadeIn(
+                    animationSpec = spring(
+                        stiffness = Spring.StiffnessVeryLow
                     )
-                    .aspectRatio(1f)
-                    .zIndex(2f)
-            ) {
-                Image(
-                    bitmap = ImageBitmap.imageResource(R.drawable.paused),
-                    contentDescription = null,
+                ),
+                exit = fadeOut(
+                    animationSpec = spring(
+                        stiffness = Spring.StiffnessVeryLow
+                    )
+                )
+            ){
+                Box(
                     modifier = Modifier
+                        .background(Color.Black)
                         .fillMaxSize()
-                        .padding(32.dp),
-                    filterQuality = FilterQuality.None,
+                        .zIndex(3f)
                 )
             }
         }

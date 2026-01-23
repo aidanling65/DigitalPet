@@ -103,7 +103,7 @@ fun MinimalDropDownMenu(gameViewModel: GameViewModel) {
                 }
             )
             MenuEntry(
-                imageId = R.drawable.question_mark,
+                imageId = if(tamagotchiState.paused) R.drawable.play_button else R.drawable.pause_button,
                 text = if (tamagotchiState.paused) stringResource(R.string.unpause) else stringResource(
                     R.string.pause
                 ),

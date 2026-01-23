@@ -25,19 +25,24 @@ class TamagotchiRepository (private val context: Context) {
     private val WEIGHT = intPreferencesKey("weight")
     private val HUNGER = intPreferencesKey("hunger")
     private val HAPPINESS = intPreferencesKey("happiness")
+    private val DISCIPLINE = intPreferencesKey("discipline")
+    private val INTELLIGENCE = intPreferencesKey("intelligence")
+
     private val STEPS = intPreferencesKey("steps")
     private val RESET_STEPS = booleanPreferencesKey("reset_steps")
     private val DAILY_STEP_BASELINE = intPreferencesKey("daily_step_baseline")
     private val FITNESS = intPreferencesKey("fitness")
     private val STEP_GOAL = intPreferencesKey("step_goal")
-    private val DISCIPLINE = intPreferencesKey("discipline")
-    private val INTELLIGENCE = intPreferencesKey("intelligence")
+
+
     private val LIGHT = booleanPreferencesKey("light")
+    private val LIGHT_STATE = intPreferencesKey("light_state")
+    private val SLEEPING = booleanPreferencesKey("sleeping")
+
     private val MEDICINE_TAKEN = booleanPreferencesKey("medicineTaken")
     private val SICK = booleanPreferencesKey("sick")
     private val POOP = booleanPreferencesKey("poop")
     private val MISBEHAVING = booleanPreferencesKey("misbehaving")
-    private val SLEEPING = booleanPreferencesKey("sleeping")
     private val AGE_STAGE = stringPreferencesKey("age stage")
     private val ANIMATIONS = stringPreferencesKey("animations")
     private val MENTAL_MISTAKES = intPreferencesKey("mental_mistakes")
@@ -68,6 +73,7 @@ class TamagotchiRepository (private val context: Context) {
                 light = prefs[LIGHT] ?: defaultState.light,
                 medicineTaken = prefs[MEDICINE_TAKEN] ?: defaultState.medicineTaken,
                 sick = prefs[SICK] ?: defaultState.sick,
+                lightAnimationState = prefs[LIGHT_STATE] ?: defaultState.lightAnimationState,
                 poop = prefs[POOP] ?: defaultState.poop,
                 misbehaving = prefs[MISBEHAVING] ?: defaultState.misbehaving,
                 sleeping = prefs[SLEEPING] ?: defaultState.sleeping,
@@ -118,6 +124,7 @@ class TamagotchiRepository (private val context: Context) {
         updated[DISCIPLINE] = current.discipline
         updated[INTELLIGENCE] = current.intelligence
         updated[LIGHT] = current.light
+        updated[LIGHT_STATE] = current.lightAnimationState
         updated[MEDICINE_TAKEN] = current.medicineTaken
         updated[SICK] = current.sick
         updated[POOP] = current.poop

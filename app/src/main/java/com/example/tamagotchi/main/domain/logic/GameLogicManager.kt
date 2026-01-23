@@ -74,10 +74,6 @@ class GameLogicManager {
         }
     }
 
-    fun light(current: TamagotchiState): TamagotchiState {
-        return current.copy(light = !current.light)
-    }
-
     fun discipline(current: TamagotchiState): TamagotchiState {
         if (!canInteract(current))
             return current

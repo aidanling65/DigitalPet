@@ -6,8 +6,14 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import kotlinx.coroutines.delay
 
 @Composable
 fun DialogBase(
@@ -20,26 +26,43 @@ fun DialogBase(
     ),
     content: @Composable () -> Unit
 ) {
-    AnimatedVisibility(
-        visible = visible,
-        enter = fadeIn(
-            animationSpec = spring(
-                dampingRatio = Spring.DampingRatioNoBouncy,
-                stiffness = Spring.StiffnessLow
-            )
-        ),
-        exit = fadeOut(
-            animationSpec = spring(
-                dampingRatio = Spring.DampingRatioNoBouncy,
-                stiffness = Spring.StiffnessLow
-            )
-        )
-    ) {
+    var animationVisible by remember { mutableStateOf(false) }
+    LaunchedEffect(visible){
+        if(visible){
+            delay(200)
+            animationVisible = true
+        }
+    }
+
+    LaunchedEffect(animationVisible) {
+        if(!animationVisible) {
+            delay(500)
+            onDismissRequest()
+        }
+    }
+
+    if(visible || animationVisible) {
         Dialog(
-            onDismissRequest = onDismissRequest,
+            onDismissRequest = {animationVisible = false},
             properties = properties
         ) {
-            content()
+            AnimatedVisibility(
+                visible = animationVisible,
+                enter = fadeIn(
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioNoBouncy,
+                        stiffness = Spring.StiffnessLow
+                    )
+                ),
+                exit = fadeOut(
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioNoBouncy,
+                        stiffness = Spring.StiffnessMedium
+                    )
+                )
+            ) {
+                content()
+            }
         }
     }
 }

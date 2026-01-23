@@ -14,6 +14,7 @@ import com.example.tamagotchi.main.domain.workers.utils.scheduleEvolutionWork
 import com.example.tamagotchi.step_tracker.repository.StepDatabase
 import com.example.tamagotchi.step_tracker.repository.StepRepository
 import com.example.tamagotchi.sudoku.ui.SudokuViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -131,19 +132,38 @@ class GameViewModel(
     }
 
     fun light() {
-        updateAndSave { gameLogicManager.light(it) }
+        viewModelScope.launch {
+            updateAndSave { it ->
+                it.copy(
+                    lightAnimationState = 1,
+                )
+            }
+            delay(600)
+            updateAndSave {
+                it.copy(
+                    light =!it.light,
+                    lightAnimationState = 2
+                )
+            }
+            delay(600)
+            updateAndSave { it ->
+                it.copy(
+                    lightAnimationState = 0,
+                )
+            }
+        }
     }
 
     fun discipline() {
         updateAndSave { gameLogicManager.discipline(it) }
     }
 
-    fun onStartupOpen(){
+    fun onStartupOpen() {
         _showStartup.value = true
     }
 
-    fun onDismissStartup(){
-        Log.d("StartupDialog","here")
+    fun onDismissStartup() {
+        Log.d("StartupDialog", "here")
         _showStartup.value = false
     }
 
@@ -190,7 +210,7 @@ class GameViewModel(
     }
 
     fun updateBedTime(bedTime: LocalTime) {
-        updateAndSave { it.copy(bedTime = bedTime)  }
+        updateAndSave { it.copy(bedTime = bedTime) }
     }
 
     fun updateWakeTime(wakeTime: LocalTime) {

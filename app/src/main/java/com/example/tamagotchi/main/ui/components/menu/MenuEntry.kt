@@ -47,7 +47,7 @@ fun MenuEntry(
         enter = slideInHorizontally(
             animationSpec = spring(
                 dampingRatio = if(moving) Spring.DampingRatioNoBouncy else Spring.DampingRatioLowBouncy,
-                stiffness = if(moving) Spring.StiffnessLow else Spring.StiffnessHigh
+                stiffness = if(moving) Spring.StiffnessLow else Spring.StiffnessVeryLow
             ),
             initialOffsetX = { fullWidth -> if (moving) -fullWidth else 2 * fullWidth }
         ),
