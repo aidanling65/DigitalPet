@@ -1,4 +1,4 @@
-package com.example.tamagotchi.main.utils
+package com.example.tamagotchi.main.utils.animation
 
 import android.content.Context
 import android.graphics.Bitmap

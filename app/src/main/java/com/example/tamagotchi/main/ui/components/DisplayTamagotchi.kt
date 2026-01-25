@@ -9,12 +9,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,9 +30,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.example.tamagotchi.R
 import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.main.utils.animation.AnimateDrawable
+import com.example.tamagotchi.main.utils.animation.AnimateDrawableOneShot
 
 @Composable
-fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifier) {
+fun TamagotchiDisplay(
+    currentState: TamagotchiState,
+    modifier: Modifier = Modifier,
+    onAnimationFinish: () -> Unit = {},
+    showEatingAnimation: Boolean = false
+) {
     Box(modifier) {
         Box(
             Modifier
@@ -44,20 +50,24 @@ fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifi
                     shape = RoundedCornerShape(25)
                 )
                 .background(colorResource(R.color.lcd))
-                .wrapContentSize()
                 .aspectRatio(1f)
         ) {
             AnimateDrawable(
                 drawableRes = currentState.currentAnimation,
                 modifier = Modifier.fillMaxSize()
             )
-            if (currentState.poop) {
+
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .fillMaxSize(0.7f)
+            ) {
                 AnimatedVisibility(
-                    visible = currentState.paused,
+                    visible = currentState.poop,
                     enter = fadeIn(
                         animationSpec = spring(
                             dampingRatio = Spring.DampingRatioNoBouncy,
-                            stiffness = Spring.StiffnessVeryLow
+                            stiffness = Spring.StiffnessMediumLow
                         )
                     ),
                     exit = fadeOut(
@@ -67,23 +77,28 @@ fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifi
                         )
                     )
                 ) {
-                    BoxWithConstraints(
+                    Image(
+                        painter = painterResource(R.drawable.poop0),
+                        contentDescription = null,
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
-                            .fillMaxSize(0.7f)
-                    ) {
-
-                        val offsetX = maxWidth * -0.05f
-                        val offsetY = maxHeight * -0.05f
-                        Image(
-                            painter = painterResource(R.drawable.poop0),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .align(Alignment.BottomEnd)
-                                .offset(offsetX, offsetY)
-                                .fillMaxSize()
-                        )
-                    }
+                            .offset((-20).dp, 0.dp)
+                            .fillMaxSize()
+                    )
+                }
+                AnimatedVisibility(
+                    visible = showEatingAnimation,
+                    enter = fadeIn()
+                ) {
+                    AnimateDrawableOneShot(
+                        drawableRes = R.drawable.eating_bread,
+                        key = showEatingAnimation,
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .offset(80.dp, (-16).dp)
+                            .size(50.dp),
+                        onAnimationFinish
+                    )
                 }
             }
             AnimatedVisibility(
@@ -117,8 +132,15 @@ fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifi
                     )
                 }
             }
-
-            if(currentState.lightAnimationState == 1 && !currentState.light){
+            AnimatedVisibility(
+                visible = currentState.lightAnimationState == 1,
+                modifier = Modifier.zIndex(3f),
+                enter = fadeIn(
+                    animationSpec = spring(
+                        stiffness = Spring.StiffnessVeryLow
+                    )
+                )
+            ) {
                 Box(
                     modifier = Modifier
                         .background(Color.Black)
@@ -127,11 +149,11 @@ fun TamagotchiDisplay(currentState: TamagotchiState, modifier: Modifier = Modifi
                 )
             }
             AnimatedVisibility(
-                visible = currentState.lightAnimationState > 0,
+                visible = currentState.lightAnimationState == 2,
                 modifier = Modifier.zIndex(3f),
                 enter = fadeIn(
                     animationSpec = spring(
-                        stiffness = Spring.StiffnessVeryLow
+                        stiffness = Spring.StiffnessHigh
                     )
                 ),
                 exit = fadeOut(

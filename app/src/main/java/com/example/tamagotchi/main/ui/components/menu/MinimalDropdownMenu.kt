@@ -47,7 +47,7 @@ fun MinimalDropDownMenu(gameViewModel: GameViewModel) {
             expandedMenu = true
             while (visibleIndex < maxIndex) {
                 if (visibleIndex < 0) {
-                    delay(5)
+                    delay(50)
                 } else {
                     delay(100)
                 }
@@ -55,7 +55,7 @@ fun MinimalDropDownMenu(gameViewModel: GameViewModel) {
             }
         } else {
             while (visibleIndex > -1) {
-                if (visibleIndex < 0) {
+                if (visibleIndex >= maxIndex) {
                     delay(50)
                 } else {
                     delay(100)

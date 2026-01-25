@@ -25,6 +25,7 @@ import com.example.tamagotchi.main.ui.components.status_bars.StatusBars
 @Composable
 fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
     val tamagotchiState by gameViewModel.tamagotchiState.collectAsState()
+    val showEating by gameViewModel.showEatingAnimation.collectAsState()
 
     Scaffold(
         modifier = Modifier
@@ -42,7 +43,12 @@ fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
             Spacer(Modifier.height(16.dp))
-            TamagotchiDisplay(tamagotchiState, modifier.size(256.dp))
+            TamagotchiDisplay(
+                tamagotchiState,
+                modifier.size(256.dp),
+                {gameViewModel.onEatingAnimationFinished()},
+                showEating
+            )
             Spacer(Modifier.height(16.dp))
             StatusBars(tamagotchiState)
             Spacer(Modifier.height(16.dp))

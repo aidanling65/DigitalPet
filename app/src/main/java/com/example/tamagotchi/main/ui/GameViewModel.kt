@@ -45,6 +45,10 @@ class GameViewModel(
     private val _showStartup = MutableStateFlow(false)
     val showStartup: StateFlow<Boolean> = _showStartup.asStateFlow()
 
+    private val _showEatingAnimation = MutableStateFlow(false)
+    val showEatingAnimation: StateFlow<Boolean> = _showEatingAnimation.asStateFlow()
+
+
     private val gameLogicManager = GameLogicManager()
     private val stepDb = StepDatabase.getDatabase(context)
     private val stepRepository = StepRepository(stepDb.stepsDao())
@@ -89,7 +93,12 @@ class GameViewModel(
     }
 
     fun feed() {
+        _showEatingAnimation.value = true
+    }
+
+    fun onEatingAnimationFinished() {
         updateAndSave { gameLogicManager.feed(it) }
+        _showEatingAnimation.value = false
     }
 
     fun play() {
@@ -133,23 +142,16 @@ class GameViewModel(
 
     fun light() {
         viewModelScope.launch {
-            updateAndSave { it ->
-                it.copy(
-                    lightAnimationState = 1,
-                )
+            if (tamagotchiState.value.light) {
+                updateAndSave { it.copy(lightAnimationState = 1) }
+                delay(1000)
+                updateAndSave { it.copy(lightAnimationState = 0,light = false) }
+
             }
-            delay(600)
-            updateAndSave {
-                it.copy(
-                    light =!it.light,
-                    lightAnimationState = 2
-                )
-            }
-            delay(600)
-            updateAndSave { it ->
-                it.copy(
-                    lightAnimationState = 0,
-                )
+            else{
+                updateAndSave { it.copy(lightAnimationState = 2, light=false) }
+                delay(100)
+                updateAndSave { it.copy(lightAnimationState = 3, light = true) }
             }
         }
     }

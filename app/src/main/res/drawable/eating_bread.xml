@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android" android:oneshot="true">
+    <item android:drawable="@drawable/eating_bread0" android:duration="300"/>
+    <item android:drawable="@drawable/eating_bread1" android:duration="300"/>
+    <item android:drawable="@drawable/eating_bread2" android:duration="300"/>
+    <item android:drawable="@drawable/eating_bread3" android:duration="300"/>
+    <item android:drawable="@drawable/eating_bread4" android:duration="300"/>
+    <item android:drawable="@drawable/eating_bread5" android:duration="300"/>
+</animation-list>

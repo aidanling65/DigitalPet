@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.R
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.GameViewModel
-import com.example.tamagotchi.main.utils.getAnimationFrames
+import com.example.tamagotchi.main.utils.animation.getAnimationFrames
 import kotlinx.coroutines.delay
 
 @Composable

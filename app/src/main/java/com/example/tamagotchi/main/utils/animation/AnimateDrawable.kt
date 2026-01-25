@@ -1,4 +1,4 @@
-package com.example.tamagotchi.main.ui.components
+package com.example.tamagotchi.main.utils.animation
 
 import android.graphics.drawable.AnimationDrawable
 import android.widget.ImageView
@@ -16,6 +16,7 @@ fun AnimateDrawable(drawableRes: Int, modifier: Modifier = Modifier) {
             ImageView(context).apply {
                 setBackgroundResource(drawableRes)
                 animation = background as? AnimationDrawable
+
             }
         },
         update = { imageView ->
