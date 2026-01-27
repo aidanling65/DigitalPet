@@ -70,6 +70,7 @@ fun TamagotchiDisplay(
                     shape = RoundedCornerShape(25)
                 )
                 .background(colorResource(R.color.lcd))
+                .align(Alignment.Center)
                 .aspectRatio(1f)
                 .fillMaxSize()
         ) {
@@ -82,10 +83,13 @@ fun TamagotchiDisplay(
                         .fillMaxSize()
                 )
             } else {
+                val size = if(currentState.ageStage == AgeStage.EGG) 0.4f else 1f
+                val offset = if(currentState.ageStage == AgeStage.EGG) (maxWidth * 0.3f) else 0.dp
                 AnimateDrawable(
                     drawableRes = currentState.currentAnimation,
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxSize(size)
+                        .offset(offset, offset)
                 )
             }
             AnimatedVisibility(
@@ -153,12 +157,13 @@ fun TamagotchiDisplay(
                         )
                         .fillMaxSize()
                 ) {
+                    val padding = this@BoxWithConstraints.maxWidth * 0.15f
                     Image(
                         bitmap = ImageBitmap.imageResource(R.drawable.paused),
                         contentDescription = null,
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(),
+                            .padding(padding),
                         filterQuality = FilterQuality.None,
                     )
                 }
@@ -224,11 +229,11 @@ fun TamagotchiDisplayPreview2() {
     TamagotchiDisplay(
         TamagotchiState(
             paused = false,
-            ageStage = AgeStage.ADULT,
-            animations = EvolutionAnimations.ADULT_4,
+            ageStage = AgeStage.CHILD,
+            animations = EvolutionAnimations.CHILD,
             loading = false,
             poop = true,
-            sick=true
+            sick=false
         ),
         showEatingAnimation = 0
     )

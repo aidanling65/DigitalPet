@@ -40,7 +40,7 @@ enum class EvolutionAnimations(
     ),
     TEEN_1(
         idle = R.drawable.teen_1_idle,
-        eating = R.drawable.teen_1_idle,
+        eating = R.drawable.teen_1_eating,
         sleep = R.drawable.teen_1_sleep,
         lightsOutSleep = R.drawable.lights_out_sleep,
         lightsOutAwake = R.drawable.lights_out_awake,
@@ -49,7 +49,7 @@ enum class EvolutionAnimations(
     ),
     TEEN_2(
         idle = R.drawable.teen_2_idle,
-        eating = R.drawable.teen_2_idle,
+        eating = R.drawable.teen_2_eating,
         sleep = R.drawable.teen_2_sleep,
         lightsOutSleep = R.drawable.lights_out_sleep,
         lightsOutAwake = R.drawable.lights_out_awake,
@@ -58,7 +58,7 @@ enum class EvolutionAnimations(
     ),
     ADULT_1(
         idle = R.drawable.adult_1_idle,
-        eating = R.drawable.adult_1_idle,
+        eating = R.drawable.adult_1_eating,
         sleep = R.drawable.adult_1_sleep,
         lightsOutSleep = R.drawable.lights_out_sleep,
         lightsOutAwake = R.drawable.lights_out_awake,
@@ -67,7 +67,7 @@ enum class EvolutionAnimations(
     ),
     ADULT_2(
         idle = R.drawable.adult_2_idle,
-        eating = R.drawable.adult_2_idle,
+        eating = R.drawable.adult_2_eating,
         sleep = R.drawable.adult_2_sleep,
         lightsOutSleep = R.drawable.lights_out_sleep,
         lightsOutAwake = R.drawable.lights_out_awake,
@@ -76,7 +76,7 @@ enum class EvolutionAnimations(
     ),
     ADULT_3(
         idle = R.drawable.adult_3_idle,
-        eating = R.drawable.adult_3_idle,
+        eating = R.drawable.adult_3_eating,
         sleep = R.drawable.adult_3_sleep,
         lightsOutSleep = R.drawable.lights_out_sleep,
         lightsOutAwake = R.drawable.lights_out_awake,
@@ -85,7 +85,7 @@ enum class EvolutionAnimations(
     ),
     ADULT_4(
         idle = R.drawable.adult_4_idle,
-        eating = R.drawable.adult_4_idle,
+        eating = R.drawable.adult_4_eating,
         sleep = R.drawable.adult_4_sleep,
         lightsOutSleep = R.drawable.lights_out_sleep,
         lightsOutAwake = R.drawable.lights_out_awake,
@@ -94,7 +94,7 @@ enum class EvolutionAnimations(
     ),
     ADULT_5(
         idle = R.drawable.adult_5_idle,
-        eating = R.drawable.adult_5_idle,
+        eating = R.drawable.adult_5_eating,
         sleep = R.drawable.adult_5_sleep,
         lightsOutSleep = R.drawable.lights_out_sleep,
         lightsOutAwake = R.drawable.lights_out_awake,
@@ -103,7 +103,7 @@ enum class EvolutionAnimations(
     ),
     ADULT_6(
         idle = R.drawable.adult_6_idle,
-        eating = R.drawable.adult_6_idle,
+        eating = R.drawable.adult_6_eating,
         sleep = R.drawable.adult_6_sleep,
         lightsOutSleep = R.drawable.lights_out_sleep,
         lightsOutAwake = R.drawable.lights_out_awake,
