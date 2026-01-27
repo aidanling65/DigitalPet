@@ -9,11 +9,4 @@
     <item android:drawable="@drawable/adult_6_play6" android:duration="500"/>
     <item android:drawable="@drawable/adult_6_play7" android:duration="500"/>
     <item android:drawable="@drawable/adult_6_play8" android:duration="500"/>
-    <item android:drawable="@drawable/adult_6_play9" android:duration="500"/>
-    <item android:drawable="@drawable/adult_6_play10" android:duration="500"/>
-    <item android:drawable="@drawable/adult_6_play11" android:duration="500"/>
-    <item android:drawable="@drawable/adult_6_play12" android:duration="500"/>
-    <item android:drawable="@drawable/adult_6_play13" android:duration="500"/>
-    <item android:drawable="@drawable/adult_6_play14" android:duration="500"/>
-    <item android:drawable="@drawable/adult_6_play15" android:duration="500"/>
 </animation-list>

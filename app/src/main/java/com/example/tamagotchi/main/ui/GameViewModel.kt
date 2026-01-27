@@ -45,8 +45,8 @@ class GameViewModel(
     private val _showStartup = MutableStateFlow(false)
     val showStartup: StateFlow<Boolean> = _showStartup.asStateFlow()
 
-    private val _showEatingAnimation = MutableStateFlow(false)
-    val showEatingAnimation: StateFlow<Boolean> = _showEatingAnimation.asStateFlow()
+    private val _showEatingAnimation = MutableStateFlow(0)
+    val showEatingAnimation: StateFlow<Int> = _showEatingAnimation.asStateFlow()
 
 
     private val gameLogicManager = GameLogicManager()
@@ -60,7 +60,7 @@ class GameViewModel(
                 _showStartup.value = true
             }
             repository.tamagotchiStateFlow.collect { state ->
-                _tamagotchiState.value = state.copy()
+                _tamagotchiState.value = state.copy(loading=false)
             }
         }
 
@@ -93,12 +93,17 @@ class GameViewModel(
     }
 
     fun feed() {
-        _showEatingAnimation.value = true
+        if(showEatingAnimation.value > 0){
+            return
+        }
+        if (tamagotchiState.value.ageStage != AgeStage.DEAD && tamagotchiState.value.ageStage != AgeStage.EGG && !tamagotchiState.value.sleeping && !tamagotchiState.value.paused) {
+            _showEatingAnimation.value += 1
+        }
     }
 
     fun onEatingAnimationFinished() {
         updateAndSave { gameLogicManager.feed(it) }
-        _showEatingAnimation.value = false
+        _showEatingAnimation.value = 0
     }
 
     fun play() {
@@ -144,12 +149,13 @@ class GameViewModel(
         viewModelScope.launch {
             if (tamagotchiState.value.light) {
                 updateAndSave { it.copy(lightAnimationState = 1) }
-                delay(1000)
-                updateAndSave { it.copy(lightAnimationState = 0,light = false) }
+                delay(500)
+                updateAndSave { it.copy(light = false) }
+                delay(500)
+                updateAndSave { it.copy(lightAnimationState = 0) }
 
-            }
-            else{
-                updateAndSave { it.copy(lightAnimationState = 2, light=false) }
+            } else {
+                updateAndSave { it.copy(lightAnimationState = 2, light = false) }
                 delay(100)
                 updateAndSave { it.copy(lightAnimationState = 3, light = true) }
             }

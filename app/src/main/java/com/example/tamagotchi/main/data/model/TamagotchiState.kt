@@ -12,6 +12,7 @@ const val MAX_INTELLIGENCE = 4
 data class TamagotchiState(
 
     val initial: Boolean = true,
+    val loading: Boolean = true,
 
     val age: Int = 0,
 

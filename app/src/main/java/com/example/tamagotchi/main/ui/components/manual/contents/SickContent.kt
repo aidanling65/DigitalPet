@@ -42,7 +42,8 @@ fun SickContent(){
             TamagotchiState(
                 ageStage = AgeStage.ADULT,
                 animations = EvolutionAnimations.ADULT_2,
-                sick = true
+                sick = true,
+                loading = false
             ),
             modifier = Modifier
                 .fillMaxWidth(0.5f)

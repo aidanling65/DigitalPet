@@ -44,7 +44,8 @@ fun SleepContent() {
                 ageStage = AgeStage.ADULT,
                 animations = EvolutionAnimations.ADULT_6,
                 sleeping = true,
-                light = true
+                light = true,
+                loading = false
             )
             TamagotchiDisplay(
                 sampleState,
@@ -58,7 +59,8 @@ fun SleepContent() {
                 ageStage = AgeStage.ADULT,
                 animations = EvolutionAnimations.ADULT_6,
                 sleeping = true,
-                light = false
+                light = false,
+                loading = false
             )
             TamagotchiDisplay(
                 sampleState2,

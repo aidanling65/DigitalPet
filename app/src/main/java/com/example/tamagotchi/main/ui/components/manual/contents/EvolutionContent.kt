@@ -42,7 +42,7 @@ fun EvolutionContent() {
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            val eggState = TamagotchiState()
+            val eggState = TamagotchiState(loading = false)
             TamagotchiDisplay(
                 eggState,
                 modifier = Modifier
@@ -52,7 +52,8 @@ fun EvolutionContent() {
             )
             val babyState = TamagotchiState(
                 ageStage = AgeStage.BABY,
-                animations = EvolutionAnimations.BABY
+                animations = EvolutionAnimations.BABY,
+                loading = false
             )
             TamagotchiDisplay(
                 babyState,
@@ -63,7 +64,8 @@ fun EvolutionContent() {
             )
             val childState = TamagotchiState(
                 ageStage = AgeStage.CHILD,
-                animations = EvolutionAnimations.CHILD
+                animations = EvolutionAnimations.CHILD,
+                loading = false
             )
             TamagotchiDisplay(
                 childState,
@@ -74,7 +76,8 @@ fun EvolutionContent() {
             )
             val teenState = TamagotchiState(
                 ageStage = AgeStage.TEEN,
-                animations = EvolutionAnimations.TEEN_2
+                animations = EvolutionAnimations.TEEN_2,
+                loading = false
             )
             TamagotchiDisplay(
                 teenState,
@@ -85,7 +88,8 @@ fun EvolutionContent() {
             )
             val adultStage = TamagotchiState(
                 ageStage = AgeStage.ADULT,
-                animations = EvolutionAnimations.ADULT_3
+                animations = EvolutionAnimations.ADULT_3,
+                loading = false
             )
             TamagotchiDisplay(
                 adultStage,

@@ -3,11 +3,13 @@ package com.example.tamagotchi.main.ui.components.manual.contents
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -18,6 +20,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tamagotchi.R
+import com.example.tamagotchi.main.data.model.AgeStage
+import com.example.tamagotchi.main.data.model.EvolutionAnimations
+import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
 import com.example.tamagotchi.main.ui.components.status_bars.StatusBar
 import kotlinx.coroutines.delay
 import kotlin.random.Random
@@ -26,12 +32,20 @@ import kotlin.random.Random
 fun HungerContent() {
     var progress by remember{ mutableStateOf(2)}
     val maximum = 4
+    var showEatingAnimation by remember { mutableIntStateOf(1) }
 
     LaunchedEffect(Unit) {
         while(true){
             val progressChange = Random.nextInt(-1, 2)
             progress = (progress + progressChange).coerceIn(0, maximum)
             delay(500)
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        while(true) {
+            delay(5000)
+            showEatingAnimation += 1
         }
     }
 
@@ -51,5 +65,6 @@ fun HungerContent() {
             lineHeight = 16.sp
         )
         StatusBar(progress = progress, maximum = maximum)
+        TamagotchiDisplay(TamagotchiState(paused = false, ageStage = AgeStage.CHILD, animations = EvolutionAnimations.CHILD, loading =false), showEatingAnimation = showEatingAnimation, modifier = Modifier.size(64.dp))
     }
 }

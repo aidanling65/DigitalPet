@@ -10,7 +10,7 @@ import com.example.tamagotchi.main.data.model.TamagotchiState
 
 class GameLogicManager {
     private fun canInteract(current: TamagotchiState): Boolean {
-        return current.ageStage != AgeStage.EGG && current.ageStage != AgeStage.DEAD && !current.sleeping
+        return current.ageStage != AgeStage.EGG && current.ageStage != AgeStage.DEAD && !current.sleeping && !current.paused
     }
 
     fun feed(current: TamagotchiState): TamagotchiState {

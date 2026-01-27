@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,6 +22,13 @@ fun GameDialog(
     tamagotchiState: TamagotchiState,
     gameViewModel: GameViewModel,
 ) {
+
+    val randomGame = remember{ mutableIntStateOf(Random.nextInt(0,2))}
+
+    fun restart(){
+        randomGame.value = Random.nextInt(0,2)
+    }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -29,9 +38,9 @@ fun GameDialog(
             .clip(RoundedCornerShape(10))
             .background(MaterialTheme.colorScheme.background)
     ) {
-        when (Random.nextInt(0, 2)) {
-            0 -> JumpGameCanvas(tamagotchiState, gameViewModel)
-            1 -> FlappyGameCanvas(tamagotchiState, gameViewModel)
+        when (randomGame.value) {
+            0 -> JumpGameCanvas(tamagotchiState, gameViewModel){restart()}
+            1 -> FlappyGameCanvas(tamagotchiState, gameViewModel) { restart() }
         }
     }
 }

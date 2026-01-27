@@ -42,6 +42,7 @@ fun DeathContent(){
             TamagotchiState(
                 ageStage = AgeStage.DEAD,
                 animations = EvolutionAnimations.DEAD,
+                loading = false
             ),
             modifier = Modifier
                 .fillMaxWidth(0.5f)

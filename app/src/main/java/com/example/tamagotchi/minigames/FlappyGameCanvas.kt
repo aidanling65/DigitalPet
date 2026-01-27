@@ -8,14 +8,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -43,7 +38,11 @@ import com.example.tamagotchi.main.utils.animation.getAnimationFrames
 import kotlinx.coroutines.delay
 
 @Composable
-fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewModel) {
+fun FlappyGameCanvas(
+    tamagotchiState: TamagotchiState,
+    gameViewModel: GameViewModel,
+    restartFun: () -> Unit
+) {
     val context = LocalContext.current
 
     val canvasSize = remember { mutableStateOf(Size(0f, 0f)) }
@@ -58,78 +57,108 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
     val playerBitmap = playerAnimationFrames[currentFrame]
 
     val player = remember {
-        Player(
+        Obstacle(
             100f,
             canvasSize.value.height / 2,
             playerBitmap.width.toFloat(),
-            playerBitmap.height.toFloat()
+            playerBitmap.height.toFloat(),
+            xVelocity = 0f,
+            yVelocity = 0f,
+            xAcceleration = 0f,
+            yAcceleration = 1.25f,
+            yTerminalVelocity = 20f
         )
     }
 
-    var playerYVelocity by remember { mutableFloatStateOf(0f) }
-    val gravity = 1.25f
-
-    val obstacleWidth = 80f
     var obstacleHeightOffset by remember { mutableFloatStateOf(0f) }
     var gapSize by remember { mutableFloatStateOf(0f) }
 
-    val obstacle = remember { Obstacle(-500f, 0f, obstacleWidth, 500f) }
-    val obstacle2 = remember { Obstacle(-500f, 0f, obstacleWidth, 500f) }
-    var obstacleXVelocity by remember { mutableFloatStateOf(10f) }
+    val obstacle = remember {
+        Obstacle(
+            -500f,
+            0f,
+            80f,
+            500f,
+            xVelocity = -10f
+        )
+    }
+    val obstacle2 = remember {
+        Obstacle(
+            -500f,
+            0f,
+            obstacle.width,
+            obstacle.height,
+            xVelocity = obstacle.xVelocity
+        )
+    }
 
     var score by remember { mutableIntStateOf(0) }
     var isGameOver by remember { mutableStateOf(false) }
     var isGameOverScreen by remember { mutableStateOf(false) }
     var isGameStarted by remember { mutableStateOf(false) }
+
     val delay = 16L
     val frameRate = 300L / delay
 
-    if (isGameStarted) {
-        LaunchedEffect(Unit) {
-            while (true) {
-                if (isGameOver) {
-                    gameViewModel.gameScore(score)
-                    return@LaunchedEffect
-                }
-                player.y += playerYVelocity
-                playerYVelocity = (playerYVelocity + gravity).coerceAtMost(20f)
+    var countdown by remember { mutableIntStateOf(3) }
 
-                obstacle.x -= obstacleXVelocity
-                obstacle2.x = obstacle.x
+    fun resetGame() {
+        isGameOver = false
+        isGameOverScreen = false
+        isGameStarted = false
+        score = 0
+        countdown = 3
+        player.y = canvasSize.value.height / 2 - player.height
+        obstacle.x = canvasSize.value.width
+        obstacle2.x = canvasSize.value.width
 
-                if (obstacle.x < -obstacle.width) {
-                    obstacle.x = canvasSize.value.width
-                    obstacle2.x = canvasSize.value.width
-                    obstacleHeightOffset =
-                        ((-(canvasSize.value.height / 2).toInt()..100).random()).toFloat()
-                }
-                laps += 1
-                if (laps % frameRate == 0L) {
-                    currentFrame = (currentFrame + 1) % playerAnimationFrames.size
-                }
+        restartFun()
+    }
 
-                if (obstacle.isTouching(player, 10f) || obstacle2.isTouching(player, 10f)) {
-                    isGameOver = true
-                    delay(500L)
-                    isGameOverScreen = true
-                } else if (player.y > canvasSize.value.height + 200) {
-                    isGameOver = true
-                    delay(500L)
-                    isGameOverScreen = true
-                }
-                if (player.x > obstacle.x) {
-                    score += 1
-                }
+    LaunchedEffect(isGameStarted) {
 
-                frame++
-                delay(delay)
+        if (!isGameStarted) return@LaunchedEffect
+        while (true) {
+            if (isGameOver) {
+                gameViewModel.gameScore(score)
+                return@LaunchedEffect
             }
+            player.move()
+
+            obstacle.move()
+            obstacle2.move()
+
+            if (obstacle.x < -obstacle.width) {
+                obstacle.x = canvasSize.value.width
+                obstacle2.x = canvasSize.value.width
+                obstacleHeightOffset =
+                    ((-(canvasSize.value.height / 2).toInt()..100).random()).toFloat()
+            }
+            laps += 1
+            if (laps % frameRate == 0L) {
+                currentFrame = (currentFrame + 1) % playerAnimationFrames.size
+            }
+
+            if (obstacle.isTouching(player, 10f) || obstacle2.isTouching(player, 10f)) {
+                isGameOver = true
+                delay(500L)
+                isGameOverScreen = true
+            } else if (player.y > canvasSize.value.height + 200) {
+                isGameOver = true
+                delay(500L)
+                isGameOverScreen = true
+            }
+            if (player.x > obstacle.x) {
+                score += 1
+            }
+
+            frame++
+            delay(delay)
         }
     }
 
-    var countdown by remember { mutableIntStateOf(3) }
-    if (!isGameStarted) {
-        LaunchedEffect(canvasSize.value.width) {
+    if (!isGameStarted && !isGameOver) {
+        LaunchedEffect(canvasSize.value.width, isGameStarted, isGameOver) {
             if (canvasSize.value.width == 0f) return@LaunchedEffect
 
             player.y = canvasSize.value.height / 2 - player.height
@@ -142,7 +171,9 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
                 delay(1000L)
                 countdown -= 1
             }
-            isGameStarted = true
+            if (!isGameOver) {
+                isGameStarted = true
+            }
         }
     }
 
@@ -191,80 +222,12 @@ fun FlappyGameCanvas(tamagotchiState: TamagotchiState, gameViewModel: GameViewMo
                     }
                 }
             }
-            if (isGameOverScreen) {
-                Box(
-                    modifier = Modifier.matchParentSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column {
-                        Text(
-                            "Game Over",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = Color.Black
-                        )
-                        Text(
-                            "Score: $score",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = Color.Black
-                        )
-                    }
-                }
-            }
-            if (!isGameStarted) {
-                Box(
-                    modifier = Modifier.matchParentSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        "$countdown",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = Color.Black
-                    )
-                }
+            Box(modifier = Modifier.matchParentSize(), contentAlignment = Alignment.Center) {
+                GameOverScreen(isGameOverScreen, score)
+                Countdown(isGameStarted, countdown)
             }
         }
     }
     Spacer(modifier = Modifier.height(16.dp))
-    if (!isGameOverScreen) {
-        Button(
-            onClick = {
-                if (isGameStarted) {
-                    playerYVelocity = -17f
-                }
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondary
-            ),
-            modifier = Modifier
-                .fillMaxWidth(0.7f)
-                .fillMaxHeight(0.5f)
-        ) {
-            Text(
-                "Jump",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary
-            )
-        }
-    } else if (isGameOverScreen) {
-        Button(
-            onClick = {
-                isGameOver = false
-                isGameStarted = false
-                isGameOverScreen = false
-                score = 0
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondary
-            ),
-            modifier = Modifier
-                .fillMaxWidth(0.7f)
-                .fillMaxHeight(0.5f)
-        ) {
-            Text(
-                "Restart",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary
-            )
-        }
-    }
+    GameButtons(isGameOverScreen, isGameStarted, { resetGame() }, { player.yVelocity = -17f })
 }

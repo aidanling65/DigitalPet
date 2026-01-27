@@ -22,7 +22,7 @@ enum class EvolutionAnimations(
     ),
     BABY(
         idle = R.drawable.baby_idle,
-        eating = R.drawable.baby_idle,
+        eating = R.drawable.baby_eating,
         sleep = R.drawable.baby_sleep,
         lightsOutSleep = R.drawable.lights_out_sleep,
         lightsOutAwake = R.drawable.lights_out_awake,
@@ -31,7 +31,7 @@ enum class EvolutionAnimations(
     ),
     CHILD(
         idle = R.drawable.child_idle,
-        eating = R.drawable.child_idle,
+        eating = R.drawable.child_eating,
         sleep = R.drawable.child_sleep,
         lightsOutSleep = R.drawable.lights_out_sleep,
         lightsOutAwake = R.drawable.lights_out_awake,

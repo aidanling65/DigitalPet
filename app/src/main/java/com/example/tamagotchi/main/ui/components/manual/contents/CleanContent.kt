@@ -42,7 +42,8 @@ fun CleanContent() {
             TamagotchiState(
                 ageStage = AgeStage.ADULT,
                 animations = EvolutionAnimations.ADULT_3,
-                poop = true
+                poop = true,
+                loading = false
             ),
             modifier = Modifier
                 .fillMaxWidth(0.5f)
