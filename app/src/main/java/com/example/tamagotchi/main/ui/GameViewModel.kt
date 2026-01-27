@@ -227,6 +227,7 @@ class GameViewModel(
 
     fun setupNewGame() {
         _showStartup.value = false
+        _showResetDialog.value = false
 
         viewModelScope.launch {
             updateAndSave {

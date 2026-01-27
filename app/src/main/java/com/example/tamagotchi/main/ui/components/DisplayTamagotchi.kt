@@ -1,5 +1,6 @@
 package com.example.tamagotchi.main.ui.components
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -58,6 +59,7 @@ fun TamagotchiDisplay(
         }
     }
 
+    Log.d("TamagotchiDisplay", "${currentState.currentAnimation} ${EvolutionAnimations.BABY.idle}")
     Box(modifier) {
         BoxWithConstraints(
             Modifier

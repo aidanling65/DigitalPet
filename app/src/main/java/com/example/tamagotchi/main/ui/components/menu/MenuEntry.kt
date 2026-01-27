@@ -48,14 +48,14 @@ fun MenuEntry(
         enter = slideInHorizontally(
             animationSpec = spring(
                 dampingRatio = if(moving) Spring.DampingRatioNoBouncy else Spring.DampingRatioLowBouncy,
-                stiffness = if(moving) Spring.StiffnessLow else Spring.StiffnessVeryLow
+                stiffness = if(moving) Spring.StiffnessMediumLow else Spring.StiffnessMediumLow
             ),
             initialOffsetX = { fullWidth -> if (moving) -fullWidth else 2 * fullWidth }
         ),
         exit = slideOutHorizontally(
             animationSpec = spring(
                 dampingRatio = if(moving) Spring.DampingRatioNoBouncy else Spring.DampingRatioLowBouncy,
-                stiffness = if(moving) Spring.StiffnessLow else Spring.StiffnessVeryLow
+                stiffness = if(moving) Spring.StiffnessMediumLow else Spring.StiffnessMediumLow
             ),
             targetOffsetX = { fullWidth -> if (moving) -fullWidth else 2 * fullWidth }
         )

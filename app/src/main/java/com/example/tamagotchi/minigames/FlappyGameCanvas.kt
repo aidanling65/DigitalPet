@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -26,6 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.IntOffset
@@ -60,8 +63,8 @@ fun FlappyGameCanvas(
         Obstacle(
             100f,
             canvasSize.value.height / 2,
-            playerBitmap.width.toFloat(),
-            playerBitmap.height.toFloat(),
+            128f,
+            128f,
             xVelocity = 0f,
             yVelocity = 0f,
             xAcceleration = 0f,
@@ -134,7 +137,7 @@ fun FlappyGameCanvas(
                 obstacleHeightOffset =
                     ((-(canvasSize.value.height / 2).toInt()..100).random()).toFloat()
             }
-            laps += 1
+            laps++
             if (laps % frameRate == 0L) {
                 currentFrame = (currentFrame + 1) % playerAnimationFrames.size
             }
@@ -164,8 +167,8 @@ fun FlappyGameCanvas(
             player.y = canvasSize.value.height / 2 - player.height
             obstacle.x = canvasSize.value.width
             obstacle2.x = canvasSize.value.width
-            player.width = playerAnimationFrames[0].width.toFloat()
-            player.height = playerAnimationFrames[0].height.toFloat()
+            player.height = canvasSize.value.height /7f
+            player.width = player.height * playerBitmap.width / playerBitmap.height
             gapSize = player.height * 3f
             while (countdown > 0) {
                 delay(1000L)
@@ -181,6 +184,7 @@ fun FlappyGameCanvas(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
+        Text("Flappagotchi", style=MaterialTheme.typography.titleLarge, color = colorResource(R.color.gold))
         ScoreBoard(score, isGameStarted && !isGameOver)
         Box(
             Modifier
@@ -217,7 +221,8 @@ fun FlappyGameCanvas(
                             srcOffset = IntOffset.Zero,
                             srcSize = IntSize(playerBitmap.width, playerBitmap.height),
                             dstOffset = IntOffset(player.x.toInt(), player.y.toInt()),
-                            dstSize = IntSize(playerBitmap.width, playerBitmap.height)
+                            dstSize = IntSize(player.width.toInt(), player.height.toInt()),
+                            filterQuality = FilterQuality.None
                         )
                     }
                 }

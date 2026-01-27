@@ -55,9 +55,7 @@ fun MinimalDropDownMenu(gameViewModel: GameViewModel) {
             }
         } else {
             while (visibleIndex > -1) {
-                if (visibleIndex >= maxIndex) {
-                    delay(50)
-                } else {
+                if (visibleIndex < maxIndex) {
                     delay(100)
                 }
                 visibleIndex--

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
+import com.example.tamagotchi.main.utils.attentionNotification
 
 class BabyWakeWork(
     appContext: Context,
@@ -12,6 +13,7 @@ class BabyWakeWork(
     private val repository = TamagotchiRepository(appContext)
 
     override suspend fun doWork(): Result {
+
         repository.updateState {
             it.copy(
                 sleeping = false,
@@ -19,6 +21,7 @@ class BabyWakeWork(
                 light = true
             )
         }
+        attentionNotification(applicationContext, "You Tamagotchi has woken up")
 
         return Result.success()
     }
