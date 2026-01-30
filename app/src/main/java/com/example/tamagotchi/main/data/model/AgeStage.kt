@@ -16,7 +16,6 @@ enum class AgeStage(
 ) {
     EGG(
         minimumWeight = 0,
-        //stageLength = Duration.ofMinutes(5),
         stageLength = Duration.ofSeconds(10),
         evolve = ::eggBabyEvolve,
         misbehaviorChances = 0f,
@@ -25,16 +24,13 @@ enum class AgeStage(
     BABY(
         minimumWeight = 5,
         stageLength = Duration.ofMinutes(65),
-        //stageLength = Duration.ofSeconds(10),
         evolve = ::babyChildEvolve,
         misbehaviorChances = 0f,
         mistakesLimit = null
     ),
     CHILD(
         minimumWeight = 10,
-        //stageLength = Duration.ofHours(1),
         stageLength = Duration.ofHours(24),
-        //stageLength = Duration.ofSeconds(10),
         evolve = ::childTeenEvolve,
         misbehaviorChances = 0.125f,
         mistakesLimit = 5
@@ -42,9 +38,7 @@ enum class AgeStage(
     ),
     TEEN(
         minimumWeight = 20,
-        //stageLength = Duration.ofHours(2),
         stageLength = Duration.ofHours(72),
-        //stageLength = Duration.ofSeconds(10),
         evolve = ::teenAdultEvolve,
         misbehaviorChances = 0.175f,
         mistakesLimit = 10

@@ -1,4 +1,4 @@
-package com.example.tamagotchi.minigames
+package com.example.tamagotchi.minigames.ui
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text

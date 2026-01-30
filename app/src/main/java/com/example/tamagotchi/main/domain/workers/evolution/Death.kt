@@ -15,7 +15,5 @@ fun death(context: Context, currentState: TamagotchiState): TamagotchiState {
         ageStage = AgeStage.DEAD,
         weight = AgeStage.DEAD.minimumWeight,
         animations = EvolutionAnimations.DEAD,
-        sick = false,
-        poop = false,
     )
 }

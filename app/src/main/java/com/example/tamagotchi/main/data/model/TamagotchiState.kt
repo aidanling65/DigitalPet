@@ -56,9 +56,9 @@ data class TamagotchiState(
     val currentAnimation : Int
         get() = when{
             sick -> animations.sick ?: animations.idle
-            sleeping && !light && animations.lightsOutSleep != null -> animations.lightsOutSleep
-            sleeping && light && animations.sleep != null -> animations.sleep
-            !sleeping && !light && animations.lightsOutAwake != null -> animations.lightsOutAwake
+            sleeping && !light -> animations.lightsOutSleep
+            sleeping && animations.sleep != null -> animations.sleep
+            !sleeping && !light -> animations.lightsOutAwake
             else -> animations.idle
         }
 }

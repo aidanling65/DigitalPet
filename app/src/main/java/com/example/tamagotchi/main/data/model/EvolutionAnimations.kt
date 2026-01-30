@@ -6,8 +6,8 @@ enum class EvolutionAnimations(
     val idle: Int,
     val eating: Int?,
     val sleep: Int?,
-    val lightsOutSleep: Int?,
-    val lightsOutAwake: Int?,
+    val lightsOutSleep: Int = R.drawable.lights_out_sleep,
+    val lightsOutAwake: Int = R.drawable.lights_out_awake,
     val sick: Int?,
     val play: Int,
 ) {
@@ -15,8 +15,6 @@ enum class EvolutionAnimations(
         idle = R.drawable.egg,
         eating = null,
         sleep = null,
-        lightsOutSleep = null,
-        lightsOutAwake = R.drawable.lights_out_awake,
         sick = null,
         play = R.drawable.egg
     ),
@@ -24,8 +22,6 @@ enum class EvolutionAnimations(
         idle = R.drawable.baby_idle,
         eating = R.drawable.baby_eating,
         sleep = R.drawable.baby_sleep,
-        lightsOutSleep = R.drawable.lights_out_sleep,
-        lightsOutAwake = R.drawable.lights_out_awake,
         sick = R.drawable.baby_sick,
         play = R.drawable.baby_play
     ),
@@ -33,8 +29,6 @@ enum class EvolutionAnimations(
         idle = R.drawable.child_idle,
         eating = R.drawable.child_eating,
         sleep = R.drawable.child_sleep,
-        lightsOutSleep = R.drawable.lights_out_sleep,
-        lightsOutAwake = R.drawable.lights_out_awake,
         sick = R.drawable.child_sick,
         play = R.drawable.child_play
     ),
@@ -42,8 +36,6 @@ enum class EvolutionAnimations(
         idle = R.drawable.teen_1_idle,
         eating = R.drawable.teen_1_eating,
         sleep = R.drawable.teen_1_sleep,
-        lightsOutSleep = R.drawable.lights_out_sleep,
-        lightsOutAwake = R.drawable.lights_out_awake,
         sick = R.drawable.teen_1_sick,
         play = R.drawable.teen_1_play
     ),
@@ -51,8 +43,6 @@ enum class EvolutionAnimations(
         idle = R.drawable.teen_2_idle,
         eating = R.drawable.teen_2_eating,
         sleep = R.drawable.teen_2_sleep,
-        lightsOutSleep = R.drawable.lights_out_sleep,
-        lightsOutAwake = R.drawable.lights_out_awake,
         sick = R.drawable.teen_2_sick,
         play = R.drawable.teen_2_play
     ),
@@ -60,8 +50,6 @@ enum class EvolutionAnimations(
         idle = R.drawable.adult_1_idle,
         eating = R.drawable.adult_1_eating,
         sleep = R.drawable.adult_1_sleep,
-        lightsOutSleep = R.drawable.lights_out_sleep,
-        lightsOutAwake = R.drawable.lights_out_awake,
         sick = R.drawable.adult_1_sick,
         play = R.drawable.adult_1_play
     ),
@@ -69,8 +57,6 @@ enum class EvolutionAnimations(
         idle = R.drawable.adult_2_idle,
         eating = R.drawable.adult_2_eating,
         sleep = R.drawable.adult_2_sleep,
-        lightsOutSleep = R.drawable.lights_out_sleep,
-        lightsOutAwake = R.drawable.lights_out_awake,
         sick = R.drawable.adult_2_sick,
         play = R.drawable.adult_2_play
     ),
@@ -78,8 +64,6 @@ enum class EvolutionAnimations(
         idle = R.drawable.adult_3_idle,
         eating = R.drawable.adult_3_eating,
         sleep = R.drawable.adult_3_sleep,
-        lightsOutSleep = R.drawable.lights_out_sleep,
-        lightsOutAwake = R.drawable.lights_out_awake,
         sick = R.drawable.adult_3_sick,
         play = R.drawable.adult_3_play
     ),
@@ -96,8 +80,6 @@ enum class EvolutionAnimations(
         idle = R.drawable.adult_5_idle,
         eating = R.drawable.adult_5_eating,
         sleep = R.drawable.adult_5_sleep,
-        lightsOutSleep = R.drawable.lights_out_sleep,
-        lightsOutAwake = R.drawable.lights_out_awake,
         sick = R.drawable.adult_5_sick,
         play = R.drawable.adult_5_play
     ),
@@ -105,8 +87,6 @@ enum class EvolutionAnimations(
         idle = R.drawable.adult_6_idle,
         eating = R.drawable.adult_6_eating,
         sleep = R.drawable.adult_6_sleep,
-        lightsOutSleep = R.drawable.lights_out_sleep,
-        lightsOutAwake = R.drawable.lights_out_awake,
         sick = R.drawable.adult_6_sick,
         play = R.drawable.adult_6_play
     ),
@@ -114,8 +94,6 @@ enum class EvolutionAnimations(
         idle = R.drawable.dead,
         eating = null,
         sleep = null,
-        lightsOutSleep = null,
-        lightsOutAwake = null,
         sick = null,
         play = R.drawable.dead
     );

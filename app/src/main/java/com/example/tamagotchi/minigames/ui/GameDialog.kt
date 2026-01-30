@@ -1,4 +1,4 @@
-package com.example.tamagotchi.minigames
+package com.example.tamagotchi.minigames.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.GameViewModel
+import com.example.tamagotchi.minigames.FlappyGameCanvas
+import com.example.tamagotchi.minigames.JumpGameCanvas
 import kotlin.random.Random
 
 @Composable
@@ -34,12 +36,12 @@ fun GameDialog(
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxWidth(0.95f)
-            .fillMaxHeight(0.9f)
+            .fillMaxHeight(0.95f)
             .clip(RoundedCornerShape(10))
             .background(MaterialTheme.colorScheme.background)
     ) {
-        when (randomGame.value) {
-            0 -> JumpGameCanvas(tamagotchiState, gameViewModel){restart()}
+        when (randomGame.intValue) {
+            0 -> JumpGameCanvas(tamagotchiState, gameViewModel) { restart() }
             1 -> FlappyGameCanvas(tamagotchiState, gameViewModel) { restart() }
         }
     }

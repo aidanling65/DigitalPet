@@ -12,7 +12,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.tamagotchi.main.ui.GameViewModel
 import com.example.tamagotchi.main.ui.components.dialogs.startup.StartupDialog
 import com.example.tamagotchi.main.ui.components.manual.Manual
-import com.example.tamagotchi.minigames.GameDialog
+import com.example.tamagotchi.minigames.ui.GameDialog
 import com.example.tamagotchi.sudoku.ui.components.SudokuDialog
 
 @Composable

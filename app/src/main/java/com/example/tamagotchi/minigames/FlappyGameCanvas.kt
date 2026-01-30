@@ -1,18 +1,6 @@
 package com.example.tamagotchi.minigames
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,22 +10,17 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.dp
-import com.example.tamagotchi.R
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.GameViewModel
 import com.example.tamagotchi.main.utils.animation.getAnimationFrames
+import com.example.tamagotchi.minigames.ui.MinigameBase
 import kotlinx.coroutines.delay
 
 @Composable
@@ -167,7 +150,7 @@ fun FlappyGameCanvas(
             player.y = canvasSize.value.height / 2 - player.height
             obstacle.x = canvasSize.value.width
             obstacle2.x = canvasSize.value.width
-            player.height = canvasSize.value.height /7f
+            player.height = canvasSize.value.height / 6f
             player.width = player.height * playerBitmap.width / playerBitmap.height
             gapSize = player.height * 3f
             while (countdown > 0) {
@@ -180,59 +163,48 @@ fun FlappyGameCanvas(
         }
     }
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text("Flappagotchi", style=MaterialTheme.typography.titleLarge, color = colorResource(R.color.gold))
-        ScoreBoard(score, isGameStarted && !isGameOver)
-        Box(
-            Modifier
-                .clip(RoundedCornerShape(10))
-                .border(2.dp, colorResource(R.color.black), RoundedCornerShape(10))
-                .background(colorResource(R.color.lcd))
-                .fillMaxWidth(0.9f)
-                .aspectRatio(1f)
-        ) {
-            Canvas(modifier = Modifier.matchParentSize()) {
-                frame.let {
-                    if (canvasSize.value.width == 0f) {
-                        canvasSize.value = size
-                    }
-                    obstacle.height = (canvasSize.value.height / 2) + obstacleHeightOffset
-                    obstacle2.y = obstacle.bottom + gapSize
-                    obstacle2.height = canvasSize.value.height - obstacle2.y
-                    if (!isGameOverScreen) {
-                        if (isGameStarted) {
-                            drawRect(
-                                Color(0xFF000000),
-                                topLeft = Offset(obstacle.x, obstacle.y),
-                                size = Size(obstacle.width, obstacle.height)
-                            )
-                            drawRect(
-                                Color(0xFF000000),
-                                topLeft = Offset(obstacle2.x, obstacle2.y),
-                                size = Size(obstacle2.width, obstacle2.height)
-                            )
-                        }
-
-                        drawImage(
-                            image = playerAnimationFrames[currentFrame],
-                            srcOffset = IntOffset.Zero,
-                            srcSize = IntSize(playerBitmap.width, playerBitmap.height),
-                            dstOffset = IntOffset(player.x.toInt(), player.y.toInt()),
-                            dstSize = IntSize(player.width.toInt(), player.height.toInt()),
-                            filterQuality = FilterQuality.None
+    MinigameBase(
+        title = "Flappagotchi",
+        score = score,
+        isGameStarted,
+        isGameOver,
+        isGameOverScreen,
+        countdown,
+        { resetGame() },
+        { player.yVelocity = -17f}
+    ) {modifier ->
+        Canvas(modifier = modifier) {
+            frame.let {
+                if (canvasSize.value.width == 0f) {
+                    canvasSize.value = size
+                }
+                obstacle.height = (canvasSize.value.height / 2) + obstacleHeightOffset
+                obstacle2.y = obstacle.bottom + gapSize
+                obstacle2.height = canvasSize.value.height - obstacle2.y
+                if (!isGameOverScreen) {
+                    if (isGameStarted) {
+                        drawRect(
+                            Color(0xFF000000),
+                            topLeft = Offset(obstacle.x, obstacle.y),
+                            size = Size(obstacle.width, obstacle.height)
+                        )
+                        drawRect(
+                            Color(0xFF000000),
+                            topLeft = Offset(obstacle2.x, obstacle2.y),
+                            size = Size(obstacle2.width, obstacle2.height)
                         )
                     }
+
+                    drawImage(
+                        image = playerAnimationFrames[currentFrame],
+                        srcOffset = IntOffset.Zero,
+                        srcSize = IntSize(playerBitmap.width, playerBitmap.height),
+                        dstOffset = IntOffset(player.x.toInt(), player.y.toInt()),
+                        dstSize = IntSize(player.width.toInt(), player.height.toInt()),
+                        filterQuality = FilterQuality.None
+                    )
                 }
-            }
-            Box(modifier = Modifier.matchParentSize(), contentAlignment = Alignment.Center) {
-                GameOverScreen(isGameOverScreen, score)
-                Countdown(isGameStarted, countdown)
             }
         }
     }
-    Spacer(modifier = Modifier.height(16.dp))
-    GameButtons(isGameOverScreen, isGameStarted, { resetGame() }, { player.yVelocity = -17f })
 }
