@@ -1,8 +1,8 @@
-package com.example.tamagotchi.sudoku.ui
+package com.example.tamagotchi.intelligence.sudoku.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tamagotchi.sudoku.domain.SudokuGame
+import com.example.tamagotchi.intelligence.sudoku.domain.SudokuGame
 import kotlinx.coroutines.launch
 
 class SudokuViewModel : ViewModel() {

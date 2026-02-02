@@ -1,4 +1,4 @@
-package com.example.tamagotchi.sudoku.ui.components
+package com.example.tamagotchi.intelligence.sudoku.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -18,15 +19,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.tamagotchi.R
+import com.example.tamagotchi.intelligence.sudoku.ui.SudokuBoardView
+import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModel
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
-import com.example.tamagotchi.theme.TamagotchiTheme
-import com.example.tamagotchi.sudoku.ui.SudokuBoardView
-import com.example.tamagotchi.sudoku.ui.SudokuViewModel
 
 @Composable
 fun SudokuScreen(
@@ -51,10 +50,16 @@ fun SudokuScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            Text(
+                "Tamagoku",
+                style = MaterialTheme.typography.titleLarge,
+                color = colorResource(R.color.gold)
+            )
             Spacer(Modifier.weight(0.05f))
-            TamagotchiDisplay(tamagotchiState, modifier = Modifier
-                .fillMaxWidth(0.4f)
-                .aspectRatio(1f)
+            TamagotchiDisplay(
+                tamagotchiState, modifier = Modifier
+                    .fillMaxWidth(0.4f)
+                    .aspectRatio(1f)
             )
             Spacer(Modifier.weight(0.05f))
             AndroidView(
@@ -87,17 +92,4 @@ fun SudokuScreen(
             Spacer(Modifier.weight(0.05f))
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SudokuScreenPreview() {
-    TamagotchiTheme {
-        SudokuScreen(
-            viewModel = SudokuViewModel(),
-            tamagotchiState = TamagotchiState(),
-            onCellTouched = { _, _ -> }
-        )
-    }
-
 }

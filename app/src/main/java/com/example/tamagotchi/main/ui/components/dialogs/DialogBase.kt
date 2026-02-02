@@ -24,6 +24,7 @@ import kotlinx.coroutines.delay
 fun DialogBase(
     visible: Boolean,
     onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier,
     properties: DialogProperties = DialogProperties(
         dismissOnBackPress = true,
         dismissOnClickOutside = false,
@@ -50,7 +51,7 @@ fun DialogBase(
     if(visible || animationVisible) {
         Dialog(
             onDismissRequest = {animationVisible = false},
-            properties = properties
+            properties = properties,
         ) {
             AnimatedVisibility(
                 visible = animationVisible,
@@ -69,7 +70,7 @@ fun DialogBase(
                     targetOffsetY = { fullHeight -> -2 * fullHeight }
                 )
             ) {
-                Box(modifier= Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Box(modifier= modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     content() {
                         animationVisible = false
                     }

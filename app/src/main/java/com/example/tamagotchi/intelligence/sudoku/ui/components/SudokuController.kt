@@ -1,4 +1,4 @@
-package com.example.tamagotchi.sudoku.ui.components
+package com.example.tamagotchi.intelligence.sudoku.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.theme.TamagotchiTheme
-import com.example.tamagotchi.sudoku.ui.SudokuViewModel
+import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModel
 
 @Composable
 fun SudokuController(

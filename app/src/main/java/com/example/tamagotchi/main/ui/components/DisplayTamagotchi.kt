@@ -108,7 +108,7 @@ fun TamagotchiDisplay(
                 )
             ) {
                 val poopOffsetX = maxWidth * 0.65f
-                val poopOffsetY = maxHeight * 0.65f
+                val poopOffsetY = maxHeight * 0.64f
                 val bitmap = ImageBitmap.imageResource(R.drawable.poop)
                 Image(
                     bitmap = bitmap,

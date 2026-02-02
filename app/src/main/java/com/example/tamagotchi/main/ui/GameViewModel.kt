@@ -13,13 +13,14 @@ import com.example.tamagotchi.main.domain.logic.GameLogicManager
 import com.example.tamagotchi.main.domain.workers.utils.scheduleEvolutionWork
 import com.example.tamagotchi.step_tracker.repository.StepDatabase
 import com.example.tamagotchi.step_tracker.repository.StepRepository
-import com.example.tamagotchi.sudoku.ui.SudokuViewModel
+import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalTime
+import kotlin.random.Random
 
 class GameViewModel(
     private val context: Context,
@@ -38,6 +39,12 @@ class GameViewModel(
 
     private val _showSudoku = MutableStateFlow(false)
     val showSudoku: StateFlow<Boolean> = _showSudoku.asStateFlow()
+
+    private val _showNonogram = MutableStateFlow(false)
+    val showNonogram: StateFlow<Boolean> = _showNonogram.asStateFlow()
+
+    private val _showWinScreen = MutableStateFlow(false)
+    val showWinScreen: StateFlow<Boolean> = _showWinScreen.asStateFlow()
 
     private val _showManual = MutableStateFlow(false)
     val showManual: StateFlow<Boolean> = _showManual.asStateFlow()
@@ -123,17 +130,35 @@ class GameViewModel(
         _showGame.value = false
     }
 
-    fun launchSudoku() {
+    private fun launchNonogram(){
+        _showNonogram.value = true
+    }
+
+    private fun launchSudoku() {
         sudokuViewModel.sudokuGame.fetchNewSudoku()
         _showSudoku.value = true
     }
 
-    fun onDismissSudoku() {
+    fun onLaunchIntelligence(){
+        val gameChoice = Random.nextInt(0, 2)
+        when(gameChoice){
+            0 -> launchSudoku()
+            1 -> launchNonogram()
+        }
+    }
+
+    fun showWinScreen(){
+        _showWinScreen.value = true
+    }
+
+    fun onDismissIntelligence() {
+        Log.d("GameViewModel", "Dismissing intelligence")
         _showSudoku.value = false
+        _showNonogram.value = false
+        _showWinScreen.value = false
     }
 
     fun learning() {
-        _showSudoku.value = false
         updateAndSave { gameLogicManager.learning(it) }
     }
 

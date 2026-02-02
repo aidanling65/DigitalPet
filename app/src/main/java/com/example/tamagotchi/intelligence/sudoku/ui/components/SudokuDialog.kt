@@ -1,33 +1,36 @@
-package com.example.tamagotchi.sudoku.ui.components
+package com.example.tamagotchi.intelligence.sudoku.ui.components
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
+import com.example.tamagotchi.intelligence.PuzzleWinDialog
 import com.example.tamagotchi.main.data.model.TamagotchiState
-import com.example.tamagotchi.sudoku.ui.SudokuViewModel
+import com.example.tamagotchi.main.ui.GameViewModel
 
 @Composable
 fun SudokuDialog(
-    viewModel: SudokuViewModel,
     tamagotchiState: TamagotchiState,
+    gameViewModel: GameViewModel,
     onGameWon: () -> Unit
 ) {
+    val viewModel = gameViewModel.sudokuViewModel
     val isGameWon by viewModel.sudokuGame.gameWonLiveData.observeAsState(initial = false)
-    val context = LocalContext.current
+    val showWin by gameViewModel.showWinScreen.collectAsState()
 
-    LaunchedEffect(isGameWon) {
-        if (isGameWon) {
-            Toast.makeText(context, "Congratulations! You solved it!", Toast.LENGTH_SHORT).show()
+    if (isGameWon) {
+        gameViewModel.showWinScreen()
+        PuzzleWinDialog(
+            showWin,
+            "Congratulations!\nYou solved the Sudoku!",
+            tamagotchiState
+        ) {
             onGameWon()
         }
     }
@@ -43,13 +46,4 @@ fun SudokuDialog(
             onCellTouched = { row, col -> viewModel.sudokuGame.updateSelectedCell(row, col) }
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SudokuPreview() {
-    SudokuDialog(
-        viewModel = SudokuViewModel(),
-        tamagotchiState = TamagotchiState(), {},
-    )
 }

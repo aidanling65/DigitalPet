@@ -23,7 +23,9 @@ fun BottomBar(gameViewModel: GameViewModel) {
     BottomAppBar(
         containerColor = MaterialTheme.colorScheme.surface,
         contentPadding = PaddingValues(bottom = 8.dp, top = 4.dp),
-        modifier = Modifier.height(64.dp).shadow(4.dp),
+        modifier = Modifier
+            .height(64.dp)
+            .shadow(4.dp),
         actions = {
             Row(
                 modifier = Modifier
@@ -38,16 +40,8 @@ fun BottomBar(gameViewModel: GameViewModel) {
                     Triple(R.drawable.clean, { gameViewModel.clean() }, R.string.clean),
                     Triple(R.drawable.heal, { gameViewModel.heal() }, R.string.heal),
                     Triple(R.drawable.play, { gameViewModel.play() }, R.string.play),
-                    Triple(
-                        R.drawable.intelligence,
-                        { gameViewModel.launchSudoku() },
-                        R.string.learning
-                    ),
-                    Triple(
-                        R.drawable.discipline,
-                        { gameViewModel.discipline() },
-                        R.string.discipline
-                    )
+                    Triple(R.drawable.intelligence, { gameViewModel.onLaunchIntelligence() }, R.string.learning),
+                    Triple(R.drawable.discipline, { gameViewModel.discipline() }, R.string.discipline)
                 ).forEach { (icon, onClick, desc) ->
                     BarButton(
                         painterId = icon,

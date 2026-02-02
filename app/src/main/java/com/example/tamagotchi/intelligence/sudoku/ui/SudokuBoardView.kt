@@ -1,4 +1,4 @@
-package com.example.tamagotchi.sudoku.ui
+package com.example.tamagotchi.intelligence.sudoku.ui
 
 import android.content.Context
 import android.graphics.Canvas
@@ -9,7 +9,7 @@ import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import com.example.tamagotchi.sudoku.domain.Cell
+import com.example.tamagotchi.intelligence.sudoku.domain.Cell
 import kotlin.math.min
 import androidx.core.graphics.toColorInt
 

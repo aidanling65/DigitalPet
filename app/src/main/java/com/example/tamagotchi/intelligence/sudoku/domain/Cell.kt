@@ -1,4 +1,4 @@
-package com.example.tamagotchi.sudoku.domain
+package com.example.tamagotchi.intelligence.sudoku.domain
 
 data class Cell(
     val row: Int,

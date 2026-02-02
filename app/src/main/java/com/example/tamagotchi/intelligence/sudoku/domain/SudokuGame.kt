@@ -1,4 +1,4 @@
-package com.example.tamagotchi.sudoku.domain
+package com.example.tamagotchi.intelligence.sudoku.domain
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -92,7 +92,6 @@ class SudokuGame {
         checkWin()
         _cellsFlow.value = board.cells
     }
-
 
     fun updateSelectedCell(row: Int, col: Int) {
         val cell = board.getCell(row, col)

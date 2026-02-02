@@ -1,4 +1,4 @@
-package com.example.tamagotchi.sudoku.domain
+package com.example.tamagotchi.intelligence.sudoku.domain
 
 import kotlin.random.Random
 
