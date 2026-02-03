@@ -61,16 +61,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    override fun onResume(){
-        super.onResume()
-        cancelNotifications(applicationContext)
-    }
-
-    override fun onStop(){
-        super.onStop()
-        cancelNotifications(applicationContext)
-    }
-
     override fun onRestart(){
         super.onRestart()
         createSingleWorker<StepCounterWorker>(
@@ -80,4 +70,16 @@ class MainActivity : ComponentActivity() {
             ExistingWorkPolicy.REPLACE
         )
     }
+
+    override fun onResume(){
+        super.onResume()
+        cancelNotifications(applicationContext)
+    }
+
+
+    override fun onStop(){
+        super.onStop()
+        cancelNotifications(applicationContext)
+    }
+
 }

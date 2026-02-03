@@ -37,12 +37,14 @@ fun Dialogs(gameViewModel: GameViewModel) {
             gameViewModel.onDismissStartup()
         }
     }
-    Box(Modifier
-        .fillMaxSize()
-        .background(Color.Transparent)) {
+    Box(
+        Modifier
+            .fillMaxSize()
+            .background(Color.Transparent)
+    ) {
         DialogBase(
             showStartup, onDismissRequest = { startupDismiss() },
-            properties=DialogProperties(
+            properties = DialogProperties(
                 dismissOnBackPress = !tamagotchiState.initial,
                 dismissOnClickOutside = false,
                 usePlatformDefaultWidth = false
@@ -72,7 +74,7 @@ fun Dialogs(gameViewModel: GameViewModel) {
         }
         DialogBase(
             showGame, onDismissRequest = { gameViewModel.onDismissGame() },
-            properties=DialogProperties(
+            properties = DialogProperties(
                 dismissOnBackPress = true,
                 dismissOnClickOutside = false,
                 usePlatformDefaultWidth = false
@@ -84,7 +86,8 @@ fun Dialogs(gameViewModel: GameViewModel) {
             )
         }
 
-        val puzzleModifier = if(showWinScreen) Modifier.shadow(5.dp, shape = RoundedCornerShape(10)) else Modifier
+        val puzzleModifier =
+            if (showWinScreen) Modifier.shadow(5.dp, shape = RoundedCornerShape(10)) else Modifier
         DialogBase(
             showSudoku,
             modifier = puzzleModifier,
@@ -105,7 +108,11 @@ fun Dialogs(gameViewModel: GameViewModel) {
             onDismissRequest = { gameViewModel.onDismissIntelligence() }) { onDismissRequest ->
             NonogramDialog(
                 tamagotchiState,
-                gameViewModel,
+                showWinScreen,
+                {
+                    gameViewModel.learning()
+                    gameViewModel.showWinScreen()
+                },
                 onDismissRequest
             )
         }

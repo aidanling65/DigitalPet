@@ -2,6 +2,7 @@ package com.example.tamagotchi.intelligence.nonogram
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import kotlin.random.Random
 
 data class NonogramBoard(
     val correctCells: List<List<Boolean>>,
@@ -11,12 +12,13 @@ data class NonogramBoard(
     val height: Int,
     var won: MutableState<Boolean> = mutableStateOf(false)
 ) {
-    constructor(gridLayout: String) : this(
-        correctCells = gridLayout.lines().map { row -> row.map { it == '#' } },
-        playerCells = gridLayout.lines().map { row -> row.map { mutableStateOf(false) } },
-        blockedCells = gridLayout.lines().map { row -> row.map { mutableStateOf(false) } },
-        width = gridLayout.lines()[0].length,
-        height = gridLayout.lines().size,
+    constructor(height:Int, width:Int):this(
+        correctCells = List(height) { List(width) { Random.nextBoolean() } },
+        playerCells = List(height) { List(width) { mutableStateOf(false) } },
+        blockedCells = List(height) { List(width) { mutableStateOf(false) } },
+        width = width,
+        height = height,
+
     )
 
     private fun checkWon(){
