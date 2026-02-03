@@ -1,5 +1,6 @@
 package com.example.tamagotchi.main.data.model
 
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 const val MAX_HUNGER = 4
@@ -51,6 +52,8 @@ data class TamagotchiState(
     val weight: Int = ageStage.minimumWeight,
 
     val hasEvolved: Boolean = false,
+    val lastEvolve: LocalDateTime = LocalDateTime.now(),
+
     val paused: Boolean = false,
 ){
     val currentAnimation : Int

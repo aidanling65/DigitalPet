@@ -18,14 +18,12 @@ class BabyHungerHappinessWork(
     private val repository = TamagotchiRepository(appContext)
 
     override suspend fun doWork(): Result {
-        val currentState = repository.getState()
 
-        if (currentState.ageStage != AgeStage.BABY) {
-            return Result.success()
-        }
-
-        if (!currentState.sleeping) {
-            repository.updateState { currentState ->
+        repository.updateState { currentState ->
+            if (currentState.ageStage != AgeStage.BABY) {
+                currentState
+            }
+            if (!currentState.sleeping) {
                 val updatedState = currentState.copy(
                     hunger = if (currentState.hunger > 0) currentState.hunger - 1 else currentState.hunger,
                     happiness = if (currentState.happiness > 0) currentState.happiness - 1 else currentState.happiness
@@ -37,7 +35,7 @@ class BabyHungerHappinessWork(
                     attentionNotification(applicationContext, "You Tamagotchi is sad!")
                 }
                 updatedState
-            }
+            } else currentState
         }
         createSingleWorker<BabyHungerHappinessWork>(
             applicationContext,

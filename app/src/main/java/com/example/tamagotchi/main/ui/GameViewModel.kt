@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
+import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModel
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.MAX_FITNESS
 import com.example.tamagotchi.main.data.model.TamagotchiState
@@ -13,7 +14,6 @@ import com.example.tamagotchi.main.domain.logic.GameLogicManager
 import com.example.tamagotchi.main.domain.workers.utils.scheduleEvolutionWork
 import com.example.tamagotchi.step_tracker.repository.StepDatabase
 import com.example.tamagotchi.step_tracker.repository.StepRepository
-import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -62,11 +62,10 @@ class GameViewModel(
 
     init {
         viewModelScope.launch {
-            val initialState = repository.getState()
-            if (initialState.initial) {
-                _showStartup.value = true
-            }
             repository.tamagotchiStateFlow.collect { state ->
+                if(state.initial){
+                    _showStartup.value = true
+                }
                 _tamagotchiState.value = state.copy(loading=false)
             }
         }
@@ -193,6 +192,7 @@ class GameViewModel(
 
     fun onStartupOpen() {
         _showStartup.value = true
+        _showResetDialog.value = false
     }
 
     fun onDismissStartup() {
@@ -224,13 +224,11 @@ class GameViewModel(
         _showResetDialog.value = false
     }
 
-
     fun confirmReset() {
         _showStartup.value = true
         updateAndSave {
             TamagotchiState()
         }
-        onDismissResetDialog()
         WorkManager.getInstance(context).cancelAllWork()
     }
 
@@ -249,7 +247,6 @@ class GameViewModel(
     fun updateWakeTime(wakeTime: LocalTime) {
         updateAndSave { it.copy(wakeTime = wakeTime) }
     }
-
     fun setupNewGame() {
         _showStartup.value = false
         _showResetDialog.value = false

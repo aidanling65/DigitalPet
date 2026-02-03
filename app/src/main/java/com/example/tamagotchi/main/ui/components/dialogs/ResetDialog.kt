@@ -65,7 +65,10 @@ fun ResetDialog(
                     )
                 }
                 TextButton(
-                    onClick = { onConfirmation() },
+                    onClick = {
+                        onConfirmation()
+                        onDismissRequest()
+                              },
                     modifier = Modifier.padding(8.dp),
                 ) {
                     Text(

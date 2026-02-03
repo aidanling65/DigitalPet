@@ -69,6 +69,8 @@ class MainActivity : ComponentActivity() {
             "step_worker_temp",
             ExistingWorkPolicy.REPLACE
         )
+
+        //gameViewModel.checkEvolve()
     }
 
     override fun onResume(){

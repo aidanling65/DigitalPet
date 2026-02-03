@@ -14,7 +14,9 @@ import com.example.tamagotchi.main.data.model.TamagotchiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 val Context.dataStore by preferencesDataStore(name = "tamagotchi_prefs")
 
@@ -49,6 +51,7 @@ class TamagotchiRepository (private val context: Context) {
     private val PHYSICAL_MISTAKES = intPreferencesKey("physical_mistakes")
     private val MISTAKES = intPreferencesKey("mistakes")
     private val HAS_EVOLVED = booleanPreferencesKey("has_evolved")
+    private val LAST_EVOLVE = stringPreferencesKey("last_evolve")
     private val PAUSED = booleanPreferencesKey("paused")
 
     private val BED_TIME = stringPreferencesKey("bed_time")
@@ -84,6 +87,8 @@ class TamagotchiRepository (private val context: Context) {
                 animations = EvolutionAnimations.valueOf(
                     prefs[ANIMATIONS] ?: defaultState.animations.name
                 ),
+                lastEvolve = LocalDateTime.parse(prefs[LAST_EVOLVE],
+                    DateTimeFormatter.ISO_LOCAL_DATE_TIME),
                 hasEvolved = prefs[HAS_EVOLVED] ?: defaultState.hasEvolved,
                 paused = prefs[PAUSED] ?: defaultState.paused,
                 bedTime = LocalTime.parse(prefs[BED_TIME] ?: defaultState.bedTime.toString()),
@@ -135,13 +140,10 @@ class TamagotchiRepository (private val context: Context) {
         updated[MISTAKES] = current.mistakes
         updated[AGE_STAGE] = current.ageStage.name
         updated[ANIMATIONS] = current.animations.name
+        updated[LAST_EVOLVE] = current.lastEvolve.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
         updated[HAS_EVOLVED] = current.hasEvolved
         updated[PAUSED] = current.paused
         updated[BED_TIME] = current.bedTime.toString()
         updated[WAKE_TIME] = current.wakeTime.toString()
-    }
-
-    suspend fun getState(): TamagotchiState {
-        return tamagotchiStateFlow.first()
     }
 }
