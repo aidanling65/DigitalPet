@@ -3,8 +3,8 @@ package com.example.tamagotchi.main.data.repository
 import android.content.Context
 import android.util.Log
 import androidx.datastore.preferences.core.MutablePreferences
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -12,7 +12,6 @@ import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.EvolutionAnimations
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -20,7 +19,7 @@ import java.time.format.DateTimeFormatter
 
 val Context.dataStore by preferencesDataStore(name = "tamagotchi_prefs")
 
-class TamagotchiRepository (private val context: Context) {
+class TamagotchiRepository(private val context: Context) {
 
     private val INITIAL = booleanPreferencesKey("initial")
     private val AGE = intPreferencesKey("age")
@@ -57,57 +56,65 @@ class TamagotchiRepository (private val context: Context) {
     private val BED_TIME = stringPreferencesKey("bed_time")
     private val WAKE_TIME = stringPreferencesKey("wake_time")
 
+    private fun stateFromPrefs(prefs: Preferences): TamagotchiState {
+        val defaultState = TamagotchiState()
+        return TamagotchiState(
+            initial = prefs[INITIAL] ?: defaultState.initial,
+            age = prefs[AGE] ?: defaultState.age,
+            weight = prefs[WEIGHT] ?: defaultState.weight,
+            hunger = prefs[HUNGER] ?: defaultState.hunger,
+            happiness = prefs[HAPPINESS] ?: defaultState.happiness,
+            steps = prefs[STEPS] ?: defaultState.steps,
+            resetSteps = prefs[RESET_STEPS] ?: defaultState.resetSteps,
+            dailyStepBaseline = prefs[DAILY_STEP_BASELINE] ?: defaultState.dailyStepBaseline,
+            fitness = prefs[FITNESS] ?: defaultState.fitness,
+            stepGoal = prefs[STEP_GOAL] ?: defaultState.stepGoal,
+            discipline = prefs[DISCIPLINE] ?: defaultState.discipline,
+            intelligence = prefs[INTELLIGENCE] ?: defaultState.intelligence,
+            light = prefs[LIGHT] ?: defaultState.light,
+            medicineTaken = prefs[MEDICINE_TAKEN] ?: defaultState.medicineTaken,
+            sick = prefs[SICK] ?: defaultState.sick,
+            lightAnimationState = prefs[LIGHT_STATE] ?: defaultState.lightAnimationState,
+            poop = prefs[POOP] ?: defaultState.poop,
+            misbehaving = prefs[MISBEHAVING] ?: defaultState.misbehaving,
+            sleeping = prefs[SLEEPING] ?: defaultState.sleeping,
+            mentalMistakes = prefs[MENTAL_MISTAKES] ?: defaultState.mentalMistakes,
+            physicalMistakes = prefs[PHYSICAL_MISTAKES] ?: defaultState.physicalMistakes,
+            mistakes = prefs[MISTAKES] ?: defaultState.mistakes,
+            ageStage = AgeStage.valueOf(prefs[AGE_STAGE] ?: defaultState.ageStage.name),
+            animations = EvolutionAnimations.valueOf(
+                prefs[ANIMATIONS] ?: defaultState.animations.name
+            ),
+            lastEvolve = LocalDateTime.parse(
+                prefs[LAST_EVOLVE]
+                    ?: defaultState.lastEvolve.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                DateTimeFormatter.ISO_LOCAL_DATE_TIME
+            ),
+            hasEvolved = prefs[HAS_EVOLVED] ?: defaultState.hasEvolved,
+            paused = prefs[PAUSED] ?: defaultState.paused,
+            bedTime = LocalTime.parse(prefs[BED_TIME] ?: defaultState.bedTime.toString()),
+            wakeTime = LocalTime.parse(prefs[WAKE_TIME] ?: defaultState.wakeTime.toString())
+        )
+    }
+
     val tamagotchiStateFlow: Flow<TamagotchiState> = context.dataStore.data
         .map { prefs ->
-            val defaultState = TamagotchiState()
-            TamagotchiState(
-                initial = prefs[INITIAL] ?: defaultState.initial,
-                age = prefs[AGE] ?: defaultState.age,
-                weight = prefs[WEIGHT] ?: defaultState.weight,
-                hunger = prefs[HUNGER] ?: defaultState.hunger,
-                happiness = prefs[HAPPINESS] ?: defaultState.happiness,
-                steps = prefs[STEPS] ?: defaultState.steps,
-                resetSteps = prefs[RESET_STEPS] ?: defaultState.resetSteps,
-                dailyStepBaseline = prefs[DAILY_STEP_BASELINE] ?: defaultState.dailyStepBaseline,
-                fitness = prefs[FITNESS] ?: defaultState.fitness,
-                stepGoal = prefs[STEP_GOAL] ?: defaultState.stepGoal,
-                discipline = prefs[DISCIPLINE] ?: defaultState.discipline,
-                intelligence = prefs[INTELLIGENCE] ?: defaultState.intelligence,
-                light = prefs[LIGHT] ?: defaultState.light,
-                medicineTaken = prefs[MEDICINE_TAKEN] ?: defaultState.medicineTaken,
-                sick = prefs[SICK] ?: defaultState.sick,
-                lightAnimationState = prefs[LIGHT_STATE] ?: defaultState.lightAnimationState,
-                poop = prefs[POOP] ?: defaultState.poop,
-                misbehaving = prefs[MISBEHAVING] ?: defaultState.misbehaving,
-                sleeping = prefs[SLEEPING] ?: defaultState.sleeping,
-                mentalMistakes = prefs[MENTAL_MISTAKES] ?: defaultState.mentalMistakes,
-                physicalMistakes = prefs[PHYSICAL_MISTAKES] ?: defaultState.physicalMistakes,
-                mistakes = prefs[MISTAKES] ?: defaultState.mistakes,
-                ageStage = AgeStage.valueOf(prefs[AGE_STAGE] ?: defaultState.ageStage.name),
-                animations = EvolutionAnimations.valueOf(
-                    prefs[ANIMATIONS] ?: defaultState.animations.name
-                ),
-                lastEvolve = LocalDateTime.parse(prefs[LAST_EVOLVE],
-                    DateTimeFormatter.ISO_LOCAL_DATE_TIME),
-                hasEvolved = prefs[HAS_EVOLVED] ?: defaultState.hasEvolved,
-                paused = prefs[PAUSED] ?: defaultState.paused,
-                bedTime = LocalTime.parse(prefs[BED_TIME] ?: defaultState.bedTime.toString()),
-                wakeTime = LocalTime.parse(prefs[WAKE_TIME] ?: defaultState.wakeTime.toString())
-            )
-
+            stateFromPrefs(prefs)
         }
 
-    suspend fun updateState(transform: (currentState: TamagotchiState) -> TamagotchiState) : TamagotchiState{
-        var newState: TamagotchiState? = null
+    suspend fun updateState(transform: (currentState: TamagotchiState) -> TamagotchiState): TamagotchiState {
         Log.d("Repository", "Updating state")
-        context.dataStore.edit {
-            val currentState = tamagotchiStateFlow.first()
-            val transformedState = transform(currentState)
-            saveStateInternal(transformedState, it)
-            newState = transformedState
+        val updatedPrefs = context.dataStore.updateData {prefs->
+            val current = stateFromPrefs(prefs)
+
+            val transformed = transform(current)
+            val updatedPrefs = prefs.toMutablePreferences()
+            saveStateInternal(transformed, updatedPrefs)
+
+            updatedPrefs
         }
 
-        return newState !!
+        return stateFromPrefs(updatedPrefs)
     }
 
     private fun saveStateInternal(current: TamagotchiState, updated: MutablePreferences) {

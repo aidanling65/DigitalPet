@@ -1,9 +1,10 @@
 package com.example.tamagotchi.main.ui
 
-import android.content.Context
+import android.app.Application
 import android.util.Log
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkManager
 import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModel
 import com.example.tamagotchi.main.data.model.AgeStage
@@ -11,6 +12,8 @@ import com.example.tamagotchi.main.data.model.MAX_FITNESS
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
 import com.example.tamagotchi.main.domain.logic.GameLogicManager
+import com.example.tamagotchi.main.domain.workers.evolution.EvolutionWork
+import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
 import com.example.tamagotchi.main.domain.workers.utils.scheduleEvolutionWork
 import com.example.tamagotchi.step_tracker.repository.StepDatabase
 import com.example.tamagotchi.step_tracker.repository.StepRepository
@@ -19,15 +22,17 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.time.Duration
+import java.time.LocalDateTime
 import java.time.LocalTime
 import kotlin.random.Random
 
 class GameViewModel(
-    private val context: Context,
+    application: Application,
     val sudokuViewModel: SudokuViewModel,
     val repository: TamagotchiRepository
-) :
-    ViewModel() {
+) : AndroidViewModel(application) {
+
     private val _tamagotchiState = MutableStateFlow(TamagotchiState())
     val tamagotchiState: StateFlow<TamagotchiState> = _tamagotchiState.asStateFlow()
 
@@ -57,7 +62,7 @@ class GameViewModel(
 
 
     private val gameLogicManager = GameLogicManager()
-    private val stepDb = StepDatabase.getDatabase(context)
+    private val stepDb = StepDatabase.getDatabase(getApplication())
     private val stepRepository = StepRepository(stepDb.stepsDao())
 
     init {
@@ -208,6 +213,22 @@ class GameViewModel(
         _showManual.value = false
     }
 
+    fun checkEvolve() {
+        if(tamagotchiState.value.ageStage.stageLength == null){
+            return
+        }
+
+        val currentTime = LocalDateTime.now()
+        if (Duration.between(currentTime, tamagotchiState.value.lastEvolve) >= tamagotchiState.value.ageStage.stageLength) {
+            createSingleWorker<EvolutionWork>(
+                getApplication(),
+                Duration.ZERO,
+                "evolve",
+                ExistingWorkPolicy.REPLACE
+            )
+        }
+    }
+
     fun onDismissEvolution() {
         updateAndSave { it -> it.copy(hasEvolved = false) }
     }
@@ -229,7 +250,7 @@ class GameViewModel(
         updateAndSave {
             TamagotchiState()
         }
-        WorkManager.getInstance(context).cancelAllWork()
+        WorkManager.getInstance(getApplication()).cancelAllWork()
     }
 
     fun submitStepsGoal(stepGoal: Int) {
@@ -257,7 +278,7 @@ class GameViewModel(
                     initial = false
                 )
             }
-            scheduleEvolutionWork(context, tamagotchiState.value)
+            scheduleEvolutionWork(getApplication(), tamagotchiState.value)
         }
     }
 }

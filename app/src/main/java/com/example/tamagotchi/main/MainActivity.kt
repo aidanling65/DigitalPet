@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
                 if (modelClass.isAssignableFrom(GameViewModel::class.java)) {
                     val repository = TamagotchiRepository(applicationContext)
                     @Suppress("UNCHECKED_CAST")
-                    return GameViewModel(applicationContext, sudokuViewModel, repository) as T
+                    return GameViewModel(application, sudokuViewModel, repository) as T
                 }
                 throw IllegalArgumentException("Unknown ViewModel class")
             }
@@ -70,7 +70,7 @@ class MainActivity : ComponentActivity() {
             ExistingWorkPolicy.REPLACE
         )
 
-        //gameViewModel.checkEvolve()
+        gameViewModel.checkEvolve()
     }
 
     override fun onResume(){
