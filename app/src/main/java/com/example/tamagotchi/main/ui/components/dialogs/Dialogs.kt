@@ -30,6 +30,7 @@ fun Dialogs(gameViewModel: GameViewModel) {
     val showNonogram by gameViewModel.showNonogram.collectAsState()
     val showWinScreen by gameViewModel.showWinScreen.collectAsState()
     val showLossScreen by gameViewModel.showLossScreen.collectAsState()
+    val showManual by gameViewModel.showManual.collectAsState()
 
     val startupDismiss = {
         if (tamagotchiState.initial) {
@@ -122,6 +123,6 @@ fun Dialogs(gameViewModel: GameViewModel) {
             )
         }
 
-        Manual(gameViewModel)
+        Manual(showManual, tamagotchiState){gameViewModel.onDismissManual()}
     }
 }

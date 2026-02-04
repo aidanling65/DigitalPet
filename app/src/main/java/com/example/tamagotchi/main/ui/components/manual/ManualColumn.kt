@@ -1,9 +1,6 @@
 package com.example.tamagotchi.main.ui.components.manual
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -31,22 +28,9 @@ import com.example.tamagotchi.main.ui.components.manual.contents.SleepContent
 @Composable
 fun ManualColumn() {
     LazyColumn(
-        modifier = Modifier
-            .fillMaxHeight()
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(topEnd = 24.dp, bottomEnd = 24.dp))
-            .background(MaterialTheme.colorScheme.background)
-            .padding(12.dp),
+        Modifier.clip(RoundedCornerShape(10.dp)),
         horizontalAlignment = Alignment.Start
     ) {
-        item { Spacer(modifier = Modifier.height(16.dp)) }
-        item {
-            Text(
-                stringResource(R.string.manual),
-                style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.primary
-            )
-        }
         item { Spacer(modifier = Modifier.height(8.dp)) }
         item {
             ManualEntry(
