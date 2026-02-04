@@ -29,6 +29,7 @@ fun Dialogs(gameViewModel: GameViewModel) {
     val showSudoku by gameViewModel.showSudoku.collectAsState()
     val showNonogram by gameViewModel.showNonogram.collectAsState()
     val showWinScreen by gameViewModel.showWinScreen.collectAsState()
+    val showLossScreen by gameViewModel.showLossScreen.collectAsState()
 
     val startupDismiss = {
         if (tamagotchiState.initial) {
@@ -112,6 +113,10 @@ fun Dialogs(gameViewModel: GameViewModel) {
                 {
                     gameViewModel.learning()
                     gameViewModel.showWinScreen()
+                },
+                showLossScreen,
+                {
+                    gameViewModel.showLossScreen()
                 },
                 onDismissRequest
             )

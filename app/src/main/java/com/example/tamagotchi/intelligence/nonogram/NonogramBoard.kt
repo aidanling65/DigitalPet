@@ -1,29 +1,55 @@
 package com.example.tamagotchi.intelligence.nonogram
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 data class NonogramBoard(
-    val correctCells: List<List<Boolean>>,
-    val playerCells: List<List<MutableState<Boolean>>>,
-    val blockedCells: List<List<MutableState<Boolean>>>,
     val width: Int,
     val height: Int,
-    var won: MutableState<Boolean> = mutableStateOf(false)
+    val fillProbability: Float = 0.5f,
 ) {
-    constructor(height:Int, width:Int):this(
-        correctCells = List(height) { List(width) { Random.nextBoolean() } },
-        playerCells = List(height) { List(width) { mutableStateOf(false) } },
-        blockedCells = List(height) { List(width) { mutableStateOf(false) } },
-        width = width,
-        height = height,
+    val correctCells: List<List<Boolean>> = generateBoard(height, width, fillProbability)
+    val playerCells: List<List<MutableState<Boolean>>> = List(height) { List(width) { mutableStateOf(false) } }
+    val blockedCells: List<List<MutableState<Boolean>>> = List(height) { List(width) { mutableStateOf(false) } }
+    val rowHints: List<List<Int>>
+    val columnHints: List<List<Int>>
+    var won: MutableState<Boolean> = mutableStateOf(false)
+    var mistakes: MutableState<Int> = mutableIntStateOf(0)
 
-    )
+    init{
+        rowHints = calculateRowHints()
+        columnHints = calculateColumnHints()
+    }
+
+    private fun generateBoard(height:Int, width:Int, fillProbability:Float): List<List<Boolean>>{
+        val board = MutableList(height){ MutableList(width){Random.nextFloat() < fillProbability} }
+
+        for(i in 0 until height){
+            if (board[i].all { !it }){
+                board[i][Random.nextInt(width)] = true
+                board[i][Random.nextInt(width)] = true
+            }
+        }
+        for(i in 0 until width){
+            if(board.all { !it[i] }){
+                board[Random.nextInt(height)][i] = true
+                board[Random.nextInt(height)][i] = true
+            }
+        }
+
+        return board
+    }
 
     private fun checkWon(){
         for(i in 0 until height){
-            for(j in 0 until height){
+            for(j in 0 until width){
                 if(correctCells[i][j] != playerCells[i][j].value){
                     return
                 }
@@ -33,9 +59,27 @@ data class NonogramBoard(
         won.value = true
     }
 
+    suspend fun undoMove(row: Int, col: Int){
+        Log.d("Nonogram", "Undoing move")
+        delay(500)
+        blockedCells[row][col].value = true
+        playerCells[row][col].value = false
+        checkWon()
+    }
+
     fun clickCell(row: Int, col: Int) {
-        playerCells[row][col].value = !playerCells[row][col].value
-        blockedCells[row][col].value = false
+        if(!blockedCells[row][col].value) {
+            playerCells[row][col].value = !playerCells[row][col].value
+
+            if (playerCells[row][col].value && !correctCells[row][col]) {
+                mistakes.value++
+                CoroutineScope(Dispatchers.Default).launch {
+                    undoMove(row, col)
+                }
+            }
+            rowCorrect(row)
+            colCorrect(col)
+        }
 
         checkWon()
     }
@@ -43,6 +87,12 @@ data class NonogramBoard(
     fun blockCell(row: Int, col: Int) {
         blockedCells[row][col].value = !blockedCells[row][col].value
         playerCells[row][col].value = false
+    }
+
+    private fun getColumn(colIndex: Int, grid: List<List<Boolean>>): List<Boolean>{
+        return grid.map { row ->
+            row[colIndex]
+        }
     }
 
     private fun hintsList(list: List<Boolean>): List<Int> {
@@ -60,20 +110,18 @@ data class NonogramBoard(
         return hints
     }
 
-    fun getColumnHints(): List<List<Int>> {
+    private fun calculateColumnHints(): List<List<Int>> {
         if (width == 0 || correctCells.isEmpty()) return emptyList()
         val hints: MutableList<List<Int>> = mutableListOf()
         for (i in 0 until width) {
-            val column = correctCells.map { row ->
-                    row[i]
-            }
+            val column = getColumn(i, correctCells)
             val columnHints = hintsList(column)
             hints.add(columnHints)
         }
         return hints
     }
 
-    fun getRowHints(): List<List<Int>> {
+    private fun calculateRowHints(): List<List<Int>> {
         if (height == 0 || correctCells.isEmpty()) return emptyList()
         val hints: MutableList<List<Int>> = mutableListOf()
         for (row in correctCells) {
@@ -82,4 +130,30 @@ data class NonogramBoard(
         }
         return hints
     }
+
+
+    private fun rowCorrect(rowIndex: Int){
+        val playerRow = playerCells[rowIndex].map { it.value }
+        if(correctCells[rowIndex] == playerRow){
+            for( j in 0 until width) {
+                if (!correctCells[rowIndex][j]) {
+                    blockedCells[rowIndex][j].value = true
+                }
+            }
+        }
+    }
+
+    private fun colCorrect(colIndex: Int){
+        val correctColumn = getColumn(colIndex, correctCells)
+        val playerColumn = playerCells.map{row -> row[colIndex].value}
+
+        if(correctColumn == playerColumn){
+            for( i in 0 until height) {
+                if (!correctColumn[i]) {
+                    blockedCells[i][colIndex].value = true
+                }
+            }
+        }
+    }
+
 }

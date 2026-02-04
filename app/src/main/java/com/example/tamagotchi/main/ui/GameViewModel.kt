@@ -51,6 +51,9 @@ class GameViewModel(
     private val _showWinScreen = MutableStateFlow(false)
     val showWinScreen: StateFlow<Boolean> = _showWinScreen.asStateFlow()
 
+    private val _showLossScreen = MutableStateFlow(false)
+    val showLossScreen: StateFlow<Boolean> = _showLossScreen.asStateFlow()
+
     private val _showManual = MutableStateFlow(false)
     val showManual: StateFlow<Boolean> = _showManual.asStateFlow()
 
@@ -155,11 +158,16 @@ class GameViewModel(
         _showWinScreen.value = true
     }
 
+    fun showLossScreen(){
+        _showLossScreen.value = true
+    }
+
     fun onDismissIntelligence() {
         Log.d("GameViewModel", "Dismissing intelligence")
         _showSudoku.value = false
         _showNonogram.value = false
         _showWinScreen.value = false
+        _showLossScreen.value = false
     }
 
     fun learning() {

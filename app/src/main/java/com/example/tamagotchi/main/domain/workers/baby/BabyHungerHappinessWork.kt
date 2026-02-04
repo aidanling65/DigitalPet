@@ -19,30 +19,30 @@ class BabyHungerHappinessWork(
 
     override suspend fun doWork(): Result {
 
-        repository.updateState { currentState ->
-            if (currentState.ageStage != AgeStage.BABY) {
+        val updatedState = repository.updateState { currentState ->
+            if (currentState.ageStage != AgeStage.BABY || currentState.sleeping) {
                 currentState
             }
-            if (!currentState.sleeping) {
-                val updatedState = currentState.copy(
-                    hunger = if (currentState.hunger > 0) currentState.hunger - 1 else currentState.hunger,
-                    happiness = if (currentState.happiness > 0) currentState.happiness - 1 else currentState.happiness
-                )
-                if (updatedState.hunger == 0) {
-                    attentionNotification(applicationContext, "You Tamagotchi is hungry!")
-                }
-                if (updatedState.happiness == 0) {
-                    attentionNotification(applicationContext, "You Tamagotchi is sad!")
-                }
-                updatedState
-            } else currentState
+            val updatedState = currentState.copy(
+                hunger = if (currentState.hunger > 0) currentState.hunger - 1 else currentState.hunger,
+                happiness = if (currentState.happiness > 0) currentState.happiness - 1 else currentState.happiness
+            )
+            if (updatedState.hunger == 0) {
+                attentionNotification(applicationContext, "You Tamagotchi is hungry!")
+            }
+            if (updatedState.happiness == 0) {
+                attentionNotification(applicationContext, "You Tamagotchi is sad!")
+            }
+            updatedState
         }
-        createSingleWorker<BabyHungerHappinessWork>(
-            applicationContext,
-            Duration.ofMinutes(3),
-            "hunger_happiness",
-            ExistingWorkPolicy.REPLACE,
-        )
+        if (updatedState.ageStage == AgeStage.BABY) {
+            createSingleWorker<BabyHungerHappinessWork>(
+                applicationContext,
+                Duration.ofMinutes(3),
+                "hunger_happiness",
+                ExistingWorkPolicy.REPLACE,
+            )
+        }
 
         return Result.success()
     }
