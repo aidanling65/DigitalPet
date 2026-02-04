@@ -53,7 +53,10 @@ fun Dialogs(gameViewModel: GameViewModel) {
             )
         ) { onDismissRequest ->
             StartupDialog(
-                gameViewModel,
+                tamagotchiState,
+                { gameViewModel.submitStepsGoal(it) },
+                { gameViewModel.updateBedTime(it) },
+                { gameViewModel.updateWakeTime(it) },
                 onDismissRequest = onDismissRequest,
             )
         }
@@ -84,8 +87,7 @@ fun Dialogs(gameViewModel: GameViewModel) {
         ) { onDismissRequest ->
             GameDialog(
                 tamagotchiState,
-                gameViewModel,
-            )
+            ) { gameViewModel.gameScore(it) }
         }
 
         val puzzleModifier =
@@ -96,11 +98,13 @@ fun Dialogs(gameViewModel: GameViewModel) {
             onDismissRequest = { gameViewModel.onDismissIntelligence() }) { onDismissRequest ->
             SudokuDialog(
                 tamagotchiState = tamagotchiState,
-                gameViewModel,
-                onGameWon = {
+                gameViewModel.sudokuViewModel,
+                showWinScreen,
+                {
                     gameViewModel.learning()
                     onDismissRequest()
-                }
+                },
+                {gameViewModel.showWinScreen()}
             )
         }
 

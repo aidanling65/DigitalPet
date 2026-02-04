@@ -5,27 +5,26 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import com.example.tamagotchi.intelligence.PuzzleWinDialog
+import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModel
 import com.example.tamagotchi.main.data.model.TamagotchiState
-import com.example.tamagotchi.main.ui.GameViewModel
 
 @Composable
 fun SudokuDialog(
     tamagotchiState: TamagotchiState,
-    gameViewModel: GameViewModel,
-    onGameWon: () -> Unit
+    viewModel: SudokuViewModel,
+    showWin: Boolean,
+    onGameWon: () -> Unit,
+    showWinScreen: ()->Unit,
 ) {
-    val viewModel = gameViewModel.sudokuViewModel
     val isGameWon by viewModel.sudokuGame.gameWonLiveData.observeAsState(initial = false)
-    val showWin by gameViewModel.showWinScreen.collectAsState()
 
     if (isGameWon) {
-        gameViewModel.showWinScreen()
+        showWinScreen()
         PuzzleWinDialog(
             showWin,
             "Congratulations!\nYou solved the Sudoku!",

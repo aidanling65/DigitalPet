@@ -13,7 +13,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -28,16 +27,21 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.example.tamagotchi.R
-import com.example.tamagotchi.main.ui.GameViewModel
+import com.example.tamagotchi.main.data.model.TamagotchiState
 import kotlinx.coroutines.delay
 
 @Composable
-fun MinimalDropDownMenu(gameViewModel: GameViewModel) {
+fun MinimalDropDownMenu(
+    tamagotchiState: TamagotchiState,
+    showManual: Boolean,
+    onManualClicked : () ->Unit,
+    onStartupOpen: () -> Unit,
+    pauseGame: () -> Unit,
+    onResetClicked: () -> Unit
+) {
     var expanded by remember { mutableStateOf(false) }
     var expandedMenu by remember { mutableStateOf(false) }
-    val tamagotchiState by gameViewModel.tamagotchiState.collectAsState()
     var visibleIndex by remember { mutableIntStateOf(-1) }
-    val showManual by gameViewModel.showManual.collectAsState()
 
     val onDismiss = { expanded = false }
 
@@ -102,7 +106,7 @@ fun MinimalDropDownMenu(gameViewModel: GameViewModel) {
                 visible = visibleIndex >= 0,
                 showManual,
                 onClick = {
-                    gameViewModel.onManualClicked()
+                    onManualClicked()
                 },
                 onDismiss
             )
@@ -112,7 +116,7 @@ fun MinimalDropDownMenu(gameViewModel: GameViewModel) {
                 visibleIndex >= 1,
                 showManual,
                 onClick = {
-                    gameViewModel.onStartupOpen()
+                    onStartupOpen()
                 },
                 onDismiss
             )
@@ -124,7 +128,7 @@ fun MinimalDropDownMenu(gameViewModel: GameViewModel) {
                 visibleIndex >= 2,
                 showManual,
                 onClick = {
-                    gameViewModel.pauseGame()
+                    pauseGame()
                 },
                 onDismiss
             )
@@ -134,7 +138,7 @@ fun MinimalDropDownMenu(gameViewModel: GameViewModel) {
                 visibleIndex >= 3,
                 showManual,
                 onClick = {
-                    gameViewModel.onResetClicked()
+                    onResetClicked()
                 },
                 onDismiss
             )

@@ -26,13 +26,32 @@ import com.example.tamagotchi.main.ui.components.status_bars.StatusBars
 fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
     val tamagotchiState by gameViewModel.tamagotchiState.collectAsState()
     val showEating by gameViewModel.showEatingAnimation.collectAsState()
+    val showManual by gameViewModel.showManual.collectAsState()
 
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.background),
-        topBar = { TopAppBar(gameViewModel) },
-        bottomBar = { BottomBar(gameViewModel) }
+        topBar = {
+            TopAppBar(
+                tamagotchiState,
+                showManual,
+                { gameViewModel.onManualClicked() },
+                { gameViewModel.onStartupOpen() },
+                { gameViewModel.pauseGame() },
+                { gameViewModel.onResetClicked() })
+        },
+        bottomBar = {
+            BottomBar(
+                { gameViewModel.feed() },
+                { gameViewModel.light() },
+                { gameViewModel.clean() },
+                { gameViewModel.heal() },
+                { gameViewModel.play() },
+                { gameViewModel.onLaunchIntelligence() },
+                { gameViewModel.discipline() }
+            )
+        }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -46,7 +65,7 @@ fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
             TamagotchiDisplay(
                 tamagotchiState,
                 modifier.size(256.dp),
-                {gameViewModel.onEatingAnimationFinished()},
+                { gameViewModel.onEatingAnimationFinished() },
                 showEating
             )
             Spacer(Modifier.height(16.dp))

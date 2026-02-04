@@ -20,7 +20,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import com.example.tamagotchi.main.data.model.TamagotchiState
-import com.example.tamagotchi.main.ui.GameViewModel
 import com.example.tamagotchi.main.utils.animation.getAnimationFrames
 import com.example.tamagotchi.minigames.ui.MinigameBase
 import kotlinx.coroutines.delay
@@ -29,7 +28,7 @@ import kotlin.random.Random
 @Composable
 fun JumpGameCanvas(
     tamagotchiState: TamagotchiState,
-    gameViewModel: GameViewModel,
+    gameScore: (Int) -> Unit,
     restartFun: () -> Unit
 ) {
 
@@ -122,7 +121,7 @@ fun JumpGameCanvas(
         if (!isGameStarted) return@LaunchedEffect
         while (true) {
             if (isGameOver) {
-                gameViewModel.gameScore(score)
+                gameScore(score)
                 return@LaunchedEffect
             }
             if (player.y == canvasSize.height - player.height) {

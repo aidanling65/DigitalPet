@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import com.example.tamagotchi.main.data.model.TamagotchiState
-import com.example.tamagotchi.main.ui.GameViewModel
 import com.example.tamagotchi.minigames.FlappyGameCanvas
 import com.example.tamagotchi.minigames.JumpGameCanvas
 import kotlin.random.Random
@@ -22,13 +21,13 @@ import kotlin.random.Random
 @Composable
 fun GameDialog(
     tamagotchiState: TamagotchiState,
-    gameViewModel: GameViewModel,
+    gameScore: (Int) -> Unit,
 ) {
 
-    val randomGame = remember{ mutableIntStateOf(Random.nextInt(0,2))}
+    val randomGame = remember { mutableIntStateOf(Random.nextInt(0, 2)) }
 
-    fun restart(){
-        randomGame.value = Random.nextInt(0,2)
+    fun restart() {
+        randomGame.intValue = Random.nextInt(0, 2)
     }
 
     Column(
@@ -41,8 +40,8 @@ fun GameDialog(
             .background(MaterialTheme.colorScheme.background)
     ) {
         when (randomGame.intValue) {
-            0 -> JumpGameCanvas(tamagotchiState, gameViewModel) { restart() }
-            1 -> FlappyGameCanvas(tamagotchiState, gameViewModel) { restart() }
+            0 -> JumpGameCanvas(tamagotchiState, { gameScore(it) }) { restart() }
+            1 -> FlappyGameCanvas(tamagotchiState, { gameScore(it) }) { restart() }
         }
     }
 }

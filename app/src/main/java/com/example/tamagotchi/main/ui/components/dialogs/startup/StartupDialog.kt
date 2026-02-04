@@ -18,7 +18,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -28,17 +27,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.tamagotchi.main.ui.GameViewModel
+import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StartupDialog(
-    gameViewModel: GameViewModel,
+    tamagotchiState: TamagotchiState,
+    submitStepsGoal: (Int) -> Unit,
+    updateBedTime: (LocalTime) -> Unit,
+    updateWakeTime: (LocalTime) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
-    val tamagotchiState by gameViewModel.tamagotchiState.collectAsState()
     var newStepGoal by remember { mutableIntStateOf(tamagotchiState.stepGoal) }
     val bedTimeState = rememberTimePickerState(
         initialHour = tamagotchiState.bedTime.hour,
@@ -125,13 +126,13 @@ fun StartupDialog(
                         newStepGoal,
                         onDismissRequest,
                         {
-                            gameViewModel.submitStepsGoal(it)
+                            submitStepsGoal(it)
                             val bedTime = LocalTime.of(bedTimeState.hour, bedTimeState.minute)
-                            gameViewModel.updateBedTime(bedTime)
+                            updateBedTime(bedTime)
 
                             val wakeTime =
                                 LocalTime.of(wakeTimeState.hour, wakeTimeState.minute)
-                            gameViewModel.updateWakeTime(wakeTime)
+                            updateWakeTime(wakeTime)
                         }
                     )
                 }
