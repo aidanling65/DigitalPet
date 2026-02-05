@@ -46,7 +46,7 @@ fun SudokuDialog(
     }
 
     LaunchedEffect(gameMistakes) {
-        if (gameMistakes >= tamagotchiState.difficulty.mistakes) {
+        if (gameMistakes >= tamagotchiState.puzzleDifficulty.mistakes) {
             onLoss()
         }
     }

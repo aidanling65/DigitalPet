@@ -62,7 +62,8 @@ fun Dialogs(gameViewModel: GameViewModel) {
                 { gameViewModel.submitStepsGoal(it) },
                 { gameViewModel.updateBedTime(it) },
                 { gameViewModel.updateWakeTime(it) },
-                { gameViewModel.updateDifficulty(it) },
+                { gameViewModel.updatePuzzleDifficulty(it) },
+                { gameViewModel.updateGameDifficulty(it) },
                 onDismissRequest = onDismissRequest,
             )
         }
@@ -103,7 +104,7 @@ fun Dialogs(gameViewModel: GameViewModel) {
             modifier = puzzleModifier,
             onDismissRequest = { gameViewModel.onDismissIntelligence() }) { onDismissRequest ->
 
-            val missingDigits = tamagotchiState.difficulty.sudokuDigits
+            val missingDigits = tamagotchiState.puzzleDifficulty.sudokuDigits
             val sudokuViewModel: SudokuViewModel = viewModel(
                 factory = SudokuViewModelFactory(missingDigits)
             )
@@ -133,7 +134,11 @@ fun Dialogs(gameViewModel: GameViewModel) {
             onDismissRequest = { gameViewModel.onDismissIntelligence() })
         { onDismissRequest ->
             val nonogramViewModel: NonogramViewModel = viewModel(
-                factory = NonogramViewModelFactory(10,10,tamagotchiState.difficulty.nonogramOdds)
+                factory = NonogramViewModelFactory(
+                    10,
+                    10,
+                    tamagotchiState.puzzleDifficulty.nonogramOdds
+                )
             )
             NonogramDialog(
                 tamagotchiState,

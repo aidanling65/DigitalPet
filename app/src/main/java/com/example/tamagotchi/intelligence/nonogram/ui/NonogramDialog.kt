@@ -62,7 +62,7 @@ fun NonogramDialog(
     }
 
     LaunchedEffect(nonogram.mistakes.value) {
-        if (nonogram.mistakes.value >= tamagotchiState.difficulty.mistakes) {
+        if (nonogram.mistakes.value >= tamagotchiState.puzzleDifficulty.mistakes) {
             onLoss()
         }
     }
@@ -91,7 +91,7 @@ fun NonogramDialog(
         )
 
         TamagotchiDisplay(tamagotchiState, modifier = Modifier.weight(0.1f))
-        MistakeMeter(nonogram.mistakes.value, tamagotchiState.difficulty.mistakes)
+        MistakeMeter(nonogram.mistakes.value, tamagotchiState.puzzleDifficulty.mistakes)
         NonogramView(nonogram, modifier = Modifier.weight(0.5f), blocking)
         BottomButtons(blocking) { blocking = !blocking }
         Spacer(modifier = Modifier.weight(0.05f))

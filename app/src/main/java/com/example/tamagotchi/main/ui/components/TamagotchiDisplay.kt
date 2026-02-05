@@ -122,7 +122,8 @@ fun TamagotchiDisplay(
             }
             AnimatedVisibility(
                 visible = showEatingAnimation > 0,
-                enter = fadeIn()
+                enter = fadeIn(),
+                exit = fadeOut()
             ) {
                 val foodOffsetX = (maxWidth * 0.6f)
                 val foodOffsetY = (maxHeight * 0.2f)

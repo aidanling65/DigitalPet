@@ -34,6 +34,7 @@ import com.example.tamagotchi.R
 import com.example.tamagotchi.intelligence.IntelligenceDifficulty
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
+import com.example.tamagotchi.minigames.GameDifficulty
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,7 +44,8 @@ fun StartupDialog(
     submitStepsGoal: (Int) -> Unit,
     updateBedTime: (LocalTime) -> Unit,
     updateWakeTime: (LocalTime) -> Unit,
-    updateDifficulty: (IntelligenceDifficulty) -> Unit,
+    updatePuzzleDifficulty: (IntelligenceDifficulty) -> Unit,
+    updateGameDifficulty: (GameDifficulty) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
     var newStepGoal by remember { mutableIntStateOf(tamagotchiState.stepGoal) }
@@ -59,7 +61,8 @@ fun StartupDialog(
         is24Hour = true
     )
 
-    var sliderPosition by remember { mutableFloatStateOf(tamagotchiState.difficulty.ordinal.toFloat()) }
+    var puzzleSliderPosition by remember { mutableFloatStateOf(tamagotchiState.puzzleDifficulty.ordinal.toFloat()) }
+    var gameSliderPosition by remember { mutableFloatStateOf(tamagotchiState.gameDifficulty.ordinal.toFloat()) }
 
     Box(
         Modifier
@@ -139,10 +142,26 @@ fun StartupDialog(
                 item {
                     val difficulties = IntelligenceDifficulty.entries
                     SliderCustom(
-                        sliderPosition,
+                        puzzleSliderPosition,
                         difficulties.size - 1,
                         0f..difficulties.size - 1f
-                    ) { sliderPosition = it }
+                    ) { puzzleSliderPosition = it }
+                }
+                item {
+                    Text(
+                        stringResource(R.string.game_difficulty),
+                        style = MaterialTheme.typography.bodySmall,
+                        textAlign = TextAlign.Start,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                item {
+                    val difficulties = GameDifficulty.entries
+                    SliderCustom(
+                        gameSliderPosition,
+                        difficulties.size - 1,
+                        0f..difficulties.size - 1f
+                    ) { gameSliderPosition = it }
                 }
 
                 item { Spacer(modifier = Modifier.height(8.dp)) }
@@ -160,9 +179,10 @@ fun StartupDialog(
                             updateWakeTime(wakeTime)
                             Log.d(
                                 "StartupDialog",
-                                "Difficulty: ${IntelligenceDifficulty.entries[sliderPosition.toInt()]}"
+                                "Difficulty: ${IntelligenceDifficulty.entries[puzzleSliderPosition.toInt()]}"
                             )
-                            updateDifficulty(IntelligenceDifficulty.entries[sliderPosition.toInt()])
+                            updatePuzzleDifficulty(IntelligenceDifficulty.entries[puzzleSliderPosition.toInt()])
+                            updateGameDifficulty(GameDifficulty.entries[gameSliderPosition.toInt()])
                         }
                     )
                 }

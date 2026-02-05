@@ -59,15 +59,15 @@ fun JumpGameCanvas(
     }
     var playerJumped by remember { mutableStateOf(false) }
 
-    var minXVelocity = -13f
-    var maxXVelocity = -17f
+    var minXVelocity = tamagotchiState.gameDifficulty.obstacleInitialMinVelocity
+    var maxXVelocity = tamagotchiState.gameDifficulty.obstacleInitialMaxVelocity
     val obstacle = remember {
         Obstacle(
             x = 0f,
             y = 0f,
             width = 30f,
             height = 0f,
-            xVelocity = -15f,
+            xVelocity = tamagotchiState.gameDifficulty.obstacleInitialMinVelocity,
             xTerminalVelocity = 25f
         )
     }
@@ -91,8 +91,8 @@ fun JumpGameCanvas(
         player.y = player.maxY - player.height
         player.yVelocity = 0f
         obstacle.xVelocity = -15f
-        minXVelocity = -13f
-        maxXVelocity = -17f
+        minXVelocity = tamagotchiState.gameDifficulty.obstacleInitialMinVelocity
+        maxXVelocity = tamagotchiState.gameDifficulty.obstacleInitialMaxVelocity
         restartFun()
     }
 
@@ -124,7 +124,7 @@ fun JumpGameCanvas(
                 gameScore(score)
                 return@LaunchedEffect
             }
-            if (player.y == canvasSize.height - player.height) {
+            if (player.bottom <= player.maxY) {
                 playerJumped = false
             }
 
@@ -132,8 +132,8 @@ fun JumpGameCanvas(
             player.move()
             if (obstacle.x < -obstacle.width) {
                 obstacle.x = canvasSize.width
-                minXVelocity -= 0.1f
-                maxXVelocity -= 0.1f
+                minXVelocity -= tamagotchiState.gameDifficulty.obstacleAcceleration
+                maxXVelocity -= tamagotchiState.gameDifficulty.obstacleAcceleration
                 obstacle.xVelocity =
                     Random.nextFloat() * (maxXVelocity - minXVelocity) + minXVelocity
             }
@@ -171,7 +171,7 @@ fun JumpGameCanvas(
         {
             if (isGameStarted && !isGameOver && !playerJumped) {
                 playerJumped = true
-                player.yVelocity = -85f
+                player.yVelocity = -95f
             }
         }
     ) { modifier ->

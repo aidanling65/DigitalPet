@@ -12,6 +12,7 @@ import com.example.tamagotchi.intelligence.IntelligenceDifficulty
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.EvolutionAnimations
 import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.minigames.GameDifficulty
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.LocalDateTime
@@ -54,7 +55,8 @@ class TamagotchiRepository(private val context: Context) {
     private val LAST_EVOLVE = stringPreferencesKey("last_evolve")
     private val PAUSED = booleanPreferencesKey("paused")
 
-    private val DIFFICULTY = intPreferencesKey("difficulty")
+    private val PUZZLE_DIFFICULTY = intPreferencesKey("puzzle_difficulty")
+    private val GAME_DIFFICULTY = intPreferencesKey("game_difficulty")
 
     private val BED_TIME = stringPreferencesKey("bed_time")
     private val WAKE_TIME = stringPreferencesKey("wake_time")
@@ -95,7 +97,8 @@ class TamagotchiRepository(private val context: Context) {
             ),
             hasEvolved = prefs[HAS_EVOLVED] ?: defaultState.hasEvolved,
             paused = prefs[PAUSED] ?: defaultState.paused,
-            difficulty = IntelligenceDifficulty.entries[prefs[DIFFICULTY] ?: defaultState.difficulty.ordinal],
+            puzzleDifficulty = IntelligenceDifficulty.entries[prefs[PUZZLE_DIFFICULTY] ?: defaultState.puzzleDifficulty.ordinal],
+            gameDifficulty = GameDifficulty.entries[prefs[GAME_DIFFICULTY] ?: defaultState.gameDifficulty.ordinal],
             bedTime = LocalTime.parse(prefs[BED_TIME] ?: defaultState.bedTime.toString()),
             wakeTime = LocalTime.parse(prefs[WAKE_TIME] ?: defaultState.wakeTime.toString())
         )
@@ -154,7 +157,8 @@ class TamagotchiRepository(private val context: Context) {
         updated[LAST_EVOLVE] = current.lastEvolve.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
         updated[HAS_EVOLVED] = current.hasEvolved
         updated[PAUSED] = current.paused
-        updated[DIFFICULTY] = current.difficulty.ordinal
+        updated[PUZZLE_DIFFICULTY] = current.puzzleDifficulty.ordinal
+        updated[GAME_DIFFICULTY] = current.gameDifficulty.ordinal
         updated[BED_TIME] = current.bedTime.toString()
         updated[WAKE_TIME] = current.wakeTime.toString()
     }

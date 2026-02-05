@@ -16,6 +16,7 @@ import com.example.tamagotchi.main.domain.logic.GameLogicManager
 import com.example.tamagotchi.main.domain.workers.evolution.EvolutionWork
 import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
 import com.example.tamagotchi.main.domain.workers.utils.scheduleEvolutionWork
+import com.example.tamagotchi.minigames.GameDifficulty
 import com.example.tamagotchi.step_tracker.repository.StepDatabase
 import com.example.tamagotchi.step_tracker.repository.StepRepository
 import kotlinx.coroutines.delay
@@ -291,8 +292,12 @@ class GameViewModel(
         updateAndSave { it.copy(wakeTime = wakeTime) }
     }
 
-    fun updateDifficulty(difficulty: IntelligenceDifficulty){
-        updateAndSave { it.copy(difficulty = difficulty) }
+    fun updatePuzzleDifficulty(difficulty: IntelligenceDifficulty){
+        updateAndSave { it.copy(puzzleDifficulty = difficulty) }
+    }
+
+    fun updateGameDifficulty(difficulty: GameDifficulty){
+        updateAndSave { it.copy(gameDifficulty = difficulty) }
     }
 
     fun setupNewGame() {

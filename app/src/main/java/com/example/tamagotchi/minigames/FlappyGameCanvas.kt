@@ -64,7 +64,7 @@ fun FlappyGameCanvas(
             0f,
             80f,
             500f,
-            xVelocity = -10f
+            xVelocity = tamagotchiState.gameDifficulty.flappyVelocity
         )
     }
     val obstacle2 = remember {
@@ -96,6 +96,8 @@ fun FlappyGameCanvas(
         player.y = canvasSize.value.height / 2 - player.height
         obstacle.x = canvasSize.value.width
         obstacle2.x = canvasSize.value.width
+        obstacle.xVelocity =  tamagotchiState.gameDifficulty.flappyVelocity
+        obstacle2.xVelocity = obstacle.xVelocity
 
         restartFun()
     }
