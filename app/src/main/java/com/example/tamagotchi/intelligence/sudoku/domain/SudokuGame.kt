@@ -14,7 +14,6 @@ class SudokuGame {
     val isTakingNotesLiveData = MutableLiveData<Boolean>()
     val highlightedKeysLiveData = MutableLiveData<Set<Int>>()
     val gameWonLiveData = MutableLiveData<Boolean>()
-    val gameLostLiveData = MutableLiveData<Boolean>()
 
     var mistakes= MutableLiveData<Int>()
 
@@ -25,9 +24,9 @@ class SudokuGame {
     private lateinit var board: Board
     private lateinit var correctCells: List<Cell>
 
-    fun fetchNewSudoku() {
+    fun fetchNewSudoku(missingDigits: Int) {
         val generator = SudokuGenerator()
-        val (fullSolution, startingMask) = generator.generate(40)
+        val (fullSolution, startingMask) = generator.generate(missingDigits)
 
         correctCells = List(9 * 9) { i ->
             Cell(i / 9, i % 9, fullSolution[i / 9][i % 9])
@@ -50,7 +49,6 @@ class SudokuGame {
         _cellsFlow.value = board.cells.toList()
         isTakingNotesLiveData.postValue(isTakingNotes)
         gameWonLiveData.postValue(false)
-        gameLostLiveData.postValue(false)
         mistakes.postValue(0)
     }
 
@@ -61,16 +59,6 @@ class SudokuGame {
 
         if (isWon) {
             gameWonLiveData.postValue(true)
-        }
-    }
-
-    private fun checkLoss(){
-        Log.d("SudokuGame", "Checking loss ${mistakes.value} ${gameLostLiveData.value}")
-        if(mistakes.value == null) {
-            return
-        }
-        if(mistakes.value!! >= 4){
-            gameLostLiveData.postValue(true)
         }
     }
 
@@ -109,7 +97,6 @@ class SudokuGame {
 
         board = board.copy(cells = newCells)
         checkWin()
-        checkLoss()
         _cellsFlow.value = board.cells
     }
 

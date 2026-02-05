@@ -1,5 +1,6 @@
 package com.example.tamagotchi.main.data.model
 
+import com.example.tamagotchi.intelligence.IntelligenceDifficulty
 import java.time.LocalDateTime
 import java.time.LocalTime
 
@@ -53,6 +54,8 @@ data class TamagotchiState(
 
     val hasEvolved: Boolean = false,
     val lastEvolve: LocalDateTime = LocalDateTime.now(),
+
+    val difficulty: IntelligenceDifficulty = IntelligenceDifficulty.EASY,
 
     val paused: Boolean = false,
 ){

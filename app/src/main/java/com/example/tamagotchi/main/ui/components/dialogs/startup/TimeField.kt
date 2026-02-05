@@ -70,7 +70,8 @@ fun TimeField(
         }
         Text(
             text = ":",
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.primary
         )
         BasicTextField(
             value = "${state.minute}",

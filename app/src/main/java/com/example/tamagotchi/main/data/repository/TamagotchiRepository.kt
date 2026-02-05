@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.tamagotchi.intelligence.IntelligenceDifficulty
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.EvolutionAnimations
 import com.example.tamagotchi.main.data.model.TamagotchiState
@@ -53,6 +54,8 @@ class TamagotchiRepository(private val context: Context) {
     private val LAST_EVOLVE = stringPreferencesKey("last_evolve")
     private val PAUSED = booleanPreferencesKey("paused")
 
+    private val DIFFICULTY = intPreferencesKey("difficulty")
+
     private val BED_TIME = stringPreferencesKey("bed_time")
     private val WAKE_TIME = stringPreferencesKey("wake_time")
 
@@ -92,6 +95,7 @@ class TamagotchiRepository(private val context: Context) {
             ),
             hasEvolved = prefs[HAS_EVOLVED] ?: defaultState.hasEvolved,
             paused = prefs[PAUSED] ?: defaultState.paused,
+            difficulty = IntelligenceDifficulty.entries[prefs[DIFFICULTY] ?: defaultState.difficulty.ordinal],
             bedTime = LocalTime.parse(prefs[BED_TIME] ?: defaultState.bedTime.toString()),
             wakeTime = LocalTime.parse(prefs[WAKE_TIME] ?: defaultState.wakeTime.toString())
         )
@@ -150,6 +154,7 @@ class TamagotchiRepository(private val context: Context) {
         updated[LAST_EVOLVE] = current.lastEvolve.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
         updated[HAS_EVOLVED] = current.hasEvolved
         updated[PAUSED] = current.paused
+        updated[DIFFICULTY] = current.difficulty.ordinal
         updated[BED_TIME] = current.bedTime.toString()
         updated[WAKE_TIME] = current.wakeTime.toString()
     }

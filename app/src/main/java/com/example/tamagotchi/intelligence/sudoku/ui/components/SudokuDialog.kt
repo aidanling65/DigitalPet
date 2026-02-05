@@ -28,7 +28,7 @@ fun SudokuDialog(
     onDismissRequest: () -> Unit,
 ) {
     val isGameWon by viewModel.sudokuGame.gameWonLiveData.observeAsState(initial = false)
-    val isGameLost by viewModel.sudokuGame.gameLostLiveData.observeAsState(initial = false)
+    val gameMistakes by viewModel.sudokuGame.mistakes.observeAsState(initial = 0)
 
     LaunchedEffect(isGameWon) {
         if (isGameWon) {
@@ -45,8 +45,8 @@ fun SudokuDialog(
         }
     }
 
-    LaunchedEffect(isGameLost) {
-        if (isGameLost) {
+    LaunchedEffect(gameMistakes) {
+        if (gameMistakes >= tamagotchiState.difficulty.mistakes) {
             onLoss()
         }
     }

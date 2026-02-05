@@ -1,5 +1,6 @@
 package com.example.tamagotchi.main.ui.components.dialogs.startup
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,14 +20,18 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.tamagotchi.R
+import com.example.tamagotchi.intelligence.IntelligenceDifficulty
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
 import java.time.LocalTime
@@ -38,6 +43,7 @@ fun StartupDialog(
     submitStepsGoal: (Int) -> Unit,
     updateBedTime: (LocalTime) -> Unit,
     updateWakeTime: (LocalTime) -> Unit,
+    updateDifficulty: (IntelligenceDifficulty) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
     var newStepGoal by remember { mutableIntStateOf(tamagotchiState.stepGoal) }
@@ -52,6 +58,8 @@ fun StartupDialog(
         initialMinute = tamagotchiState.wakeTime.minute,
         is24Hour = true
     )
+
+    var sliderPosition by remember { mutableFloatStateOf(tamagotchiState.difficulty.ordinal.toFloat()) }
 
     Box(
         Modifier
@@ -95,7 +103,7 @@ fun StartupDialog(
                 }
                 item {
                     Text(
-                        text = "Bed time",
+                        text = stringResource(R.string.bed_time),
                         style = MaterialTheme.typography.bodySmall,
                         textAlign = TextAlign.Start,
                         color = MaterialTheme.colorScheme.primary
@@ -108,7 +116,7 @@ fun StartupDialog(
                 }
                 item {
                     Text(
-                        text = "Wake time",
+                        text = stringResource(R.string.wake_time),
                         style = MaterialTheme.typography.bodySmall,
                         textAlign = TextAlign.Start,
                         color = MaterialTheme.colorScheme.primary
@@ -118,6 +126,23 @@ fun StartupDialog(
                     TimeField(
                         wakeTimeState,
                     )
+                }
+
+                item {
+                    Text(
+                        stringResource(R.string.puzzle_difficulty),
+                        style = MaterialTheme.typography.bodySmall,
+                        textAlign = TextAlign.Start,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                item {
+                    val difficulties = IntelligenceDifficulty.entries
+                    SliderCustom(
+                        sliderPosition,
+                        difficulties.size - 1,
+                        0f..difficulties.size - 1f
+                    ) { sliderPosition = it }
                 }
 
                 item { Spacer(modifier = Modifier.height(8.dp)) }
@@ -133,6 +158,11 @@ fun StartupDialog(
                             val wakeTime =
                                 LocalTime.of(wakeTimeState.hour, wakeTimeState.minute)
                             updateWakeTime(wakeTime)
+                            Log.d(
+                                "StartupDialog",
+                                "Difficulty: ${IntelligenceDifficulty.entries[sliderPosition.toInt()]}"
+                            )
+                            updateDifficulty(IntelligenceDifficulty.entries[sliderPosition.toInt()])
                         }
                     )
                 }

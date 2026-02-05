@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkManager
+import com.example.tamagotchi.intelligence.IntelligenceDifficulty
 import com.example.tamagotchi.intelligence.IntelligenceGame
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.MAX_FITNESS
@@ -288,6 +289,10 @@ class GameViewModel(
 
     fun updateWakeTime(wakeTime: LocalTime) {
         updateAndSave { it.copy(wakeTime = wakeTime) }
+    }
+
+    fun updateDifficulty(difficulty: IntelligenceDifficulty){
+        updateAndSave { it.copy(difficulty = difficulty) }
     }
 
     fun setupNewGame() {

@@ -79,7 +79,8 @@ fun UpDownButtons(
         ) {
             Icon(
                 Icons.Default.KeyboardArrowUp,
-                contentDescription = "Increment Step Goal"
+                contentDescription = "Increment Step Goal",
+                tint = MaterialTheme.colorScheme.primary
             )
         }
         Spacer(Modifier.height(2.dp))
@@ -94,7 +95,8 @@ fun UpDownButtons(
         ) {
             Icon(
                 Icons.Default.KeyboardArrowDown,
-                contentDescription = "Decrement Step Goal"
+                contentDescription = "Decrement Step Goal",
+                tint = MaterialTheme.colorScheme.primary
             )
         }
     }

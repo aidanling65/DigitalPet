@@ -13,14 +13,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.tamagotchi.intelligence.nonogram.NonogramViewModel
+import com.example.tamagotchi.intelligence.nonogram.NonogramViewModelFactory
+import com.example.tamagotchi.intelligence.nonogram.ui.NonogramDialog
+import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModel
+import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModelFactory
+import com.example.tamagotchi.intelligence.sudoku.ui.components.SudokuDialog
 import com.example.tamagotchi.main.ui.GameViewModel
 import com.example.tamagotchi.main.ui.components.dialogs.startup.StartupDialog
 import com.example.tamagotchi.main.ui.components.manual.Manual
 import com.example.tamagotchi.minigames.ui.GameDialog
-import com.example.tamagotchi.intelligence.nonogram.ui.NonogramDialog
-import com.example.tamagotchi.intelligence.nonogram.NonogramViewModel
-import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModel
-import com.example.tamagotchi.intelligence.sudoku.ui.components.SudokuDialog
 
 @Composable
 fun Dialogs(gameViewModel: GameViewModel) {
@@ -60,6 +62,7 @@ fun Dialogs(gameViewModel: GameViewModel) {
                 { gameViewModel.submitStepsGoal(it) },
                 { gameViewModel.updateBedTime(it) },
                 { gameViewModel.updateWakeTime(it) },
+                { gameViewModel.updateDifficulty(it) },
                 onDismissRequest = onDismissRequest,
             )
         }
@@ -99,7 +102,13 @@ fun Dialogs(gameViewModel: GameViewModel) {
             showSudoku,
             modifier = puzzleModifier,
             onDismissRequest = { gameViewModel.onDismissIntelligence() }) { onDismissRequest ->
-            val sudokuViewModel: SudokuViewModel = viewModel()
+
+            val missingDigits = tamagotchiState.difficulty.sudokuDigits
+            val sudokuViewModel: SudokuViewModel = viewModel(
+                factory = SudokuViewModelFactory(missingDigits)
+            )
+
+
             SudokuDialog(
                 tamagotchiState = tamagotchiState,
                 sudokuViewModel,
@@ -108,10 +117,10 @@ fun Dialogs(gameViewModel: GameViewModel) {
                 {
                     gameViewModel.learning()
                     gameViewModel.showWinScreen()
-                    sudokuViewModel.sudokuGame.fetchNewSudoku()
+                    sudokuViewModel.sudokuGame.fetchNewSudoku(missingDigits)
                 },
                 {
-                    sudokuViewModel.sudokuGame.fetchNewSudoku()
+                    sudokuViewModel.sudokuGame.fetchNewSudoku(missingDigits)
                     gameViewModel.showLossScreen()
                 },
                 onDismissRequest
@@ -123,7 +132,9 @@ fun Dialogs(gameViewModel: GameViewModel) {
             modifier = puzzleModifier,
             onDismissRequest = { gameViewModel.onDismissIntelligence() })
         { onDismissRequest ->
-            val nonogramViewModel: NonogramViewModel = viewModel()
+            val nonogramViewModel: NonogramViewModel = viewModel(
+                factory = NonogramViewModelFactory(10,10,tamagotchiState.difficulty.nonogramOdds)
+            )
             NonogramDialog(
                 tamagotchiState,
                 nonogramViewModel,

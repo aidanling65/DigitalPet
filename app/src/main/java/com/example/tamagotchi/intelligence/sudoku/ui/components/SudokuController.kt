@@ -18,9 +18,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.theme.TamagotchiTheme
 import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModel
+import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModelFactory
 
 @Composable
 fun SudokuController(
@@ -93,9 +95,12 @@ fun SudokuController(
 @Preview(showBackground = true)
 @Composable
 fun SudokuControllerPreview() {
+    val sudokuViewModel: SudokuViewModel = viewModel(
+        factory = SudokuViewModelFactory(40)
+    )
     TamagotchiTheme {
         SudokuScreen(
-            viewModel = SudokuViewModel(),
+            viewModel = sudokuViewModel,
             tamagotchiState = TamagotchiState(),
             onCellTouched = { _, _ -> }
         )
