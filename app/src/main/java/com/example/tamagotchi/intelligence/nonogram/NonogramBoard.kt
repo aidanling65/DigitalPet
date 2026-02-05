@@ -15,7 +15,7 @@ data class NonogramBoard(
     val height: Int,
     val fillProbability: Float = 0.5f,
 ) {
-    val correctCells: List<List<Boolean>> = generateBoard(height, width, fillProbability)
+    var correctCells: List<List<Boolean>> = fetchNewNonogram()
     val playerCells: List<List<MutableState<Boolean>>> = List(height) { List(width) { mutableStateOf(false) } }
     val blockedCells: List<List<MutableState<Boolean>>> = List(height) { List(width) { mutableStateOf(false) } }
     val rowHints: List<List<Int>>
@@ -28,7 +28,7 @@ data class NonogramBoard(
         columnHints = calculateColumnHints()
     }
 
-    private fun generateBoard(height:Int, width:Int, fillProbability:Float): List<List<Boolean>>{
+    private fun fetchNewNonogram(): List<List<Boolean>>{
         val board = MutableList(height){ MutableList(width){Random.nextFloat() < fillProbability} }
 
         for(i in 0 until height){

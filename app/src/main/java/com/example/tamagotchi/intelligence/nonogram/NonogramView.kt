@@ -8,6 +8,9 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.example.tamagotchi.intelligence.nonogram.ui.ColumnHints
+import com.example.tamagotchi.intelligence.nonogram.ui.NonogramGrid
+import com.example.tamagotchi.intelligence.nonogram.ui.RowHints
 
 @Composable
 fun NonogramView(nonogram: NonogramBoard, modifier: Modifier = Modifier, blocking: Boolean){
@@ -31,7 +34,7 @@ fun NonogramView(nonogram: NonogramBoard, modifier: Modifier = Modifier, blockin
             modifier = Modifier
                 .weight(1f)
         ) {
-            RowHints(gridHeight,gridWidth, rowHints, modifier = Modifier.weight(0.2f))
+            RowHints(gridHeight, gridWidth, rowHints, modifier = Modifier.weight(0.2f))
             NonogramGrid(nonogram, gridWidth, gridHeight, blocking, Modifier.weight(1f))
         }
     }

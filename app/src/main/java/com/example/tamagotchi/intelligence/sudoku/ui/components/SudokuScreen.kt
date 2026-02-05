@@ -22,6 +22,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.tamagotchi.R
+import com.example.tamagotchi.intelligence.MistakeMeter
 import com.example.tamagotchi.intelligence.sudoku.ui.SudokuBoardView
 import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModel
 import com.example.tamagotchi.main.data.model.TamagotchiState
@@ -35,7 +36,7 @@ fun SudokuScreen(
 ) {
     val cells by viewModel.sudokuGame.cellsFlow.collectAsState()
     val selectedCell by viewModel.sudokuGame.selectedCellLiveData.observeAsState()
-
+    val mistakes by viewModel.sudokuGame.mistakes.observeAsState(initial = 5)
     val lineColor = MaterialTheme.colorScheme.secondary.toArgb()
 
     Scaffold(
@@ -61,6 +62,7 @@ fun SudokuScreen(
                     .fillMaxWidth(0.4f)
                     .aspectRatio(1f)
             )
+            MistakeMeter(mistakes, 5)
             Spacer(Modifier.weight(0.05f))
             AndroidView(
                 modifier = Modifier

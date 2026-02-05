@@ -1,4 +1,4 @@
-package com.example.tamagotchi.intelligence.nonogram
+package com.example.tamagotchi.intelligence.nonogram.ui
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
@@ -26,6 +26,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
+import com.example.tamagotchi.intelligence.nonogram.NonogramBoard
 
 @Composable
 fun NonogramGrid(

@@ -5,10 +5,14 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.tamagotchi.intelligence.PuzzleLossDialog
 import com.example.tamagotchi.intelligence.PuzzleWinDialog
 import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModel
 import com.example.tamagotchi.main.data.model.TamagotchiState
@@ -18,21 +22,42 @@ fun SudokuDialog(
     tamagotchiState: TamagotchiState,
     viewModel: SudokuViewModel,
     showWin: Boolean,
-    onGameWon: () -> Unit,
-    showWinScreen: ()->Unit,
+    showLoss: Boolean,
+    onWin: () -> Unit,
+    onLoss: () -> Unit,
+    onDismissRequest: () -> Unit,
 ) {
     val isGameWon by viewModel.sudokuGame.gameWonLiveData.observeAsState(initial = false)
+    val isGameLost by viewModel.sudokuGame.gameLostLiveData.observeAsState(initial = false)
 
-    if (isGameWon) {
-        showWinScreen()
+    LaunchedEffect(isGameWon) {
+        if (isGameWon) {
+            onWin()
+        }
+    }
+    if (showWin) {
         PuzzleWinDialog(
-            showWin,
+            true,
             "Congratulations!\nYou solved the Sudoku!",
             tamagotchiState
         ) {
-            onGameWon()
+            onDismissRequest()
         }
     }
+
+    LaunchedEffect(isGameLost) {
+        if (isGameLost) {
+            onLoss()
+        }
+    }
+    if (showLoss) {
+        PuzzleLossDialog(
+            true,
+            "Too bad\nYou failed the Sudoku!",
+            tamagotchiState
+        ) { onDismissRequest() }
+    }
+
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(10))
@@ -45,4 +70,17 @@ fun SudokuDialog(
             onCellTouched = { row, col -> viewModel.sudokuGame.updateSelectedCell(row, col) }
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SudokuPreview() {
+    val sudokuViewModel: SudokuViewModel = viewModel()
+    SudokuDialog(
+        tamagotchiState = TamagotchiState(),
+        viewModel = sudokuViewModel,
+        showWin = true,
+        showLoss = false,
+        onWin = {},
+        onLoss = {}){}
 }

@@ -1,4 +1,4 @@
-package com.example.tamagotchi.intelligence.nonogram
+package com.example.tamagotchi.intelligence.nonogram.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

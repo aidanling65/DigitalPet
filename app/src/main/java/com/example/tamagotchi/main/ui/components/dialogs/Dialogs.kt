@@ -12,24 +12,27 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tamagotchi.main.ui.GameViewModel
 import com.example.tamagotchi.main.ui.components.dialogs.startup.StartupDialog
 import com.example.tamagotchi.main.ui.components.manual.Manual
 import com.example.tamagotchi.minigames.ui.GameDialog
-import com.example.tamagotchi.intelligence.nonogram.NonogramDialog
+import com.example.tamagotchi.intelligence.nonogram.ui.NonogramDialog
+import com.example.tamagotchi.intelligence.nonogram.NonogramViewModel
+import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModel
 import com.example.tamagotchi.intelligence.sudoku.ui.components.SudokuDialog
 
 @Composable
 fun Dialogs(gameViewModel: GameViewModel) {
-    val tamagotchiState by gameViewModel.tamagotchiState.collectAsState()
 
+    val tamagotchiState by gameViewModel.tamagotchiState.collectAsState()
     val showStartup by gameViewModel.showStartup.collectAsState()
     val showReset by gameViewModel.showResetDialog.collectAsState()
     val showGame by gameViewModel.showGame.collectAsState()
     val showSudoku by gameViewModel.showSudoku.collectAsState()
     val showNonogram by gameViewModel.showNonogram.collectAsState()
     val showWinScreen by gameViewModel.showWinScreen.collectAsState()
-    val showLossScreen by gameViewModel.showLossScreen.collectAsState()
+    val showLoss by gameViewModel.showLossScreen.collectAsState()
     val showManual by gameViewModel.showManual.collectAsState()
 
     val startupDismiss = {
@@ -96,37 +99,49 @@ fun Dialogs(gameViewModel: GameViewModel) {
             showSudoku,
             modifier = puzzleModifier,
             onDismissRequest = { gameViewModel.onDismissIntelligence() }) { onDismissRequest ->
+            val sudokuViewModel: SudokuViewModel = viewModel()
             SudokuDialog(
                 tamagotchiState = tamagotchiState,
-                gameViewModel.sudokuViewModel,
+                sudokuViewModel,
                 showWinScreen,
-                {
-                    gameViewModel.learning()
-                    onDismissRequest()
-                },
-                {gameViewModel.showWinScreen()}
-            )
-        }
-
-        DialogBase(
-            showNonogram,
-            modifier = puzzleModifier,
-            onDismissRequest = { gameViewModel.onDismissIntelligence() }) { onDismissRequest ->
-            NonogramDialog(
-                tamagotchiState,
-                showWinScreen,
+                showLoss,
                 {
                     gameViewModel.learning()
                     gameViewModel.showWinScreen()
+                    sudokuViewModel.sudokuGame.fetchNewSudoku()
                 },
-                showLossScreen,
                 {
+                    sudokuViewModel.sudokuGame.fetchNewSudoku()
                     gameViewModel.showLossScreen()
                 },
                 onDismissRequest
             )
         }
 
-        Manual(showManual, tamagotchiState){gameViewModel.onDismissManual()}
+        DialogBase(
+            showNonogram,
+            modifier = puzzleModifier,
+            onDismissRequest = { gameViewModel.onDismissIntelligence() })
+        { onDismissRequest ->
+            val nonogramViewModel: NonogramViewModel = viewModel()
+            NonogramDialog(
+                tamagotchiState,
+                nonogramViewModel,
+                showWinScreen,
+                {
+                    nonogramViewModel.fetchNewNonogram()
+                    gameViewModel.learning()
+                    gameViewModel.showWinScreen()
+                },
+                showLoss,
+                {
+                    nonogramViewModel.fetchNewNonogram()
+                    gameViewModel.showLossScreen()
+                },
+                onDismissRequest
+            )
+        }
+
+        Manual(showManual, tamagotchiState) { gameViewModel.onDismissManual() }
     }
 }

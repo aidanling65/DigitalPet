@@ -15,18 +15,15 @@ import com.example.tamagotchi.main.data.repository.TamagotchiRepository
 import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
 import com.example.tamagotchi.main.ui.GameViewModel
 import com.example.tamagotchi.main.ui.components.TamagotchiApp
-import com.example.tamagotchi.theme.TamagotchiTheme
 import com.example.tamagotchi.main.utils.NOTIFICATION_PERMISSION_CODE
 import com.example.tamagotchi.main.utils.cancelNotifications
 import com.example.tamagotchi.main.utils.createNotificationChannel
 import com.example.tamagotchi.step_tracker.StepCounterWorker
-import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModel
+import com.example.tamagotchi.theme.TamagotchiTheme
 import java.time.Duration
 
 
 class MainActivity : ComponentActivity() {
-
-    private val sudokuViewModel: SudokuViewModel by viewModels()
 
     private val gameViewModel: GameViewModel by viewModels {
         object : ViewModelProvider.Factory {
@@ -34,7 +31,7 @@ class MainActivity : ComponentActivity() {
                 if (modelClass.isAssignableFrom(GameViewModel::class.java)) {
                     val repository = TamagotchiRepository(applicationContext)
                     @Suppress("UNCHECKED_CAST")
-                    return GameViewModel(application, sudokuViewModel, repository) as T
+                    return GameViewModel(application, repository) as T
                 }
                 throw IllegalArgumentException("Unknown ViewModel class")
             }

@@ -14,6 +14,9 @@ class SudokuGame {
     val isTakingNotesLiveData = MutableLiveData<Boolean>()
     val highlightedKeysLiveData = MutableLiveData<Set<Int>>()
     val gameWonLiveData = MutableLiveData<Boolean>()
+    val gameLostLiveData = MutableLiveData<Boolean>()
+
+    var mistakes= MutableLiveData<Int>()
 
     private var selectedRow = -1
     private var selectedCol = -1
@@ -47,6 +50,8 @@ class SudokuGame {
         _cellsFlow.value = board.cells.toList()
         isTakingNotesLiveData.postValue(isTakingNotes)
         gameWonLiveData.postValue(false)
+        gameLostLiveData.postValue(false)
+        mistakes.postValue(0)
     }
 
     private fun checkWin() {
@@ -56,6 +61,16 @@ class SudokuGame {
 
         if (isWon) {
             gameWonLiveData.postValue(true)
+        }
+    }
+
+    private fun checkLoss(){
+        Log.d("SudokuGame", "Checking loss ${mistakes.value} ${gameLostLiveData.value}")
+        if(mistakes.value == null) {
+            return
+        }
+        if(mistakes.value!! >= 4){
+            gameLostLiveData.postValue(true)
         }
     }
 
@@ -86,10 +101,15 @@ class SudokuGame {
                 value = number,
                 isCorrectOrEmpty = correctCells[cellIndex].value == number
             )
+            if(correctCells[cellIndex].value != number){
+                Log.d("SudokuGame", "Mistake made")
+                mistakes.postValue(mistakes.value!! + 1)
+            }
         }
 
         board = board.copy(cells = newCells)
         checkWin()
+        checkLoss()
         _cellsFlow.value = board.cells
     }
 

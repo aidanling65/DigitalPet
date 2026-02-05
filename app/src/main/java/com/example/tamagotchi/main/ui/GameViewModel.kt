@@ -6,7 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkManager
-import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModel
+import com.example.tamagotchi.intelligence.IntelligenceGame
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.MAX_FITNESS
 import com.example.tamagotchi.main.data.model.TamagotchiState
@@ -29,7 +29,6 @@ import kotlin.random.Random
 
 class GameViewModel(
     application: Application,
-    val sudokuViewModel: SudokuViewModel,
     val repository: TamagotchiRepository
 ) : AndroidViewModel(application) {
 
@@ -63,6 +62,7 @@ class GameViewModel(
     private val _showEatingAnimation = MutableStateFlow(0)
     val showEatingAnimation: StateFlow<Int> = _showEatingAnimation.asStateFlow()
 
+    private var currentIntelligence: IntelligenceGame? = null
 
     private val gameLogicManager = GameLogicManager()
     private val stepDb = StepDatabase.getDatabase(getApplication())
@@ -71,10 +71,10 @@ class GameViewModel(
     init {
         viewModelScope.launch {
             repository.tamagotchiStateFlow.collect { state ->
-                if(state.initial){
+                if (state.initial) {
                     _showStartup.value = true
                 }
-                _tamagotchiState.value = state.copy(loading=false)
+                _tamagotchiState.value = state.copy(loading = false)
             }
         }
 
@@ -107,7 +107,7 @@ class GameViewModel(
     }
 
     fun feed() {
-        if(showEatingAnimation.value > 0){
+        if (showEatingAnimation.value > 0) {
             return
         }
         if (tamagotchiState.value.ageStage != AgeStage.DEAD && tamagotchiState.value.ageStage != AgeStage.EGG && !tamagotchiState.value.sleeping && !tamagotchiState.value.paused) {
@@ -137,28 +137,37 @@ class GameViewModel(
         _showGame.value = false
     }
 
-    private fun launchNonogram(){
+    private fun launchNonogram() {
+        currentIntelligence = IntelligenceGame.NONOGRAM
         _showNonogram.value = true
     }
 
     private fun launchSudoku() {
-        sudokuViewModel.sudokuGame.fetchNewSudoku()
+        currentIntelligence = IntelligenceGame.SUDOKU
         _showSudoku.value = true
     }
 
-    fun onLaunchIntelligence(){
-        val gameChoice = Random.nextInt(0, 2)
-        when(gameChoice){
-            0 -> launchSudoku()
-            1 -> launchNonogram()
+    fun onLaunchIntelligence() {
+        when (currentIntelligence) {
+            IntelligenceGame.SUDOKU -> launchSudoku()
+            IntelligenceGame.NONOGRAM -> launchNonogram()
+            else -> {
+                val gameChoice = Random.nextInt(0, 2)
+                when (gameChoice) {
+                    0 -> launchSudoku()
+                    1 -> launchNonogram()
+                }
+            }
         }
     }
 
-    fun showWinScreen(){
+    fun showWinScreen() {
+        currentIntelligence = null
         _showWinScreen.value = true
     }
 
-    fun showLossScreen(){
+    fun showLossScreen() {
+        currentIntelligence = null
         _showLossScreen.value = true
     }
 
@@ -222,12 +231,16 @@ class GameViewModel(
     }
 
     fun checkEvolve() {
-        if(tamagotchiState.value.ageStage.stageLength == null){
+        if (tamagotchiState.value.ageStage.stageLength == null) {
             return
         }
 
         val currentTime = LocalDateTime.now()
-        if (Duration.between(currentTime, tamagotchiState.value.lastEvolve) >= tamagotchiState.value.ageStage.stageLength) {
+        if (Duration.between(
+                currentTime,
+                tamagotchiState.value.lastEvolve
+            ) >= tamagotchiState.value.ageStage.stageLength
+        ) {
             createSingleWorker<EvolutionWork>(
                 getApplication(),
                 Duration.ZERO,
@@ -276,6 +289,7 @@ class GameViewModel(
     fun updateWakeTime(wakeTime: LocalTime) {
         updateAndSave { it.copy(wakeTime = wakeTime) }
     }
+
     fun setupNewGame() {
         _showStartup.value = false
         _showResetDialog.value = false

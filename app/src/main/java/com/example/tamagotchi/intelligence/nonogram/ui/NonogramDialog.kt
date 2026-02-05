@@ -1,15 +1,12 @@
-package com.example.tamagotchi.intelligence.nonogram
+package com.example.tamagotchi.intelligence.nonogram.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,22 +19,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.FilterQuality
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tamagotchi.R
+import com.example.tamagotchi.intelligence.MistakeMeter
 import com.example.tamagotchi.intelligence.PuzzleLossDialog
 import com.example.tamagotchi.intelligence.PuzzleWinDialog
+import com.example.tamagotchi.intelligence.nonogram.NonogramView
+import com.example.tamagotchi.intelligence.nonogram.NonogramViewModel
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
 
 @Composable
 fun NonogramDialog(
     tamagotchiState: TamagotchiState,
+    nonogramViewModel: NonogramViewModel,
     showWin: Boolean,
     onWin: () -> Unit,
     showLoss: Boolean,
@@ -45,9 +43,7 @@ fun NonogramDialog(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val nonogram = remember {
-        NonogramBoard(10, 10, 0.6f)
-    }
+    val nonogram = nonogramViewModel.nonogramGame
     var blocking by remember { mutableStateOf(false) }
 
     LaunchedEffect(nonogram.won.value) {
@@ -78,7 +74,6 @@ fun NonogramDialog(
         ) { onDismissRequest() }
     }
 
-    val bitmap = ImageBitmap.imageResource(R.drawable.heart)
     Column(
         modifier
             .clip(RoundedCornerShape(10))
@@ -96,26 +91,9 @@ fun NonogramDialog(
         )
 
         TamagotchiDisplay(tamagotchiState, modifier = Modifier.weight(0.1f))
-        Row(
-            modifier = Modifier
-                .padding(8.dp),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            repeat(5 - nonogram.mistakes.value) {
-                Image(
-                    bitmap = bitmap,
-                    contentDescription = "lives",
-                    contentScale = ContentScale.FillBounds,
-                    filterQuality = FilterQuality.None,
-                    modifier = Modifier
-                        .size(32.dp)
-                        .padding(4.dp)
-                )
-            }
-        }
+        MistakeMeter(nonogram.mistakes.value, 5)
         NonogramView(nonogram, modifier = Modifier.weight(0.5f), blocking)
-        BottomButtons(blocking) {blocking = !blocking}
+        BottomButtons(blocking) { blocking = !blocking }
         Spacer(modifier = Modifier.weight(0.05f))
     }
 }
@@ -124,5 +102,6 @@ fun NonogramDialog(
 @Preview(showBackground = true)
 @Composable
 fun NonogramDialogPreview() {
-    NonogramDialog(TamagotchiState(), false, {}, false, {}, {})
+    val nonogramViewModel: NonogramViewModel = viewModel()
+    NonogramDialog(TamagotchiState(), nonogramViewModel,true, {}, false, {}, {})
 }
