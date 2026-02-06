@@ -6,10 +6,15 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkManager
+import com.example.tamagotchi.data_logging.TamagotchiDatabase
+import com.example.tamagotchi.data_logging.TamagotchiHistory
+import com.example.tamagotchi.data_logging.TamagotchiHistoryRepository
 import com.example.tamagotchi.intelligence.IntelligenceDifficulty
 import com.example.tamagotchi.intelligence.IntelligenceGame
+import com.example.tamagotchi.intelligence.PuzzleGames
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.MAX_FITNESS
+import com.example.tamagotchi.main.data.model.MAX_HUNGER
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
 import com.example.tamagotchi.main.domain.logic.GameLogicManager
@@ -17,6 +22,7 @@ import com.example.tamagotchi.main.domain.workers.evolution.EvolutionWork
 import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
 import com.example.tamagotchi.main.domain.workers.utils.scheduleEvolutionWork
 import com.example.tamagotchi.minigames.GameDifficulty
+import com.example.tamagotchi.minigames.Minigames
 import com.example.tamagotchi.step_tracker.repository.StepDatabase
 import com.example.tamagotchi.step_tracker.repository.StepRepository
 import kotlinx.coroutines.delay
@@ -70,6 +76,11 @@ class GameViewModel(
     private val stepDb = StepDatabase.getDatabase(getApplication())
     private val stepRepository = StepRepository(stepDb.stepsDao())
 
+    private val historyDb = TamagotchiDatabase.getDatabase(getApplication())
+    private val historyRepository = TamagotchiHistoryRepository(historyDb.historyDao())
+
+    private var tempHistory: TamagotchiHistory? = null
+
     init {
         viewModelScope.launch {
             repository.tamagotchiStateFlow.collect { state ->
@@ -118,6 +129,11 @@ class GameViewModel(
     }
 
     fun onEatingAnimationFinished() {
+        if (tamagotchiState.value.hunger < MAX_HUNGER) {
+            tempHistory?.timesFed++
+        }
+
+        updateAndSave { gameLogicManager.feed(it) }
         updateAndSave { gameLogicManager.feed(it) }
         _showEatingAnimation.value = 0
     }
@@ -131,8 +147,12 @@ class GameViewModel(
         }
     }
 
-    fun gameScore(score: Int) {
+    fun gameScore(score: Int, game: Minigames) {
         updateAndSave { gameLogicManager.play(it, score) }
+        when(game) {
+            Minigames.JUMP -> tempHistory?.timesJumpPlayed++
+            Minigames.FLAPPY -> tempHistory?.timesFlappyPlayed++
+        }
     }
 
     fun onDismissGame() {
@@ -181,12 +201,17 @@ class GameViewModel(
         _showLossScreen.value = false
     }
 
-    fun learning() {
+    fun learning(puzzle: PuzzleGames) {
         updateAndSave { gameLogicManager.learning(it) }
+        when(puzzle){
+            PuzzleGames.SUDOKU -> tempHistory?.sudokusSolved++
+            PuzzleGames.NONOGRAM -> tempHistory?.nonogramsSolved++
+        }
     }
 
     fun clean() {
         updateAndSave { gameLogicManager.clean(it) }
+        tempHistory?.timesCleaned++
     }
 
     fun heal() {
@@ -290,11 +315,11 @@ class GameViewModel(
         updateAndSave { it.copy(wakeTime = wakeTime) }
     }
 
-    fun updatePuzzleDifficulty(difficulty: IntelligenceDifficulty){
+    fun updatePuzzleDifficulty(difficulty: IntelligenceDifficulty) {
         updateAndSave { it.copy(puzzleDifficulty = difficulty) }
     }
 
-    fun updateGameDifficulty(difficulty: GameDifficulty){
+    fun updateGameDifficulty(difficulty: GameDifficulty) {
         updateAndSave { it.copy(gameDifficulty = difficulty) }
     }
 
@@ -309,6 +334,26 @@ class GameViewModel(
                 )
             }
             scheduleEvolutionWork(getApplication(), tamagotchiState.value)
+        }
+    }
+
+    suspend fun fetchHistory() {
+        val latestHistory = historyRepository.getLatest() ?: TamagotchiHistory()
+        tempHistory = latestHistory.copy(
+            id = 0,
+            gameOpened = LocalTime.now().toString(),
+            ageStage = tamagotchiState.value.ageStage,
+            evolution = tamagotchiState.value.animations,
+            age = tamagotchiState.value.age,
+        )
+        Log.d("GameViewModel", "Fetched history $tempHistory")
+    }
+
+    suspend fun uploadHistory() {
+        tempHistory?.let {
+            it.gameClosed = LocalTime.now().toString()
+            Log.d("GameViewModel", "Uploading history $it")
+            historyRepository.storeHistory(it)
         }
     }
 }

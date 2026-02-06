@@ -20,6 +20,7 @@ import com.example.tamagotchi.main.utils.cancelNotifications
 import com.example.tamagotchi.main.utils.createNotificationChannel
 import com.example.tamagotchi.step_tracker.StepCounterWorker
 import com.example.tamagotchi.theme.TamagotchiTheme
+import kotlinx.coroutines.runBlocking
 import java.time.Duration
 
 
@@ -73,12 +74,18 @@ class MainActivity : ComponentActivity() {
     override fun onResume(){
         super.onResume()
         cancelNotifications(applicationContext)
+        runBlocking {
+            gameViewModel.fetchHistory()
+        }
     }
 
 
     override fun onStop(){
         super.onStop()
         cancelNotifications(applicationContext)
+        runBlocking {
+            gameViewModel.uploadHistory()
+        }
     }
 
 }

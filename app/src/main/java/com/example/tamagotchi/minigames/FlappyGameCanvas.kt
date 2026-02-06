@@ -108,6 +108,7 @@ fun FlappyGameCanvas(
         while (true) {
             if (isGameOver) {
                 gameScore(score)
+                delay(500L)
                 return@LaunchedEffect
             }
             player.move()

@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.tamagotchi.intelligence.PuzzleGames
 import com.example.tamagotchi.intelligence.nonogram.NonogramViewModel
 import com.example.tamagotchi.intelligence.nonogram.NonogramViewModelFactory
 import com.example.tamagotchi.intelligence.nonogram.ui.NonogramDialog
@@ -94,7 +95,7 @@ fun Dialogs(gameViewModel: GameViewModel) {
         ) { onDismissRequest ->
             GameDialog(
                 tamagotchiState,
-            ) { gameViewModel.gameScore(it) }
+            ) {score, game -> gameViewModel.gameScore(score,game) }
         }
 
         val puzzleModifier =
@@ -115,7 +116,7 @@ fun Dialogs(gameViewModel: GameViewModel) {
                 showWinScreen,
                 showLoss,
                 {
-                    gameViewModel.learning()
+                    gameViewModel.learning(PuzzleGames.SUDOKU)
                     gameViewModel.showWinScreen()
                     sudokuViewModel.sudokuGame.fetchNewSudoku(missingDigits)
                 },
@@ -145,7 +146,7 @@ fun Dialogs(gameViewModel: GameViewModel) {
                 showWinScreen,
                 {
                     nonogramViewModel.fetchNewNonogram()
-                    gameViewModel.learning()
+                    gameViewModel.learning(PuzzleGames.NONOGRAM)
                     gameViewModel.showWinScreen()
                 },
                 showLoss,
