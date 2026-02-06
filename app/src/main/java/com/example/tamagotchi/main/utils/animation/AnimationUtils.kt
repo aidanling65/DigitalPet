@@ -29,3 +29,15 @@ fun getAnimationFrames(context: Context, animationId: Int): List<ImageBitmap> {
     }
     return frames
 }
+
+fun getAnimationDuration(context: Context, animationId: Int): Int{
+    val animationDrawable = AppCompatResources.getDrawable(context, animationId) as? AnimationDrawable
+    if (animationDrawable == null) {
+        return 0
+    }
+    var count = 0
+    for(i in 0 until animationDrawable.numberOfFrames){
+        count += animationDrawable.getDuration(i)
+    }
+    return count
+}

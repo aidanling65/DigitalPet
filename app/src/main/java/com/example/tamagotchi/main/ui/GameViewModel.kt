@@ -197,15 +197,13 @@ class GameViewModel(
         viewModelScope.launch {
             if (tamagotchiState.value.light) {
                 updateAndSave { it.copy(lightAnimationState = 1) }
-                delay(500)
-                updateAndSave { it.copy(light = false) }
-                delay(500)
-                updateAndSave { it.copy(lightAnimationState = 0) }
+                delay(250)
+                updateAndSave { it.copy(lightAnimationState = 0, light = false) }
 
             } else {
                 updateAndSave { it.copy(lightAnimationState = 2, light = false) }
-                delay(100)
-                updateAndSave { it.copy(lightAnimationState = 3, light = true) }
+                delay(250)
+                updateAndSave { it.copy(lightAnimationState = 0, light = true) }
             }
         }
     }
