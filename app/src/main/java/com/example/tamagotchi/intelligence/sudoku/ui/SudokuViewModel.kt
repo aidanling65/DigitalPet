@@ -17,7 +17,7 @@ class SudokuViewModelFactory(private val missingDigits: Int) : ViewModelProvider
 }
 
 class SudokuViewModel(val missingDigits:Int) : ViewModel() {
-    val sudokuGame = SudokuGame()
+    var sudokuGame = SudokuGame()
 
     init{
         viewModelScope.launch {

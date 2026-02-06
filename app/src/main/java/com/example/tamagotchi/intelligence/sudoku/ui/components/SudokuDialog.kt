@@ -8,12 +8,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tamagotchi.intelligence.PuzzleLossDialog
 import com.example.tamagotchi.intelligence.PuzzleWinDialog
+import com.example.tamagotchi.intelligence.sudoku.domain.SudokuGame
 import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModel
 import com.example.tamagotchi.main.data.model.TamagotchiState
 
@@ -30,8 +34,18 @@ fun SudokuDialog(
     val isGameWon by viewModel.sudokuGame.gameWonLiveData.observeAsState(initial = false)
     val gameMistakes by viewModel.sudokuGame.mistakes.observeAsState(initial = 0)
 
+    var finishedGame by remember { mutableStateOf<SudokuGame?>(null) }
+    val solvedGame by remember(finishedGame){
+        mutableStateOf(
+            finishedGame?.copy()?.apply {
+                makeCorrect()
+            }
+        )
+    }
+
     LaunchedEffect(isGameWon) {
         if (isGameWon) {
+            finishedGame = viewModel.sudokuGame.copy()
             onWin()
         }
     }
@@ -39,14 +53,21 @@ fun SudokuDialog(
         PuzzleWinDialog(
             true,
             "Congratulations!\nYou solved the Sudoku!",
-            tamagotchiState
+            tamagotchiState,
+            { onDismissRequest() }
         ) {
-            onDismissRequest()
+            val solvedViewModel = remember(solvedGame) {
+                SudokuViewModel(viewModel.missingDigits).apply {
+                    this.sudokuGame = solvedGame!!
+                }
+            }
+            SudokuGrid(solvedViewModel) { v1, v2 -> {} }
         }
     }
 
     LaunchedEffect(gameMistakes) {
         if (gameMistakes >= tamagotchiState.puzzleDifficulty.mistakes) {
+            finishedGame = viewModel.sudokuGame.copy()
             onLoss()
         }
     }
@@ -54,8 +75,16 @@ fun SudokuDialog(
         PuzzleLossDialog(
             true,
             "Too bad\nYou failed the Sudoku!",
-            tamagotchiState
-        ) { onDismissRequest() }
+            tamagotchiState,
+            { onDismissRequest() }
+        ) {
+            val solvedViewModel = remember(solvedGame) {
+                SudokuViewModel(viewModel.missingDigits).apply {
+                    this.sudokuGame = solvedGame!!
+                }
+            }
+            SudokuGrid(solvedViewModel) { v1, v2 -> {} }
+        }
     }
 
     Box(
@@ -82,5 +111,5 @@ fun SudokuPreview() {
         showWin = true,
         showLoss = false,
         onWin = {},
-        onLoss = {}){}
+        onLoss = {}) {}
 }

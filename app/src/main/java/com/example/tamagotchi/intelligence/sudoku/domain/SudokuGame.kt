@@ -24,6 +24,21 @@ class SudokuGame {
     private lateinit var board: Board
     private lateinit var correctCells: List<Cell>
 
+    fun makeCorrect() {
+        board = board.copy(cells = correctCells)
+        _cellsFlow.value = board.cells
+    }
+
+    fun copy(): SudokuGame{
+        val newGame = SudokuGame()
+        newGame.board = this.board.copy()
+        newGame.correctCells = this.correctCells.toList()
+        newGame.selectedRow = -1
+        newGame.selectedCol = -1
+
+        return newGame
+    }
+
     fun fetchNewSudoku(missingDigits: Int) {
         val generator = SudokuGenerator()
         val (fullSolution, startingMask) = generator.generate(missingDigits)

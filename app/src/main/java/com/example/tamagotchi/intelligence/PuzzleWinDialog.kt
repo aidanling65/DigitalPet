@@ -2,8 +2,10 @@ package com.example.tamagotchi.intelligence
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -31,13 +33,14 @@ fun PuzzleWinDialog(
     visible: Boolean,
     message: String,
     tamagotchiState: TamagotchiState,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
+    correctPuzzle: @Composable () -> Unit,
 ) {
     DialogBase(visible, modifier = Modifier.zIndex(2f), onDismissRequest = onDismissRequest) {
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(10))
-                .fillMaxWidth(0.8f)
+                .fillMaxWidth(0.9f)
                 .wrapContentHeight()
                 .background(MaterialTheme.colorScheme.background)
         ) {
@@ -45,15 +48,20 @@ fun PuzzleWinDialog(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                TamagotchiDisplay(tamagotchiState)
+                TamagotchiDisplay(tamagotchiState, modifier = Modifier.weight(0.2f))
                 Text(
                     message,
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center
                 )
-                Button(onClick = onDismissRequest) {
+                Spacer(Modifier.weight(0.05f))
+                Box(Modifier.weight(0.4f)) {
+                    correctPuzzle()
+                }
+                Button(onClick = onDismissRequest, Modifier.weight(0.1f).fillMaxWidth(0.4f)) {
                     Image(
                         Icons.Default.Check,
                         contentDescription = "Check",

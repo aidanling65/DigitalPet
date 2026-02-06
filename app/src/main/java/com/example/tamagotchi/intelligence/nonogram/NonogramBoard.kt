@@ -16,7 +16,7 @@ data class NonogramBoard(
     var fillProbability: Float = 0.5f,
 ) {
     var correctCells: List<List<Boolean>> = fetchNewNonogram(fillProbability)
-    val playerCells: List<List<MutableState<Boolean>>> = List(height) { List(width) { mutableStateOf(false) } }
+    var playerCells: List<List<MutableState<Boolean>>> = List(height) { List(width) { mutableStateOf(false) } }
     val blockedCells: List<List<MutableState<Boolean>>> = List(height) { List(width) { mutableStateOf(false) } }
     val rowHints: List<List<Int>>
     val columnHints: List<List<Int>>
@@ -46,6 +46,14 @@ data class NonogramBoard(
         }
 
         return board
+    }
+
+    fun makeCorrect(){
+        playerCells = correctCells.map{
+            it.map{
+                mutableStateOf(it)
+            }
+        }
     }
 
     private fun checkWon(){

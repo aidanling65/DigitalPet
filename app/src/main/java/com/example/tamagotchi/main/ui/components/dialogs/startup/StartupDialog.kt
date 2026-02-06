@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.R
 import com.example.tamagotchi.intelligence.IntelligenceDifficulty
@@ -71,22 +72,16 @@ fun StartupDialog(
         contentAlignment = Alignment.Center
     ) {
         Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
             modifier = Modifier
                 .clip(RoundedCornerShape(10))
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
-                .padding(horizontal = 8.dp, vertical = 16.dp),
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.Center
+                .padding(horizontal = 8.dp, vertical = 16.dp)
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Spacer(modifier = Modifier.height(16.dp))
-                TamagotchiDisplay(tamagotchiState, modifier = Modifier.size(256.dp))
-                Spacer(modifier = Modifier.height(16.dp))
-            }
+            Spacer(Modifier.height(16.dp))
+            TamagotchiDisplay(tamagotchiState, modifier = Modifier.size(200.dp))
             LazyColumn {
                 item {
                     Text(
@@ -163,31 +158,40 @@ fun StartupDialog(
                         0f..difficulties.size - 1f
                     ) { gameSliderPosition = it }
                 }
-
-                item { Spacer(modifier = Modifier.height(8.dp)) }
-                item {
-                    SubmitButton(
-                        newStepGoal,
-                        onDismissRequest,
-                        {
-                            submitStepsGoal(it)
-                            val bedTime = LocalTime.of(bedTimeState.hour, bedTimeState.minute)
-                            updateBedTime(bedTime)
-
-                            val wakeTime =
-                                LocalTime.of(wakeTimeState.hour, wakeTimeState.minute)
-                            updateWakeTime(wakeTime)
-                            Log.d(
-                                "StartupDialog",
-                                "Difficulty: ${IntelligenceDifficulty.entries[puzzleSliderPosition.toInt()]}"
-                            )
-                            updatePuzzleDifficulty(IntelligenceDifficulty.entries[puzzleSliderPosition.toInt()])
-                            updateGameDifficulty(GameDifficulty.entries[gameSliderPosition.toInt()])
-                        }
-                    )
-                }
-                item { Spacer(modifier = Modifier.height(16.dp)) }
             }
+            SubmitButton(
+                newStepGoal,
+                onDismissRequest,
+                {
+                    submitStepsGoal(it)
+                    val bedTime = LocalTime.of(bedTimeState.hour, bedTimeState.minute)
+                    updateBedTime(bedTime)
+
+                    val wakeTime =
+                        LocalTime.of(wakeTimeState.hour, wakeTimeState.minute)
+                    updateWakeTime(wakeTime)
+                    Log.d(
+                        "StartupDialog",
+                        "Difficulty: ${IntelligenceDifficulty.entries[puzzleSliderPosition.toInt()]}"
+                    )
+                    updatePuzzleDifficulty(IntelligenceDifficulty.entries[puzzleSliderPosition.toInt()])
+                    updateGameDifficulty(GameDifficulty.entries[gameSliderPosition.toInt()])
+                }
+            )
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun StartupPreview() {
+    StartupDialog(
+        TamagotchiState(),
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+    )
 }

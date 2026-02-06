@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -36,6 +37,8 @@ fun NonogramGrid(
     blocking: Boolean,
     modifier: Modifier = Modifier
 ) {
+    val currentBlocking by rememberUpdatedState(blocking)
+
     LazyVerticalGrid(
         modifier = modifier
             .aspectRatio(1f)
@@ -54,7 +57,7 @@ fun NonogramGrid(
                             .coerceIn(0, nonogram.height - 1)
                         val cellIndex = row * nonogram.width + col
                         if (cellIndex != lastCellIndex) {
-                            if (blocking) {
+                            if (currentBlocking) {
                                 if (lastCellIndex == null || nonogram.blockedCells[row][col].value != nonogram.blockedCells[lastRow!!][lastCol!!].value) {
                                     nonogram.blockCell(row, col)
                                 }
@@ -76,7 +79,7 @@ fun NonogramGrid(
                             .coerceIn(0, nonogram.height - 1)
                         val cellIndex = row * nonogram.width + col
                         if (cellIndex != lastCellIndex) {
-                            if (blocking) {
+                            if (currentBlocking) {
                                 if (lastCellIndex == null || nonogram.blockedCells[row][col].value != nonogram.blockedCells[lastRow!!][lastCol!!].value) {
                                     nonogram.blockCell(row, col)
                                 }

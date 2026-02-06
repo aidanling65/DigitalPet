@@ -109,7 +109,6 @@ fun Dialogs(gameViewModel: GameViewModel) {
                 factory = SudokuViewModelFactory(missingDigits)
             )
 
-
             SudokuDialog(
                 tamagotchiState = tamagotchiState,
                 sudokuViewModel,

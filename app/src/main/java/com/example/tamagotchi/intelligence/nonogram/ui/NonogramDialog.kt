@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,6 +47,14 @@ fun NonogramDialog(
     val nonogram = nonogramViewModel.nonogramGame
     var blocking by remember { mutableStateOf(false) }
 
+    val finishedNonogram by remember(nonogram.correctCells){
+        derivedStateOf {
+            nonogram.copy().apply{
+                makeCorrect()
+            }
+        }
+    }
+
     LaunchedEffect(nonogram.won.value) {
         if (nonogram.won.value) {
             onWin()
@@ -55,9 +64,15 @@ fun NonogramDialog(
         PuzzleWinDialog(
             true,
             "Congratulations!\nYou solved the Nonogram!",
-            tamagotchiState
+            tamagotchiState,
+            { onDismissRequest() }
         ) {
-            onDismissRequest()
+            NonogramGrid(
+                finishedNonogram,
+                finishedNonogram.width,
+                finishedNonogram.height,
+                blocking
+            )
         }
     }
 
@@ -70,8 +85,16 @@ fun NonogramDialog(
         PuzzleLossDialog(
             true,
             "Too bad\nYou failed the Nonogram!",
-            tamagotchiState
-        ) { onDismissRequest() }
+            tamagotchiState,
+            {onDismissRequest()}
+        ) {
+            NonogramGrid(
+                finishedNonogram,
+                finishedNonogram.width,
+                finishedNonogram.height,
+                blocking
+            )
+        }
     }
 
     Column(
@@ -103,5 +126,5 @@ fun NonogramDialog(
 @Composable
 fun NonogramDialogPreview() {
     val nonogramViewModel: NonogramViewModel = viewModel()
-    NonogramDialog(TamagotchiState(), nonogramViewModel,true, {}, false, {}, {})
+    NonogramDialog(TamagotchiState(), nonogramViewModel, true, {}, false, {}, {})
 }
