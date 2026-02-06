@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
+import com.example.tamagotchi.data_logging.updateHistory
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
 import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
 import java.time.Duration
@@ -15,6 +16,8 @@ class StupidMistakeWork(
     private val repository = TamagotchiRepository(appContext)
 
     override suspend fun doWork(): Result {
+        var mistake = false
+
         repository.updateState {
             if (it.sleeping || it.paused) {
                 createSingleWorker<StupidMistakeWork>(
@@ -27,6 +30,7 @@ class StupidMistakeWork(
             }
 
             if (it.intelligence == 0) {
+                mistake = true
                 it.copy(
                     mentalMistakes = it.mentalMistakes + 1
                 )
@@ -34,6 +38,12 @@ class StupidMistakeWork(
 
             else{
                 it
+            }
+        }
+
+        if(mistake) {
+            updateHistory(applicationContext) {
+                it.copy(mistakesMade = it.mistakesMade + 1)
             }
         }
         return Result.success()

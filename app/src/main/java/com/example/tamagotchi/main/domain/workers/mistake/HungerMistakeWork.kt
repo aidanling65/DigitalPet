@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
+import com.example.tamagotchi.data_logging.updateHistory
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
 import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
 import java.time.Duration
@@ -15,6 +16,8 @@ class HungerMistakeWork(
     private val repository = TamagotchiRepository(appContext)
 
     override suspend fun doWork(): Result {
+        var mistake = false
+
         repository.updateState {
             if(it.paused || it.sleeping){
                 createSingleWorker<HungerMistakeWork>(
@@ -26,6 +29,7 @@ class HungerMistakeWork(
                 it
             }
             if (it.hunger == 0) {
+                mistake = true
                 it.copy(
                     physicalMistakes = it.physicalMistakes + 1
                 )
@@ -35,6 +39,11 @@ class HungerMistakeWork(
             }
         }
 
+        if(mistake) {
+            updateHistory(applicationContext) {
+                it.copy(mistakesMade = it.mistakesMade + 1)
+            }
+        }
         return Result.success()
     }
 }

@@ -122,7 +122,7 @@ fun Dialogs(gameViewModel: GameViewModel) {
                 },
                 {
                     sudokuViewModel.sudokuGame.fetchNewSudoku(missingDigits)
-                    gameViewModel.showLossScreen()
+                    gameViewModel.showLossScreen(PuzzleGames.SUDOKU)
                 },
                 onDismissRequest
             )
@@ -152,7 +152,7 @@ fun Dialogs(gameViewModel: GameViewModel) {
                 showLoss,
                 {
                     nonogramViewModel.fetchNewNonogram()
-                    gameViewModel.showLossScreen()
+                    gameViewModel.showLossScreen(PuzzleGames.NONOGRAM)
                 },
                 onDismissRequest
             )

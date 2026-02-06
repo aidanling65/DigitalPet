@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
+import com.example.tamagotchi.data_logging.updateHistory
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
 import com.example.tamagotchi.main.domain.workers.mistake.SickMistakeWork
 import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
@@ -42,6 +43,10 @@ class SickWork(
                 "sick",
                 ExistingWorkPolicy.REPLACE
             )
+
+            updateHistory(applicationContext) {
+                it.copy(timesSick = it.timesSick + 1)
+            }
         }
 
         return Result.success()

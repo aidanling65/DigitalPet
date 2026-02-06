@@ -134,7 +134,6 @@ class GameViewModel(
         }
 
         updateAndSave { gameLogicManager.feed(it) }
-        updateAndSave { gameLogicManager.feed(it) }
         _showEatingAnimation.value = 0
     }
 
@@ -188,9 +187,14 @@ class GameViewModel(
         _showWinScreen.value = true
     }
 
-    fun showLossScreen() {
+    fun showLossScreen(puzzle: PuzzleGames) {
         currentIntelligence = null
         _showLossScreen.value = true
+
+        when(puzzle){
+            PuzzleGames.SUDOKU -> tempHistory?.sudokusFailed++
+            PuzzleGames.NONOGRAM -> tempHistory?.nonogramsFailed++
+        }
     }
 
     fun onDismissIntelligence() {
@@ -216,6 +220,7 @@ class GameViewModel(
 
     fun heal() {
         updateAndSave { gameLogicManager.heal(it) }
+        tempHistory?.timesHealed++
     }
 
     fun light() {
@@ -224,22 +229,26 @@ class GameViewModel(
                 updateAndSave { it.copy(lightAnimationState = 1) }
                 delay(250)
                 updateAndSave { it.copy(lightAnimationState = 0, light = false) }
+                tempHistory?.timesLightsOut++
 
             } else {
-                updateAndSave { it.copy(lightAnimationState = 2, light = false) }
-                delay(250)
-                updateAndSave { it.copy(lightAnimationState = 0, light = true) }
+                updateAndSave { it.copy(lightAnimationState = 2, light = true) }
+                delay(400)
+                updateAndSave { it.copy(lightAnimationState = 0) }
             }
         }
+
     }
 
     fun discipline() {
         updateAndSave { gameLogicManager.discipline(it) }
+        tempHistory?.timesDisciplined++
     }
 
     fun onStartupOpen() {
         _showStartup.value = true
         _showResetDialog.value = false
+        tempHistory?.settingsUsed++
     }
 
     fun onDismissStartup() {
@@ -249,6 +258,7 @@ class GameViewModel(
 
     fun onManualClicked() {
         _showManual.value = true
+        tempHistory?.manualUsed++
     }
 
     fun onDismissManual() {
@@ -281,6 +291,7 @@ class GameViewModel(
 
     fun pauseGame() {
         updateAndSave { it.copy(paused = !it.paused) }
+        tempHistory?.pausesUsed++
     }
 
     fun onResetClicked() {
@@ -293,6 +304,7 @@ class GameViewModel(
 
     fun confirmReset() {
         _showStartup.value = true
+        tempHistory?.resets++
         updateAndSave {
             TamagotchiState()
         }

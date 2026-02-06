@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
+import com.example.tamagotchi.data_logging.updateHistory
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
 import com.example.tamagotchi.main.domain.workers.mistake.SleepMistakeWork
 import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
@@ -21,12 +22,15 @@ class SleepWork(
     override suspend fun doWork(): Result {
         val currentTime = LocalTime.now(ZoneId.systemDefault())
 
+        var slept = false
+
         repository.updateState { current ->
             val isBedTime = current.bedTime
             val isWakeTime = current.wakeTime
             val shouldBeSleeping = currentTime.isAfter(isBedTime) || currentTime.isBefore(isWakeTime)
 
             if (!current.sleeping && shouldBeSleeping) {
+                slept = true
                 attentionNotification(applicationContext, "Your tamagotchi has gone to sleep")
                 createSingleWorker<SleepMistakeWork>(
                     applicationContext,
@@ -43,6 +47,12 @@ class SleepWork(
                 light = if (!shouldBeSleeping) true else current.light,
                 sleeping = shouldBeSleeping
             )
+        }
+
+        if(slept) {
+            updateHistory(applicationContext) {
+                it.copy(timesSlept = it.timesSlept + 1)
+            }
         }
         return Result.success()
     }

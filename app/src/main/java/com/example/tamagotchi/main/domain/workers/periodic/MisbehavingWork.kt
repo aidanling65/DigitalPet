@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
+import com.example.tamagotchi.data_logging.updateHistory
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
 import com.example.tamagotchi.main.domain.workers.mistake.DisciplineMistakeWork
 import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
@@ -45,9 +46,10 @@ class MisbehavingWork(
                 "discipline_check",
                 ExistingWorkPolicy.REPLACE,
             )
+            updateHistory(applicationContext) {
+                it.copy(timesMisbehaved = it.timesMisbehaved + 1)
+            }
         }
-
-
         return Result.success()
     }
 }

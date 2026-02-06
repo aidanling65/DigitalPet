@@ -12,9 +12,9 @@ data class TamagotchiHistory(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
 
-    @ColumnInfo(name="created_at") var gameOpened: String = LocalTime.now().toString(),
+    @ColumnInfo(name = "created_at") var gameOpened: String = LocalTime.now().toString(),
 
-    @ColumnInfo(name="game_closed") var gameClosed: String = LocalTime.now().toString(),
+    @ColumnInfo(name = "game_closed") var gameClosed: String = LocalTime.now().toString(),
 
     @ColumnInfo(name = "resets") var resets: Int = 0,
     @ColumnInfo(name = "manual_used") var manualUsed: Int = 0,
@@ -23,12 +23,20 @@ data class TamagotchiHistory(
     @ColumnInfo(name = "deaths") var deaths: Int = 0,
     @ColumnInfo(name = "ageStage") var ageStage: AgeStage = AgeStage.EGG,
     @ColumnInfo(name = "evolution") var evolution: EvolutionAnimations = EvolutionAnimations.EGG,
+    @ColumnInfo(name= "evolution_count") var timesEvolved: Int = 0,
 
     @ColumnInfo(name = "age") var age: Int = 0,
     @ColumnInfo(name = "fed") var timesFed: Int = 0,
+
+    @ColumnInfo(name = "poop") var timesPooped: Int = 0,
     @ColumnInfo(name = "cleaned") var timesCleaned: Int = 0,
+
+    @ColumnInfo(name = "sick") var timesSick: Int = 0,
+    @ColumnInfo(name = "heal") var timesHealed: Int = 0,
+
     @ColumnInfo(name = "misbehaved") var timesMisbehaved: Int = 0,
     @ColumnInfo(name = "disciplined") var timesDisciplined: Int = 0,
+
     @ColumnInfo(name = "slept") var timesSlept: Int = 0,
     @ColumnInfo(name = "light") var timesLightsOut: Int = 0,
 
@@ -43,4 +51,8 @@ data class TamagotchiHistory(
 
     @ColumnInfo(name = "step_goal_hit") var stepGoalHit: Int = 0,
     @ColumnInfo(name = "step_goal_missed") var stepGoalMissed: Int = 0,
-    )
+
+    @ColumnInfo(name = "mistakes_made") var mistakesMade: Int = 0,
+
+    @ColumnInfo(name = "paused") var pausesUsed: Int = 0,
+)
