@@ -23,11 +23,13 @@ class SleepWork(
         val currentTime = LocalTime.now(ZoneId.systemDefault())
 
         var slept = false
+        var aged = false
 
         repository.updateState { current ->
             val isBedTime = current.bedTime
             val isWakeTime = current.wakeTime
-            val shouldBeSleeping = currentTime.isAfter(isBedTime) || currentTime.isBefore(isWakeTime)
+            val shouldBeSleeping =
+                currentTime.isAfter(isBedTime) || currentTime.isBefore(isWakeTime)
 
             if (!current.sleeping && shouldBeSleeping) {
                 slept = true
@@ -39,6 +41,7 @@ class SleepWork(
                     ExistingWorkPolicy.REPLACE
                 )
             } else if (current.sleeping && !shouldBeSleeping) {
+                aged = true
                 attentionNotification(applicationContext, "Your tamagotchi has awoken")
             }
 
@@ -49,10 +52,11 @@ class SleepWork(
             )
         }
 
-        if(slept) {
-            updateHistory(applicationContext) {
-                it.copy(timesSlept = it.timesSlept + 1)
-            }
+        updateHistory(applicationContext) {
+            it.copy(
+                timesSlept = if (slept) it.timesSlept + 1 else it.timesSlept,
+                age = if (aged) it.age + 1 else it.age
+            )
         }
         return Result.success()
     }

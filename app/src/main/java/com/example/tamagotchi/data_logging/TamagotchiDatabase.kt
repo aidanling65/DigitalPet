@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [TamagotchiHistory::class], version = 1, exportSchema = true)
+@Database(entities = [ActiveHistory::class, PassiveHistory::class], version = 1, exportSchema = true)
 abstract class TamagotchiDatabase: RoomDatabase() {
     abstract fun historyDao(): HistoryDao
 

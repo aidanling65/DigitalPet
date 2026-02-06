@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkManager
 import com.example.tamagotchi.data_logging.TamagotchiDatabase
-import com.example.tamagotchi.data_logging.TamagotchiHistory
+import com.example.tamagotchi.data_logging.ActiveHistory
 import com.example.tamagotchi.data_logging.TamagotchiHistoryRepository
 import com.example.tamagotchi.intelligence.IntelligenceDifficulty
 import com.example.tamagotchi.intelligence.IntelligenceGame
@@ -79,7 +79,7 @@ class GameViewModel(
     private val historyDb = TamagotchiDatabase.getDatabase(getApplication())
     private val historyRepository = TamagotchiHistoryRepository(historyDb.historyDao())
 
-    private var tempHistory: TamagotchiHistory? = null
+    private var tempHistory: ActiveHistory? = null
 
     init {
         viewModelScope.launch {
@@ -110,6 +110,10 @@ class GameViewModel(
                     updateAndSave { it.copy(steps = steps.toInt()) }
                 }
             }
+        }
+
+        viewModelScope.launch {
+            fetchHistory()
         }
     }
 
@@ -291,7 +295,9 @@ class GameViewModel(
 
     fun pauseGame() {
         updateAndSave { it.copy(paused = !it.paused) }
-        tempHistory?.pausesUsed++
+        if(tamagotchiState.value.paused) {
+            tempHistory?.pausesUsed++
+        }
     }
 
     fun onResetClicked() {
@@ -350,13 +356,10 @@ class GameViewModel(
     }
 
     suspend fun fetchHistory() {
-        val latestHistory = historyRepository.getLatest() ?: TamagotchiHistory()
+        val latestHistory = historyRepository.getLatestActive() ?: ActiveHistory()
         tempHistory = latestHistory.copy(
             id = 0,
             gameOpened = LocalTime.now().toString(),
-            ageStage = tamagotchiState.value.ageStage,
-            evolution = tamagotchiState.value.animations,
-            age = tamagotchiState.value.age,
         )
         Log.d("GameViewModel", "Fetched history $tempHistory")
     }

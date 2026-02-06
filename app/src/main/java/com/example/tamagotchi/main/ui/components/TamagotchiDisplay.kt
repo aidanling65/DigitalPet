@@ -1,6 +1,5 @@
 package com.example.tamagotchi.main.ui.components
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -64,7 +63,6 @@ fun TamagotchiDisplay(
         }
     }
 
-    Log.d("TamagotchiDisplay", "${currentState.currentAnimation} ${EvolutionAnimations.BABY.idle}")
     Box(
         modifier
             .clip(RoundedCornerShape(percent = 25))

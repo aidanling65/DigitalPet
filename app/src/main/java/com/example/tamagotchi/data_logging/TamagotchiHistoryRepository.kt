@@ -7,13 +7,23 @@ import kotlinx.coroutines.withContext
 class TamagotchiHistoryRepository(
     private val historyDao: HistoryDao
 ) {
-    suspend fun getLatest(): TamagotchiHistory? = withContext(Dispatchers.IO) {
+    suspend fun getLatestActive(): ActiveHistory? = withContext(Dispatchers.IO) {
         Log.d("History", "Fetching latest history")
-        historyDao.getAll().firstOrNull()
+        historyDao.getLatestActive()
     }
 
-    suspend fun storeHistory(history: TamagotchiHistory) = withContext(Dispatchers.IO) {
+    suspend fun getLatestPassive(): PassiveHistory? = withContext(Dispatchers.IO) {
+        Log.d("History", "Fetching latest history")
+        historyDao.getLatestPassive()
+    }
+
+    suspend fun storeHistory(history: ActiveHistory) = withContext(Dispatchers.IO) {
         Log.d("History", "Storing history: $history")
-        historyDao.insertAll(history)
+        historyDao.insert(history)
+    }
+
+    suspend fun storeHistory(history: PassiveHistory) = withContext(Dispatchers.IO) {
+        Log.d("History", "Storing history: $history")
+        historyDao.insert(history)
     }
 }

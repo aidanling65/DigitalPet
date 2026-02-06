@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
+import com.example.tamagotchi.data_logging.updateHistory
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
 import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
 import com.example.tamagotchi.main.domain.workers.utils.scheduleEssentialWorkers
@@ -21,8 +22,9 @@ class EvolutionWork(
 
     override suspend fun doWork(): Result {
         val currentTime = LocalTime.now(ZoneId.systemDefault())
+        var evolved = false
 
-        repository.updateState { state ->
+        val updatedState = repository.updateState { state ->
             if (state.sleeping) {
                 val wakeTime = state.wakeTime
                 var hoursUntilWake = ChronoUnit.HOURS.between(currentTime, wakeTime)
@@ -49,12 +51,22 @@ class EvolutionWork(
                 val updatedState = evolutionFunction(applicationContext, state)
                 Log.d("EvolutionWork", updatedState.animations.name)
                 scheduleEssentialWorkers(applicationContext, updatedState)
+                evolved = true
                 updatedState
             } else {
                 state
             }
         }
 
+        if(evolved) {
+            updateHistory(applicationContext) {
+                it.copy(
+                    ageStage = updatedState.ageStage,
+                    evolution = updatedState.animations,
+                    timesEvolved = it.timesEvolved + 1
+                )
+            }
+        }
         return Result.success()
     }
 }
