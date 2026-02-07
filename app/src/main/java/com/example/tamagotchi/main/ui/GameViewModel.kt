@@ -9,9 +9,6 @@ import androidx.work.WorkManager
 import com.example.tamagotchi.data_logging.ActiveHistory
 import com.example.tamagotchi.data_logging.TamagotchiDatabase
 import com.example.tamagotchi.data_logging.TamagotchiHistoryRepository
-import com.example.tamagotchi.data_logging.google.GoogleViewModel
-import com.example.tamagotchi.data_logging.google.InteractionType
-import com.example.tamagotchi.data_logging.google.LoadingState
 import com.example.tamagotchi.data_logging.updateHistory
 import com.example.tamagotchi.intelligence.IntelligenceDifficulty
 import com.example.tamagotchi.intelligence.IntelligenceGame
@@ -25,7 +22,6 @@ import com.example.tamagotchi.main.data.repository.TamagotchiRepository
 import com.example.tamagotchi.main.domain.logic.GameLogicManager
 import com.example.tamagotchi.main.domain.workers.evolution.EvolutionWork
 import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
-import com.example.tamagotchi.main.domain.workers.utils.scheduleEssentialWorkers
 import com.example.tamagotchi.main.domain.workers.utils.scheduleEvolutionWork
 import com.example.tamagotchi.minigames.GameDifficulty
 import com.example.tamagotchi.minigames.Minigames
@@ -86,14 +82,6 @@ class GameViewModel(
     private val historyRepository = TamagotchiHistoryRepository(historyDb.historyDao())
 
     private var tempHistory: ActiveHistory? = null
-
-    private val _loading = MutableStateFlow(LoadingState.CLOSED)
-    var loading: StateFlow<LoadingState> = _loading.asStateFlow()
-
-    private val _interactionType = MutableStateFlow(InteractionType.NONE)
-    var interactionType: StateFlow<InteractionType> = _interactionType.asStateFlow()
-
-    val googleViewModel = GoogleViewModel(application)
 
     init {
         viewModelScope.launch {
@@ -391,19 +379,6 @@ class GameViewModel(
             it.gameClosed = LocalDateTime.now().toString()
             Log.d("GameViewModel", "Uploading history $it")
             historyRepository.storeHistory(it)
-        }
-    }
-
-    fun startLoading(interactionType: InteractionType){
-        _loading.value = LoadingState.LOADING
-        _interactionType.value = interactionType
-    }
-
-    fun stopLoading(newLoadingState: LoadingState){
-        _loading.value= newLoadingState
-
-        if(interactionType.value == InteractionType.RESTORE && newLoadingState == LoadingState.SUCCESS){
-            scheduleEssentialWorkers(getApplication(), tamagotchiState.value)
         }
     }
 }

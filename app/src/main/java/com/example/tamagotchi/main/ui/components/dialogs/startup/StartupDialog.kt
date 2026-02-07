@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -26,14 +27,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.R
-import com.example.tamagotchi.data_logging.google.GoogleScreen
-import com.example.tamagotchi.data_logging.google.GoogleViewModel
-import com.example.tamagotchi.data_logging.google.InteractionType
-import com.example.tamagotchi.data_logging.google.LoadingState
+import com.example.tamagotchi.data_logging.DebugTools
 import com.example.tamagotchi.intelligence.IntelligenceDifficulty
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
@@ -44,14 +43,11 @@ import java.time.LocalTime
 @Composable
 fun StartupDialog(
     tamagotchiState: TamagotchiState,
-    googleViewModel: GoogleViewModel,
     submitStepsGoal: (Int) -> Unit,
     updateBedTime: (LocalTime) -> Unit,
     updateWakeTime: (LocalTime) -> Unit,
     updatePuzzleDifficulty: (IntelligenceDifficulty) -> Unit,
     updateGameDifficulty: (GameDifficulty) -> Unit,
-    onStartLoading: (InteractionType) -> Unit,
-    onEndLoading: (LoadingState) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
     var newStepGoal by remember { mutableIntStateOf(tamagotchiState.stepGoal) }
@@ -69,6 +65,9 @@ fun StartupDialog(
 
     var puzzleSliderPosition by remember { mutableFloatStateOf(tamagotchiState.puzzleDifficulty.ordinal.toFloat()) }
     var gameSliderPosition by remember { mutableFloatStateOf(tamagotchiState.gameDifficulty.ordinal.toFloat()) }
+
+    val context = LocalContext.current
+    val debugTools = DebugTools(context)
 
     Box(
         Modifier
@@ -89,7 +88,9 @@ fun StartupDialog(
             TamagotchiDisplay(tamagotchiState, modifier = Modifier.weight(0.2f))
             LazyColumn(Modifier.weight(0.6f)) {
                 item {
-                    GoogleScreen(googleViewModel, onStartLoading, onEndLoading)
+                    Button(onClick = { debugTools.exportDataForSharing() }) {
+                        Text("Export Data")
+                    }
                 }
 
                 item {
@@ -147,7 +148,7 @@ fun StartupDialog(
                     val difficulties = IntelligenceDifficulty.entries
                     SliderCustom(
                         puzzleSliderPosition,
-                        difficulties.size - 1,
+                        difficulties.size - 2,
                         0f..difficulties.size - 1f
                     ) { puzzleSliderPosition = it }
                 }
@@ -163,7 +164,7 @@ fun StartupDialog(
                     val difficulties = GameDifficulty.entries
                     SliderCustom(
                         gameSliderPosition,
-                        difficulties.size - 1,
+                        difficulties.size - 2,
                         0f..difficulties.size - 1f
                     ) { gameSliderPosition = it }
                 }

@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.tamagotchi.data_logging.google.LoadingState
 import com.example.tamagotchi.intelligence.PuzzleGames
 import com.example.tamagotchi.intelligence.nonogram.NonogramViewModel
 import com.example.tamagotchi.intelligence.nonogram.NonogramViewModelFactory
@@ -38,8 +37,6 @@ fun Dialogs(gameViewModel: GameViewModel) {
     val showWinScreen by gameViewModel.showWinScreen.collectAsState()
     val showLoss by gameViewModel.showLossScreen.collectAsState()
     val showManual by gameViewModel.showManual.collectAsState()
-    val loadingState by gameViewModel.loading.collectAsState()
-    val interactionType by gameViewModel.interactionType.collectAsState()
 
     val startupDismiss = {
         if (tamagotchiState.initial) {
@@ -54,22 +51,6 @@ fun Dialogs(gameViewModel: GameViewModel) {
             .background(Color.Transparent)
     ) {
         DialogBase(
-            loadingState != LoadingState.CLOSED,
-            onDismissRequest = {
-                gameViewModel.stopLoading(
-                    LoadingState.CLOSED
-                )
-            },
-            properties = DialogProperties(
-                dismissOnBackPress = loadingState != LoadingState.LOADING,
-                dismissOnClickOutside = loadingState != LoadingState.LOADING,
-                usePlatformDefaultWidth = false
-            )
-        ) { onDismissRequest ->
-            LoadingDialog(loadingState,interactionType, onDismissRequest = onDismissRequest)
-        }
-
-        DialogBase(
             showStartup, onDismissRequest = { startupDismiss() },
             properties = DialogProperties(
                 dismissOnBackPress = !tamagotchiState.initial,
@@ -79,14 +60,11 @@ fun Dialogs(gameViewModel: GameViewModel) {
         ) { onDismissRequest ->
             StartupDialog(
                 tamagotchiState,
-                gameViewModel.googleViewModel,
                 { gameViewModel.submitStepsGoal(it) },
                 { gameViewModel.updateBedTime(it) },
                 { gameViewModel.updateWakeTime(it) },
                 { gameViewModel.updatePuzzleDifficulty(it) },
                 { gameViewModel.updateGameDifficulty(it) },
-                { gameViewModel.startLoading(it) },
-                { gameViewModel.stopLoading(it) },
                 onDismissRequest = onDismissRequest,
             )
         }

@@ -3,32 +3,37 @@ package com.example.tamagotchi.main.domain.workers.utils
 import android.content.Context
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
-import com.example.tamagotchi.main.domain.workers.periodic.HungerDecayWork
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.domain.workers.baby.BabyHungerHappinessWork
 import com.example.tamagotchi.main.domain.workers.baby.BabyPoopWork
 import com.example.tamagotchi.main.domain.workers.baby.BabySickWork
 import com.example.tamagotchi.main.domain.workers.baby.BabySleepWork
+import com.example.tamagotchi.main.domain.workers.evolution.EvolutionWork
 import com.example.tamagotchi.main.domain.workers.periodic.BrainrotWork
 import com.example.tamagotchi.main.domain.workers.periodic.DeathWork
 import com.example.tamagotchi.main.domain.workers.periodic.FitnessWork
 import com.example.tamagotchi.main.domain.workers.periodic.HappinessDecayWork
+import com.example.tamagotchi.main.domain.workers.periodic.HungerDecayWork
 import com.example.tamagotchi.main.domain.workers.periodic.MisbehavingWork
 import com.example.tamagotchi.main.domain.workers.periodic.PoopWork
 import com.example.tamagotchi.main.domain.workers.periodic.SickWork
 import com.example.tamagotchi.main.domain.workers.periodic.SleepWork
 import com.example.tamagotchi.step_tracker.StepCounterWorker
 import java.time.Duration
-import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.ZoneId
 
-fun scheduleEssentialWorkers(context: Context, currentState: TamagotchiState, policy: ExistingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.REPLACE){
+fun scheduleEssentialWorkers(
+    context: Context,
+    currentState: TamagotchiState,
+    policy: ExistingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.REPLACE
+) {
 
     scheduleEvolutionWork(context, currentState)
 
-    when(currentState.ageStage){
+    when (currentState.ageStage) {
         AgeStage.EGG -> return
         AgeStage.DEAD -> return
         AgeStage.BABY -> {
@@ -63,11 +68,28 @@ fun scheduleEssentialWorkers(context: Context, currentState: TamagotchiState, po
                 "step_worker",
                 policy
             )
+            scheduleEvolutionWork(context, currentState)
         }
+
         else -> {
-            val now = Instant.now()
-            val midnightTonight = LocalDate.now(ZoneId.systemDefault()).plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant()
+            val now = LocalDateTime.now()
+            val midnightTonight = LocalDate.now(ZoneId.systemDefault()).plusDays(1)
+                .atStartOfDay(ZoneId.systemDefault()).toInstant()
             val initialDelay = Duration.between(now, midnightTonight)
+
+            val lastEvolution = currentState.lastEvolve
+
+            if (currentState.ageStage.stageLength != null) {
+                val sinceEvolution = Duration.between(lastEvolution, now)
+                val evolveTime = currentState.ageStage.stageLength - sinceEvolution
+
+                createSingleWorker<EvolutionWork>(
+                    context,
+                    evolveTime,
+                    "evolve",
+                    ExistingWorkPolicy.REPLACE
+                )
+            }
 
             createPeriodicWorker<PoopWork>(
                 context,
