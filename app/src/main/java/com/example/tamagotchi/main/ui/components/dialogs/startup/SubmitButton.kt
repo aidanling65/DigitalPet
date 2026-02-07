@@ -18,10 +18,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun SubmitButton(newStepGoal: Int, onDismissRequest: () -> Unit, submitSteps: (Int) -> Unit){
+fun SubmitButton(newStepGoal: Int, modifier:Modifier=Modifier, onDismissRequest: () -> Unit, submitSteps: (Int) -> Unit){
     Row(
         horizontalArrangement = Arrangement.Center,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .fillMaxHeight()
     ) {

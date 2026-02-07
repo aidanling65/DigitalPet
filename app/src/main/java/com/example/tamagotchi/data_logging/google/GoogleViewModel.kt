@@ -23,9 +23,9 @@ class GoogleViewModel(application: Application) : AndroidViewModel(application) 
 
     }
 
-    fun backup(){
+    fun backup(onFinish:(LoadingState) -> Unit){
         viewModelScope.launch {
-            backupManager?.backupData()
+            backupManager?.backupData(onFinish)
         }
     }
 

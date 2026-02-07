@@ -15,7 +15,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Scope
 
 @Composable
-fun GoogleSignInField(onSignInSuccess: (GoogleSignInAccount) -> Unit) {
+fun GoogleSignInField(onStart:(InteractionType)->Unit, onSignInSuccess: (GoogleSignInAccount) -> Unit) {
     val context = LocalContext.current
     val googleSignInClient = remember {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -49,6 +49,7 @@ fun GoogleSignInField(onSignInSuccess: (GoogleSignInAccount) -> Unit) {
     Log.d("GoogleSignIn", "$launcher")
 
     Button(onClick = {
+        onStart(InteractionType.LOGIN)
         launcher.launch(googleSignInClient.signInIntent)
     }) {
         Text("Sign in with Google")

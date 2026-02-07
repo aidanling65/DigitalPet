@@ -30,10 +30,6 @@ class DriveService(context: Context, googleAccount: GoogleSignInAccount) {
     suspend fun uploadFile(localFile: File, remoteFileName: String) {
         withContext(Dispatchers.IO) {
             try {
-                val fileMetadata = com.google.api.services.drive.model.File().apply {
-                    name = remoteFileName
-                    parents = listOf("appDataFolder")
-                }
                 val mediaContent = FileContent("application/octet-stream", localFile)
 
                 val fileList = drive.files().list()
@@ -43,11 +39,19 @@ class DriveService(context: Context, googleAccount: GoogleSignInAccount) {
                     .execute()
 
                 if (fileList.files.isEmpty()) {
+                    val fileMetadata = com.google.api.services.drive.model.File().apply {
+                        name = remoteFileName
+                        parents=listOf("appDataFolder")
+                    }
                     drive.files().create(fileMetadata, mediaContent).execute()
                     Log.d("DriveService", "Uploaded new file: $remoteFileName")
                 } else {
                     val fileId = fileList.files[0].id
+                    val fileMetadata = com.google.api.services.drive.model.File().apply {
+                        name = remoteFileName
+                    }
                     drive.files().update(fileId, fileMetadata, mediaContent).execute()
+                    Log.d("DriveService", "Updated existing file: $remoteFileName")
                 }
             } catch (e: IOException) {
                 Log.e("DriveService", "File upload failed for $remoteFileName", e)

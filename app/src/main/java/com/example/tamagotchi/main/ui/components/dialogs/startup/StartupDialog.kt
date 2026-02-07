@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -33,6 +32,8 @@ import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.R
 import com.example.tamagotchi.data_logging.google.GoogleScreen
 import com.example.tamagotchi.data_logging.google.GoogleViewModel
+import com.example.tamagotchi.data_logging.google.InteractionType
+import com.example.tamagotchi.data_logging.google.LoadingState
 import com.example.tamagotchi.intelligence.IntelligenceDifficulty
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
@@ -49,6 +50,8 @@ fun StartupDialog(
     updateWakeTime: (LocalTime) -> Unit,
     updatePuzzleDifficulty: (IntelligenceDifficulty) -> Unit,
     updateGameDifficulty: (GameDifficulty) -> Unit,
+    onStartLoading: (InteractionType) -> Unit,
+    onEndLoading: (LoadingState) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
     var newStepGoal by remember { mutableIntStateOf(tamagotchiState.stepGoal) }
@@ -83,10 +86,10 @@ fun StartupDialog(
                 .padding(horizontal = 8.dp, vertical = 16.dp)
         ) {
             Spacer(Modifier.height(16.dp))
-            TamagotchiDisplay(tamagotchiState, modifier = Modifier.size(200.dp))
-            LazyColumn {
+            TamagotchiDisplay(tamagotchiState, modifier = Modifier.weight(0.2f))
+            LazyColumn(Modifier.weight(0.6f)) {
                 item {
-                    GoogleScreen(googleViewModel)
+                    GoogleScreen(googleViewModel, onStartLoading, onEndLoading)
                 }
 
                 item {
@@ -167,23 +170,23 @@ fun StartupDialog(
             }
             SubmitButton(
                 newStepGoal,
+                Modifier.weight(0.1f),
                 onDismissRequest,
-                {
-                    submitStepsGoal(it)
-                    val bedTime = LocalTime.of(bedTimeState.hour, bedTimeState.minute)
-                    updateBedTime(bedTime)
+            ) {
+                submitStepsGoal(it)
+                val bedTime = LocalTime.of(bedTimeState.hour, bedTimeState.minute)
+                updateBedTime(bedTime)
 
-                    val wakeTime =
-                        LocalTime.of(wakeTimeState.hour, wakeTimeState.minute)
-                    updateWakeTime(wakeTime)
-                    Log.d(
-                        "StartupDialog",
-                        "Difficulty: ${IntelligenceDifficulty.entries[puzzleSliderPosition.toInt()]}"
-                    )
-                    updatePuzzleDifficulty(IntelligenceDifficulty.entries[puzzleSliderPosition.toInt()])
-                    updateGameDifficulty(GameDifficulty.entries[gameSliderPosition.toInt()])
-                }
-            )
+                val wakeTime =
+                    LocalTime.of(wakeTimeState.hour, wakeTimeState.minute)
+                updateWakeTime(wakeTime)
+                Log.d(
+                    "StartupDialog",
+                    "Difficulty: ${IntelligenceDifficulty.entries[puzzleSliderPosition.toInt()]}"
+                )
+                updatePuzzleDifficulty(IntelligenceDifficulty.entries[puzzleSliderPosition.toInt()])
+                updateGameDifficulty(GameDifficulty.entries[gameSliderPosition.toInt()])
+            }
         }
     }
 }

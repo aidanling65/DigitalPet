@@ -17,7 +17,7 @@ class BackupManager(
     private val database: TamagotchiDatabase,
     private val dataStore: DataStore<Preferences>
 ) {
-    suspend fun backupData(){
+    suspend fun backupData(onFinish:(LoadingState) -> Unit){
         Log.d("BackupManager", "Starting data backup...")
 
         val dbFile = context.getDatabasePath("tamagotchi_database")
@@ -31,6 +31,7 @@ class BackupManager(
             TamagotchiDatabase.Companion.getDatabase(context)
         } else{
             Log.w("BackupManager", "Database file not found for backup.")
+            onFinish(LoadingState.FAILED)
         }
 
         dataStore.data.first()
@@ -39,8 +40,10 @@ class BackupManager(
             driveService.uploadFile(prefsFile, PREFERENCES_REMOTE_NAME)
         } else{
             Log.w("BackupManager", "Preferences file not found for backup.")
-
+            onFinish(LoadingState.FAILED)
         }
+
+        onFinish(LoadingState.SUCCESS)
     }
 
     suspend fun restoreData(): Boolean{
