@@ -9,10 +9,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
+import com.example.tamagotchi.data_logging.DebugTools
 
 @Composable
 fun GoogleScreen(viewModel: GoogleViewModel){
     val context = LocalContext.current
+    val debugTools = DebugTools(context)
+
 
     LaunchedEffect(Unit) {
         viewModel.restartRequired.collect { needsRestart ->
@@ -32,6 +35,9 @@ fun GoogleScreen(viewModel: GoogleViewModel){
         }
         Button(onClick={viewModel.restore()}){
             Text("Restore Data")
+        }
+        Button(onClick={debugTools.exportDataForSharing()}){
+            Text("Export Data")
         }
     }
 }
