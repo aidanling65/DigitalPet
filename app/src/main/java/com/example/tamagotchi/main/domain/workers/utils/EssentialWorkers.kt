@@ -19,6 +19,7 @@ import com.example.tamagotchi.main.domain.workers.periodic.MisbehavingWork
 import com.example.tamagotchi.main.domain.workers.periodic.PoopWork
 import com.example.tamagotchi.main.domain.workers.periodic.SickWork
 import com.example.tamagotchi.main.domain.workers.periodic.SleepWork
+import com.example.tamagotchi.main.domain.workers.periodic.StepGoalWork
 import com.example.tamagotchi.step_tracker.StepCounterWorker
 import java.time.Duration
 import java.time.LocalDate
@@ -145,6 +146,13 @@ fun scheduleEssentialWorkers(
                 Duration.ofMinutes(5),
                 Duration.ofMinutes(15),
                 "step_worker",
+                policy
+            )
+            createPeriodicWorker<StepGoalWork>(
+                context,
+                initialDelay,
+                Duration.ofHours(24),
+                "step_goal",
                 policy
             )
             createPeriodicWorker<FitnessWork>(

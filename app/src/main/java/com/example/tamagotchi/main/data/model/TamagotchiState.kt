@@ -25,8 +25,8 @@ data class TamagotchiState(
     val fitness: Int = 2,
     val stepGoal: Int = 10_000,
     val steps: Int = 0,
-    val dailyStepBaseline: Int? = null,
-    val resetSteps: Boolean = false,
+    val stepGoalHit: Boolean = false,
+    val stepGoal2Hit: Boolean = false,
 
     val discipline: Int = 0,
     val intelligence: Int = 0,

@@ -97,18 +97,27 @@ class GameViewModel(
             stepRepository.loadTodaysSteps().collect { steps ->
                 Log.d("Steps", "Loaded steps: $steps")
                 val stepGoal = tamagotchiState.value.stepGoal
-                if (tamagotchiState.value.steps < stepGoal && steps > stepGoal) {
+                if (steps > stepGoal && !tamagotchiState.value.stepGoalHit) {
                     updateAndSave {
                         val updatedFitness = (it.fitness + 1).coerceAtMost(MAX_FITNESS)
                         it.copy(
                             steps = steps.toInt(),
                             fitness = updatedFitness,
+                            stepGoalHit = true,
                             physicalMistakes = if (updatedFitness == MAX_FITNESS) (it.physicalMistakes - 1).coerceAtLeast(
                                 0
                             ) else it.physicalMistakes
                         )
                     }
-                } else {
+                } else if(steps > stepGoal * 1.5 && !tamagotchiState.value.stepGoal2Hit) {
+                    updateAndSave { it.copy(
+                        steps = steps.toInt(),
+                        stepGoal2Hit = true,
+                        physicalMistakes = if (it.fitness == MAX_FITNESS) (it.physicalMistakes - 1).coerceAtLeast(
+                            0
+                        ) else it.fitness
+                    ) }
+                }else{
                     updateAndSave { it.copy(steps = steps.toInt()) }
                 }
             }

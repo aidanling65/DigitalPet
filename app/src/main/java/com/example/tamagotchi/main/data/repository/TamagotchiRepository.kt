@@ -32,11 +32,10 @@ class TamagotchiRepository(private val context: Context) {
     private val INTELLIGENCE = intPreferencesKey("intelligence")
 
     private val STEPS = intPreferencesKey("steps")
-    private val RESET_STEPS = booleanPreferencesKey("reset_steps")
-    private val DAILY_STEP_BASELINE = intPreferencesKey("daily_step_baseline")
     private val FITNESS = intPreferencesKey("fitness")
     private val STEP_GOAL = intPreferencesKey("step_goal")
-
+    private val STEP_GOAL_HIT = booleanPreferencesKey("step_goal_hit")
+    private val STEP_GOAL_2_HIT = booleanPreferencesKey("step_goal_2_hit")
 
     private val LIGHT = booleanPreferencesKey("light")
     private val LIGHT_STATE = intPreferencesKey("light_state")
@@ -70,10 +69,10 @@ class TamagotchiRepository(private val context: Context) {
             hunger = prefs[HUNGER] ?: defaultState.hunger,
             happiness = prefs[HAPPINESS] ?: defaultState.happiness,
             steps = prefs[STEPS] ?: defaultState.steps,
-            resetSteps = prefs[RESET_STEPS] ?: defaultState.resetSteps,
-            dailyStepBaseline = prefs[DAILY_STEP_BASELINE] ?: defaultState.dailyStepBaseline,
             fitness = prefs[FITNESS] ?: defaultState.fitness,
             stepGoal = prefs[STEP_GOAL] ?: defaultState.stepGoal,
+            stepGoalHit = prefs[STEP_GOAL_HIT] ?: defaultState.stepGoalHit,
+            stepGoal2Hit = prefs[STEP_GOAL_2_HIT] ?: defaultState.stepGoal2Hit,
             discipline = prefs[DISCIPLINE] ?: defaultState.discipline,
             intelligence = prefs[INTELLIGENCE] ?: defaultState.intelligence,
             light = prefs[LIGHT] ?: defaultState.light,
@@ -131,15 +130,10 @@ class TamagotchiRepository(private val context: Context) {
         updated[HUNGER] = current.hunger
         updated[HAPPINESS] = current.happiness
         updated[STEPS] = current.steps
-        updated[RESET_STEPS] = current.resetSteps
-        val baseline = current.dailyStepBaseline
-        if (baseline != null) {
-            updated[DAILY_STEP_BASELINE] = baseline
-        } else {
-            updated.remove(DAILY_STEP_BASELINE)
-        }
         updated[FITNESS] = current.fitness
         updated[STEP_GOAL] = current.stepGoal
+        updated[STEP_GOAL_HIT] = current.stepGoalHit
+        updated[STEP_GOAL_2_HIT] = current.stepGoal2Hit
         updated[DISCIPLINE] = current.discipline
         updated[INTELLIGENCE] = current.intelligence
         updated[LIGHT] = current.light
