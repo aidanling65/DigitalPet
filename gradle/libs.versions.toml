@@ -19,6 +19,7 @@ ksp = "2.0.21-1.0.28"
 foundationLayoutVersion = "1.10.1"
 lifecycleViewmodelCompose = "2.10.0"
 lifecycleViewmodelKtx = "2.8.2"
+playServicesAuth = "21.5.0"
 roomKtx = "2.6.1"
 roomRuntime = "2.8.4"
 runtimeLivedata = "1.10.1"
@@ -57,6 +58,7 @@ androidx-compose-foundation-layout = { group = "androidx.compose.foundation", na
 androidx-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayoutVersion" }
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinxCoroutinesPlayServices" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
+play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

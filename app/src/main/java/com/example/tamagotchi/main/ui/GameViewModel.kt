@@ -359,14 +359,14 @@ class GameViewModel(
         val latestHistory = historyRepository.getLatestActive() ?: ActiveHistory()
         tempHistory = latestHistory.copy(
             id = 0,
-            gameOpened = LocalTime.now().toString(),
+            gameOpened = LocalDateTime.now().toString(),
         )
         Log.d("GameViewModel", "Fetched history $tempHistory")
     }
 
     suspend fun uploadHistory() {
         tempHistory?.let {
-            it.gameClosed = LocalTime.now().toString()
+            it.gameClosed = LocalDateTime.now().toString()
             Log.d("GameViewModel", "Uploading history $it")
             historyRepository.storeHistory(it)
         }

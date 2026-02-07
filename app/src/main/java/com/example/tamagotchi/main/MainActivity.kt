@@ -49,6 +49,7 @@ class MainActivity : ComponentActivity() {
         )
         createNotificationChannel(applicationContext)
 
+
         enableEdgeToEdge()
         setContent {
             TamagotchiTheme {

@@ -30,8 +30,8 @@ enum class AgeStage(
     ),
     CHILD(
         minimumWeight = 10,
-        //stageLength = Duration.ofHours(24),
-        stageLength = Duration.ofSeconds(10),
+        stageLength = Duration.ofHours(24),
+        //stageLength = Duration.ofSeconds(10),
         evolve = ::childTeenEvolve,
         misbehaviorChances = 0.125f,
         mistakesLimit = 5

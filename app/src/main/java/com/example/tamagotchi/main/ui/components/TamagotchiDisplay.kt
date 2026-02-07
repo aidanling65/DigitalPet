@@ -58,10 +58,12 @@ fun TamagotchiDisplay(
         if (showEatingAnimation > 0) {
             tamagotchiEating = true
         } else {
-            delay(eatingDuration.toLong() * 2)
+            delay(eatingDuration.toLong())
             tamagotchiEating = false
         }
     }
+
+    var padding by remember { mutableStateOf(0.dp) }
 
     Box(
         modifier
@@ -78,9 +80,10 @@ fun TamagotchiDisplay(
     ) {
         BoxWithConstraints(
             Modifier
-                .padding(32.dp)
+                .padding(padding)
                 .fillMaxSize()
         ) {
+            padding = maxWidth * 0.15f
             val maxWidth = maxWidth
             val maxHeight = maxHeight
             Box(
@@ -90,7 +93,7 @@ fun TamagotchiDisplay(
             ) {
                 if (currentState.loading) {
                     Box(modifier = Modifier.fillMaxSize())
-                } else if (tamagotchiEating) {
+                } else if (tamagotchiEating && currentState.currentAnimation == currentState.animations.idle) {
                     AnimateDrawable(
                         drawableRes = currentState.animations.eating
                             ?: currentState.currentAnimation,

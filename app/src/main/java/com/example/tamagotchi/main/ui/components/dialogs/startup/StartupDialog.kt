@@ -32,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.R
+import com.example.tamagotchi.data_logging.GoogleSignInField
 import com.example.tamagotchi.intelligence.IntelligenceDifficulty
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
@@ -65,6 +66,9 @@ fun StartupDialog(
     var puzzleSliderPosition by remember { mutableFloatStateOf(tamagotchiState.puzzleDifficulty.ordinal.toFloat()) }
     var gameSliderPosition by remember { mutableFloatStateOf(tamagotchiState.gameDifficulty.ordinal.toFloat()) }
 
+
+
+
     Box(
         Modifier
             .fillMaxWidth(0.95f)
@@ -83,6 +87,12 @@ fun StartupDialog(
             Spacer(Modifier.height(16.dp))
             TamagotchiDisplay(tamagotchiState, modifier = Modifier.size(200.dp))
             LazyColumn {
+                item {
+                    GoogleSignInField() { googleAccount ->
+                         Log.d("StartupDialog", "Successfully signed in: ${googleAccount.email}")
+                     }
+                }
+
                 item {
                     Text(
                         text = "Step goal",

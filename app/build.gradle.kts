@@ -66,6 +66,10 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.kotlinx.coroutines.play.services)
     implementation(libs.annotations)
+    implementation(libs.play.services.auth)
+
+
+
 
     configurations.all {
         exclude(group = "com.intellij", module = "annotations")
