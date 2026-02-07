@@ -44,7 +44,8 @@ fun teenAdultEvolve(context: Context, currentState: TamagotchiState): Tamagotchi
         updateHistory(context) {
             it.copy(
                 ageStage = AgeStage.ADULT,
-                evolution = updatedState.animations
+                evolution = updatedState.animations,
+                timesEvolved = it.timesEvolved+1
             )
         }
     }

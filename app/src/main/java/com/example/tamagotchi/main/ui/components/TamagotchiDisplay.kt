@@ -83,7 +83,7 @@ fun TamagotchiDisplay(
                 .padding(padding)
                 .fillMaxSize()
         ) {
-            padding = maxWidth * 0.15f
+            padding = maxWidth * 0.1f
             val maxWidth = maxWidth
             val maxHeight = maxHeight
             Box(

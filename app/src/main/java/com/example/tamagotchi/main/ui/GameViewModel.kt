@@ -9,10 +9,13 @@ import androidx.work.WorkManager
 import com.example.tamagotchi.data_logging.TamagotchiDatabase
 import com.example.tamagotchi.data_logging.ActiveHistory
 import com.example.tamagotchi.data_logging.TamagotchiHistoryRepository
+import com.example.tamagotchi.data_logging.google.GoogleViewModel
+import com.example.tamagotchi.data_logging.updateHistory
 import com.example.tamagotchi.intelligence.IntelligenceDifficulty
 import com.example.tamagotchi.intelligence.IntelligenceGame
 import com.example.tamagotchi.intelligence.PuzzleGames
 import com.example.tamagotchi.main.data.model.AgeStage
+import com.example.tamagotchi.main.data.model.EvolutionAnimations
 import com.example.tamagotchi.main.data.model.MAX_FITNESS
 import com.example.tamagotchi.main.data.model.MAX_HUNGER
 import com.example.tamagotchi.main.data.model.TamagotchiState
@@ -80,6 +83,8 @@ class GameViewModel(
     private val historyRepository = TamagotchiHistoryRepository(historyDb.historyDao())
 
     private var tempHistory: ActiveHistory? = null
+
+    val googleViewModel = GoogleViewModel(application)
 
     init {
         viewModelScope.launch {
@@ -313,6 +318,14 @@ class GameViewModel(
         tempHistory?.resets++
         updateAndSave {
             TamagotchiState()
+        }
+        viewModelScope.launch {
+            updateHistory(getApplication()) {
+                it.copy(
+                    ageStage = AgeStage.EGG,
+                    evolution = EvolutionAnimations.EGG
+                )
+            }
         }
         WorkManager.getInstance(getApplication()).cancelAllWork()
     }

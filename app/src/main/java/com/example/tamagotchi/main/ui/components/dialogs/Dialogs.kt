@@ -60,6 +60,7 @@ fun Dialogs(gameViewModel: GameViewModel) {
         ) { onDismissRequest ->
             StartupDialog(
                 tamagotchiState,
+                gameViewModel.googleViewModel,
                 { gameViewModel.submitStepsGoal(it) },
                 { gameViewModel.updateBedTime(it) },
                 { gameViewModel.updateWakeTime(it) },

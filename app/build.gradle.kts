@@ -39,6 +39,12 @@ android {
         compose = true
         viewBinding = true
     }
+
+    packaging {
+        resources.excludes.add("META-INF/INDEX.LIST")
+        resources.excludes.add("META-INF/DEPENDENCIES")
+
+    }
 }
 
 dependencies {
@@ -67,8 +73,11 @@ dependencies {
     implementation(libs.kotlinx.coroutines.play.services)
     implementation(libs.annotations)
     implementation(libs.play.services.auth)
-
-
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.google.auth:google-auth-library-oauth2-http:1.23.0")
+    implementation("com.google.api-client:google-api-client-android:2.4.0")
+    implementation("com.google.apis:google-api-services-drive:v3-rev20230822-2.0.0")
 
 
     configurations.all {

@@ -34,14 +34,14 @@ data class NonogramBoard(
 
         for(i in 0 until height){
             if (board[i].all { !it }){
-                board[i][Random.nextInt(width)] = true
-                board[i][Random.nextInt(width)] = true
+                board[i][Random.nextInt(width-1)] = true
+                board[i][Random.nextInt(width-1)] = true
             }
         }
         for(i in 0 until width){
             if(board.all { !it[i] }){
-                board[Random.nextInt(height)][i] = true
-                board[Random.nextInt(height)][i] = true
+                board[Random.nextInt(height-1)][i] = true
+                board[Random.nextInt(height-1)][i] = true
             }
         }
 

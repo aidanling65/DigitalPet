@@ -25,7 +25,8 @@ fun babyChildEvolve(context: Context, currentState: TamagotchiState): Tamagotchi
         updateHistory(context) {
             it.copy(
                 ageStage = AgeStage.CHILD,
-                evolution = EvolutionAnimations.CHILD
+                evolution = EvolutionAnimations.CHILD,
+                timesEvolved = it.timesEvolved+1
             )
         }
     }

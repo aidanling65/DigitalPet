@@ -15,7 +15,7 @@ class SudokuGame {
     val highlightedKeysLiveData = MutableLiveData<Set<Int>>()
     val gameWonLiveData = MutableLiveData<Boolean>()
 
-    var mistakes= MutableLiveData<Int>()
+    var mistakes= MutableLiveData<Int>(0)
 
     private var selectedRow = -1
     private var selectedCol = -1
