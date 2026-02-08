@@ -38,7 +38,7 @@ class BabyHungerHappinessWork(
         if (updatedState.ageStage == AgeStage.BABY) {
             createSingleWorker<BabyHungerHappinessWork>(
                 applicationContext,
-                Duration.ofMinutes(3),
+                Duration.ofMinutes(5),
                 "hunger_happiness",
                 ExistingWorkPolicy.REPLACE,
             )

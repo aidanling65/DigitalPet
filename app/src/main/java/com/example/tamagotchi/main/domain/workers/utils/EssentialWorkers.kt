@@ -6,6 +6,7 @@ import androidx.work.ExistingWorkPolicy
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.domain.workers.baby.BabyHungerHappinessWork
+import com.example.tamagotchi.main.domain.workers.baby.BabyMisbehavingWork
 import com.example.tamagotchi.main.domain.workers.baby.BabyPoopWork
 import com.example.tamagotchi.main.domain.workers.baby.BabySickWork
 import com.example.tamagotchi.main.domain.workers.baby.BabySleepWork
@@ -24,7 +25,7 @@ import com.example.tamagotchi.step_tracker.StepCounterWorker
 import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.ZoneId
+import java.time.LocalTime
 
 fun scheduleEssentialWorkers(
     context: Context,
@@ -58,8 +59,14 @@ fun scheduleEssentialWorkers(
             )
             createSingleWorker<BabySleepWork>(
                 context,
-                Duration.ofMinutes(40),
+                Duration.ofMinutes(45),
                 "sleep",
+                ExistingWorkPolicy.REPLACE
+            )
+            createSingleWorker<BabyMisbehavingWork>(
+                context,
+                Duration.ofMinutes(55),
+                "misbehaving",
                 ExistingWorkPolicy.REPLACE
             )
             createPeriodicWorker<StepCounterWorker>(
@@ -74,8 +81,7 @@ fun scheduleEssentialWorkers(
 
         else -> {
             val now = LocalDateTime.now()
-            val midnightTonight = LocalDate.now(ZoneId.systemDefault()).plusDays(1)
-                .atStartOfDay(ZoneId.systemDefault()).toInstant()
+            val midnightTonight = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT).plusDays(1)
             val initialDelay = Duration.between(now, midnightTonight)
 
             val lastEvolution = currentState.lastEvolve

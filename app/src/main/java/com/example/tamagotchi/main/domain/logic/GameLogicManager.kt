@@ -59,7 +59,7 @@ class GameLogicManager {
     }
 
     fun heal(current: TamagotchiState): TamagotchiState {
-        if (!canInteract(current) || !current.sick)
+        if (!current.sick)
             return current
 
         return if (current.medicineTaken) {
