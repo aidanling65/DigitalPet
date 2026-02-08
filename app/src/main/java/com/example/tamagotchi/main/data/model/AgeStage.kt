@@ -5,8 +5,10 @@ import com.example.tamagotchi.main.domain.workers.evolution.babyChildEvolve
 import com.example.tamagotchi.main.domain.workers.evolution.childTeenEvolve
 import com.example.tamagotchi.main.domain.workers.evolution.eggBabyEvolve
 import com.example.tamagotchi.main.domain.workers.evolution.teenAdultEvolve
+import kotlinx.serialization.Serializable
 import java.time.Duration
 
+@Serializable
 enum class AgeStage(
     val minimumWeight: Int,
     val stageLength: Duration?,

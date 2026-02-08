@@ -1,7 +1,9 @@
 package com.example.tamagotchi.main.data.model
 
 import com.example.tamagotchi.R
+import kotlinx.serialization.Serializable
 
+@Serializable
 enum class EvolutionAnimations(
     val idle: Int,
     val eating: Int?,

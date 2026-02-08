@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -50,6 +51,7 @@ android {
 
 dependencies {
 
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -79,6 +81,7 @@ dependencies {
     implementation("com.google.auth:google-auth-library-oauth2-http:1.23.0")
     implementation("com.google.api-client:google-api-client-android:2.4.0")
     implementation("com.google.apis:google-api-services-drive:v3-rev20230822-2.0.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
 
     configurations.all {

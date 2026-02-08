@@ -2,23 +2,27 @@ package com.example.tamagotchi.data_logging
 
 import android.content.Context
 import android.content.Intent
-import com.example.tamagotchi.BuildConfig
 import android.net.Uri
 import android.util.Log
 import androidx.core.content.FileProvider
+import com.example.tamagotchi.BuildConfig
+import com.example.tamagotchi.main.data.repository.TamagotchiRepository
+import kotlinx.coroutines.flow.first
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
-class DebugTools(private val context: Context) {
+class ExportData(private val context: Context, private val repository: TamagotchiRepository) {
     companion object {
         const val DB_NAME = "tamagotchi_database"
         const val PREFS_NAME = "tamagotchi_prefs.preferences_pb"
     }
 
-    fun exportDataForSharing() {
+    suspend fun exportDataForSharing() {
         try {
             val cacheDir = context.cacheDir
             val exportDir = File(cacheDir, "exports")
@@ -32,6 +36,13 @@ class DebugTools(private val context: Context) {
             }
 
             val filesToZip = mutableListOf<File>()
+
+            val currentState = repository.tamagotchiStateFlow.first()
+            val json = Json{prettyPrint=true}
+            val jsonString = json.encodeToString(currentState)
+            val jsonFile = File(exportDir, "tamagotchi_state.json")
+            jsonFile.writeText(jsonString)
+            filesToZip.add(jsonFile)
 
             val dbFile = context.getDatabasePath(DB_NAME)
             if (dbFile.exists()) {

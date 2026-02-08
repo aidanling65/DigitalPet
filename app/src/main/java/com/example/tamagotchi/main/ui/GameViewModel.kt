@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkManager
 import com.example.tamagotchi.data_logging.ActiveHistory
+import com.example.tamagotchi.data_logging.ExportData
 import com.example.tamagotchi.data_logging.TamagotchiDatabase
 import com.example.tamagotchi.data_logging.TamagotchiHistoryRepository
 import com.example.tamagotchi.data_logging.updateHistory
@@ -83,6 +84,8 @@ class GameViewModel(
 
     private var tempHistory: ActiveHistory? = null
 
+    private val exportData: ExportData = ExportData(getApplication(), repository)
+
     init {
         viewModelScope.launch {
             repository.tamagotchiStateFlow.collect { state ->
@@ -109,15 +112,17 @@ class GameViewModel(
                             ) else it.physicalMistakes
                         )
                     }
-                } else if(steps > stepGoal * 1.5 && !tamagotchiState.value.stepGoal2Hit) {
-                    updateAndSave { it.copy(
-                        steps = steps.toInt(),
-                        stepGoal2Hit = true,
-                        physicalMistakes = if (it.fitness == MAX_FITNESS) (it.physicalMistakes - 1).coerceAtLeast(
-                            0
-                        ) else it.fitness
-                    ) }
-                }else{
+                } else if (steps > stepGoal * 1.5 && !tamagotchiState.value.stepGoal2Hit) {
+                    updateAndSave {
+                        it.copy(
+                            steps = steps.toInt(),
+                            stepGoal2Hit = true,
+                            physicalMistakes = if (it.fitness == MAX_FITNESS) (it.physicalMistakes - 1).coerceAtLeast(
+                                0
+                            ) else it.fitness
+                        )
+                    }
+                } else {
                     updateAndSave { it.copy(steps = steps.toInt()) }
                 }
             }
@@ -388,6 +393,12 @@ class GameViewModel(
             it.gameClosed = LocalDateTime.now().toString()
             Log.d("GameViewModel", "Uploading history $it")
             historyRepository.storeHistory(it)
+        }
+    }
+
+    fun exportData() {
+        viewModelScope.launch {
+            exportData.exportDataForSharing()
         }
     }
 }

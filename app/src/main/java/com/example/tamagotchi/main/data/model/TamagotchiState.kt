@@ -1,7 +1,10 @@
 package com.example.tamagotchi.main.data.model
 
+import com.example.tamagotchi.data_logging.LocalDateTimeSerializer
+import com.example.tamagotchi.data_logging.LocalTimeSerializer
 import com.example.tamagotchi.intelligence.IntelligenceDifficulty
 import com.example.tamagotchi.minigames.GameDifficulty
+import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 import java.time.LocalTime
 
@@ -12,6 +15,7 @@ const val MAX_DISCIPLINE = 4
 const val MAX_FITNESS = 4
 const val MAX_INTELLIGENCE = 4
 
+@Serializable
 data class TamagotchiState(
 
     val initial: Boolean = true,
@@ -45,7 +49,10 @@ data class TamagotchiState(
     val mentalMistakes: Int = 0,
     val mistakes: Int = 0,
 
+    @Serializable(with= LocalTimeSerializer::class)
     val wakeTime: LocalTime = LocalTime.of(9,0),
+
+    @Serializable(with= LocalTimeSerializer::class)
     val bedTime: LocalTime = LocalTime.of(22,0),
 
     val ageStage: AgeStage = AgeStage.EGG,
@@ -54,6 +61,8 @@ data class TamagotchiState(
     val weight: Int = ageStage.minimumWeight,
 
     val hasEvolved: Boolean = false,
+
+    @Serializable(with= LocalDateTimeSerializer::class)
     val lastEvolve: LocalDateTime = LocalDateTime.now(),
 
     val puzzleDifficulty: IntelligenceDifficulty = IntelligenceDifficulty.EASY,

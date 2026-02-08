@@ -65,6 +65,7 @@ fun Dialogs(gameViewModel: GameViewModel) {
                 { gameViewModel.updateWakeTime(it) },
                 { gameViewModel.updatePuzzleDifficulty(it) },
                 { gameViewModel.updateGameDifficulty(it) },
+                {gameViewModel.exportData()},
                 onDismissRequest = onDismissRequest,
             )
         }

@@ -27,12 +27,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.R
-import com.example.tamagotchi.data_logging.DebugTools
 import com.example.tamagotchi.intelligence.IntelligenceDifficulty
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
@@ -48,6 +46,7 @@ fun StartupDialog(
     updateWakeTime: (LocalTime) -> Unit,
     updatePuzzleDifficulty: (IntelligenceDifficulty) -> Unit,
     updateGameDifficulty: (GameDifficulty) -> Unit,
+    onExport: () -> Unit,
     onDismissRequest: () -> Unit,
 ) {
     var newStepGoal by remember { mutableIntStateOf(tamagotchiState.stepGoal) }
@@ -65,9 +64,6 @@ fun StartupDialog(
 
     var puzzleSliderPosition by remember { mutableFloatStateOf(tamagotchiState.puzzleDifficulty.ordinal.toFloat()) }
     var gameSliderPosition by remember { mutableFloatStateOf(tamagotchiState.gameDifficulty.ordinal.toFloat()) }
-
-    val context = LocalContext.current
-    val debugTools = DebugTools(context)
 
     Box(
         Modifier
@@ -88,7 +84,7 @@ fun StartupDialog(
             TamagotchiDisplay(tamagotchiState, modifier = Modifier.weight(0.2f))
             LazyColumn(Modifier.weight(0.6f)) {
                 item {
-                    Button(onClick = { debugTools.exportDataForSharing() }) {
+                    Button(onClick = { onExport() }) {
                         Text("Export Data")
                     }
                 }
