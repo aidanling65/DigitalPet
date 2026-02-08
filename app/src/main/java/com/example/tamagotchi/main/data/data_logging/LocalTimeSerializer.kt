@@ -1,4 +1,4 @@
-package com.example.tamagotchi.data_logging
+package com.example.tamagotchi.main.data.data_logging
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind

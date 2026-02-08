@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -83,12 +84,6 @@ fun StartupDialog(
             Spacer(Modifier.height(16.dp))
             TamagotchiDisplay(tamagotchiState, modifier = Modifier.weight(0.2f))
             LazyColumn(Modifier.weight(0.6f)) {
-                item {
-                    Button(onClick = { onExport() }) {
-                        Text("Export Data")
-                    }
-                }
-
                 item {
                     Text(
                         text = "Step goal",
@@ -163,6 +158,11 @@ fun StartupDialog(
                         difficulties.size - 2,
                         0f..difficulties.size - 1f
                     ) { gameSliderPosition = it }
+                }
+                item {
+                    Button(onClick = { onExport() }, colors= ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)) {
+                        Text("Export Data", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+                    }
                 }
             }
             SubmitButton(

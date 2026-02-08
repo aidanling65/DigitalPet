@@ -74,7 +74,7 @@ fun TimeField(
             color = MaterialTheme.colorScheme.primary
         )
         BasicTextField(
-            value = "${state.minute}",
+            value = state.minute.toString().padStart(2, '0'),
             onValueChange = { newValue: String ->
                 state.minute = newValue.toIntOrNull() ?: state.minute
             },
@@ -100,7 +100,7 @@ fun TimeField(
             }
         }
         UpDownButtons(
-            { state.minute = if (state.minute == 0) 23 else (state.minute - 1) % 60 },
+            { state.minute = if(state.minute==0) 59 else (state.minute - 1) % 60 },
             { state.minute = (state.minute + 1) % 60 },
             modifier = Modifier.fillMaxHeight()
         )

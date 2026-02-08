@@ -4,7 +4,7 @@ package com.example.tamagotchi.main.domain.workers.periodic
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.example.tamagotchi.data_logging.updateHistory
+import com.example.tamagotchi.main.data.data_logging.updateHistory
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
 
 class StepGoalWork(

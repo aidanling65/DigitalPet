@@ -8,6 +8,7 @@ import com.example.tamagotchi.main.data.model.MAX_FITNESS
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
 import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
 import com.example.tamagotchi.main.domain.workers.mistake.FitnessMistakeWork
+import com.example.tamagotchi.main.utils.showNotification
 import java.time.Duration
 
 class FitnessWork(
@@ -29,6 +30,7 @@ class FitnessWork(
         }
 
         if (updatedState.fitness == 0) {
+            showNotification(applicationContext, "Make sure to hit your step goal today!")
             createSingleWorker<FitnessMistakeWork>(
                 applicationContext,
                 Duration.ofHours(24),

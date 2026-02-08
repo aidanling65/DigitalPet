@@ -1,7 +1,7 @@
 package com.example.tamagotchi.main.data.model
 
-import com.example.tamagotchi.data_logging.LocalDateTimeSerializer
-import com.example.tamagotchi.data_logging.LocalTimeSerializer
+import com.example.tamagotchi.main.data.data_logging.LocalDateTimeSerializer
+import com.example.tamagotchi.main.data.data_logging.LocalTimeSerializer
 import com.example.tamagotchi.intelligence.IntelligenceDifficulty
 import com.example.tamagotchi.minigames.GameDifficulty
 import kotlinx.serialization.Serializable
@@ -72,10 +72,10 @@ data class TamagotchiState(
 ){
     val currentAnimation : Int
         get() = when{
-            sick -> animations.sick ?: animations.idle
-            sleeping && !light -> animations.lightsOutSleep
-            sleeping && animations.sleep != null -> animations.sleep
             !sleeping && !light -> animations.lightsOutAwake
+            sleeping && !light -> animations.lightsOutSleep
+            sick -> animations.sick ?: animations.idle
+            sleeping && animations.sleep != null -> animations.sleep
             else -> animations.idle
         }
 }

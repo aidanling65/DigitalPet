@@ -1,4 +1,4 @@
-package com.example.tamagotchi.data_logging
+package com.example.tamagotchi.main.data.data_logging
 
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
@@ -25,5 +25,20 @@ class TamagotchiHistoryRepository(
     suspend fun storeHistory(history: PassiveHistory) = withContext(Dispatchers.IO) {
         Log.d("History", "Storing history: $history")
         historyDao.insert(history)
+    }
+
+    suspend fun storeEvolution(evolution: EvolutionLog) = withContext(Dispatchers.IO) {
+        Log.d("History", "Storing evolution: $evolution")
+        historyDao.insert(evolution)
+    }
+
+    suspend fun updateHistory(history: PassiveHistory) = withContext(Dispatchers.IO) {
+        Log.d("History", "Updating history: $history")
+        historyDao.update(history)
+    }
+
+    suspend fun storeSession(session: SessionLog): Long = withContext(Dispatchers.IO) {
+        Log.d("History", "Storing session: $session")
+        historyDao.insert(session)
     }
 }

@@ -2,7 +2,9 @@ package com.example.tamagotchi.main.domain.workers.evolution
 
 import android.content.Context
 import androidx.work.WorkManager
-import com.example.tamagotchi.data_logging.updateHistory
+import com.example.tamagotchi.main.data.data_logging.EvolutionLog
+import com.example.tamagotchi.main.data.data_logging.storeEvolution
+import com.example.tamagotchi.main.data.data_logging.updateHistory
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.EvolutionAnimations
 import com.example.tamagotchi.main.data.model.TamagotchiState
@@ -24,11 +26,13 @@ fun babyChildEvolve(context: Context, currentState: TamagotchiState): Tamagotchi
     runBlocking {
         updateHistory(context) {
             it.copy(
-                ageStage = AgeStage.CHILD,
-                evolution = EvolutionAnimations.CHILD,
                 timesEvolved = it.timesEvolved+1
             )
         }
+        storeEvolution(context, EvolutionLog(
+            ageStage = updatedState.ageStage,
+            evolutionType = updatedState.animations
+        ))
     }
 
     return  updatedState

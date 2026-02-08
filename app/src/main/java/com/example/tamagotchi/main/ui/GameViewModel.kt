@@ -6,14 +6,16 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkManager
-import com.example.tamagotchi.data_logging.ActiveHistory
-import com.example.tamagotchi.data_logging.ExportData
-import com.example.tamagotchi.data_logging.TamagotchiDatabase
-import com.example.tamagotchi.data_logging.TamagotchiHistoryRepository
-import com.example.tamagotchi.data_logging.updateHistory
 import com.example.tamagotchi.intelligence.IntelligenceDifficulty
 import com.example.tamagotchi.intelligence.IntelligenceGame
 import com.example.tamagotchi.intelligence.PuzzleGames
+import com.example.tamagotchi.main.data.data_logging.ActiveHistory
+import com.example.tamagotchi.main.data.data_logging.EvolutionLog
+import com.example.tamagotchi.main.data.data_logging.ExportData
+import com.example.tamagotchi.main.data.data_logging.SessionLog
+import com.example.tamagotchi.main.data.data_logging.TamagotchiDatabase
+import com.example.tamagotchi.main.data.data_logging.TamagotchiHistoryRepository
+import com.example.tamagotchi.main.data.data_logging.storeEvolution
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.EvolutionAnimations
 import com.example.tamagotchi.main.data.model.MAX_FITNESS
@@ -83,6 +85,8 @@ class GameViewModel(
     private val historyRepository = TamagotchiHistoryRepository(historyDb.historyDao())
 
     private var tempHistory: ActiveHistory? = null
+    private var gameOpened: LocalDateTime = LocalDateTime.now()
+
 
     private val exportData: ExportData = ExportData(getApplication(), repository)
 
@@ -331,12 +335,13 @@ class GameViewModel(
             TamagotchiState()
         }
         viewModelScope.launch {
-            updateHistory(getApplication()) {
-                it.copy(
+            storeEvolution(
+                getApplication(),
+                EvolutionLog(
                     ageStage = AgeStage.EGG,
-                    evolution = EvolutionAnimations.EGG
+                    evolutionType = EvolutionAnimations.EGG
                 )
-            }
+            )
         }
         WorkManager.getInstance(getApplication()).cancelAllWork()
     }
@@ -380,19 +385,26 @@ class GameViewModel(
     }
 
     suspend fun fetchHistory() {
-        val latestHistory = historyRepository.getLatestActive() ?: ActiveHistory()
-        tempHistory = latestHistory.copy(
+        gameOpened = LocalDateTime.now()
+        val previousActives = historyRepository.getLatestActive()
+        tempHistory = previousActives?.copy(
             id = 0,
-            gameOpened = LocalDateTime.now().toString(),
-        )
-        Log.d("GameViewModel", "Fetched history $tempHistory")
+        ) ?: ActiveHistory(id=0)
     }
 
-    suspend fun uploadHistory() {
-        tempHistory?.let {
-            it.gameClosed = LocalDateTime.now().toString()
-            Log.d("GameViewModel", "Uploading history $it")
-            historyRepository.storeHistory(it)
+    fun uploadHistory() {
+        viewModelScope.launch {
+            val sessionId = historyRepository.storeSession(
+                SessionLog(
+                    gameOpened = gameOpened.toString(),
+                    gameClosed = LocalDateTime.now().toString()
+                )
+            )
+            tempHistory?.let {
+                it.sessionId = sessionId.toInt()
+                historyRepository.storeHistory(it)
+                Log.d("GameViewModel", "History saved on exit")
+            }
         }
     }
 

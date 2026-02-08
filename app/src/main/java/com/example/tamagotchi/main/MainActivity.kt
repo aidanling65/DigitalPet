@@ -3,6 +3,7 @@ package com.example.tamagotchi.main
 import android.Manifest
 import android.Manifest.permission.ACTIVITY_RECOGNITION
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -75,6 +76,7 @@ class MainActivity : ComponentActivity() {
     override fun onResume(){
         super.onResume()
         cancelNotifications(applicationContext)
+        Log.d("MainActivity", "onResume")
         runBlocking {
             gameViewModel.fetchHistory()
         }
@@ -84,9 +86,7 @@ class MainActivity : ComponentActivity() {
     override fun onStop(){
         super.onStop()
         cancelNotifications(applicationContext)
-        runBlocking {
-            gameViewModel.uploadHistory()
-        }
+        gameViewModel.uploadHistory()
     }
 
 

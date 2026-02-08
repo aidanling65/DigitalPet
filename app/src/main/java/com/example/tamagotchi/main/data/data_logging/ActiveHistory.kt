@@ -1,17 +1,24 @@
-package com.example.tamagotchi.data_logging
+package com.example.tamagotchi.main.data.data_logging
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import java.time.LocalTime
 
-@Entity(tableName = "tamagotchi_active_history")
+@Entity(tableName = "tamagotchi_active_history",
+    foreignKeys = [
+        ForeignKey(
+            entity= SessionLog::class,
+            parentColumns = ["id"],
+            childColumns = ["session_id"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ])
 data class ActiveHistory(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
 
-    @ColumnInfo(name = "game_opened") var gameOpened: String = LocalTime.now().toString(),
-    @ColumnInfo(name = "game_closed") var gameClosed: String = LocalTime.now().toString(),
+    @ColumnInfo(name="session_id", index=true) var sessionId: Int = 0,
 
     @ColumnInfo(name = "resets") var resets: Int = 0,
     @ColumnInfo(name = "manual_used") var manualUsed: Int = 0,
