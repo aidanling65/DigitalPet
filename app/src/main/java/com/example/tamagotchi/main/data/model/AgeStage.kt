@@ -1,6 +1,7 @@
 package com.example.tamagotchi.main.data.model
 
 import android.content.Context
+import com.example.tamagotchi.main.data.data_logging.EvolutionLog
 import com.example.tamagotchi.main.domain.workers.evolution.babyChildEvolve
 import com.example.tamagotchi.main.domain.workers.evolution.childTeenEvolve
 import com.example.tamagotchi.main.domain.workers.evolution.eggBabyEvolve
@@ -12,7 +13,7 @@ import java.time.Duration
 enum class AgeStage(
     val minimumWeight: Int,
     val stageLength: Duration?,
-    val evolve: ((Context, TamagotchiState) -> TamagotchiState)?,
+    val evolve: ((Context, TamagotchiState) -> Pair<TamagotchiState, EvolutionLog>)?,
     val misbehaviorChances: Float,
     val mistakesLimit: Int?
 ) {
@@ -34,7 +35,7 @@ enum class AgeStage(
     CHILD(
         minimumWeight = 10,
         stageLength = Duration.ofHours(24),
-        //stageLength = Duration.ofSeconds(10),
+       // stageLength = Duration.ofSeconds(10),
         evolve = ::childTeenEvolve,
         misbehaviorChances = 0.125f,
         mistakesLimit = 5

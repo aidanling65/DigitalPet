@@ -69,14 +69,13 @@ class MainActivity : ComponentActivity() {
             "step_worker_temp",
             ExistingWorkPolicy.REPLACE
         )
-
-        gameViewModel.checkEvolve()
     }
 
     override fun onResume(){
         super.onResume()
         cancelNotifications(applicationContext)
         Log.d("MainActivity", "onResume")
+        gameViewModel.checkEvolve()
         runBlocking {
             gameViewModel.fetchHistory()
         }

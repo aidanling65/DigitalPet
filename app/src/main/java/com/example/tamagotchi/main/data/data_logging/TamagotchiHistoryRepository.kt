@@ -28,6 +28,7 @@ class TamagotchiHistoryRepository(
     }
 
     suspend fun storeEvolution(evolution: EvolutionLog) = withContext(Dispatchers.IO) {
+
         Log.d("History", "Storing evolution: $evolution")
         historyDao.insert(evolution)
     }

@@ -290,6 +290,7 @@ class GameViewModel(
     }
 
     fun checkEvolve() {
+        Log.d("GameViewModel", "Checking evolution")
         if (tamagotchiState.value.ageStage.stageLength == null) {
             return
         }

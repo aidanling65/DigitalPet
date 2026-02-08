@@ -10,7 +10,6 @@ import com.example.tamagotchi.main.domain.workers.baby.BabyMisbehavingWork
 import com.example.tamagotchi.main.domain.workers.baby.BabyPoopWork
 import com.example.tamagotchi.main.domain.workers.baby.BabySickWork
 import com.example.tamagotchi.main.domain.workers.baby.BabySleepWork
-import com.example.tamagotchi.main.domain.workers.evolution.EvolutionWork
 import com.example.tamagotchi.main.domain.workers.periodic.BrainrotWork
 import com.example.tamagotchi.main.domain.workers.periodic.DeathWork
 import com.example.tamagotchi.main.domain.workers.periodic.FitnessWork
@@ -32,7 +31,6 @@ fun scheduleEssentialWorkers(
     currentState: TamagotchiState,
     policy: ExistingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.REPLACE
 ) {
-
     scheduleEvolutionWork(context, currentState)
 
     when (currentState.ageStage) {
@@ -76,27 +74,12 @@ fun scheduleEssentialWorkers(
                 "step_worker",
                 policy
             )
-            scheduleEvolutionWork(context, currentState)
         }
 
         else -> {
             val now = LocalDateTime.now()
             val midnightTonight = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT).plusDays(1)
             val initialDelay = Duration.between(now, midnightTonight)
-
-            val lastEvolution = currentState.lastEvolve
-
-            if (currentState.ageStage.stageLength != null) {
-                val sinceEvolution = Duration.between(lastEvolution, now)
-                val evolveTime = currentState.ageStage.stageLength - sinceEvolution
-
-                createSingleWorker<EvolutionWork>(
-                    context,
-                    evolveTime,
-                    "evolve",
-                    ExistingWorkPolicy.REPLACE
-                )
-            }
 
             createPeriodicWorker<PoopWork>(
                 context,
