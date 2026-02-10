@@ -47,8 +47,6 @@ class TamagotchiRepository(private val context: Context) {
     private val MISBEHAVING = booleanPreferencesKey("misbehaving")
     private val AGE_STAGE = stringPreferencesKey("age stage")
     private val ANIMATIONS = stringPreferencesKey("animations")
-    private val MENTAL_MISTAKES = intPreferencesKey("mental_mistakes")
-    private val PHYSICAL_MISTAKES = intPreferencesKey("physical_mistakes")
     private val MISTAKES = intPreferencesKey("mistakes")
     private val HAS_EVOLVED = booleanPreferencesKey("has_evolved")
     private val LAST_EVOLVE = stringPreferencesKey("last_evolve")
@@ -82,8 +80,6 @@ class TamagotchiRepository(private val context: Context) {
             poop = prefs[POOP] ?: defaultState.poop,
             misbehaving = prefs[MISBEHAVING] ?: defaultState.misbehaving,
             sleeping = prefs[SLEEPING] ?: defaultState.sleeping,
-            mentalMistakes = prefs[MENTAL_MISTAKES] ?: defaultState.mentalMistakes,
-            physicalMistakes = prefs[PHYSICAL_MISTAKES] ?: defaultState.physicalMistakes,
             mistakes = prefs[MISTAKES] ?: defaultState.mistakes,
             ageStage = AgeStage.valueOf(prefs[AGE_STAGE] ?: defaultState.ageStage.name),
             animations = EvolutionAnimations.valueOf(
@@ -143,8 +139,6 @@ class TamagotchiRepository(private val context: Context) {
         updated[POOP] = current.poop
         updated[MISBEHAVING] = current.misbehaving
         updated[SLEEPING] = current.sleeping
-        updated[PHYSICAL_MISTAKES] = current.physicalMistakes
-        updated[MENTAL_MISTAKES] = current.mentalMistakes
         updated[MISTAKES] = current.mistakes
         updated[AGE_STAGE] = current.ageStage.name
         updated[ANIMATIONS] = current.animations.name

@@ -17,6 +17,11 @@ class TamagotchiHistoryRepository(
         historyDao.getLatestPassive()
     }
 
+    suspend fun getLatestEvolution(): EvolutionLog? = withContext(Dispatchers.IO) {
+        Log.d("History", "Fetching latest history")
+        historyDao.getLatestEvolution()
+    }
+
     suspend fun storeHistory(history: ActiveHistory) = withContext(Dispatchers.IO) {
         Log.d("History", "Storing history: $history")
         historyDao.insert(history)

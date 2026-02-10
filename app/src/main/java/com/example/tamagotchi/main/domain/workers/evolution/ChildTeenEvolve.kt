@@ -10,14 +10,17 @@ import com.example.tamagotchi.main.utils.showNotification
 
 fun childTeenEvolve(
     context: Context,
-    currentState: TamagotchiState
+    currentState: TamagotchiState,
+    showNotification: Boolean = true
 ): Pair<TamagotchiState, EvolutionLog> {
-    showNotification(context, "Your Tamagotchi has evolved!", EVOLVE_ID)
+    if(showNotification) {
+        showNotification(context, "Your Tamagotchi has evolved!", EVOLVE_ID)
+    }
 
     val updatedState = baseEvolve(currentState).copy(
         ageStage = AgeStage.TEEN,
         weight = AgeStage.TEEN.minimumWeight,
-        animations = if (currentState.physicalMistakes + currentState.mentalMistakes <= 1) EvolutionAnimations.TEEN_1 else EvolutionAnimations.TEEN_2,
+        animations = if (currentState.mistakes <= 1) EvolutionAnimations.TEEN_1 else EvolutionAnimations.TEEN_2,
     )
 
     val evolutionLog = EvolutionLog(

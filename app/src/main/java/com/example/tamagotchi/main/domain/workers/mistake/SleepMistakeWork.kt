@@ -30,7 +30,7 @@ class SleepMistakeWork(
             if(it.sleeping && it.light){
                 mistake = true
                 it.copy(
-                    mentalMistakes = it.mentalMistakes + 1
+                    mistakes = it.mistakes + 1
                 )
             }
             it

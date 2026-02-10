@@ -45,8 +45,6 @@ data class TamagotchiState(
     val poop: Boolean = false,
     val misbehaving: Boolean = false,
 
-    val physicalMistakes: Int = 0,
-    val mentalMistakes: Int = 0,
     val mistakes: Int = 0,
 
     @Serializable(with= LocalTimeSerializer::class)

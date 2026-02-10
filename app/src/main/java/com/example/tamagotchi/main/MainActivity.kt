@@ -75,9 +75,9 @@ class MainActivity : ComponentActivity() {
         super.onResume()
         cancelNotifications(applicationContext)
         Log.d("MainActivity", "onResume")
-        gameViewModel.checkEvolve()
         runBlocking {
             gameViewModel.fetchHistory()
+            gameViewModel.checkEvolve()
         }
     }
 

@@ -8,8 +8,10 @@ import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.utils.EVOLVE_ID
 import com.example.tamagotchi.main.utils.showNotification
 
-fun eggBabyEvolve(context: Context, currentState: TamagotchiState): Pair<TamagotchiState, EvolutionLog> {
-    showNotification(context, "Your Tamagotchi has hatched!", EVOLVE_ID)
+fun eggBabyEvolve(context: Context, currentState: TamagotchiState, showNotification: Boolean = true): Pair<TamagotchiState, EvolutionLog> {
+    if(showNotification) {
+        showNotification(context, "Your Tamagotchi has hatched!", EVOLVE_ID)
+    }
 
     val updatedState = baseEvolve(currentState).copy(
         ageStage = AgeStage.BABY,

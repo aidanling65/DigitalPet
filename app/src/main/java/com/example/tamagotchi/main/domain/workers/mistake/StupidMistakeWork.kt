@@ -32,7 +32,7 @@ class StupidMistakeWork(
             if (it.intelligence == 0) {
                 mistake = true
                 it.copy(
-                    mentalMistakes = it.mentalMistakes + 1
+                    mistakes = it.mistakes + 1
                 )
             }
 

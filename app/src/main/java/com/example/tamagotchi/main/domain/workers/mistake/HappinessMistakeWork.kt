@@ -31,7 +31,7 @@ class HappinessMistakeWork(
             else if (it.happiness == 0) {
                 mistake = true
                 it.copy(
-                    mentalMistakes = it.mentalMistakes + 1
+                    mistakes = it.mistakes + 1
                 )
             }
             else {

@@ -31,7 +31,7 @@ class FitnessMistakeWork(
             else if (it.fitness == 0) {
                 mistake = true
                 it.copy(
-                    physicalMistakes = it.physicalMistakes + 1,
+                    mistakes = it.mistakes + 1,
                     weight = it.weight + 2
                 )
             }

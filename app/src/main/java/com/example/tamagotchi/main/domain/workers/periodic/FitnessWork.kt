@@ -25,7 +25,7 @@ class FitnessWork(
                 weight = if (current.fitness == MAX_FITNESS) (current.weight - 1).coerceAtLeast(
                     current.ageStage.minimumWeight
                 ) else current.weight,
-                physicalMistakes = if(current.fitness == MAX_FITNESS) (current.physicalMistakes - 1).coerceAtLeast(0) else current.physicalMistakes
+                mistakes = if(current.fitness == MAX_FITNESS) (current.mistakes - 1).coerceAtLeast(0) else current.mistakes
             )
         }
 

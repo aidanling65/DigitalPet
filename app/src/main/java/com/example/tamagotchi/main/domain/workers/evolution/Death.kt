@@ -12,9 +12,17 @@ import com.example.tamagotchi.main.utils.EVOLVE_ID
 import com.example.tamagotchi.main.utils.showNotification
 import kotlinx.coroutines.runBlocking
 
-fun death(context: Context, currentState: TamagotchiState): TamagotchiState {
+fun death(
+    context: Context,
+    currentState: TamagotchiState,
+    showNotification: Boolean = true
+): TamagotchiState {
     WorkManager.getInstance(context).cancelAllWork()
-    showNotification(context,"Your Tamagotchi has died!", EVOLVE_ID)
+
+    if (showNotification) {
+        showNotification(context, "Your Tamagotchi has died!", EVOLVE_ID)
+    }
+
     val updatedState = baseEvolve(currentState).copy(
         ageStage = AgeStage.DEAD,
         weight = AgeStage.DEAD.minimumWeight,
@@ -27,10 +35,12 @@ fun death(context: Context, currentState: TamagotchiState): TamagotchiState {
                 deaths = it.deaths + 1
             )
         }
-        storeEvolution(context, EvolutionLog(
-            ageStage = updatedState.ageStage,
-            evolutionType = updatedState.animations
-        ))
+        storeEvolution(
+            context, EvolutionLog(
+                ageStage = updatedState.ageStage,
+                evolutionType = updatedState.animations
+            )
+        )
     }
 
     return updatedState

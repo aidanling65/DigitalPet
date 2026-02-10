@@ -11,10 +11,11 @@ import com.example.tamagotchi.main.utils.showNotification
 
 fun teenAdultEvolve(
     context: Context,
-    currentState: TamagotchiState
+    currentState: TamagotchiState,
+    showNotification: Boolean
 ): Pair<TamagotchiState, EvolutionLog> {
     val discipline = currentState.discipline
-    val mistakes = currentState.mentalMistakes + currentState.physicalMistakes
+    val mistakes = currentState.mistakes
 
     val nextAnimation = when (currentState.animations) {
         EvolutionAnimations.TEEN_1 -> when {
@@ -35,7 +36,11 @@ fun teenAdultEvolve(
         }
     }
 
-    showNotification(context, "Your Tamagotchi has evolved!", EVOLVE_ID)
+
+    if(showNotification) {
+        showNotification(context, "Your Tamagotchi has evolved!", EVOLVE_ID)
+    }
+
     val updatedState = baseEvolve(currentState).copy(
         ageStage = AgeStage.ADULT,
         weight = AgeStage.ADULT.minimumWeight,

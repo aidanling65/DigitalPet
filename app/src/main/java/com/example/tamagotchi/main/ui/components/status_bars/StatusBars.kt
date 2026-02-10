@@ -103,7 +103,7 @@ fun StatusBars(
                         style = MaterialTheme.typography.bodySmall
                     )
                     Text(
-                        text = stringResource(R.string.mistakes) + ": " + (tamagotchiState.mentalMistakes + tamagotchiState.physicalMistakes).toString(),
+                        text = stringResource(R.string.mistakes) + ": " + (tamagotchiState.mistakes).toString(),
                         color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.bodySmall
                     )

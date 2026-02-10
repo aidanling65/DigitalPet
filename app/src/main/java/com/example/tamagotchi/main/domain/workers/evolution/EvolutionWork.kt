@@ -52,7 +52,7 @@ class EvolutionWork(
             val evolutionFunction = state.ageStage.evolve
 
             if (evolutionFunction != null) {
-                val (evolvedState, evolutionLog) = evolutionFunction(applicationContext, state)
+                val (evolvedState, evolutionLog) = evolutionFunction(applicationContext, state, true)
                 runBlocking {
                     historyRepository.storeEvolution(evolutionLog)
                 }

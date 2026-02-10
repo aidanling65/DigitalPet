@@ -9,8 +9,10 @@ import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.utils.EVOLVE_ID
 import com.example.tamagotchi.main.utils.showNotification
 
-fun babyChildEvolve(context: Context, currentState: TamagotchiState): Pair<TamagotchiState, EvolutionLog> {
-    showNotification(context, "Your Tamagotchi has evolved!", EVOLVE_ID)
+fun babyChildEvolve(context: Context, currentState: TamagotchiState, showNotification: Boolean = true): Pair<TamagotchiState, EvolutionLog> {
+    if(showNotification) {
+        showNotification(context, "Your Tamagotchi has evolved!", EVOLVE_ID)
+    }
 
     WorkManager.getInstance(context).cancelAllWorkByTag("hunger_happiness")
 

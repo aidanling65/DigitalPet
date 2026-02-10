@@ -31,7 +31,7 @@ class DisciplineMistakeWork(
                 mistake = true
                 it.copy(
                     misbehaving = false,
-                    mentalMistakes = it.mentalMistakes + 1
+                    mistakes = it.mistakes + 1
                 )
             } else {
                 it

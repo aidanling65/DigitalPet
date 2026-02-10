@@ -96,7 +96,7 @@ class GameLogicManager {
         val updatedIntelligence = (current.intelligence + 1).coerceAtMost(MAX_INTELLIGENCE)
         return current.copy(
             intelligence = updatedIntelligence,
-            mentalMistakes = if(updatedIntelligence == MAX_INTELLIGENCE) (current.mentalMistakes - 1).coerceAtLeast(0) else current.mentalMistakes
+            mistakes = if(updatedIntelligence == MAX_INTELLIGENCE) (current.mistakes - 1).coerceAtLeast(0) else current.mistakes
         )
     }
 }

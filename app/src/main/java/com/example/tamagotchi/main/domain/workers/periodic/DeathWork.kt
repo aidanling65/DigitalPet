@@ -17,7 +17,7 @@ class DeathWork(
             if(it.ageStage.mistakesLimit == null || it.sleeping || it.paused){
                 it
             }
-            else if (it.physicalMistakes + it.mentalMistakes >= it.ageStage.mistakesLimit) {
+            else if (it.mistakes >= it.ageStage.mistakesLimit) {
                 death(applicationContext, it)
             } else{
                 it

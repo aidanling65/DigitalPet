@@ -4,7 +4,6 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkManager
 import com.example.tamagotchi.intelligence.IntelligenceDifficulty
 import com.example.tamagotchi.intelligence.IntelligenceGame
@@ -23,8 +22,7 @@ import com.example.tamagotchi.main.data.model.MAX_HUNGER
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
 import com.example.tamagotchi.main.domain.logic.GameLogicManager
-import com.example.tamagotchi.main.domain.workers.evolution.EvolutionWork
-import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
+import com.example.tamagotchi.main.domain.workers.evolution.death
 import com.example.tamagotchi.main.domain.workers.utils.scheduleEvolutionWork
 import com.example.tamagotchi.minigames.GameDifficulty
 import com.example.tamagotchi.minigames.Minigames
@@ -35,7 +33,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.time.Duration
 import java.time.LocalDateTime
 import java.time.LocalTime
 import kotlin.random.Random
@@ -85,6 +82,7 @@ class GameViewModel(
     private val historyRepository = TamagotchiHistoryRepository(historyDb.historyDao())
 
     private var tempHistory: ActiveHistory? = null
+    private var evolutionLog: EvolutionLog? = null
     private var gameOpened: LocalDateTime = LocalDateTime.now()
 
 
@@ -111,9 +109,9 @@ class GameViewModel(
                             steps = steps.toInt(),
                             fitness = updatedFitness,
                             stepGoalHit = true,
-                            physicalMistakes = if (updatedFitness == MAX_FITNESS) (it.physicalMistakes - 1).coerceAtLeast(
+                            mistakes = if (updatedFitness == MAX_FITNESS) (it.mistakes - 1).coerceAtLeast(
                                 0
-                            ) else it.physicalMistakes
+                            ) else it.mistakes
                         )
                     }
                 } else if (steps > stepGoal * 1.5 && !tamagotchiState.value.stepGoal2Hit) {
@@ -121,7 +119,7 @@ class GameViewModel(
                         it.copy(
                             steps = steps.toInt(),
                             stepGoal2Hit = true,
-                            physicalMistakes = if (it.fitness == MAX_FITNESS) (it.physicalMistakes - 1).coerceAtLeast(
+                            mistakes = if (it.fitness == MAX_FITNESS) (it.mistakes - 1).coerceAtLeast(
                                 0
                             ) else it.fitness
                         )
@@ -291,22 +289,20 @@ class GameViewModel(
 
     fun checkEvolve() {
         Log.d("GameViewModel", "Checking evolution")
-        if (tamagotchiState.value.ageStage.stageLength == null) {
-            return
-        }
-
-        val currentTime = LocalDateTime.now()
-        if (Duration.between(
-                currentTime,
-                tamagotchiState.value.lastEvolve
-            ) >= tamagotchiState.value.ageStage.stageLength
-        ) {
-            createSingleWorker<EvolutionWork>(
-                getApplication(),
-                Duration.ZERO,
-                "evolve",
-                ExistingWorkPolicy.REPLACE
-            )
+        val evolveFunction = tamagotchiState.value.ageStage.evolve
+        if (evolutionLog != null) {
+            if (evolutionLog?.ageStage != tamagotchiState.value.ageStage) {
+                if (evolutionLog?.ageStage == AgeStage.DEAD) {
+                    updateAndSave {
+                        death(getApplication(), it)
+                    }
+                } else {
+                    updateAndSave {
+                        val (evolvedState, _) = evolveFunction!!(getApplication(), it, false)
+                        evolvedState
+                    }
+                }
+            }
         }
     }
 
@@ -388,9 +384,13 @@ class GameViewModel(
     suspend fun fetchHistory() {
         gameOpened = LocalDateTime.now()
         val previousActives = historyRepository.getLatestActive()
+        val previousEvolution = historyRepository.getLatestEvolution()
+
         tempHistory = previousActives?.copy(
             id = 0,
-        ) ?: ActiveHistory(id=0)
+        ) ?: ActiveHistory(id = 0)
+
+        evolutionLog = previousEvolution
     }
 
     fun uploadHistory() {

@@ -42,7 +42,7 @@ class SickMistakeWork(
                         ExistingWorkPolicy.REPLACE,
                     )
                     it.copy(
-                        physicalMistakes = it.physicalMistakes + 1
+                        mistakes = it.mistakes + 1
                     )
                 }
             }
