@@ -65,4 +65,5 @@
     <string name="wake_time">Wake time</string>
     <string name="game_difficulty">Game Difficulty</string>
     <string name="stats">Stats</string>
+    <string name="app_theme">App Theme</string>
 </resources>

@@ -164,6 +164,14 @@ fun StartupDialog(
                         0f..difficulties.size - 1f
                     ) { gameSliderPosition = it }
                 }
+                item {
+                    Text(
+                        stringResource(R.string.app_theme),
+                        style = MaterialTheme.typography.bodySmall,
+                        textAlign = TextAlign.Start,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
                 item{
                     val themeItems = AppTheme.entries.map { theme ->  RadioButtonItem(theme.ordinal, theme.name,
                         theme.theme.background) }

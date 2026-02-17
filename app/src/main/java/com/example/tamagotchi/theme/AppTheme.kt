@@ -18,17 +18,18 @@ enum class AppTheme(val theme: ColorScheme) {
     )),
     PINK( lightColorScheme(
         background = Color(0XFFFBB5FF),
+        onBackground = Color(0xFFFFFFFF),
         primary = Black,
         secondary = Color(0xFFEE90FD),
         tertiary = Pink40,
         inverseOnSurface = Color.White,
-        onBackground = Color(0xFFAFB6F1),
         surface = Color(0xA4EE90FD),
         onSurface = Color(0xFFF5DB86),
         surfaceContainer= Color(0xFF9FA1F1)
     )),
     GREEN(lightColorScheme(
         background = Color(0xFF81EF65),
+        onBackground = Color(0xFFFFFFFF),
         primary = Black,
         secondary = Color(0xFFB9FFA5),
         tertiary = Color(0xA455BF55),
@@ -39,6 +40,7 @@ enum class AppTheme(val theme: ColorScheme) {
     )),
     RED(darkColorScheme(
         background = Color(0xFFFF6C6C),
+        onBackground = Color(0xFFFFFFFF),
         primary = White,
         secondary = Color(0xFFFFA2A2),
         tertiary = Pink80,
@@ -49,6 +51,7 @@ enum class AppTheme(val theme: ColorScheme) {
     )),
     YELLOW(lightColorScheme(
         background = Color(0xFFFFF3BC),
+        onBackground = Color(0xFFFFFFFF),
         primary = Black,
         secondary = Color(0xFFFFDE84),
         tertiary = Pink80,
@@ -59,6 +62,7 @@ enum class AppTheme(val theme: ColorScheme) {
     )),
     ORANGE(lightColorScheme(
         background = Color(0xFFFFB576),
+        onBackground = Color(0xFFFFFFFF),
         primary = Black,
         secondary = Color(0xFFFF8346),
         tertiary = Pink80,

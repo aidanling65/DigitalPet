@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 
 @Composable
@@ -21,6 +22,10 @@ fun GameButtons(isGameOverScreen: Boolean, isGameStarted: Boolean, resetGame: ()
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondary
+            ),
+            elevation = ButtonDefaults.buttonElevation(
+                defaultElevation = 4.dp,
+                pressedElevation = 0.dp
             ),
             modifier = Modifier
                 .fillMaxWidth(0.7f)
@@ -39,6 +44,10 @@ fun GameButtons(isGameOverScreen: Boolean, isGameStarted: Boolean, resetGame: ()
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondary
+            ),
+            elevation = ButtonDefaults.buttonElevation(
+                defaultElevation = 4.dp,
+                pressedElevation = 0.dp
             ),
             modifier = Modifier
                 .fillMaxWidth(0.7f)

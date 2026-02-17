@@ -45,6 +45,7 @@ fun SudokuController(
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.secondary
                     ),
+                    elevation = ButtonDefaults.buttonElevation(pressedElevation = 0.dp, defaultElevation = 4.dp),
                     modifier = Modifier
                         .weight(1f)
                         .padding(horizontal = 3.dp),
@@ -68,7 +69,8 @@ fun SudokuController(
                 onClick = onNoteClick,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondary
-                )
+                ),
+                elevation = ButtonDefaults.buttonElevation(pressedElevation = 0.dp, defaultElevation = 4.dp)
             ) {
                 Text(
                     "Notes",
@@ -80,7 +82,8 @@ fun SudokuController(
                 onClick = onDeleteClick,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondary
-                )
+                ),
+                elevation = ButtonDefaults.buttonElevation(pressedElevation = 0.dp, defaultElevation = 4.dp)
             ) {
                 Text(
                     "Delete",
