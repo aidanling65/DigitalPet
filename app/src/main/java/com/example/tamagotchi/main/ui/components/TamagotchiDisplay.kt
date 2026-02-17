@@ -175,7 +175,7 @@ fun TamagotchiDisplay(
                             Color.Transparent,
                             Color.Black.copy(alpha = 0.5f)
                         ),
-                        radius = (2 * maxWidth.value) + (maxWidth.value * 0.9f)
+                        radius = (2 * maxWidth.value) + (maxWidth.value * 0.95f)
                     )
                 )
         )
@@ -198,7 +198,7 @@ fun TamagotchiDisplay(
                     .background(
                         Color.Black.copy(alpha = 0.5f),
                     )
-                    .fillMaxSize()
+                    .fillMaxSize().padding(16.dp)
             ) {
                 Image(
                     bitmap = ImageBitmap.imageResource(R.drawable.paused),
@@ -264,12 +264,12 @@ fun TamagotchiDisplayPreview() {
 fun TamagotchiDisplayPreview2() {
     TamagotchiDisplay(
         TamagotchiState(
-            paused = false,
+            paused = true,
             ageStage = AgeStage.CHILD,
             animations = EvolutionAnimations.CHILD,
             loading = false,
             poop = true,
-            sick = false
+            sick = false,
         ),
         showEatingAnimation = 0
     )

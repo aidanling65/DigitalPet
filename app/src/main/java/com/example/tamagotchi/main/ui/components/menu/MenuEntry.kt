@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -47,15 +48,15 @@ fun MenuEntry(
         visible = visible,
         enter = slideInHorizontally(
             animationSpec = spring(
-                dampingRatio = if(moving) Spring.DampingRatioNoBouncy else Spring.DampingRatioLowBouncy,
-                stiffness = if(moving) Spring.StiffnessMediumLow else Spring.StiffnessMediumLow
+                dampingRatio = if (moving) Spring.DampingRatioNoBouncy else Spring.DampingRatioLowBouncy,
+                stiffness = if (moving) Spring.StiffnessMediumLow else Spring.StiffnessMediumLow
             ),
             initialOffsetX = { fullWidth -> if (moving) -fullWidth else 2 * fullWidth }
         ),
         exit = slideOutHorizontally(
             animationSpec = spring(
-                dampingRatio = if(moving) Spring.DampingRatioNoBouncy else Spring.DampingRatioLowBouncy,
-                stiffness = if(moving) Spring.StiffnessMediumLow else Spring.StiffnessMediumLow
+                dampingRatio = if (moving) Spring.DampingRatioNoBouncy else Spring.DampingRatioLowBouncy,
+                stiffness = if (moving) Spring.StiffnessMediumLow else Spring.StiffnessMediumLow
             ),
             targetOffsetX = { fullWidth -> if (moving) -fullWidth else 2 * fullWidth }
         )
@@ -74,29 +75,25 @@ fun MenuEntry(
         ) {
             Box(
                 modifier = Modifier
-                    .padding(start = 16.dp)
+                    .clip(
+                        RoundedCornerShape(
+                            topStart = 50f,
+                            bottomStart = 50f,
+                            topEnd = 0f,
+                            bottomEnd = 0f
+                        )
+                    )
                     .fillMaxWidth(0.5f)
-                    .clickable(
-                        interactionSource = null,
-                        enabled = true,
-                        onClick = onClick
-                    ),
-            ) {
+            )
+            {
                 Box(
                     Modifier
                         .fillMaxWidth()
                         .padding(bottom = 8.dp),
                     contentAlignment = Alignment.CenterEnd
                 ) {
-                    VisualNoise(Modifier.height(48.dp).clip(RoundedCornerShape(
-                        topStart = 50f,
-                        bottomStart = 50f,
-                        topEnd = 0f,
-                        bottomEnd = 0f
-                    )))
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
+                    VisualNoise(
+                        Modifier
                             .height(48.dp)
                             .clip(
                                 RoundedCornerShape(
@@ -106,8 +103,34 @@ fun MenuEntry(
                                     bottomEnd = 0f
                                 )
                             )
-                            .background(MaterialTheme.colorScheme.secondary.copy(alpha=0.85f))
+                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .height(48.dp)
+                            .shadow(
+                                4.dp, RoundedCornerShape(
+                                    topStart = 50f,
+                                    bottomStart = 50f,
+                                    topEnd = 0f,
+                                    bottomEnd = 0f
+                                )
+                            )
+                            .clip(
+                                RoundedCornerShape(
+                                    topStart = 50f,
+                                    bottomStart = 50f,
+                                    topEnd = 0f,
+                                    bottomEnd = 0f
+                                )
+                            )
+                            .background(MaterialTheme.colorScheme.secondary.copy(alpha = 0.85f))
                             .fillMaxWidth()
+                            .clickable(
+                                interactionSource = null,
+                                enabled = true,
+                                onClick = onClick
+                            )
                             .padding(start = 16.dp)
                     ) {
                         Image(

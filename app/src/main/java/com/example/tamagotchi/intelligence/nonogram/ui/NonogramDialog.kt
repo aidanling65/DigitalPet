@@ -32,6 +32,8 @@ import com.example.tamagotchi.intelligence.nonogram.NonogramViewModel
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
 import com.example.tamagotchi.main.ui.components.VisualNoise
+import com.example.tamagotchi.theme.AppTheme
+import com.example.tamagotchi.theme.TamagotchiTheme
 
 @Composable
 fun NonogramDialog(
@@ -117,7 +119,7 @@ fun NonogramDialog(
                 color = MaterialTheme.colorScheme.onSurface,
             )
 
-            TamagotchiDisplay(tamagotchiState, modifier = Modifier.weight(0.1f))
+            TamagotchiDisplay(tamagotchiState, modifier = Modifier.weight(0.15f))
             MistakeMeter(nonogram.mistakes.value, tamagotchiState.puzzleDifficulty.mistakes)
             NonogramView(nonogram, modifier = Modifier.weight(0.5f), blocking)
             BottomButtons(blocking) { blocking = !blocking }
@@ -131,5 +133,7 @@ fun NonogramDialog(
 @Composable
 fun NonogramDialogPreview() {
     val nonogramViewModel: NonogramViewModel = viewModel()
-    NonogramDialog(TamagotchiState(), nonogramViewModel, true, {}, false, {}, {})
+    TamagotchiTheme(AppTheme.PURPLE) {
+        NonogramDialog(TamagotchiState(), nonogramViewModel, true, {}, false, {}, {})
+    }
 }
