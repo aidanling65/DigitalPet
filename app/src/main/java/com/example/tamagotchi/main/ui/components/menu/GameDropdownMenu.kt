@@ -31,13 +31,14 @@ import com.example.tamagotchi.main.data.model.TamagotchiState
 import kotlinx.coroutines.delay
 
 @Composable
-fun MinimalDropDownMenu(
+fun GameDropDownMenu(
     tamagotchiState: TamagotchiState,
     showManual: Boolean,
     onManualClicked : () ->Unit,
     onStartupOpen: () -> Unit,
     pauseGame: () -> Unit,
-    onResetClicked: () -> Unit
+    onResetClicked: () -> Unit,
+    onStatsClicked: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     var expandedMenu by remember { mutableStateOf(false) }
@@ -45,7 +46,7 @@ fun MinimalDropDownMenu(
 
     val onDismiss = { expanded = false }
 
-    val maxIndex = 3
+    val maxIndex = 4
     LaunchedEffect(expanded) {
         if (expanded) {
             expandedMenu = true
@@ -133,9 +134,20 @@ fun MinimalDropDownMenu(
                 onDismiss
             )
             MenuEntry(
+                imageId = R.drawable.stats,
+                text = stringResource(R.string.stats),
+                visibleIndex >= 3,
+                showManual,
+                onClick = {
+                    onStatsClicked()
+                },
+                onDismiss
+
+            )
+            MenuEntry(
                 imageId = R.drawable.reset_button,
                 text = stringResource(R.string.reset),
-                visibleIndex >= 3,
+                visibleIndex >= 4,
                 showManual,
                 onClick = {
                     onResetClicked()

@@ -26,6 +26,7 @@ import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.ConfettiSource
 import com.example.tamagotchi.main.ui.ConfettiView
 import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
+import com.example.tamagotchi.main.ui.components.VisualNoise
 import com.example.tamagotchi.main.ui.components.dialogs.DialogBase
 
 @Composable
@@ -44,6 +45,7 @@ fun PuzzleWinDialog(
                 .wrapContentHeight()
                 .background(MaterialTheme.colorScheme.background)
         ) {
+            VisualNoise()
             Column(
                 modifier = Modifier
                     .fillMaxWidth()

@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -43,8 +44,6 @@ fun StepGoalField(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier
                 .padding(start = 8.dp)
-                .clip(RoundedCornerShape(25))
-                .fillMaxHeight()
                 .weight(0.8f),
             singleLine = true,
             textStyle = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.primary, textAlign = TextAlign.Center),
@@ -53,6 +52,7 @@ fun StepGoalField(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .fillMaxHeight()
+                    .shadow(8.dp)
                     .clip(RoundedCornerShape(25))
                     .background(MaterialTheme.colorScheme.secondary)
             ){

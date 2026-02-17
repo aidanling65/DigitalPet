@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
+import com.example.tamagotchi.main.ui.components.VisualNoise
 import com.example.tamagotchi.main.ui.components.dialogs.DialogBase
 
 @Composable
@@ -45,6 +47,7 @@ fun PuzzleLossDialog(
                 .wrapContentHeight()
                 .background(Color.Red)
         ) {
+            VisualNoise()
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -52,7 +55,7 @@ fun PuzzleLossDialog(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                TamagotchiDisplay(tamagotchiState, modifier= Modifier.weight(0.2f))
+                TamagotchiDisplay(tamagotchiState, modifier = Modifier.weight(0.2f))
                 Text(
                     message,
                     style = MaterialTheme.typography.bodyMedium,
@@ -62,7 +65,14 @@ fun PuzzleLossDialog(
                 Box(Modifier.weight(0.4f)) {
                     correctPuzzle()
                 }
-                Button(onClick = onDismissRequest, Modifier.weight(0.05f).fillMaxWidth(0.4f)) {
+                Button(
+                    onClick = onDismissRequest,
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+                    modifier =
+                        Modifier
+                            .weight(0.05f)
+                            .fillMaxWidth(0.4f)
+                ) {
                     Image(
                         Icons.Default.Check,
                         contentDescription = "Check",
@@ -77,6 +87,6 @@ fun PuzzleLossDialog(
 
 @Preview(showBackground = true)
 @Composable
-fun PuzzleLossPreview(){
+fun PuzzleLossPreview() {
     PuzzleLossDialog(true, "Too bad\nYou failed the Sudoku!", TamagotchiState(), {}) {}
 }

@@ -10,7 +10,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,6 +29,7 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.R
+import com.example.tamagotchi.main.ui.components.VisualNoise
 
 @Composable
 fun MenuEntry(
@@ -82,12 +82,18 @@ fun MenuEntry(
                         onClick = onClick
                     ),
             ) {
-                Column(
+                Box(
                     Modifier
                         .fillMaxWidth()
                         .padding(bottom = 8.dp),
-                    horizontalAlignment = Alignment.End
+                    contentAlignment = Alignment.CenterEnd
                 ) {
+                    VisualNoise(Modifier.height(48.dp).clip(RoundedCornerShape(
+                        topStart = 50f,
+                        bottomStart = 50f,
+                        topEnd = 0f,
+                        bottomEnd = 0f
+                    )))
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier

@@ -1,5 +1,9 @@
 package com.example.tamagotchi.main.ui.components.status_bars
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,9 +15,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.R
@@ -48,13 +54,20 @@ fun StatusBar(
         }
     }
 
+    val animatedColor = animateColorAsState(
+        color, label = "ColorAnimation", animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessLow
+        )
+    )
+
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        if(labelComplex != null){
+        if (labelComplex != null) {
             labelComplex()
-        }else if(label != null){
+        } else if (label != null) {
             Text(
                 text = label,
                 color = MaterialTheme.colorScheme.primary,
@@ -65,9 +78,11 @@ fun StatusBar(
         }
         LinearProgressIndicator(
             progress = { progressBar },
-            color = color,
+            color = animatedColor.value,
             trackColor = Color(0x00000000),
             modifier = modifier
+                .shadow(4.dp, RoundedCornerShape(50))
+                .background(MaterialTheme.colorScheme.background)
                 .fillMaxWidth()
                 .height(height)
                 .border(
@@ -78,4 +93,11 @@ fun StatusBar(
         )
 
     }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun StatusBarPreview() {
+    StatusBar(5, 10)
 }

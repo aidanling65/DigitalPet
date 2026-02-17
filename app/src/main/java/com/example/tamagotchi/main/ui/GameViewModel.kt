@@ -11,6 +11,7 @@ import com.example.tamagotchi.intelligence.PuzzleGames
 import com.example.tamagotchi.main.data.data_logging.ActiveHistory
 import com.example.tamagotchi.main.data.data_logging.EvolutionLog
 import com.example.tamagotchi.main.data.data_logging.ExportData
+import com.example.tamagotchi.main.data.data_logging.PassiveHistory
 import com.example.tamagotchi.main.data.data_logging.SessionLog
 import com.example.tamagotchi.main.data.data_logging.TamagotchiDatabase
 import com.example.tamagotchi.main.data.data_logging.TamagotchiHistoryRepository
@@ -21,6 +22,7 @@ import com.example.tamagotchi.main.data.model.MAX_FITNESS
 import com.example.tamagotchi.main.data.model.MAX_HUNGER
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.data.repository.TamagotchiRepository
+import com.example.tamagotchi.main.data.repository.UserSettingsImpl
 import com.example.tamagotchi.main.domain.logic.GameLogicManager
 import com.example.tamagotchi.main.domain.workers.evolution.death
 import com.example.tamagotchi.main.domain.workers.utils.scheduleEvolutionWork
@@ -28,6 +30,7 @@ import com.example.tamagotchi.minigames.GameDifficulty
 import com.example.tamagotchi.minigames.Minigames
 import com.example.tamagotchi.step_tracker.repository.StepDatabase
 import com.example.tamagotchi.step_tracker.repository.StepRepository
+import com.example.tamagotchi.theme.AppTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,7 +42,8 @@ import kotlin.random.Random
 
 class GameViewModel(
     application: Application,
-    val repository: TamagotchiRepository
+    val repository: TamagotchiRepository,
+    val userSettingsImpl: UserSettingsImpl,
 ) : AndroidViewModel(application) {
 
     private val _tamagotchiState = MutableStateFlow(TamagotchiState())
@@ -72,6 +76,13 @@ class GameViewModel(
     private val _showEatingAnimation = MutableStateFlow(0)
     val showEatingAnimation: StateFlow<Int> = _showEatingAnimation.asStateFlow()
 
+    private val _showStats = MutableStateFlow(false)
+    val showStats: StateFlow<Boolean> = _showStats.asStateFlow()
+
+    private val _appTheme = MutableStateFlow(AppTheme.PURPLE)
+    val appTheme: StateFlow<AppTheme> = _appTheme.asStateFlow()
+
+
     private var currentIntelligence: IntelligenceGame? = null
 
     private val gameLogicManager = GameLogicManager()
@@ -83,18 +94,30 @@ class GameViewModel(
 
     private var tempHistory: ActiveHistory? = null
     private var evolutionLog: EvolutionLog? = null
+    private var passiveHistory: PassiveHistory? = null
+
     private var gameOpened: LocalDateTime = LocalDateTime.now()
 
-
     private val exportData: ExportData = ExportData(getApplication(), repository)
+    private var isHistoryFetched = false
 
     init {
         viewModelScope.launch {
+            userSettingsImpl.themeStream.collect { newTheme ->
+                _appTheme.value = newTheme
+            }
+        }
+
+        viewModelScope.launch {
             repository.tamagotchiStateFlow.collect { state ->
-                if (state.initial) {
-                    _showStartup.value = true
-                }
                 _tamagotchiState.value = state.copy(loading = false)
+                if(!isHistoryFetched) {
+                    if (state.initial) {
+                        _showStartup.value = true
+                    }
+                    fetchHistory()
+                    isHistoryFetched = true
+                }
             }
         }
 
@@ -128,10 +151,6 @@ class GameViewModel(
                     updateAndSave { it.copy(steps = steps.toInt()) }
                 }
             }
-        }
-
-        viewModelScope.launch {
-            fetchHistory()
         }
     }
 
@@ -287,9 +306,9 @@ class GameViewModel(
         _showManual.value = false
     }
 
-    fun checkEvolve() {
+    private fun checkEvolve() {
         Log.d("GameViewModel", "Checking evolution")
-        val evolveFunction = tamagotchiState.value.ageStage.evolve
+        Log.d("GameViewModel", "${evolutionLog?.ageStage}  ${tamagotchiState.value.ageStage}")
         if (evolutionLog != null) {
             if (evolutionLog?.ageStage != tamagotchiState.value.ageStage) {
                 if (evolutionLog?.ageStage == AgeStage.DEAD) {
@@ -297,6 +316,7 @@ class GameViewModel(
                         death(getApplication(), it)
                     }
                 } else {
+                    val evolveFunction = tamagotchiState.value.ageStage.evolve
                     updateAndSave {
                         val (evolvedState, _) = evolveFunction!!(getApplication(), it, false)
                         evolvedState
@@ -315,6 +335,18 @@ class GameViewModel(
         if (tamagotchiState.value.paused) {
             tempHistory?.pausesUsed++
         }
+    }
+
+    fun onStatsClicked() {
+        _showStats.value = true
+    }
+
+    fun onDismissStats() {
+        _showStats.value = false
+    }
+
+    fun getStats(): Pair<ActiveHistory, PassiveHistory>{
+        return Pair(tempHistory ?: ActiveHistory(), passiveHistory?: PassiveHistory())
     }
 
     fun onResetClicked() {
@@ -384,13 +416,16 @@ class GameViewModel(
     suspend fun fetchHistory() {
         gameOpened = LocalDateTime.now()
         val previousActives = historyRepository.getLatestActive()
-        val previousEvolution = historyRepository.getLatestEvolution()
+        val previousPassive = historyRepository.getLatestPassive()
 
         tempHistory = previousActives?.copy(
             id = 0,
         ) ?: ActiveHistory(id = 0)
 
-        evolutionLog = previousEvolution
+        passiveHistory = previousPassive?: PassiveHistory(id = 0)
+
+        evolutionLog = historyRepository.getLatestEvolution()
+        checkEvolve()
     }
 
     fun uploadHistory() {
@@ -413,5 +448,9 @@ class GameViewModel(
         viewModelScope.launch {
             exportData.exportDataForSharing()
         }
+    }
+
+    fun updateTheme(appTheme: AppTheme) {
+        userSettingsImpl.theme = appTheme
     }
 }

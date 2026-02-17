@@ -17,9 +17,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -40,7 +42,7 @@ fun TimeField(
         UpDownButtons(
             { state.hour = if (state.hour == 0) 23 else (state.hour - 1) % 24 },
             { state.hour = (state.hour + 1) % 24 },
-            modifier = Modifier.fillMaxHeight()
+            Modifier.fillMaxHeight()
         )
         BasicTextField(
             value = state.hour.toString().padStart(2, '0'),
@@ -62,6 +64,7 @@ fun TimeField(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .fillMaxHeight()
+                    .shadow(4.dp)
                     .clip(RoundedCornerShape(25))
                     .background(MaterialTheme.colorScheme.secondary)
             ){
@@ -71,7 +74,9 @@ fun TimeField(
         Text(
             text = ":",
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.primary
+            color = MaterialTheme.colorScheme.primary,
+            textAlign = TextAlign.Center,
+            modifier=Modifier.fillMaxHeight()
         )
         BasicTextField(
             value = state.minute.toString().padStart(2, '0'),
@@ -93,6 +98,7 @@ fun TimeField(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .fillMaxHeight()
+                    .shadow(4.dp)
                     .clip(RoundedCornerShape(25))
                     .background(MaterialTheme.colorScheme.secondary)
             ){
@@ -102,7 +108,14 @@ fun TimeField(
         UpDownButtons(
             { state.minute = if(state.minute==0) 59 else (state.minute - 1) % 60 },
             { state.minute = (state.minute + 1) % 60 },
-            modifier = Modifier.fillMaxHeight()
+            Modifier.fillMaxHeight()
         )
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+fun TimeFieldPreview(){
+    TimeField(TimePickerState(10 ,0, true))
 }

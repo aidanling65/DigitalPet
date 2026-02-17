@@ -1,6 +1,9 @@
 package com.example.tamagotchi.main.ui.components.manual
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -37,6 +40,7 @@ fun ManualEntry(
     painterId: Int? = null,
 ) {
     var expanded by remember { mutableStateOf(false) }
+
     var bitmap: ImageBitmap? = null
     if (painterId != null) {
         bitmap = ImageBitmap.imageResource(painterId)
@@ -45,13 +49,37 @@ fun ManualEntry(
     if (expanded) {
         textColor = Color.Black
     }
+
+    val animatedTextColor by animateColorAsState(
+        targetValue = textColor,
+        label = "cell color",
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioNoBouncy,
+            stiffness = Spring.StiffnessVeryLow
+        )
+    )
+
+    var color = MaterialTheme.colorScheme.secondary
+    if (expanded) {
+        color = MaterialTheme.colorScheme.onBackground
+    }
+
+    val animatedColor by animateColorAsState(
+        targetValue = color,
+        label = "cell color",
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioNoBouncy,
+            stiffness = Spring.StiffnessVeryLow
+        )
+    )
+
     Column {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
                 .clip(RoundedCornerShape(12.dp))
-                .background(color = if (expanded) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.secondary)
+                .background(color = animatedColor)
                 .clickable(onClick = { expanded = !expanded })
         ) {
             Column(
@@ -79,7 +107,7 @@ fun ManualEntry(
                     Text(
                         text = title,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = textColor,
+                        color = animatedTextColor,
                         modifier = Modifier.weight(1f),
                     )
                 }

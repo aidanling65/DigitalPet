@@ -2,6 +2,7 @@ package com.example.tamagotchi.intelligence.nonogram.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -20,11 +21,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.tamagotchi.R
 import com.example.tamagotchi.intelligence.MistakeMeter
 import com.example.tamagotchi.intelligence.PuzzleLossDialog
 import com.example.tamagotchi.intelligence.PuzzleWinDialog
@@ -32,6 +31,7 @@ import com.example.tamagotchi.intelligence.nonogram.NonogramView
 import com.example.tamagotchi.intelligence.nonogram.NonogramViewModel
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
+import com.example.tamagotchi.main.ui.components.VisualNoise
 
 @Composable
 fun NonogramDialog(
@@ -97,27 +97,32 @@ fun NonogramDialog(
         }
     }
 
-    Column(
+    Box(
         modifier
             .clip(RoundedCornerShape(10))
             .fillMaxWidth()
             .fillMaxHeight(0.9f)
-            .background(MaterialTheme.colorScheme.background)
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .background(MaterialTheme.colorScheme.background),
+        contentAlignment = Alignment.Center
     ) {
-        Text(
-            "Nonogatchi",
-            style = MaterialTheme.typography.titleLarge,
-            color = colorResource(R.color.gold),
-        )
+        VisualNoise()
+        Column(
+            Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                "Nonogatchi",
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
 
-        TamagotchiDisplay(tamagotchiState, modifier = Modifier.weight(0.1f))
-        MistakeMeter(nonogram.mistakes.value, tamagotchiState.puzzleDifficulty.mistakes)
-        NonogramView(nonogram, modifier = Modifier.weight(0.5f), blocking)
-        BottomButtons(blocking) { blocking = !blocking }
-        Spacer(modifier = Modifier.weight(0.05f))
+            TamagotchiDisplay(tamagotchiState, modifier = Modifier.weight(0.1f))
+            MistakeMeter(nonogram.mistakes.value, tamagotchiState.puzzleDifficulty.mistakes)
+            NonogramView(nonogram, modifier = Modifier.weight(0.5f), blocking)
+            BottomButtons(blocking) { blocking = !blocking }
+            Spacer(modifier = Modifier.weight(0.05f))
+        }
     }
 }
 

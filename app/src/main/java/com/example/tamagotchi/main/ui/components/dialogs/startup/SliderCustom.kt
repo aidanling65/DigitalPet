@@ -2,6 +2,7 @@ package com.example.tamagotchi.main.ui.components.dialogs.startup
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
@@ -9,6 +10,7 @@ import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -28,9 +30,11 @@ fun SliderCustom(
         thumb = {
             SliderDefaults.Thumb(
                 interactionSource = MutableInteractionSource(),
-                modifier = Modifier.clip(
-                    CircleShape
-                ),
+                modifier = Modifier
+                    .shadow(8.dp, CircleShape)
+                    .clip(
+                        CircleShape
+                    ),
                 thumbSize = DpSize(24.dp, 24.dp),
                 colors = SliderDefaults.colors(
                     thumbColor = MaterialTheme.colorScheme.secondary,
@@ -40,7 +44,7 @@ fun SliderCustom(
         track = { sliderState ->
             SliderDefaults.Track(
                 sliderState = sliderState,
-                modifier = Modifier,
+                modifier = Modifier.shadow(2.dp, RoundedCornerShape(50)),
                 colors = SliderDefaults.colors(
                     activeTrackColor = MaterialTheme.colorScheme.secondary,
                     inactiveTrackColor = MaterialTheme.colorScheme.secondaryContainer

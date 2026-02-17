@@ -16,9 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import com.example.tamagotchi.R
 import com.example.tamagotchi.intelligence.MistakeMeter
 import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModel
 import com.example.tamagotchi.main.data.model.TamagotchiState
@@ -47,7 +45,7 @@ fun SudokuScreen(
             Text(
                 "Tamagoku",
                 style = MaterialTheme.typography.titleLarge,
-                color = colorResource(R.color.gold)
+                color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(Modifier.weight(0.05f))
             TamagotchiDisplay(

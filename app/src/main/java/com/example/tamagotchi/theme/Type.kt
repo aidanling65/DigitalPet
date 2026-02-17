@@ -1,12 +1,12 @@
 package com.example.tamagotchi.theme
 
-import com.example.tamagotchi.R
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.example.tamagotchi.R
 
 val pottaOne = FontFamily(
     Font(R.font.pottaone_regular)
@@ -33,7 +33,7 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 36.sp,
         lineHeight = 24.sp,
-        letterSpacing = 0.sp
+        letterSpacing = 0.sp,
     ),
     headlineMedium = TextStyle(
         fontFamily = pixelifySans,

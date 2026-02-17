@@ -37,6 +37,7 @@ import androidx.compose.ui.window.DialogWindowProvider
 import com.example.tamagotchi.R
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
+import com.example.tamagotchi.main.ui.components.VisualNoise
 import kotlinx.coroutines.delay
 
 @Composable
@@ -86,6 +87,7 @@ fun Manual(showManual: Boolean, tamagotchiState: TamagotchiState, onDismissReque
                         ),
                     ) { fullWidth -> 2 * fullWidth }
                 ) {
+                    VisualNoise()
                     Column(
                         modifier = Modifier
                             .fillMaxHeight()

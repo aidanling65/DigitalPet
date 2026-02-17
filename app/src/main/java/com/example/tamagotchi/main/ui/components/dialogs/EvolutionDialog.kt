@@ -31,6 +31,7 @@ import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.ConfettiSource
 import com.example.tamagotchi.main.ui.ConfettiView
 import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
+import com.example.tamagotchi.main.ui.components.VisualNoise
 
 @Composable
 fun EvolutionDialog(
@@ -42,6 +43,12 @@ fun EvolutionDialog(
         Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
+        VisualNoise(
+            Modifier
+                .clip (RoundedCornerShape(10))
+                .fillMaxWidth(0.9f)
+                .fillMaxHeight(0.8f)
+        )
         Column(
             modifier = Modifier
                 .clip(RoundedCornerShape(10))

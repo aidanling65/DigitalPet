@@ -20,6 +20,7 @@ import com.example.tamagotchi.intelligence.PuzzleWinDialog
 import com.example.tamagotchi.intelligence.sudoku.domain.SudokuGame
 import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModel
 import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.main.ui.components.VisualNoise
 
 @Composable
 fun SudokuDialog(
@@ -93,6 +94,7 @@ fun SudokuDialog(
             .fillMaxWidth(0.95f)
             .fillMaxHeight(0.9f)
     ) {
+        VisualNoise()
         SudokuScreen(
             viewModel = viewModel,
             tamagotchiState = tamagotchiState,

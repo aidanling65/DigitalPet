@@ -9,12 +9,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.R
 import com.example.tamagotchi.main.data.model.TamagotchiState
-import com.example.tamagotchi.main.ui.components.menu.MinimalDropDownMenu
+import com.example.tamagotchi.main.ui.components.menu.GameDropDownMenu
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -24,11 +23,12 @@ fun TopAppBar(
     onManualClicked: () -> Unit,
     onStartupOpen: () -> Unit,
     pauseGame: () -> Unit,
-    onResetClicked: () -> Unit
+    onResetClicked: () -> Unit,
+    onStatsClicked: () -> Unit,
 ) {
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
-            titleContentColor = colorResource(R.color.gold),
+            titleContentColor = MaterialTheme.colorScheme.onSurface,
             containerColor = MaterialTheme.colorScheme.surface
         ),
         title = {
@@ -39,13 +39,14 @@ fun TopAppBar(
             )
         },
         actions = {
-            MinimalDropDownMenu(
+            GameDropDownMenu(
                 tamagotchiState,
                 showManual,
                 { onManualClicked() },
                 { onStartupOpen() },
                 { pauseGame() },
-                { onResetClicked() }
+                { onResetClicked() },
+                {onStatsClicked()}
             )
         },
         modifier = Modifier.wrapContentHeight(),

@@ -37,6 +37,9 @@ fun Dialogs(gameViewModel: GameViewModel) {
     val showWinScreen by gameViewModel.showWinScreen.collectAsState()
     val showLoss by gameViewModel.showLossScreen.collectAsState()
     val showManual by gameViewModel.showManual.collectAsState()
+    val showStats by gameViewModel.showStats.collectAsState()
+    val (activeStats, passiveStats) = gameViewModel.getStats()
+    val appTheme by gameViewModel.appTheme.collectAsState()
 
     val startupDismiss = {
         if (tamagotchiState.initial) {
@@ -65,7 +68,9 @@ fun Dialogs(gameViewModel: GameViewModel) {
                 { gameViewModel.updateWakeTime(it) },
                 { gameViewModel.updatePuzzleDifficulty(it) },
                 { gameViewModel.updateGameDifficulty(it) },
-                {gameViewModel.exportData()},
+                { gameViewModel.exportData() },
+                appTheme,
+                {gameViewModel.updateTheme(it)},
                 onDismissRequest = onDismissRequest,
             )
         }
@@ -157,6 +162,13 @@ fun Dialogs(gameViewModel: GameViewModel) {
                 },
                 onDismissRequest
             )
+        }
+
+        DialogBase(
+            showStats,
+            onDismissRequest = { gameViewModel.onDismissStats() },
+        ) {
+            StatsDialog(tamagotchiState, activeStats, passiveStats)
         }
 
         Manual(showManual, tamagotchiState) { gameViewModel.onDismissManual() }

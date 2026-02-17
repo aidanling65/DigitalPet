@@ -35,7 +35,9 @@ import com.example.tamagotchi.R
 import com.example.tamagotchi.intelligence.IntelligenceDifficulty
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
+import com.example.tamagotchi.main.ui.components.VisualNoise
 import com.example.tamagotchi.minigames.GameDifficulty
+import com.example.tamagotchi.theme.AppTheme
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,6 +50,8 @@ fun StartupDialog(
     updatePuzzleDifficulty: (IntelligenceDifficulty) -> Unit,
     updateGameDifficulty: (GameDifficulty) -> Unit,
     onExport: () -> Unit,
+    selectedTheme: AppTheme,
+    updateTheme: (AppTheme) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
     var newStepGoal by remember { mutableIntStateOf(tamagotchiState.stepGoal) }
@@ -68,15 +72,16 @@ fun StartupDialog(
 
     Box(
         Modifier
+            .clip(RoundedCornerShape(10))
             .fillMaxWidth(0.95f)
             .fillMaxHeight(0.9f),
         contentAlignment = Alignment.Center
     ) {
+        VisualNoise()
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
-                .clip(RoundedCornerShape(10))
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
                 .padding(horizontal = 8.dp, vertical = 16.dp)
@@ -159,9 +164,25 @@ fun StartupDialog(
                         0f..difficulties.size - 1f
                     ) { gameSliderPosition = it }
                 }
+                item{
+                    val themeItems = AppTheme.entries.map { theme ->  RadioButtonItem(theme.ordinal, theme.name,
+                        theme.theme.background) }
+                    RadioGroup(themeItems, selectedTheme.ordinal, {updateTheme(AppTheme.entries[it])})
+                }
                 item {
-                    Button(onClick = { onExport() }, colors= ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)) {
-                        Text("Export Data", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+                    Button(
+                        onClick = { onExport() },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
+                        elevation = ButtonDefaults.buttonElevation(
+                            defaultElevation = 2.dp,
+                            pressedElevation = 0.dp
+                        )
+                    ) {
+                        Text(
+                            "Export Data",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.primary
+                        )
                     }
                 }
             }

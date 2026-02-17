@@ -26,6 +26,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.ImageBitmap
@@ -65,9 +67,10 @@ fun TamagotchiDisplay(
 
     var padding by remember { mutableStateOf(0.dp) }
 
-    Box(
+    BoxWithConstraints(
         modifier
-            .clip(RoundedCornerShape(percent = 25))
+            .shadow(elevation = 16.dp, RoundedCornerShape(25))
+            .clip(RoundedCornerShape(25))
             .border(
                 width = 2.dp,
                 color = Color.Black,
@@ -81,7 +84,6 @@ fun TamagotchiDisplay(
         BoxWithConstraints(
             Modifier
                 .padding(padding)
-                .fillMaxSize()
         ) {
             padding = maxWidth * 0.1f
             val maxWidth = maxWidth
@@ -164,6 +166,19 @@ fun TamagotchiDisplay(
                 }
             }
         }
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.radialGradient(
+                        colors = listOf(
+                            Color.Transparent,
+                            Color.Black.copy(alpha = 0.5f)
+                        ),
+                        radius = (2 * maxWidth.value) + (maxWidth.value * 0.9f)
+                    )
+                )
+        )
         AnimatedVisibility(
             visible = currentState.paused,
             modifier = Modifier.zIndex(2f),
@@ -229,7 +244,7 @@ fun TamagotchiDisplay(
     }
 }
 
-@Preview(showBackground = false)
+@Preview(showBackground = true)
 @Composable
 fun TamagotchiDisplayPreview() {
     TamagotchiDisplay(

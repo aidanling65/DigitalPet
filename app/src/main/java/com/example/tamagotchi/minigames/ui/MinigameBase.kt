@@ -39,7 +39,7 @@ fun MinigameBase(
         Text(
             title,
             style = MaterialTheme.typography.titleLarge,
-            color = colorResource(R.color.gold)
+            color = MaterialTheme.colorScheme.onSurface
         )
         ScoreBoard(score, isGameStarted && !isGameOver)
         Box(
