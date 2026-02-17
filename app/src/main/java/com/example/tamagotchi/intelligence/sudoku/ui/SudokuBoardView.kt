@@ -52,12 +52,12 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet?) : View(cont
 
     private val conflictingIncorrectCellPaint = Paint().apply{
         style = Paint.Style.FILL_AND_STROKE
-        color = "#db8e84".toColorInt()
+        color = "#ed5742".toColorInt()
     }
 
     private val incorrectCellPaint = Paint().apply {
         style = Paint.Style.FILL_AND_STROKE
-        color = "#db6b5c".toColorInt()
+        color = "#e6503c".toColorInt()
     }
 
     private val sameValueCellPaint = Paint().apply {
@@ -89,6 +89,16 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet?) : View(cont
     fun setLineColor(color: Int) {
         thickLinePaint.color = color
         thinLinePaint.color = color
+        invalidate()
+    }
+
+    fun setSelectedColor(color: Int){
+        selectedCellPaint.color = color
+        invalidate()
+    }
+
+    fun setSameValueColor(color: Int){
+        sameValueCellPaint.color = color
         invalidate()
     }
 
