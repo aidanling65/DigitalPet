@@ -96,7 +96,7 @@ fun StatusBar(
 }
 
 
-@Preview(showBackground = true)
+@Preview(showBackground = false)
 @Composable
 fun StatusBarPreview() {
     StatusBar(5, 10)

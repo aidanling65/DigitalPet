@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.R
 import com.example.tamagotchi.intelligence.IntelligenceDifficulty
@@ -38,6 +39,7 @@ import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
 import com.example.tamagotchi.main.ui.components.VisualNoise
 import com.example.tamagotchi.minigames.GameDifficulty
 import com.example.tamagotchi.theme.AppTheme
+import com.example.tamagotchi.theme.TamagotchiTheme
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -88,6 +90,7 @@ fun StartupDialog(
         ) {
             Spacer(Modifier.height(16.dp))
             TamagotchiDisplay(tamagotchiState, modifier = Modifier.weight(0.2f))
+            Spacer(Modifier.height(8.dp))
             LazyColumn(Modifier.weight(0.6f)) {
                 item {
                     Text(
@@ -194,6 +197,7 @@ fun StartupDialog(
                     }
                 }
             }
+            Spacer(Modifier.height(16.dp))
             SubmitButton(
                 newStepGoal,
                 Modifier.weight(0.1f),
@@ -217,16 +221,21 @@ fun StartupDialog(
     }
 }
 
-/*@Preview(showBackground = true)
+@Preview(showBackground = false)
 @Composable
 fun StartupPreview() {
-    StartupDialog(
-        TamagotchiState(),
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-    )
-}*/
+    TamagotchiTheme(AppTheme.PINK) {
+        StartupDialog(
+            TamagotchiState(puzzleDifficulty = IntelligenceDifficulty.Hard),
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            AppTheme.PURPLE,
+            {},
+            {}
+        )
+    }
+}

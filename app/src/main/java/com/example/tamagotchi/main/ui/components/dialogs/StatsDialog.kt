@@ -20,12 +20,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.tamagotchi.R
 import com.example.tamagotchi.main.data.data_logging.ActiveHistory
 import com.example.tamagotchi.main.data.data_logging.PassiveHistory
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
 import com.example.tamagotchi.main.ui.components.VisualNoise
 import com.example.tamagotchi.main.ui.components.manual.ManualEntry
+import com.example.tamagotchi.theme.AppTheme
+import com.example.tamagotchi.theme.TamagotchiTheme
 
 @Composable
 fun StatsDialog(
@@ -105,45 +108,54 @@ fun StatsDialog(
                                 color = Color.Black
                             )
                         }
-                    })
+                    },
+                        R.drawable.heal
+                    )
                 }
                 item {
-                    ManualEntry("Nonograms", {
-                        Row(
-                            Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceEvenly
-                        ) {
-                            Text(
-                                "Solved: ${activeHistory.nonogramsSolved}",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = Color.Black
-                            )
-                            Text(
-                                "Failed: ${activeHistory.nonogramsFailed}",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = Color.Black
-                            )
-                        }
-                    })
+                    ManualEntry(
+                        "Nonograms", {
+                            Row(
+                                Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceEvenly
+                            ) {
+                                Text(
+                                    "Solved: ${activeHistory.nonogramsSolved}",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = Color.Black
+                                )
+                                Text(
+                                    "Failed: ${activeHistory.nonogramsFailed}",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = Color.Black
+                                )
+                            }
+                        },
+                        R.drawable.nonogram_icon
+                    )
                 }
                 item {
-                    ManualEntry("Sudoku", {
-                        Row(
-                            Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceEvenly
-                        ) {
-                            Text(
-                                "Solved: ${activeHistory.sudokusSolved}",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = Color.Black
-                            )
-                            Text(
-                                "Failed: ${activeHistory.sudokusFailed}",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = Color.Black
-                            )
-                        }
-                    })
+                    ManualEntry(
+                        "Sudoku",
+                        {
+                            Row(
+                                Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceEvenly
+                            ) {
+                                Text(
+                                    "Solved: ${activeHistory.sudokusSolved}",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = Color.Black
+                                )
+                                Text(
+                                    "Failed: ${activeHistory.sudokusFailed}",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = Color.Black
+                                )
+                            }
+                        },
+                        R.drawable.sudoku_icon
+                    )
                 }
                 item {
                     ManualEntry("Minigames", {
@@ -160,7 +172,8 @@ fun StatsDialog(
                                 color = Color.Black
                             )
                         }
-                    })
+                    },
+                        R.drawable.play)
                 }
             }
         }
@@ -170,5 +183,7 @@ fun StatsDialog(
 @Preview(showBackground = true)
 @Composable
 fun StatsDialogPreview() {
-    StatsDialog(TamagotchiState(), ActiveHistory(), PassiveHistory())
+    TamagotchiTheme(AppTheme.PINK) {
+        StatsDialog(TamagotchiState(), ActiveHistory(), PassiveHistory())
+    }
 }
