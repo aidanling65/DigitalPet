@@ -4,6 +4,7 @@ import com.example.tamagotchi.main.data.data_logging.LocalDateTimeSerializer
 import com.example.tamagotchi.main.data.data_logging.LocalTimeSerializer
 import com.example.tamagotchi.intelligence.IntelligenceDifficulty
 import com.example.tamagotchi.minigames.GameDifficulty
+import com.example.tamagotchi.theme.TamagotchiColor
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -67,6 +68,8 @@ data class TamagotchiState(
     val gameDifficulty: GameDifficulty = GameDifficulty.EASY,
 
     val paused: Boolean = false,
+
+    val color : TamagotchiColor = TamagotchiColor.LCD,
 ){
     val currentAnimation : Int
         get() = when{

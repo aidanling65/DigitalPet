@@ -1,6 +1,7 @@
 package com.example.tamagotchi.main.ui.components.dialogs
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.R
 import com.example.tamagotchi.main.ui.components.VisualNoise
@@ -40,45 +42,53 @@ fun ResetDialog(
             disabledContainerColor = DialogColor
         )
     ) {
-        VisualNoise()
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text(
-                text = "Are you sure you want to reset your Tamagotchi?\nYou won't be able to get it back.",
-                modifier = Modifier.padding(16.dp),
-                style = MaterialTheme.typography.bodySmall
-            )
-            Row(
+        Box {
+            VisualNoise()
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                TextButton(
-                    onClick = { onDismissRequest() },
-                    modifier = Modifier.padding(8.dp),
+                Text(
+                    text = "Are you sure you want to reset your Tamagotchi?\nYou won't be able to get it back.",
+                    modifier = Modifier.padding(16.dp),
+                    style = MaterialTheme.typography.bodySmall
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
                 ) {
-                    Text(
-                        stringResource(R.string.dismiss),
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                }
-                TextButton(
-                    onClick = {
-                        onConfirmation()
-                        onDismissRequest()
-                              },
-                    modifier = Modifier.padding(8.dp),
-                ) {
-                    Text(
-                        stringResource(R.string.confirm),
-                        style = MaterialTheme.typography.bodySmall
-                    )
+                    TextButton(
+                        onClick = { onDismissRequest() },
+                        modifier = Modifier.padding(8.dp),
+                    ) {
+                        Text(
+                            stringResource(R.string.dismiss),
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                    TextButton(
+                        onClick = {
+                            onConfirmation()
+                            onDismissRequest()
+                        },
+                        modifier = Modifier.padding(8.dp),
+                    ) {
+                        Text(
+                            stringResource(R.string.confirm),
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
                 }
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun ResetPreview(){
+    ResetDialog({},{})
 }

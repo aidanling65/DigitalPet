@@ -13,6 +13,7 @@ import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.EvolutionAnimations
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.minigames.GameDifficulty
+import com.example.tamagotchi.theme.TamagotchiColor
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.LocalDateTime
@@ -58,6 +59,8 @@ class TamagotchiRepository(private val context: Context) {
     private val BED_TIME = stringPreferencesKey("bed_time")
     private val WAKE_TIME = stringPreferencesKey("wake_time")
 
+    private val COLOR = intPreferencesKey("color")
+
     private fun stateFromPrefs(prefs: Preferences): TamagotchiState {
         val defaultState = TamagotchiState()
         return TamagotchiState(
@@ -95,7 +98,8 @@ class TamagotchiRepository(private val context: Context) {
             puzzleDifficulty = IntelligenceDifficulty.entries[prefs[PUZZLE_DIFFICULTY] ?: defaultState.puzzleDifficulty.ordinal],
             gameDifficulty = GameDifficulty.entries[prefs[GAME_DIFFICULTY] ?: defaultState.gameDifficulty.ordinal],
             bedTime = LocalTime.parse(prefs[BED_TIME] ?: defaultState.bedTime.toString()),
-            wakeTime = LocalTime.parse(prefs[WAKE_TIME] ?: defaultState.wakeTime.toString())
+            wakeTime = LocalTime.parse(prefs[WAKE_TIME] ?: defaultState.wakeTime.toString()),
+            color = TamagotchiColor.entries[prefs[COLOR] ?: defaultState.color.ordinal],
         )
     }
 
@@ -149,5 +153,6 @@ class TamagotchiRepository(private val context: Context) {
         updated[GAME_DIFFICULTY] = current.gameDifficulty.ordinal
         updated[BED_TIME] = current.bedTime.toString()
         updated[WAKE_TIME] = current.wakeTime.toString()
+        updated[COLOR] = current.color.ordinal
     }
 }
