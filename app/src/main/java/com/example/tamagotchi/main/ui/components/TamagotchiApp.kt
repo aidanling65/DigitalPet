@@ -70,7 +70,7 @@ fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
                     tamagotchiState,
                     modifier.fillMaxWidth(0.65f),
                     { gameViewModel.onEatingAnimationFinished() },
-                    showEating
+                    showEating,
                 )
                 Spacer(Modifier.height(16.dp))
                 StatusBars(tamagotchiState)

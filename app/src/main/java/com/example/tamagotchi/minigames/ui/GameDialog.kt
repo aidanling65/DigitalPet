@@ -24,7 +24,7 @@ import kotlin.random.Random
 @Composable
 fun GameDialog(
     tamagotchiState: TamagotchiState,
-    gameScore: (Int, Minigames) -> Unit,
+    gameScore: (Int, Minigames) -> Unit
 ) {
 
     val randomGame = remember { mutableIntStateOf(Random.nextInt(0, 2)) }
@@ -51,11 +51,13 @@ fun GameDialog(
             when (randomGame.intValue) {
                 0 -> JumpGameCanvas(
                     tamagotchiState,
-                    { it -> gameScore(it, Minigames.JUMP) }) { restart() }
+                    { it -> gameScore(it, Minigames.JUMP) },
+                    { restart() })
 
                 1 -> FlappyGameCanvas(
                     tamagotchiState,
-                    { it -> gameScore(it, Minigames.FLAPPY) }) { restart() }
+                    { it -> gameScore(it, Minigames.FLAPPY) },
+                    { restart() })
             }
         }
     }

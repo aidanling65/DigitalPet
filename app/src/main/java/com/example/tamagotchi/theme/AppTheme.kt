@@ -57,7 +57,7 @@ enum class AppTheme(val theme: ColorScheme) {
         tertiary = Pink80,
         inverseOnSurface = Color.Black,
         surface = Color(0xDDFDD58D),
-        onSurface = Color(0xFFF6DA8A),
+        onSurface = Color(0xFF544C95),
         surfaceContainer = Color(0xFFFDDC6C),
     )),
     ORANGE(lightColorScheme(

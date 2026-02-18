@@ -44,6 +44,7 @@ import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.utils.animation.AnimateDrawable
 import com.example.tamagotchi.main.utils.animation.AnimateDrawableOneShot
 import com.example.tamagotchi.main.utils.animation.getAnimationDuration
+import com.example.tamagotchi.theme.TamagotchiColor
 import kotlinx.coroutines.delay
 
 @Composable
@@ -51,8 +52,15 @@ fun TamagotchiDisplay(
     currentState: TamagotchiState,
     modifier: Modifier = Modifier,
     onAnimationFinish: () -> Unit = {},
-    showEatingAnimation: Int = 0
+    showEatingAnimation: Int = 0,
 ) {
+    val colorPass =
+        if (currentState.animations == EvolutionAnimations.ADULT_4 && currentState.color == TamagotchiColor.LCD) {
+            Color.Black
+        }
+        else
+            currentState.color.color
+
     val eatingAnimation = listOf(R.drawable.eating_bread, R.drawable.eating_burger).random()
     val eatingDuration = getAnimationDuration(LocalContext.current, eatingAnimation)
     var tamagotchiEating by remember { mutableStateOf(false) }
@@ -99,6 +107,7 @@ fun TamagotchiDisplay(
                     AnimateDrawable(
                         drawableRes = currentState.animations.eating
                             ?: currentState.currentAnimation,
+                        color = colorPass,
                         modifier = Modifier
                             .fillMaxSize()
                     )
@@ -108,6 +117,7 @@ fun TamagotchiDisplay(
                         if (currentState.ageStage == AgeStage.EGG) (maxWidth * 0.3f) else 0.dp
                     AnimateDrawable(
                         drawableRes = currentState.currentAnimation,
+                        color = colorPass,
                         modifier = Modifier
                             .fillMaxSize(size)
                             .offset(offset, offset)
@@ -198,7 +208,8 @@ fun TamagotchiDisplay(
                     .background(
                         Color.Black.copy(alpha = 0.5f),
                     )
-                    .fillMaxSize().padding(16.dp)
+                    .fillMaxSize()
+                    .padding(16.dp)
             ) {
                 Image(
                     bitmap = ImageBitmap.imageResource(R.drawable.paused),
@@ -264,13 +275,13 @@ fun TamagotchiDisplayPreview() {
 fun TamagotchiDisplayPreview2() {
     TamagotchiDisplay(
         TamagotchiState(
-            paused = true,
+            paused = false,
             ageStage = AgeStage.CHILD,
-            animations = EvolutionAnimations.CHILD,
+            animations = EvolutionAnimations.EGG,
             loading = false,
             poop = true,
             sick = false,
         ),
-        showEatingAnimation = 0
+        showEatingAnimation = 0,
     )
 }

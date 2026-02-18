@@ -51,7 +51,7 @@ fun SudokuScreen(
             TamagotchiDisplay(
                 tamagotchiState, modifier = Modifier
                     .fillMaxWidth(0.4f)
-                    .aspectRatio(1f)
+                    .aspectRatio(1f),
             )
             MistakeMeter(mistakes, tamagotchiState.puzzleDifficulty.mistakes)
             Spacer(Modifier.weight(0.05f))

@@ -31,6 +31,7 @@ import com.example.tamagotchi.minigames.Minigames
 import com.example.tamagotchi.step_tracker.repository.StepDatabase
 import com.example.tamagotchi.step_tracker.repository.StepRepository
 import com.example.tamagotchi.theme.AppTheme
+import com.example.tamagotchi.theme.TamagotchiColor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -81,7 +82,6 @@ class GameViewModel(
 
     private val _appTheme = MutableStateFlow(AppTheme.PURPLE)
     val appTheme: StateFlow<AppTheme> = _appTheme.asStateFlow()
-
 
     private var currentIntelligence: IntelligenceGame? = null
 
@@ -452,5 +452,9 @@ class GameViewModel(
 
     fun updateTheme(appTheme: AppTheme) {
         userSettingsImpl.theme = appTheme
+    }
+
+    fun updateColor(color: TamagotchiColor){
+        updateAndSave { it.copy(color = color) }
     }
 }

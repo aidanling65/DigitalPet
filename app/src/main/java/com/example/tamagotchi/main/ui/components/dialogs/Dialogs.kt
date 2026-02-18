@@ -40,7 +40,6 @@ fun Dialogs(gameViewModel: GameViewModel) {
     val showStats by gameViewModel.showStats.collectAsState()
     val (activeStats, passiveStats) = gameViewModel.getStats()
     val appTheme by gameViewModel.appTheme.collectAsState()
-
     val startupDismiss = {
         if (tamagotchiState.initial) {
             gameViewModel.setupNewGame()
@@ -71,6 +70,8 @@ fun Dialogs(gameViewModel: GameViewModel) {
                 { gameViewModel.exportData() },
                 appTheme,
                 {gameViewModel.updateTheme(it)},
+                tamagotchiState.color,
+                {gameViewModel.updateColor(it)},
                 onDismissRequest = onDismissRequest,
             )
         }

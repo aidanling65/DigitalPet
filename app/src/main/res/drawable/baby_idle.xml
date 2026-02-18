@@ -5,5 +5,4 @@
     <item android:drawable="@drawable/baby_idle2" android:duration="500"/>
     <item android:drawable="@drawable/baby_idle3" android:duration="500"/>
     <item android:drawable="@drawable/baby_idle4" android:duration="500"/>
-    <item android:drawable="@drawable/baby_idle5" android:duration="500"/>
 </animation-list>

@@ -13,20 +13,24 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
+import com.example.tamagotchi.main.data.model.EvolutionAnimations
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.utils.animation.getAnimationFrames
 import com.example.tamagotchi.minigames.ui.MinigameBase
+import com.example.tamagotchi.theme.TamagotchiColor
 import kotlinx.coroutines.delay
 
 @Composable
 fun FlappyGameCanvas(
     tamagotchiState: TamagotchiState,
     gameScore: (Int) -> Unit,
-    restartFun: () -> Unit
+    restartFun: () -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -101,6 +105,20 @@ fun FlappyGameCanvas(
 
         restartFun()
     }
+
+    val passColor = if(tamagotchiState.animations == EvolutionAnimations.ADULT_4 && tamagotchiState.color == TamagotchiColor.LCD){
+        Color.Black
+    }else{
+        tamagotchiState.color.color
+    }
+    val tintMatrix = ColorMatrix(
+        floatArrayOf(
+            passColor.red, 0f, 0f, 0f, 1f,
+            0f, passColor.green, 0f, 0f, 1f,
+            0f, 0f, passColor.blue, 0f, 1f,
+            0f, 0f, 0f, 1f, 0f
+        )
+    )
 
     LaunchedEffect(isGameStarted) {
 
@@ -203,7 +221,8 @@ fun FlappyGameCanvas(
                         srcSize = IntSize(playerBitmap.width, playerBitmap.height),
                         dstOffset = IntOffset(player.x.toInt(), player.y.toInt()),
                         dstSize = IntSize(player.width.toInt(), player.height.toInt()),
-                        filterQuality = FilterQuality.None
+                        filterQuality = FilterQuality.None,
+                        colorFilter = ColorFilter.colorMatrix(tintMatrix)
                     )
                 }
             }

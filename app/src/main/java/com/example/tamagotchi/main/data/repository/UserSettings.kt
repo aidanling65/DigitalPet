@@ -18,11 +18,13 @@ interface UserSettings{
 class UserSettingsImpl(
     context: Context
 ) : UserSettings{
+
+    private val preferences: SharedPreferences by lazy {
+        context.getSharedPreferences("sample_theme", Context.MODE_PRIVATE)
+    }
+
     override val themeStream: MutableStateFlow<AppTheme>
     override var theme: AppTheme by AppThemePreferenceDelegate("app_theme", AppTheme.PURPLE)
-
-    private val preferences: SharedPreferences = context.getSharedPreferences("sample_theme", Context.MODE_PRIVATE)
-
     init{
         themeStream = MutableStateFlow(theme)
     }

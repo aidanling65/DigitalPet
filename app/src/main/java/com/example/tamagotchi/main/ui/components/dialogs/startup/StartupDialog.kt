@@ -39,6 +39,7 @@ import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
 import com.example.tamagotchi.main.ui.components.VisualNoise
 import com.example.tamagotchi.minigames.GameDifficulty
 import com.example.tamagotchi.theme.AppTheme
+import com.example.tamagotchi.theme.TamagotchiColor
 import com.example.tamagotchi.theme.TamagotchiTheme
 import java.time.LocalTime
 
@@ -54,6 +55,8 @@ fun StartupDialog(
     onExport: () -> Unit,
     selectedTheme: AppTheme,
     updateTheme: (AppTheme) -> Unit,
+    selectedColor: TamagotchiColor,
+    updateColor: (TamagotchiColor) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
     var newStepGoal by remember { mutableIntStateOf(tamagotchiState.stepGoal) }
@@ -181,6 +184,19 @@ fun StartupDialog(
                     RadioGroup(themeItems, selectedTheme.ordinal, {updateTheme(AppTheme.entries[it])})
                 }
                 item {
+                    Text(
+                        stringResource(R.string.tamagotchi_colour),
+                        style = MaterialTheme.typography.bodySmall,
+                        textAlign = TextAlign.Start,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                item{
+                    val colorItems = TamagotchiColor.entries.map { color ->  RadioButtonItem(color.ordinal, color.name,
+                        color.color) }
+                    RadioGroup(colorItems, selectedColor.ordinal, {updateColor(TamagotchiColor.entries[it])})
+                }
+                item {
                     Button(
                         onClick = { onExport() },
                         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
@@ -234,6 +250,8 @@ fun StartupPreview() {
             {},
             {},
             AppTheme.PURPLE,
+            {},
+            TamagotchiColor.PINK,
             {},
             {}
         )
