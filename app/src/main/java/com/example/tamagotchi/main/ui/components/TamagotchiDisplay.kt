@@ -3,8 +3,10 @@ package com.example.tamagotchi.main.ui.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
@@ -72,6 +74,7 @@ fun TamagotchiDisplay(
             tamagotchiEating = false
         }
     }
+
 
     var padding by remember { mutableStateOf(0.dp) }
 
@@ -224,8 +227,9 @@ fun TamagotchiDisplay(
             visible = currentState.lightAnimationState == 1,
             modifier = Modifier.zIndex(3f),
             enter = fadeIn(
-                animationSpec = spring(
-                    stiffness = Spring.StiffnessVeryLow
+                animationSpec = tween(
+                    durationMillis = 500,
+                    easing = LinearOutSlowInEasing
                 )
             ),
             exit = ExitTransition.None
@@ -241,8 +245,9 @@ fun TamagotchiDisplay(
             modifier = Modifier.zIndex(3f),
             enter = EnterTransition.None,
             exit = fadeOut(
-                animationSpec = spring(
-                    stiffness = Spring.StiffnessVeryLow
+                animationSpec = tween(
+                    durationMillis = 500,
+                    easing = LinearOutSlowInEasing
                 )
             )
         ) {
@@ -255,18 +260,21 @@ fun TamagotchiDisplay(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = false)
 @Composable
 fun TamagotchiDisplayPreview() {
     TamagotchiDisplay(
         TamagotchiState(
             paused = false,
-            ageStage = AgeStage.BABY,
-            animations = EvolutionAnimations.CHILD,
+            ageStage = AgeStage.ADULT,
+            animations = EvolutionAnimations.TEEN_2,
             loading = false,
-            poop = true
+            sleeping = false,
+            poop=false,
+            sick=false,
+            color=TamagotchiColor.LCD
         ),
-        showEatingAnimation = 1
+        showEatingAnimation = 0
     )
 }
 
@@ -277,11 +285,30 @@ fun TamagotchiDisplayPreview2() {
         TamagotchiState(
             paused = false,
             ageStage = AgeStage.CHILD,
-            animations = EvolutionAnimations.EGG,
+            animations = EvolutionAnimations.CHILD,
             loading = false,
-            poop = true,
+            poop = false,
             sick = false,
+            sleeping = false,
+            color= TamagotchiColor.LCD,
         ),
         showEatingAnimation = 0,
+    )
+}
+
+@Preview(showBackground = false)
+@Composable
+fun TamagotchiDisplayPreview3() {
+    TamagotchiDisplay(
+        TamagotchiState(
+            paused = false,
+            ageStage = AgeStage.ADULT,
+            animations = EvolutionAnimations.ADULT_3,
+            loading = false,
+            poop =  false,
+            sick = false,
+            color= TamagotchiColor.LCD,
+        ),
+        showEatingAnimation = 1,
     )
 }

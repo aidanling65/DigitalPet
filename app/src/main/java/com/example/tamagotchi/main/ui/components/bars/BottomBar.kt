@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.R
+import com.example.tamagotchi.theme.TamagotchiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,8 +63,10 @@ fun BottomBar(
     )
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = false)
 @Composable
 fun BottomBarPreview() {
-    BottomBar({},{},{},{},{},{},{})
+    TamagotchiTheme{
+        BottomBar({},{},{},{},{},{},{})
+    }
 }

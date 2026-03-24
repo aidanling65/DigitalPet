@@ -19,11 +19,14 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
+import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.EvolutionAnimations
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.utils.animation.getAnimationFrames
+import com.example.tamagotchi.minigames.ui.GameDialog
 import com.example.tamagotchi.minigames.ui.MinigameBase
 import com.example.tamagotchi.theme.TamagotchiColor
 import kotlinx.coroutines.delay
@@ -233,3 +236,13 @@ fun JumpGameCanvas(
     }
 }
 
+
+@Preview(showBackground = true)
+@Composable
+fun JumpGameCanvasPreview(){
+    GameDialog(
+        TamagotchiState(ageStage = AgeStage.TEEN, animations = EvolutionAnimations.TEEN_1),
+        gameScore = {it, it2 ->}
+    )
+        
+}

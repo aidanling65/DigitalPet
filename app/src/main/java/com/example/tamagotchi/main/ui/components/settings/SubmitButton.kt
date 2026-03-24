@@ -1,4 +1,4 @@
-package com.example.tamagotchi.main.ui.components.dialogs.startup
+package com.example.tamagotchi.main.ui.components.settings
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement

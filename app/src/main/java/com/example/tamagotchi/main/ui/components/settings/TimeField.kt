@@ -1,4 +1,4 @@
-package com.example.tamagotchi.main.ui.components.dialogs.startup
+package com.example.tamagotchi.main.ui.components.settings
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

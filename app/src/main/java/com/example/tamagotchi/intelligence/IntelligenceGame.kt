@@ -5,7 +5,7 @@ enum class IntelligenceGame {
     NONOGRAM
 }
 
-enum class IntelligenceDifficulty(val sudokuDigits: Int, val nonogramOdds: Float, val mistakes: Int){
+enum class PuzzleDifficulty(val sudokuDigits: Int, val nonogramOdds: Float, val mistakes: Int){
     EASY(
         20,
         0.7f,

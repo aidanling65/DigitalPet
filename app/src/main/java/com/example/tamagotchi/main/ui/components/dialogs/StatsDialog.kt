@@ -167,7 +167,7 @@ fun StatsDialog(
                                 color = Color.Black
                             )
                             Text(
-                                "Jumps played: ${activeHistory.timesFlappyPlayed}",
+                                "Flappys played: ${activeHistory.timesFlappyPlayed}",
                                 style = MaterialTheme.typography.bodySmall,
                                 color = Color.Black
                             )

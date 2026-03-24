@@ -1,4 +1,4 @@
-package com.example.tamagotchi.main.ui.components.dialogs.startup
+package com.example.tamagotchi.main.ui.components.settings
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -33,7 +33,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.R
-import com.example.tamagotchi.intelligence.IntelligenceDifficulty
+import com.example.tamagotchi.intelligence.PuzzleDifficulty
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
 import com.example.tamagotchi.main.ui.components.VisualNoise
@@ -45,12 +45,12 @@ import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StartupDialog(
+fun SettingsDialog(
     tamagotchiState: TamagotchiState,
     submitStepsGoal: (Int) -> Unit,
     updateBedTime: (LocalTime) -> Unit,
     updateWakeTime: (LocalTime) -> Unit,
-    updatePuzzleDifficulty: (IntelligenceDifficulty) -> Unit,
+    updatePuzzleDifficulty: (PuzzleDifficulty) -> Unit,
     updateGameDifficulty: (GameDifficulty) -> Unit,
     onExport: () -> Unit,
     selectedTheme: AppTheme,
@@ -147,7 +147,7 @@ fun StartupDialog(
                     )
                 }
                 item {
-                    val difficulties = IntelligenceDifficulty.entries
+                    val difficulties = PuzzleDifficulty.entries
                     SliderCustom(
                         puzzleSliderPosition,
                         difficulties.size - 2,
@@ -228,9 +228,9 @@ fun StartupDialog(
                 updateWakeTime(wakeTime)
                 Log.d(
                     "StartupDialog",
-                    "Difficulty: ${IntelligenceDifficulty.entries[puzzleSliderPosition.toInt()]}"
+                    "Difficulty: ${PuzzleDifficulty.entries[puzzleSliderPosition.toInt()]}"
                 )
-                updatePuzzleDifficulty(IntelligenceDifficulty.entries[puzzleSliderPosition.toInt()])
+                updatePuzzleDifficulty(PuzzleDifficulty.entries[puzzleSliderPosition.toInt()])
                 updateGameDifficulty(GameDifficulty.entries[gameSliderPosition.toInt()])
             }
         }
@@ -239,10 +239,10 @@ fun StartupDialog(
 
 @Preview(showBackground = false)
 @Composable
-fun StartupPreview() {
+fun SettingsPreview() {
     TamagotchiTheme(AppTheme.PINK) {
-        StartupDialog(
-            TamagotchiState(puzzleDifficulty = IntelligenceDifficulty.Hard),
+        SettingsDialog(
+            TamagotchiState(puzzleDifficulty = PuzzleDifficulty.Hard),
             {},
             {},
             {},

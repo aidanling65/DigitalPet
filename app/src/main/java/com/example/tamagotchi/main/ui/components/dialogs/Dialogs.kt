@@ -21,7 +21,7 @@ import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModel
 import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModelFactory
 import com.example.tamagotchi.intelligence.sudoku.ui.components.SudokuDialog
 import com.example.tamagotchi.main.ui.GameViewModel
-import com.example.tamagotchi.main.ui.components.dialogs.startup.StartupDialog
+import com.example.tamagotchi.main.ui.components.settings.SettingsDialog
 import com.example.tamagotchi.main.ui.components.manual.Manual
 import com.example.tamagotchi.minigames.ui.GameDialog
 
@@ -60,7 +60,7 @@ fun Dialogs(gameViewModel: GameViewModel) {
                 usePlatformDefaultWidth = false
             )
         ) { onDismissRequest ->
-            StartupDialog(
+            SettingsDialog(
                 tamagotchiState,
                 { gameViewModel.submitStepsGoal(it) },
                 { gameViewModel.updateBedTime(it) },

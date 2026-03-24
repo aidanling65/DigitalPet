@@ -32,7 +32,11 @@ import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.tamagotchi.R
+import com.example.tamagotchi.theme.AppTheme
+import com.example.tamagotchi.theme.TamagotchiTheme
 
 @Composable
 fun ManualEntry(
@@ -118,5 +122,13 @@ fun ManualEntry(
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Manual(){
+    TamagotchiTheme(AppTheme.PURPLE) {
+        ManualEntry("Evolution", {Text("Poop")}, R.drawable.chromosome)
     }
 }

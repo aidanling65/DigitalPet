@@ -1,30 +1,65 @@
 package com.example.tamagotchi.theme
 
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.tamagotchi.main.data.model.AgeStage
+import com.example.tamagotchi.main.data.model.EvolutionAnimations
+import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
 
 enum class TamagotchiColor(val color: Color) {
     LCD(
         Color(0xFF869484)
     ),
+    WHITE(
+        Color.White
+    ),
+    GREY(
+        Color.Gray
+    ),
     RED(
-        Color.Red
+        Color(0xFFFF6053)
     ),
     GREEN(
-        Color.Green
+        Color(0xFF68DE6D)
     ),
     BLUE(
-        Color.Blue
+        Color(0xFF03A9F4)
+    ),
+    DARK_BLUE(
+        Color(0xFF5858FF)
     ),
     PINK(
-      Color(0xFFE91E63)
+        Color(0xFFFA8BB2)
+    ),
+    PURPLE(
+        Color(0xFFC77DC7)
     ),
     ORANGE(
-        Color(0xFFFF9800)
+        Color(0xFFFFBE5D)
     ),
     YELLOW(
-        Color.Yellow
+        Color(0xFFFFEF6F)
     ),
     BROWN(
         Color(0xFF795548)
     );
+}
+
+
+@Preview
+@Composable
+fun ColorPreview() {
+    TamagotchiDisplay(
+        TamagotchiState(
+            paused = false,
+            ageStage = AgeStage.CHILD,
+            animations = EvolutionAnimations.CHILD,
+            loading = false,
+            poop = true,
+            color = TamagotchiColor.GREEN
+        ),
+        showEatingAnimation = 1
+    )
 }

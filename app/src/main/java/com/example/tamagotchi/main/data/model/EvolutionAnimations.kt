@@ -8,8 +8,6 @@ enum class EvolutionAnimations(
     val idle: Int,
     val eating: Int?,
     val sleep: Int?,
-    val lightsOutSleep: Int = R.drawable.lights_out_sleep,
-    val lightsOutAwake: Int = R.drawable.lights_out_awake,
     val sick: Int?,
     val play: Int,
 ) {
@@ -73,8 +71,6 @@ enum class EvolutionAnimations(
         idle = R.drawable.adult_4_idle,
         eating = R.drawable.adult_4_eating,
         sleep = R.drawable.adult_4_sleep,
-        lightsOutSleep = R.drawable.lights_out_sleep,
-        lightsOutAwake = R.drawable.lights_out_awake,
         sick = R.drawable.adult_4_sick,
         play = R.drawable.adult_4_play
     ),

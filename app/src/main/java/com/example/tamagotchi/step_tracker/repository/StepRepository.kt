@@ -23,7 +23,7 @@ class StepRepository(
         stepsDao.insertAll(stepCount)
     }
 
-    fun loadTodaysSteps(): Flow<Long> {
+    fun loadTodaySteps(): Flow<Long> {
         val todayAtMidnight = LocalDateTime.of(LocalDate.now(ZoneId.systemDefault()), LocalTime.MIDNIGHT).toString()
         return stepsDao.loadAllStepsFromToday(startDateTime = todayAtMidnight).map { todayDataPoints ->
             when {

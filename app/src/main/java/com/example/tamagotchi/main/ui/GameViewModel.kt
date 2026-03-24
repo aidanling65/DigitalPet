@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
-import com.example.tamagotchi.intelligence.IntelligenceDifficulty
+import com.example.tamagotchi.intelligence.PuzzleDifficulty
 import com.example.tamagotchi.intelligence.IntelligenceGame
 import com.example.tamagotchi.intelligence.PuzzleGames
 import com.example.tamagotchi.main.data.data_logging.ActiveHistory
@@ -122,7 +122,7 @@ class GameViewModel(
         }
 
         viewModelScope.launch {
-            stepRepository.loadTodaysSteps().collect { steps ->
+            stepRepository.loadTodaySteps().collect { steps ->
                 Log.d("Steps", "Loaded steps: $steps")
                 val stepGoal = tamagotchiState.value.stepGoal
                 if (steps > stepGoal && !tamagotchiState.value.stepGoalHit) {
@@ -268,18 +268,36 @@ class GameViewModel(
         viewModelScope.launch {
             if (tamagotchiState.value.light) {
                 updateAndSave { it.copy(lightAnimationState = 1) }
-                delay(250)
-                updateAndSave { it.copy(lightAnimationState = 0, light = false) }
+                delay(550)
+                updateAndSave {
+                    if (it.lightAnimationState != 2) {
+                        it.copy(lightAnimationState = 0, light = false)
+                    } else{
+                        it
+                    }
+                }
                 tempHistory?.timesLightsOut++
 
             } else {
-                updateAndSave { it.copy(lightAnimationState = 2, light = true) }
-                delay(400)
-                updateAndSave { it.copy(lightAnimationState = 0) }
+                updateAndSave {if(it.lightAnimationState != 1) {
+                    it.copy(lightAnimationState = 2, light = true)
+                    } else{
+                        it.copy(lightAnimationState = 2)
+                    }
+                }
+                delay(550)
+                updateAndSave {
+                    if(it.lightAnimationState != 1) {
+                        it.copy(lightAnimationState = 0, light = true)
+                    } else{
+                        it
+                    }
+                }
             }
         }
 
     }
+
 
     fun discipline() {
         updateAndSave { gameLogicManager.discipline(it) }
@@ -391,7 +409,7 @@ class GameViewModel(
         updateAndSave { it.copy(wakeTime = wakeTime) }
     }
 
-    fun updatePuzzleDifficulty(difficulty: IntelligenceDifficulty) {
+    fun updatePuzzleDifficulty(difficulty: PuzzleDifficulty) {
         updateAndSave { it.copy(puzzleDifficulty = difficulty) }
     }
 

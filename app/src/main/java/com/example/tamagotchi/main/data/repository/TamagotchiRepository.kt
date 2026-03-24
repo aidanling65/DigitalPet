@@ -8,7 +8,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.example.tamagotchi.intelligence.IntelligenceDifficulty
+import com.example.tamagotchi.intelligence.PuzzleDifficulty
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.EvolutionAnimations
 import com.example.tamagotchi.main.data.model.TamagotchiState
@@ -95,7 +95,7 @@ class TamagotchiRepository(private val context: Context) {
             ),
             hasEvolved = prefs[HAS_EVOLVED] ?: defaultState.hasEvolved,
             paused = prefs[PAUSED] ?: defaultState.paused,
-            puzzleDifficulty = IntelligenceDifficulty.entries[prefs[PUZZLE_DIFFICULTY] ?: defaultState.puzzleDifficulty.ordinal],
+            puzzleDifficulty = PuzzleDifficulty.entries[prefs[PUZZLE_DIFFICULTY] ?: defaultState.puzzleDifficulty.ordinal],
             gameDifficulty = GameDifficulty.entries[prefs[GAME_DIFFICULTY] ?: defaultState.gameDifficulty.ordinal],
             bedTime = LocalTime.parse(prefs[BED_TIME] ?: defaultState.bedTime.toString()),
             wakeTime = LocalTime.parse(prefs[WAKE_TIME] ?: defaultState.wakeTime.toString()),

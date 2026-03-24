@@ -24,14 +24,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.zIndex
 import com.example.tamagotchi.R
 import com.example.tamagotchi.main.data.model.AgeStage
+import com.example.tamagotchi.main.data.model.EvolutionAnimations
 import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.ui.ConfettiSource
 import com.example.tamagotchi.main.ui.ConfettiView
 import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
 import com.example.tamagotchi.main.ui.components.VisualNoise
+import com.example.tamagotchi.theme.AppTheme
+import com.example.tamagotchi.theme.TamagotchiTheme
 
 @Composable
 fun EvolutionDialog(
@@ -45,7 +49,7 @@ fun EvolutionDialog(
     ) {
         VisualNoise(
             Modifier
-                .clip (RoundedCornerShape(10))
+                .clip(RoundedCornerShape(10))
                 .fillMaxWidth(0.9f)
                 .fillMaxHeight(0.8f)
         )
@@ -104,5 +108,18 @@ fun EvolutionDialog(
             quantity = 100,
             modifier = Modifier.zIndex(1f)
         )
+    }
+}
+
+@Preview
+@Composable
+fun EvolutionDialogPreview() {
+    TamagotchiTheme(AppTheme.PURPLE) {
+        EvolutionDialog(
+            TamagotchiState(
+                ageStage = AgeStage.ADULT,
+                animations = EvolutionAnimations.ADULT_6
+            )
+        ) { }
     }
 }
