@@ -114,11 +114,12 @@ fun EvolutionDialog(
 @Preview
 @Composable
 fun EvolutionDialogPreview() {
-    TamagotchiTheme(AppTheme.PURPLE) {
+    TamagotchiTheme(AppTheme.RED) {
         EvolutionDialog(
             TamagotchiState(
                 ageStage = AgeStage.ADULT,
-                animations = EvolutionAnimations.ADULT_6
+                animations = EvolutionAnimations.ADULT_6,
+                loading = false
             )
         ) { }
     }

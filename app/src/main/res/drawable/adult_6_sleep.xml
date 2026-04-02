@@ -3,5 +3,4 @@
     <item android:drawable="@drawable/adult_6_sleep0" android:duration="500"/>
     <item android:drawable="@drawable/adult_6_sleep1" android:duration="500"/>
     <item android:drawable="@drawable/adult_6_sleep2" android:duration="500"/>
-    <item android:drawable="@drawable/adult_6_sleep3" android:duration="500"/>
 </animation-list>

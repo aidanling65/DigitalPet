@@ -28,7 +28,9 @@ import com.example.tamagotchi.main.data.model.TamagotchiState
 import com.example.tamagotchi.main.utils.animation.getAnimationFrames
 import com.example.tamagotchi.minigames.ui.GameDialog
 import com.example.tamagotchi.minigames.ui.MinigameBase
+import com.example.tamagotchi.theme.AppTheme
 import com.example.tamagotchi.theme.TamagotchiColor
+import com.example.tamagotchi.theme.TamagotchiTheme
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
@@ -237,12 +239,14 @@ fun JumpGameCanvas(
 }
 
 
-@Preview(showBackground = true)
+@Preview(showBackground = false)
 @Composable
 fun JumpGameCanvasPreview(){
-    GameDialog(
-        TamagotchiState(ageStage = AgeStage.TEEN, animations = EvolutionAnimations.TEEN_1),
-        gameScore = {it, it2 ->}
-    )
+    TamagotchiTheme(AppTheme.PURPLE) {
+        GameDialog(
+            TamagotchiState(ageStage = AgeStage.TEEN, animations = EvolutionAnimations.TEEN_1, color= TamagotchiColor.PURPLE),
+            gameScore = { it, it2 -> }
+        )
+    }
         
 }

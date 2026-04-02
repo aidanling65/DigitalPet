@@ -2,4 +2,5 @@
 <animation-list xmlns:android="http://schemas.android.com/apk/res/android" android:oneshot="false">
     <item android:drawable="@drawable/adult_3_play0" android:duration="500"/>
     <item android:drawable="@drawable/adult_3_play1" android:duration="500"/>
+    <item android:drawable="@drawable/adult_3_play2" android:duration="500"/>
 </animation-list>

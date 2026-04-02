@@ -4,9 +4,4 @@
     <item android:drawable="@drawable/child_play1" android:duration="500"/>
     <item android:drawable="@drawable/child_play2" android:duration="500"/>
     <item android:drawable="@drawable/child_play3" android:duration="500"/>
-    <item android:drawable="@drawable/child_play4" android:duration="500"/>
-    <item android:drawable="@drawable/child_play5" android:duration="500"/>
-    <item android:drawable="@drawable/child_play6" android:duration="500"/>
-    <item android:drawable="@drawable/child_play7" android:duration="500"/>
-    <item android:drawable="@drawable/child_play8" android:duration="500"/>
 </animation-list>

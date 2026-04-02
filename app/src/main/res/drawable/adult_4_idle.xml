@@ -2,14 +2,4 @@
 <animation-list xmlns:android="http://schemas.android.com/apk/res/android" android:oneshot="false">
     <item android:drawable="@drawable/adult_4_idle0" android:duration="500"/>
     <item android:drawable="@drawable/adult_4_idle1" android:duration="500"/>
-    <item android:drawable="@drawable/adult_4_idle2" android:duration="500"/>
-    <item android:drawable="@drawable/adult_4_idle3" android:duration="500"/>
-    <item android:drawable="@drawable/adult_4_idle4" android:duration="500"/>
-    <item android:drawable="@drawable/adult_4_idle5" android:duration="500"/>
-    <item android:drawable="@drawable/adult_4_idle6" android:duration="500"/>
-    <item android:drawable="@drawable/adult_4_idle7" android:duration="500"/>
-    <item android:drawable="@drawable/adult_4_idle8" android:duration="500"/>
-    <item android:drawable="@drawable/adult_4_idle9" android:duration="500"/>
-    <item android:drawable="@drawable/adult_4_idle10" android:duration="500"/>
-    <item android:drawable="@drawable/adult_4_idle11" android:duration="500"/>
 </animation-list>
