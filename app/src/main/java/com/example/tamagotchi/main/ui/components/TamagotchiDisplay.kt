@@ -266,7 +266,7 @@ fun TamagotchiDisplayPreview() {
     TamagotchiDisplay(
         TamagotchiState(
             paused = false,
-            ageStage = AgeStage.ADULT,
+            ageStage = AgeStage.TEEN,
             animations = EvolutionAnimations.TEEN_2,
             loading = false,
             sleeping = false,
@@ -309,6 +309,6 @@ fun TamagotchiDisplayPreview3() {
             sick = false,
             color= TamagotchiColor.LCD,
         ),
-        showEatingAnimation = 1,
+        showEatingAnimation = 0,
     )
 }
