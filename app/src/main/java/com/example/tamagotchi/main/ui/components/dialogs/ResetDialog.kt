@@ -51,7 +51,7 @@ fun ResetDialog(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
-                    text = "Are you sure you want to reset your Tamagotchi?\nYou won't be able to get it back.",
+                    text = stringResource(R.string.reset_prompt),
                     modifier = Modifier.padding(16.dp),
                     style = MaterialTheme.typography.bodySmall
                 )
