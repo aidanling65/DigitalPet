@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.tamagotchi"
+    namespace = "com.example.digitalpet"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.tamagotchi"
+        applicationId = "com.example.digitalpet"
         minSdk = 33
         targetSdk = 36
         versionCode = 1

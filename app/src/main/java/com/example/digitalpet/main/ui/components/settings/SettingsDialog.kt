@@ -1,0 +1,259 @@
+package com.example.digitalpet.main.ui.components.settings
+
+import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberTimePickerState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.digitalpet.R
+import com.example.digitalpet.intelligence.PuzzleDifficulty
+import com.example.digitalpet.main.data.model.PetState
+import com.example.digitalpet.main.ui.components.PetDisplay
+import com.example.digitalpet.main.ui.components.VisualNoise
+import com.example.digitalpet.minigames.GameDifficulty
+import com.example.digitalpet.theme.AppTheme
+import com.example.digitalpet.theme.PetColor
+import com.example.digitalpet.theme.DigitalPetTheme
+import java.time.LocalTime
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SettingsDialog(
+    petState: PetState,
+    submitStepsGoal: (Int) -> Unit,
+    updateBedTime: (LocalTime) -> Unit,
+    updateWakeTime: (LocalTime) -> Unit,
+    updatePuzzleDifficulty: (PuzzleDifficulty) -> Unit,
+    updateGameDifficulty: (GameDifficulty) -> Unit,
+    onExport: () -> Unit,
+    selectedTheme: AppTheme,
+    updateTheme: (AppTheme) -> Unit,
+    selectedColor: PetColor,
+    updateColor: (PetColor) -> Unit,
+    onDismissRequest: () -> Unit,
+) {
+    var newStepGoal by remember { mutableIntStateOf(petState.stepGoal) }
+    val bedTimeState = rememberTimePickerState(
+        initialHour = petState.bedTime.hour,
+        initialMinute = petState.bedTime.minute,
+        is24Hour = true
+    )
+
+    val wakeTimeState = rememberTimePickerState(
+        initialHour = petState.wakeTime.hour,
+        initialMinute = petState.wakeTime.minute,
+        is24Hour = true
+    )
+
+    var puzzleSliderPosition by remember { mutableFloatStateOf(petState.puzzleDifficulty.ordinal.toFloat()) }
+    var gameSliderPosition by remember { mutableFloatStateOf(petState.gameDifficulty.ordinal.toFloat()) }
+
+    Box(
+        Modifier
+            .clip(RoundedCornerShape(10))
+            .fillMaxWidth(0.95f)
+            .fillMaxHeight(0.9f),
+        contentAlignment = Alignment.Center
+    ) {
+        VisualNoise()
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+                .padding(horizontal = 8.dp, vertical = 16.dp)
+        ) {
+            Spacer(Modifier.height(16.dp))
+            PetDisplay(petState, modifier = Modifier.weight(0.2f))
+            Spacer(Modifier.height(8.dp))
+            LazyColumn(Modifier.weight(0.6f)) {
+                item {
+                    Text(
+                        text = "Step goal",
+                        style = MaterialTheme.typography.bodySmall,
+                        textAlign = TextAlign.Start,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                item {
+                    StepGoalField(
+                        newStepGoal = newStepGoal,
+                        onStepGoalChange = { newStepGoal = it },
+                        onIncrement = { newStepGoal += 1000 },
+                        onDecrement = { newStepGoal = (newStepGoal - 1000).coerceAtLeast(0) }
+                    )
+                }
+                item {
+                    Text(
+                        text = stringResource(R.string.bed_time),
+                        style = MaterialTheme.typography.bodySmall,
+                        textAlign = TextAlign.Start,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                item {
+                    TimeField(
+                        bedTimeState,
+                    )
+                }
+                item {
+                    Text(
+                        text = stringResource(R.string.wake_time),
+                        style = MaterialTheme.typography.bodySmall,
+                        textAlign = TextAlign.Start,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                item {
+                    TimeField(
+                        wakeTimeState,
+                    )
+                }
+
+                item {
+                    Text(
+                        stringResource(R.string.puzzle_difficulty),
+                        style = MaterialTheme.typography.bodySmall,
+                        textAlign = TextAlign.Start,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                item {
+                    val difficulties = PuzzleDifficulty.entries
+                    SliderCustom(
+                        puzzleSliderPosition,
+                        difficulties.size - 2,
+                        0f..difficulties.size - 1f
+                    ) { puzzleSliderPosition = it }
+                }
+                item {
+                    Text(
+                        stringResource(R.string.game_difficulty),
+                        style = MaterialTheme.typography.bodySmall,
+                        textAlign = TextAlign.Start,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                item {
+                    val difficulties = GameDifficulty.entries
+                    SliderCustom(
+                        gameSliderPosition,
+                        difficulties.size - 2,
+                        0f..difficulties.size - 1f
+                    ) { gameSliderPosition = it }
+                }
+                item {
+                    Text(
+                        stringResource(R.string.app_theme),
+                        style = MaterialTheme.typography.bodySmall,
+                        textAlign = TextAlign.Start,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                item{
+                    val themeItems = AppTheme.entries.map { theme ->  RadioButtonItem(theme.ordinal, theme.name,
+                        theme.theme.background) }
+                    RadioGroup(themeItems, selectedTheme.ordinal, {updateTheme(AppTheme.entries[it])})
+                }
+                item {
+                    Text(
+                        stringResource(R.string.pet_colour),
+                        style = MaterialTheme.typography.bodySmall,
+                        textAlign = TextAlign.Start,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                item{
+                    val colorItems = PetColor.entries.map { color ->  RadioButtonItem(color.ordinal, color.name,
+                        color.color) }
+                    RadioGroup(colorItems, selectedColor.ordinal, {updateColor(PetColor.entries[it])})
+                }
+                item {
+                    Button(
+                        onClick = { onExport() },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
+                        elevation = ButtonDefaults.buttonElevation(
+                            defaultElevation = 2.dp,
+                            pressedElevation = 0.dp
+                        )
+                    ) {
+                        Text(
+                            "Export Data",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+            }
+            Spacer(Modifier.height(16.dp))
+            SubmitButton(
+                newStepGoal,
+                Modifier.weight(0.1f),
+                onDismissRequest,
+            ) {
+                submitStepsGoal(it)
+                val bedTime = LocalTime.of(bedTimeState.hour, bedTimeState.minute)
+                updateBedTime(bedTime)
+
+                val wakeTime =
+                    LocalTime.of(wakeTimeState.hour, wakeTimeState.minute)
+                updateWakeTime(wakeTime)
+                Log.d(
+                    "StartupDialog",
+                    "Difficulty: ${PuzzleDifficulty.entries[puzzleSliderPosition.toInt()]}"
+                )
+                updatePuzzleDifficulty(PuzzleDifficulty.entries[puzzleSliderPosition.toInt()])
+                updateGameDifficulty(GameDifficulty.entries[gameSliderPosition.toInt()])
+            }
+        }
+    }
+}
+
+@Preview(showBackground = false)
+@Composable
+fun SettingsPreview() {
+    DigitalPetTheme(AppTheme.PINK) {
+        SettingsDialog(
+            PetState(puzzleDifficulty = PuzzleDifficulty.Hard),
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            AppTheme.PURPLE,
+            {},
+            PetColor.PINK,
+            {},
+            {}
+        )
+    }
+}
