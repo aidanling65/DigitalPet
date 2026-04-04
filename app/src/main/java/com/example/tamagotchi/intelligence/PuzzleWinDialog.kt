@@ -22,10 +22,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.main.data.model.PetState
 import com.example.tamagotchi.main.ui.ConfettiSource
 import com.example.tamagotchi.main.ui.ConfettiView
-import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
+import com.example.tamagotchi.main.ui.components.PetDisplay
 import com.example.tamagotchi.main.ui.components.VisualNoise
 import com.example.tamagotchi.main.ui.components.dialogs.DialogBase
 
@@ -33,7 +33,7 @@ import com.example.tamagotchi.main.ui.components.dialogs.DialogBase
 fun PuzzleWinDialog(
     visible: Boolean,
     message: String,
-    tamagotchiState: TamagotchiState,
+    petState: PetState,
     onDismissRequest: () -> Unit,
     correctPuzzle: @Composable () -> Unit,
 ) {
@@ -53,7 +53,7 @@ fun PuzzleWinDialog(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                TamagotchiDisplay(tamagotchiState, modifier = Modifier.weight(0.2f))
+                PetDisplay(petState, modifier = Modifier.weight(0.2f))
                 Text(
                     message,
                     style = MaterialTheme.typography.bodyMedium,

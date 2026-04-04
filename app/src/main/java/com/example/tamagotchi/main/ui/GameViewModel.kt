@@ -13,15 +13,15 @@ import com.example.tamagotchi.main.data.data_logging.EvolutionLog
 import com.example.tamagotchi.main.data.data_logging.ExportData
 import com.example.tamagotchi.main.data.data_logging.PassiveHistory
 import com.example.tamagotchi.main.data.data_logging.SessionLog
-import com.example.tamagotchi.main.data.data_logging.TamagotchiDatabase
-import com.example.tamagotchi.main.data.data_logging.TamagotchiHistoryRepository
+import com.example.tamagotchi.main.data.data_logging.PetDatabase
+import com.example.tamagotchi.main.data.data_logging.PetHistoryRepository
 import com.example.tamagotchi.main.data.data_logging.storeEvolution
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.EvolutionAnimations
 import com.example.tamagotchi.main.data.model.MAX_FITNESS
 import com.example.tamagotchi.main.data.model.MAX_HUNGER
-import com.example.tamagotchi.main.data.model.TamagotchiState
-import com.example.tamagotchi.main.data.repository.TamagotchiRepository
+import com.example.tamagotchi.main.data.model.PetState
+import com.example.tamagotchi.main.data.repository.PetRepository
 import com.example.tamagotchi.main.data.repository.UserSettingsImpl
 import com.example.tamagotchi.main.domain.logic.GameLogicManager
 import com.example.tamagotchi.main.domain.workers.evolution.death
@@ -31,7 +31,7 @@ import com.example.tamagotchi.minigames.Minigames
 import com.example.tamagotchi.step_tracker.repository.StepDatabase
 import com.example.tamagotchi.step_tracker.repository.StepRepository
 import com.example.tamagotchi.theme.AppTheme
-import com.example.tamagotchi.theme.TamagotchiColor
+import com.example.tamagotchi.theme.PetColor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -43,12 +43,12 @@ import kotlin.random.Random
 
 class GameViewModel(
     application: Application,
-    val repository: TamagotchiRepository,
+    val repository: PetRepository,
     val userSettingsImpl: UserSettingsImpl,
 ) : AndroidViewModel(application) {
 
-    private val _tamagotchiState = MutableStateFlow(TamagotchiState())
-    val tamagotchiState: StateFlow<TamagotchiState> = _tamagotchiState.asStateFlow()
+    private val _petState = MutableStateFlow(PetState())
+    val petState: StateFlow<PetState> = _petState.asStateFlow()
 
     private val _showResetDialog = MutableStateFlow(false)
     val showResetDialog: StateFlow<Boolean> = _showResetDialog.asStateFlow()
@@ -89,8 +89,8 @@ class GameViewModel(
     private val stepDb = StepDatabase.getDatabase(getApplication())
     private val stepRepository = StepRepository(stepDb.stepsDao())
 
-    private val historyDb = TamagotchiDatabase.getDatabase(getApplication())
-    private val historyRepository = TamagotchiHistoryRepository(historyDb.historyDao())
+    private val historyDb = PetDatabase.getDatabase(getApplication())
+    private val historyRepository = PetHistoryRepository(historyDb.historyDao())
 
     private var tempHistory: ActiveHistory? = null
     private var evolutionLog: EvolutionLog? = null
@@ -109,8 +109,8 @@ class GameViewModel(
         }
 
         viewModelScope.launch {
-            repository.tamagotchiStateFlow.collect { state ->
-                _tamagotchiState.value = state.copy(loading = false)
+            repository.petStateFlow.collect { state ->
+                _petState.value = state.copy(loading = false)
                 if(!isHistoryFetched) {
                     if (state.initial) {
                         _showStartup.value = true
@@ -124,8 +124,8 @@ class GameViewModel(
         viewModelScope.launch {
             stepRepository.loadTodaySteps().collect { steps ->
                 Log.d("Steps", "Loaded steps: $steps")
-                val stepGoal = tamagotchiState.value.stepGoal
-                if (steps > stepGoal && !tamagotchiState.value.stepGoalHit) {
+                val stepGoal = petState.value.stepGoal
+                if (steps > stepGoal && !petState.value.stepGoalHit) {
                     updateAndSave {
                         val updatedFitness = (it.fitness + 1).coerceAtMost(MAX_FITNESS)
                         it.copy(
@@ -137,7 +137,7 @@ class GameViewModel(
                             ) else it.mistakes
                         )
                     }
-                } else if (steps > stepGoal * 1.5 && !tamagotchiState.value.stepGoal2Hit) {
+                } else if (steps > stepGoal * 1.5 && !petState.value.stepGoal2Hit) {
                     updateAndSave {
                         it.copy(
                             steps = steps.toInt(),
@@ -154,7 +154,7 @@ class GameViewModel(
         }
     }
 
-    private fun updateAndSave(transform: (currentState: TamagotchiState) -> TamagotchiState) {
+    private fun updateAndSave(transform: (currentState: PetState) -> PetState) {
         viewModelScope.launch {
             repository.updateState(transform)
         }
@@ -164,13 +164,13 @@ class GameViewModel(
         if (showEatingAnimation.value > 0) {
             return
         }
-        if (tamagotchiState.value.ageStage != AgeStage.DEAD && tamagotchiState.value.ageStage != AgeStage.EGG && !tamagotchiState.value.sleeping && !tamagotchiState.value.paused) {
+        if (petState.value.ageStage != AgeStage.DEAD && petState.value.ageStage != AgeStage.EGG && !petState.value.sleeping && !petState.value.paused) {
             _showEatingAnimation.value += 1
         }
     }
 
     fun onEatingAnimationFinished() {
-        if (tamagotchiState.value.hunger < MAX_HUNGER) {
+        if (petState.value.hunger < MAX_HUNGER) {
             tempHistory?.timesFed++
         }
 
@@ -179,9 +179,9 @@ class GameViewModel(
     }
 
     fun play() {
-        if (!tamagotchiState.value.sleeping &&
-            tamagotchiState.value.ageStage != AgeStage.DEAD &&
-            tamagotchiState.value.ageStage != AgeStage.EGG
+        if (!petState.value.sleeping &&
+            petState.value.ageStage != AgeStage.DEAD &&
+            petState.value.ageStage != AgeStage.EGG
         ) {
             _showGame.value = true
         }
@@ -266,7 +266,7 @@ class GameViewModel(
 
     fun light() {
         viewModelScope.launch {
-            if (tamagotchiState.value.light) {
+            if (petState.value.light) {
                 updateAndSave { it.copy(lightAnimationState = 1) }
                 delay(550)
                 updateAndSave {
@@ -326,15 +326,15 @@ class GameViewModel(
 
     private fun checkEvolve() {
         Log.d("GameViewModel", "Checking evolution")
-        Log.d("GameViewModel", "${evolutionLog?.ageStage}  ${tamagotchiState.value.ageStage}")
+        Log.d("GameViewModel", "${evolutionLog?.ageStage}  ${petState.value.ageStage}")
         if (evolutionLog != null) {
-            if (evolutionLog?.ageStage != tamagotchiState.value.ageStage) {
+            if (evolutionLog?.ageStage != petState.value.ageStage) {
                 if (evolutionLog?.ageStage == AgeStage.DEAD) {
                     updateAndSave {
                         death(getApplication(), it)
                     }
                 } else {
-                    val evolveFunction = tamagotchiState.value.ageStage.evolve
+                    val evolveFunction = petState.value.ageStage.evolve
                     updateAndSave {
                         val (evolvedState, _) = evolveFunction!!(getApplication(), it, false)
                         evolvedState
@@ -350,7 +350,7 @@ class GameViewModel(
 
     fun pauseGame() {
         updateAndSave { it.copy(paused = !it.paused) }
-        if (tamagotchiState.value.paused) {
+        if (petState.value.paused) {
             tempHistory?.pausesUsed++
         }
     }
@@ -379,7 +379,7 @@ class GameViewModel(
         _showStartup.value = true
         tempHistory?.resets++
         updateAndSave {
-            TamagotchiState()
+            PetState()
         }
         viewModelScope.launch {
             storeEvolution(
@@ -427,7 +427,7 @@ class GameViewModel(
                     initial = false
                 )
             }
-            scheduleEvolutionWork(getApplication(), tamagotchiState.value)
+            scheduleEvolutionWork(getApplication(), petState.value)
         }
     }
 
@@ -472,7 +472,7 @@ class GameViewModel(
         userSettingsImpl.theme = appTheme
     }
 
-    fun updateColor(color: TamagotchiColor){
+    fun updateColor(color: PetColor){
         updateAndSave { it.copy(color = color) }
     }
 }

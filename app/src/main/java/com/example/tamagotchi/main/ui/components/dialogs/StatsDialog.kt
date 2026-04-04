@@ -23,16 +23,16 @@ import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.R
 import com.example.tamagotchi.main.data.data_logging.ActiveHistory
 import com.example.tamagotchi.main.data.data_logging.PassiveHistory
-import com.example.tamagotchi.main.data.model.TamagotchiState
-import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
+import com.example.tamagotchi.main.data.model.PetState
+import com.example.tamagotchi.main.ui.components.PetDisplay
 import com.example.tamagotchi.main.ui.components.VisualNoise
 import com.example.tamagotchi.main.ui.components.manual.ManualEntry
 import com.example.tamagotchi.theme.AppTheme
-import com.example.tamagotchi.theme.TamagotchiTheme
+import com.example.tamagotchi.theme.DigitalPetTheme
 
 @Composable
 fun StatsDialog(
-    tamagotchiState: TamagotchiState,
+    petState: PetState,
     activeHistory: ActiveHistory,
     passiveHistory: PassiveHistory
 ) {
@@ -62,7 +62,7 @@ fun StatsDialog(
                     color = MaterialTheme.colorScheme.primary
                 )
             }
-            TamagotchiDisplay(tamagotchiState, Modifier.weight(0.3f))
+            PetDisplay(petState, Modifier.weight(0.3f))
             Spacer(Modifier.weight(0.025f))
             LazyColumn(
                 Modifier
@@ -183,7 +183,7 @@ fun StatsDialog(
 @Preview(showBackground = true)
 @Composable
 fun StatsDialogPreview() {
-    TamagotchiTheme(AppTheme.PINK) {
-        StatsDialog(TamagotchiState(), ActiveHistory(), PassiveHistory())
+    DigitalPetTheme(AppTheme.PINK) {
+        StatsDialog(PetState(), ActiveHistory(), PassiveHistory())
     }
 }

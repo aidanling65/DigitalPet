@@ -6,18 +6,18 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(entities = [ActiveHistory::class, PassiveHistory::class, EvolutionLog::class, SessionLog::class], version = 4, exportSchema = true)
-abstract class TamagotchiDatabase: RoomDatabase() {
+abstract class PetDatabase: RoomDatabase() {
     abstract fun historyDao(): HistoryDao
 
     companion object{
         @Volatile
-        private var INSTANCE: TamagotchiDatabase? = null
+        private var INSTANCE: PetDatabase? = null
 
-        fun getDatabase(context: Context) : TamagotchiDatabase{
+        fun getDatabase(context: Context) : PetDatabase{
             return INSTANCE ?: synchronized(this){
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    TamagotchiDatabase::class.java,
+                    PetDatabase::class.java,
                     "tamagotchi_database"
                 )
                     .fallbackToDestructiveMigration()

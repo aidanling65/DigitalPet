@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.sp
 import com.example.tamagotchi.R
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.EvolutionAnimations
-import com.example.tamagotchi.main.data.model.TamagotchiState
-import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
+import com.example.tamagotchi.main.data.model.PetState
+import com.example.tamagotchi.main.ui.components.PetDisplay
 
 @Composable
 fun SleepContent() {
@@ -40,14 +40,14 @@ fun SleepContent() {
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            val sampleState = TamagotchiState(
+            val sampleState = PetState(
                 ageStage = AgeStage.ADULT,
                 animations = EvolutionAnimations.ADULT_6,
                 sleeping = true,
                 light = true,
                 loading = false
             )
-            TamagotchiDisplay(
+            PetDisplay(
                 sampleState,
                 modifier = Modifier
                     .fillMaxWidth(0.5f)
@@ -55,14 +55,14 @@ fun SleepContent() {
                     .aspectRatio(1f)
                     .weight(1f)
             )
-            val sampleState2 = TamagotchiState(
+            val sampleState2 = PetState(
                 ageStage = AgeStage.ADULT,
                 animations = EvolutionAnimations.ADULT_6,
                 sleeping = true,
                 light = false,
                 loading = false
             )
-            TamagotchiDisplay(
+            PetDisplay(
                 sampleState2,
                 modifier = Modifier
                     .fillMaxWidth(0.5f)

@@ -36,7 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.R
 import com.example.tamagotchi.theme.AppTheme
-import com.example.tamagotchi.theme.TamagotchiTheme
+import com.example.tamagotchi.theme.DigitalPetTheme
 
 @Composable
 fun ManualEntry(
@@ -128,7 +128,7 @@ fun ManualEntry(
 @Preview(showBackground = true)
 @Composable
 fun Manual(){
-    TamagotchiTheme(AppTheme.PURPLE) {
+    DigitalPetTheme(AppTheme.PURPLE) {
         ManualEntry("Evolution", {Text("Poop")}, R.drawable.chromosome)
     }
 }

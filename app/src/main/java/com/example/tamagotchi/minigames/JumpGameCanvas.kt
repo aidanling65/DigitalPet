@@ -24,26 +24,26 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.EvolutionAnimations
-import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.main.data.model.PetState
 import com.example.tamagotchi.main.utils.animation.getAnimationFrames
 import com.example.tamagotchi.minigames.ui.GameDialog
 import com.example.tamagotchi.minigames.ui.MinigameBase
 import com.example.tamagotchi.theme.AppTheme
-import com.example.tamagotchi.theme.TamagotchiColor
-import com.example.tamagotchi.theme.TamagotchiTheme
+import com.example.tamagotchi.theme.PetColor
+import com.example.tamagotchi.theme.DigitalPetTheme
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
 @Composable
 fun JumpGameCanvas(
-    tamagotchiState: TamagotchiState,
+    petState: PetState,
     gameScore: (Int) -> Unit,
     restartFun: () -> Unit,
 ) {
 
     val context = LocalContext.current
-    val playerAnimationFrames = remember(tamagotchiState.animations.play) {
-        getAnimationFrames(context, tamagotchiState.animations.play)
+    val playerAnimationFrames = remember(petState.animations.play) {
+        getAnimationFrames(context, petState.animations.play)
     }
 
     var canvasSize by remember { mutableStateOf(Size.Zero) }
@@ -68,15 +68,15 @@ fun JumpGameCanvas(
     }
     var playerJumped by remember { mutableStateOf(false) }
 
-    var minXVelocity = tamagotchiState.gameDifficulty.obstacleInitialMinVelocity
-    var maxXVelocity = tamagotchiState.gameDifficulty.obstacleInitialMaxVelocity
+    var minXVelocity = petState.gameDifficulty.obstacleInitialMinVelocity
+    var maxXVelocity = petState.gameDifficulty.obstacleInitialMaxVelocity
     val obstacle = remember {
         Obstacle(
             x = 0f,
             y = 0f,
             width = 30f,
             height = 0f,
-            xVelocity = tamagotchiState.gameDifficulty.obstacleInitialMinVelocity,
+            xVelocity = petState.gameDifficulty.obstacleInitialMinVelocity,
             xTerminalVelocity = 25f
         )
     }
@@ -89,10 +89,10 @@ fun JumpGameCanvas(
     var isGameStarted by remember { mutableStateOf(false) }
     var countdown by remember { mutableIntStateOf(3) }
 
-    val passColor = if(tamagotchiState.animations == EvolutionAnimations.ADULT_4 && tamagotchiState.color == TamagotchiColor.LCD){
+    val passColor = if(petState.animations == EvolutionAnimations.ADULT_4 && petState.color == PetColor.LCD){
         Color.Black
     }else{
-        tamagotchiState.color.color
+        petState.color.color
     }
     val tintMatrix = ColorMatrix(
         floatArrayOf(
@@ -114,8 +114,8 @@ fun JumpGameCanvas(
         player.y = player.maxY - player.height
         player.yVelocity = 0f
         obstacle.xVelocity = -15f
-        minXVelocity = tamagotchiState.gameDifficulty.obstacleInitialMinVelocity
-        maxXVelocity = tamagotchiState.gameDifficulty.obstacleInitialMaxVelocity
+        minXVelocity = petState.gameDifficulty.obstacleInitialMinVelocity
+        maxXVelocity = petState.gameDifficulty.obstacleInitialMaxVelocity
         restartFun()
     }
 
@@ -155,8 +155,8 @@ fun JumpGameCanvas(
             player.move()
             if (obstacle.x < -obstacle.width) {
                 obstacle.x = canvasSize.width
-                minXVelocity -= tamagotchiState.gameDifficulty.obstacleAcceleration
-                maxXVelocity -= tamagotchiState.gameDifficulty.obstacleAcceleration
+                minXVelocity -= petState.gameDifficulty.obstacleAcceleration
+                maxXVelocity -= petState.gameDifficulty.obstacleAcceleration
                 obstacle.xVelocity =
                     Random.nextFloat() * (maxXVelocity - minXVelocity) + minXVelocity
             }
@@ -242,9 +242,9 @@ fun JumpGameCanvas(
 @Preview(showBackground = false)
 @Composable
 fun JumpGameCanvasPreview(){
-    TamagotchiTheme(AppTheme.PURPLE) {
+    DigitalPetTheme(AppTheme.PURPLE) {
         GameDialog(
-            TamagotchiState(ageStage = AgeStage.TEEN, animations = EvolutionAnimations.TEEN_1, color= TamagotchiColor.PURPLE),
+            PetState(ageStage = AgeStage.TEEN, animations = EvolutionAnimations.TEEN_1, color= PetColor.PURPLE),
             gameScore = { it, it2 -> }
         )
     }

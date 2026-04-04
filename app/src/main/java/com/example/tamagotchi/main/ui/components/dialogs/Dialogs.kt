@@ -28,7 +28,7 @@ import com.example.tamagotchi.minigames.ui.GameDialog
 @Composable
 fun Dialogs(gameViewModel: GameViewModel) {
 
-    val tamagotchiState by gameViewModel.tamagotchiState.collectAsState()
+    val tamagotchiState by gameViewModel.petState.collectAsState()
     val showStartup by gameViewModel.showStartup.collectAsState()
     val showReset by gameViewModel.showResetDialog.collectAsState()
     val showGame by gameViewModel.showGame.collectAsState()
@@ -118,7 +118,7 @@ fun Dialogs(gameViewModel: GameViewModel) {
             )
 
             SudokuDialog(
-                tamagotchiState = tamagotchiState,
+                petState = tamagotchiState,
                 sudokuViewModel,
                 showWinScreen,
                 showLoss,

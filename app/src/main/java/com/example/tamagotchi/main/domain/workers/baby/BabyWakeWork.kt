@@ -4,14 +4,14 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.tamagotchi.main.data.data_logging.updateHistory
-import com.example.tamagotchi.main.data.repository.TamagotchiRepository
+import com.example.tamagotchi.main.data.repository.PetRepository
 import com.example.tamagotchi.main.utils.attentionNotification
 
 class BabyWakeWork(
     appContext: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
-    private val repository = TamagotchiRepository(appContext)
+    private val repository = PetRepository(appContext)
 
     override suspend fun doWork(): Result {
 

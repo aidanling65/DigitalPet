@@ -26,7 +26,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.theme.AppTheme
-import com.example.tamagotchi.theme.TamagotchiTheme
+import com.example.tamagotchi.theme.DigitalPetTheme
 
 data class RadioButtonItem(
     val id: Int,
@@ -96,7 +96,7 @@ fun RadioGroup(
 fun RadioGroupPreview() {
     val themeItems = AppTheme.entries.map { theme ->  RadioButtonItem(theme.ordinal, theme.name,
         theme.theme.background) }
-    TamagotchiTheme(AppTheme.GREEN) {
+    DigitalPetTheme(AppTheme.GREEN) {
         RadioGroup(themeItems, AppTheme.GREEN.ordinal, {})
     }
 }

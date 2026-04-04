@@ -27,12 +27,12 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.example.tamagotchi.R
-import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.main.data.model.PetState
 import kotlinx.coroutines.delay
 
 @Composable
 fun GameDropDownMenu(
-    tamagotchiState: TamagotchiState,
+    petState: PetState,
     showManual: Boolean,
     onManualClicked : () ->Unit,
     onStartupOpen: () -> Unit,
@@ -122,8 +122,8 @@ fun GameDropDownMenu(
                 onDismiss
             )
             MenuEntry(
-                imageId = if (tamagotchiState.paused) R.drawable.play_button else R.drawable.pause_button,
-                text = if (tamagotchiState.paused) stringResource(R.string.unpause) else stringResource(
+                imageId = if (petState.paused) R.drawable.play_button else R.drawable.pause_button,
+                text = if (petState.paused) stringResource(R.string.unpause) else stringResource(
                     R.string.pause
                 ),
                 visibleIndex >= 2,

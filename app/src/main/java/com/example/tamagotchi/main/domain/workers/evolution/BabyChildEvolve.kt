@@ -5,11 +5,11 @@ import androidx.work.WorkManager
 import com.example.tamagotchi.main.data.data_logging.EvolutionLog
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.EvolutionAnimations
-import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.main.data.model.PetState
 import com.example.tamagotchi.main.utils.EVOLVE_ID
 import com.example.tamagotchi.main.utils.showNotification
 
-fun babyChildEvolve(context: Context, currentState: TamagotchiState, showNotification: Boolean = true): Pair<TamagotchiState, EvolutionLog> {
+fun babyChildEvolve(context: Context, currentState: PetState, showNotification: Boolean = true): Pair<PetState, EvolutionLog> {
 
     if(showNotification) {
         showNotification(context, "Your Tamagotchi has evolved!", EVOLVE_ID)

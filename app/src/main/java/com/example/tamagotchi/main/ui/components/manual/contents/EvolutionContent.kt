@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.sp
 import com.example.tamagotchi.R
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.EvolutionAnimations
-import com.example.tamagotchi.main.data.model.TamagotchiState
-import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
+import com.example.tamagotchi.main.data.model.PetState
+import com.example.tamagotchi.main.ui.components.PetDisplay
 
 @Composable
 fun EvolutionContent() {
@@ -42,56 +42,56 @@ fun EvolutionContent() {
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            val eggState = TamagotchiState(loading = false)
-            TamagotchiDisplay(
+            val eggState = PetState(loading = false)
+            PetDisplay(
                 eggState,
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(1f)
                     .weight(1f)
             )
-            val babyState = TamagotchiState(
+            val babyState = PetState(
                 ageStage = AgeStage.BABY,
                 animations = EvolutionAnimations.BABY,
                 loading = false
             )
-            TamagotchiDisplay(
+            PetDisplay(
                 babyState,
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(1f)
                     .weight(1f)
             )
-            val childState = TamagotchiState(
+            val childState = PetState(
                 ageStage = AgeStage.CHILD,
                 animations = EvolutionAnimations.CHILD,
                 loading = false
             )
-            TamagotchiDisplay(
+            PetDisplay(
                 childState,
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(1f)
                     .weight(1f)
             )
-            val teenState = TamagotchiState(
+            val teenState = PetState(
                 ageStage = AgeStage.TEEN,
                 animations = EvolutionAnimations.TEEN_2,
                 loading = false
             )
-            TamagotchiDisplay(
+            PetDisplay(
                 teenState,
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(1f)
                     .weight(1f)
             )
-            val adultStage = TamagotchiState(
+            val adultStage = PetState(
                 ageStage = AgeStage.ADULT,
                 animations = EvolutionAnimations.ADULT_3,
                 loading = false
             )
-            TamagotchiDisplay(
+            PetDisplay(
                 adultStage,
                 modifier = Modifier
                     .fillMaxWidth()

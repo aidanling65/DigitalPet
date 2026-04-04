@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
 import com.example.tamagotchi.main.data.model.AgeStage
-import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.main.data.model.PetState
 import com.example.tamagotchi.main.domain.workers.baby.BabyHungerHappinessWork
 import com.example.tamagotchi.main.domain.workers.baby.BabyMisbehavingWork
 import com.example.tamagotchi.main.domain.workers.baby.BabyPoopWork
@@ -28,7 +28,7 @@ import java.time.LocalTime
 
 fun scheduleEssentialWorkers(
     context: Context,
-    currentState: TamagotchiState,
+    currentState: PetState,
     policy: ExistingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.REPLACE
 ) {
     scheduleEvolutionWork(context, currentState)

@@ -21,11 +21,11 @@ import com.example.tamagotchi.main.data.model.MAX_DISCIPLINE
 import com.example.tamagotchi.main.data.model.MAX_HAPPINESS
 import com.example.tamagotchi.main.data.model.MAX_HUNGER
 import com.example.tamagotchi.main.data.model.MAX_INTELLIGENCE
-import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.main.data.model.PetState
 
 @Composable
 fun StatusBars(
-    tamagotchiState: TamagotchiState,
+    petState: PetState,
     modifier: Modifier = Modifier
 ) {
 
@@ -36,11 +36,11 @@ fun StatusBars(
         horizontalAlignment = Alignment.Start,
     ) {
         val spacerModifier = Modifier.height(8.dp)
-        item { StatusBar(tamagotchiState.hunger, MAX_HUNGER, label=stringResource(R.string.hunger)) }
+        item { StatusBar(petState.hunger, MAX_HUNGER, label=stringResource(R.string.hunger)) }
         item { Spacer(modifier = spacerModifier) }
         item {
             StatusBar(
-                tamagotchiState.discipline,
+                petState.discipline,
                 MAX_DISCIPLINE,
                 label=stringResource(R.string.discipline)
             )
@@ -48,7 +48,7 @@ fun StatusBars(
         item { Spacer(modifier = spacerModifier) }
         item {
             StatusBar(
-                progress = tamagotchiState.intelligence,
+                progress = petState.intelligence,
                 MAX_INTELLIGENCE,
                 label=stringResource(R.string.intelligence)
             )
@@ -56,13 +56,13 @@ fun StatusBars(
         item { Spacer(modifier = spacerModifier) }
         item {
             StatusBar(
-                tamagotchiState.happiness,
+                petState.happiness,
                 MAX_HAPPINESS,
                 label=stringResource(R.string.happiness)
             )
         }
         item { Spacer(modifier = spacerModifier) }
-        item { FitnessBar(tamagotchiState) }
+        item { FitnessBar(petState) }
         item { Spacer(modifier = spacerModifier) }
         item {
             Row(
@@ -71,12 +71,12 @@ fun StatusBars(
             ) {
                 Column() {
                     Text(
-                        text = "${tamagotchiState.age} yr",
+                        text = "${petState.age} yr",
                         color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.bodySmall
                     )
                     Text(
-                        text = if (tamagotchiState.misbehaving) stringResource(R.string.misbehaving) else stringResource(
+                        text = if (petState.misbehaving) stringResource(R.string.misbehaving) else stringResource(
                             R.string.well_behaved
                         ),
                         color = MaterialTheme.colorScheme.primary,
@@ -86,12 +86,12 @@ fun StatusBars(
                 Column()
                 {
                     Text(
-                        text = "${tamagotchiState.weight} Ib",
+                        text = "${petState.weight} Ib",
                         color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.bodySmall
                     )
                     Text(
-                        text = stringResource(R.string.mistakes) + ": " + (tamagotchiState.mistakes).toString(),
+                        text = stringResource(R.string.mistakes) + ": " + (petState.mistakes).toString(),
                         color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.bodySmall
                     )

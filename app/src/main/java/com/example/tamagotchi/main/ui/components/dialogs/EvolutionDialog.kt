@@ -29,20 +29,20 @@ import androidx.compose.ui.zIndex
 import com.example.tamagotchi.R
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.EvolutionAnimations
-import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.main.data.model.PetState
 import com.example.tamagotchi.main.ui.ConfettiSource
 import com.example.tamagotchi.main.ui.ConfettiView
-import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
+import com.example.tamagotchi.main.ui.components.PetDisplay
 import com.example.tamagotchi.main.ui.components.VisualNoise
 import com.example.tamagotchi.theme.AppTheme
-import com.example.tamagotchi.theme.TamagotchiTheme
+import com.example.tamagotchi.theme.DigitalPetTheme
 
 @Composable
 fun EvolutionDialog(
-    tamagotchiState: TamagotchiState,
+    petState: PetState,
     onDismissRequest: () -> Unit,
 ) {
-    val ageStage = tamagotchiState.ageStage
+    val ageStage = petState.ageStage
     Box(
         Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -73,8 +73,8 @@ fun EvolutionDialog(
                 color = Color(0xffffffff),
                 textAlign = TextAlign.Center
             )
-            TamagotchiDisplay(
-                tamagotchiState,
+            PetDisplay(
+                petState,
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
                     .aspectRatio(1f)
@@ -114,9 +114,9 @@ fun EvolutionDialog(
 @Preview
 @Composable
 fun EvolutionDialogPreview() {
-    TamagotchiTheme(AppTheme.RED) {
+    DigitalPetTheme(AppTheme.RED) {
         EvolutionDialog(
-            TamagotchiState(
+            PetState(
                 ageStage = AgeStage.ADULT,
                 animations = EvolutionAnimations.ADULT_6,
                 loading = false

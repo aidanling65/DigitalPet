@@ -12,16 +12,16 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.work.ExistingWorkPolicy
-import com.example.tamagotchi.main.data.repository.TamagotchiRepository
+import com.example.tamagotchi.main.data.repository.PetRepository
 import com.example.tamagotchi.main.data.repository.UserSettingsImpl
 import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
 import com.example.tamagotchi.main.ui.GameViewModel
-import com.example.tamagotchi.main.ui.components.TamagotchiApp
+import com.example.tamagotchi.main.ui.components.DigitalPetApp
 import com.example.tamagotchi.main.utils.NOTIFICATION_PERMISSION_CODE
 import com.example.tamagotchi.main.utils.cancelNotifications
 import com.example.tamagotchi.main.utils.createNotificationChannel
 import com.example.tamagotchi.step_tracker.StepCounterWorker
-import com.example.tamagotchi.theme.TamagotchiTheme
+import com.example.tamagotchi.theme.DigitalPetTheme
 import java.time.Duration
 
 
@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 if (modelClass.isAssignableFrom(GameViewModel::class.java)) {
-                    val repository = TamagotchiRepository(applicationContext)
+                    val repository = PetRepository(applicationContext)
                     val userSettings = UserSettingsImpl(applicationContext)
                     @Suppress("UNCHECKED_CAST")
                     return GameViewModel(application, repository, userSettings) as T
@@ -56,8 +56,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val theme = gameViewModel.appTheme.collectAsState()
-            TamagotchiTheme(theme.value) {
-                TamagotchiApp(
+            DigitalPetTheme(theme.value) {
+                DigitalPetApp(
                     gameViewModel,
                 )
             }

@@ -19,12 +19,12 @@ import com.example.tamagotchi.intelligence.PuzzleLossDialog
 import com.example.tamagotchi.intelligence.PuzzleWinDialog
 import com.example.tamagotchi.intelligence.sudoku.domain.SudokuGame
 import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModel
-import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.main.data.model.PetState
 import com.example.tamagotchi.main.ui.components.VisualNoise
 
 @Composable
 fun SudokuDialog(
-    tamagotchiState: TamagotchiState,
+    petState: PetState,
     viewModel: SudokuViewModel,
     showWin: Boolean,
     showLoss: Boolean,
@@ -54,7 +54,7 @@ fun SudokuDialog(
         PuzzleWinDialog(
             true,
             "Congratulations!\nYou solved the Sudoku!",
-            tamagotchiState,
+            petState,
             { onDismissRequest() }
         ) {
             val solvedViewModel = remember(solvedGame) {
@@ -67,7 +67,7 @@ fun SudokuDialog(
     }
 
     LaunchedEffect(gameMistakes) {
-        if (gameMistakes >= tamagotchiState.puzzleDifficulty.mistakes) {
+        if (gameMistakes >= petState.puzzleDifficulty.mistakes) {
             finishedGame = viewModel.sudokuGame.copy()
             onLoss()
         }
@@ -76,7 +76,7 @@ fun SudokuDialog(
         PuzzleLossDialog(
             true,
             "Too bad\nYou failed the Sudoku!",
-            tamagotchiState,
+            petState,
             { onDismissRequest() }
         ) {
             val solvedViewModel = remember(solvedGame) {
@@ -97,7 +97,7 @@ fun SudokuDialog(
         VisualNoise()
         SudokuScreen(
             viewModel = viewModel,
-            tamagotchiState = tamagotchiState,
+            petState = petState,
             onCellTouched = { row, col -> viewModel.sudokuGame.updateSelectedCell(row, col) }
         )
     }
@@ -108,7 +108,7 @@ fun SudokuDialog(
 fun SudokuPreview() {
     val sudokuViewModel: SudokuViewModel = viewModel()
     SudokuDialog(
-        tamagotchiState = TamagotchiState(),
+        petState = PetState(),
         viewModel = sudokuViewModel,
         showWin = true,
         showLoss = false,

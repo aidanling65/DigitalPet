@@ -20,15 +20,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import com.example.tamagotchi.main.data.model.EvolutionAnimations
-import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.main.data.model.PetState
 import com.example.tamagotchi.main.utils.animation.getAnimationFrames
 import com.example.tamagotchi.minigames.ui.MinigameBase
-import com.example.tamagotchi.theme.TamagotchiColor
+import com.example.tamagotchi.theme.PetColor
 import kotlinx.coroutines.delay
 
 @Composable
 fun FlappyGameCanvas(
-    tamagotchiState: TamagotchiState,
+    petState: PetState,
     gameScore: (Int) -> Unit,
     restartFun: () -> Unit,
 ) {
@@ -40,8 +40,8 @@ fun FlappyGameCanvas(
 
     var laps = 0L
     var currentFrame by remember { mutableIntStateOf(0) }
-    val playerAnimationFrames = remember(tamagotchiState.animations.play) {
-        getAnimationFrames(context, tamagotchiState.animations.play)
+    val playerAnimationFrames = remember(petState.animations.play) {
+        getAnimationFrames(context, petState.animations.play)
     }
     val playerBitmap = playerAnimationFrames[currentFrame]
 
@@ -68,7 +68,7 @@ fun FlappyGameCanvas(
             0f,
             80f,
             500f,
-            xVelocity = tamagotchiState.gameDifficulty.flappyVelocity
+            xVelocity = petState.gameDifficulty.flappyVelocity
         )
     }
     val obstacle2 = remember {
@@ -100,16 +100,16 @@ fun FlappyGameCanvas(
         player.y = canvasSize.value.height / 2 - player.height
         obstacle.x = canvasSize.value.width
         obstacle2.x = canvasSize.value.width
-        obstacle.xVelocity =  tamagotchiState.gameDifficulty.flappyVelocity
+        obstacle.xVelocity =  petState.gameDifficulty.flappyVelocity
         obstacle2.xVelocity = obstacle.xVelocity
 
         restartFun()
     }
 
-    val passColor = if(tamagotchiState.animations == EvolutionAnimations.ADULT_4 && tamagotchiState.color == TamagotchiColor.LCD){
+    val passColor = if(petState.animations == EvolutionAnimations.ADULT_4 && petState.color == PetColor.LCD){
         Color.Black
     }else{
-        tamagotchiState.color.color
+        petState.color.color
     }
     val tintMatrix = ColorMatrix(
         floatArrayOf(

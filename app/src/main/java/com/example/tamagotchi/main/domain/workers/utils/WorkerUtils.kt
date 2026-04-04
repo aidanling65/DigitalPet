@@ -3,11 +3,11 @@ package com.example.tamagotchi.main.domain.workers.utils
 import android.content.Context
 import android.util.Log
 import androidx.work.ExistingWorkPolicy
-import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.main.data.model.PetState
 import com.example.tamagotchi.main.domain.workers.evolution.EvolutionWork
 import java.time.Duration
 
-fun scheduleEvolutionWork(context: Context, state: TamagotchiState){
+fun scheduleEvolutionWork(context: Context, state: PetState){
     val delay = state.ageStage.stageLength ?: Duration.ZERO
     if(delay == Duration.ZERO){
         return

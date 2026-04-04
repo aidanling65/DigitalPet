@@ -6,7 +6,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.core.content.FileProvider
 import com.example.tamagotchi.BuildConfig
-import com.example.tamagotchi.main.data.repository.TamagotchiRepository
+import com.example.tamagotchi.main.data.repository.PetRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -16,7 +16,7 @@ import java.io.FileOutputStream
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
-class ExportData(private val context: Context, private val repository: TamagotchiRepository) {
+class ExportData(private val context: Context, private val repository: PetRepository) {
     companion object {
         const val DB_NAME = "tamagotchi_database"
         const val PREFS_NAME = "tamagotchi_prefs.preferences_pb"
@@ -37,7 +37,7 @@ class ExportData(private val context: Context, private val repository: Tamagotch
 
             val filesToZip = mutableListOf<File>()
 
-            val currentState = repository.tamagotchiStateFlow.first()
+            val currentState = repository.petStateFlow.first()
             val json = Json{prettyPrint=true}
             val jsonString = json.encodeToString(currentState)
             val jsonFile = File(exportDir, "tamagotchi_state.json")

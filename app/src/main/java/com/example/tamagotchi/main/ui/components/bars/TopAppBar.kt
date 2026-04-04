@@ -12,13 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.R
-import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.main.data.model.PetState
 import com.example.tamagotchi.main.ui.components.menu.GameDropDownMenu
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBar(
-    tamagotchiState: TamagotchiState,
+    petState: PetState,
     showManual: Boolean,
     onManualClicked: () -> Unit,
     onStartupOpen: () -> Unit,
@@ -40,7 +40,7 @@ fun TopAppBar(
         },
         actions = {
             GameDropDownMenu(
-                tamagotchiState,
+                petState,
                 showManual,
                 { onManualClicked() },
                 { onStartupOpen() },

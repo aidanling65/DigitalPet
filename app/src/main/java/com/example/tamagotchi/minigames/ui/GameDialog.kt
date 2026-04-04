@@ -14,7 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.main.data.model.PetState
 import com.example.tamagotchi.main.ui.components.VisualNoise
 import com.example.tamagotchi.minigames.FlappyGameCanvas
 import com.example.tamagotchi.minigames.JumpGameCanvas
@@ -23,7 +23,7 @@ import kotlin.random.Random
 
 @Composable
 fun GameDialog(
-    tamagotchiState: TamagotchiState,
+    petState: PetState,
     gameScore: (Int, Minigames) -> Unit
 ) {
 
@@ -50,12 +50,12 @@ fun GameDialog(
         ) {
             when (randomGame.intValue) {
                 0 -> JumpGameCanvas(
-                    tamagotchiState,
+                    petState,
                     { it -> gameScore(it, Minigames.JUMP) },
                     { restart() })
 
                 1 -> FlappyGameCanvas(
-                    tamagotchiState,
+                    petState,
                     { it -> gameScore(it, Minigames.FLAPPY) },
                     { restart() })
             }

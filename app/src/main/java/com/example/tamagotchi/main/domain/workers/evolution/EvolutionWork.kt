@@ -5,9 +5,9 @@ import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
-import com.example.tamagotchi.main.data.data_logging.TamagotchiDatabase
-import com.example.tamagotchi.main.data.data_logging.TamagotchiHistoryRepository
-import com.example.tamagotchi.main.data.repository.TamagotchiRepository
+import com.example.tamagotchi.main.data.data_logging.PetDatabase
+import com.example.tamagotchi.main.data.data_logging.PetHistoryRepository
+import com.example.tamagotchi.main.data.repository.PetRepository
 import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
 import com.example.tamagotchi.main.domain.workers.utils.scheduleEssentialWorkers
 import kotlinx.coroutines.runBlocking
@@ -21,9 +21,9 @@ class EvolutionWork(
     workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
 
-    private val repository = TamagotchiRepository(applicationContext)
-    private val historyDb = TamagotchiDatabase.getDatabase(applicationContext)
-    private val historyRepository = TamagotchiHistoryRepository(historyDb.historyDao())
+    private val repository = PetRepository(applicationContext)
+    private val historyDb = PetDatabase.getDatabase(applicationContext)
+    private val historyRepository = PetHistoryRepository(historyDb.historyDao())
 
     override suspend fun doWork(): Result {
         val currentTime = LocalTime.now(ZoneId.systemDefault())

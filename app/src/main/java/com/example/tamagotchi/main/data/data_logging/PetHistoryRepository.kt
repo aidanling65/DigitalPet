@@ -4,7 +4,7 @@ import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class TamagotchiHistoryRepository(
+class PetHistoryRepository(
     private val historyDao: HistoryDao
 ) {
     suspend fun getLatestActive(): ActiveHistory? = withContext(Dispatchers.IO) {

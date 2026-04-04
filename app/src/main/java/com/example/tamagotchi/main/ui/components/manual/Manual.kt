@@ -35,13 +35,13 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
 import com.example.tamagotchi.R
-import com.example.tamagotchi.main.data.model.TamagotchiState
-import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
+import com.example.tamagotchi.main.data.model.PetState
+import com.example.tamagotchi.main.ui.components.PetDisplay
 import com.example.tamagotchi.main.ui.components.VisualNoise
 import kotlinx.coroutines.delay
 
 @Composable
-fun Manual(showManual: Boolean, tamagotchiState: TamagotchiState, onDismissRequest: () -> Unit) {
+fun Manual(showManual: Boolean, petState: PetState, onDismissRequest: () -> Unit) {
     var visible by remember { mutableStateOf(false) }
 
     LaunchedEffect(showManual) {
@@ -110,7 +110,7 @@ fun Manual(showManual: Boolean, tamagotchiState: TamagotchiState, onDismissReque
                                 )
                             }
                             Box(Modifier.fillMaxSize().weight(1f), contentAlignment = Alignment.CenterEnd) {
-                                TamagotchiDisplay(tamagotchiState)
+                                PetDisplay(petState)
                             }
                         }
                         ManualColumn()
@@ -124,5 +124,5 @@ fun Manual(showManual: Boolean, tamagotchiState: TamagotchiState, onDismissReque
 @Preview(showBackground = true)
 @Composable
 fun ManualPreview() {
-    Manual(true, TamagotchiState(), {})
+    Manual(true, PetState(), {})
 }

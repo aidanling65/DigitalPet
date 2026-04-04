@@ -5,10 +5,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.EvolutionAnimations
-import com.example.tamagotchi.main.data.model.TamagotchiState
-import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
+import com.example.tamagotchi.main.data.model.PetState
+import com.example.tamagotchi.main.ui.components.PetDisplay
 
-enum class TamagotchiColor(val color: Color) {
+enum class PetColor(val color: Color) {
     LCD(
         Color(0xFF869484)
     ),
@@ -51,14 +51,14 @@ enum class TamagotchiColor(val color: Color) {
 @Preview
 @Composable
 fun ColorPreview() {
-    TamagotchiDisplay(
-        TamagotchiState(
+    PetDisplay(
+        PetState(
             paused = false,
             ageStage = AgeStage.CHILD,
             animations = EvolutionAnimations.CHILD,
             loading = false,
             poop = true,
-            color = TamagotchiColor.GREEN
+            color = PetColor.GREEN
         ),
         showEatingAnimation = 1
     )

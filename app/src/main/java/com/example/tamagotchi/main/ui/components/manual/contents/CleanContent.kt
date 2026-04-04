@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.sp
 import com.example.tamagotchi.R
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.EvolutionAnimations
-import com.example.tamagotchi.main.data.model.TamagotchiState
-import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
+import com.example.tamagotchi.main.data.model.PetState
+import com.example.tamagotchi.main.ui.components.PetDisplay
 
 @Composable
 fun CleanContent() {
@@ -38,8 +38,8 @@ fun CleanContent() {
             color = Color.Black,
             lineHeight = 16.sp
         )
-        TamagotchiDisplay(
-            TamagotchiState(
+        PetDisplay(
+            PetState(
                 ageStage = AgeStage.ADULT,
                 animations = EvolutionAnimations.ADULT_3,
                 poop = true,

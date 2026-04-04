@@ -6,14 +6,14 @@ import com.example.tamagotchi.main.data.model.MAX_HAPPINESS
 import com.example.tamagotchi.main.data.model.MAX_HUNGER
 import com.example.tamagotchi.main.data.model.MAX_INTELLIGENCE
 import com.example.tamagotchi.main.data.model.MAX_WEIGHT
-import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.main.data.model.PetState
 
 class GameLogicManager {
-    private fun canInteract(current: TamagotchiState): Boolean {
+    private fun canInteract(current: PetState): Boolean {
         return current.ageStage != AgeStage.EGG && current.ageStage != AgeStage.DEAD && !current.sleeping && !current.paused
     }
 
-    fun feed(current: TamagotchiState): TamagotchiState {
+    fun feed(current: PetState): PetState {
         if (!canInteract(current))
             return current
 
@@ -32,7 +32,7 @@ class GameLogicManager {
         return current
     }
 
-    fun play(current: TamagotchiState, score: Int): TamagotchiState {
+    fun play(current: PetState, score: Int): PetState {
         val happinessGain = when {
             score < 50 ->(-1)
             score < 100 -> 0
@@ -49,7 +49,7 @@ class GameLogicManager {
         )
     }
 
-    fun clean(current: TamagotchiState): TamagotchiState {
+    fun clean(current: PetState): PetState {
         if (!canInteract(current))
             return current
 
@@ -58,7 +58,7 @@ class GameLogicManager {
         )
     }
 
-    fun heal(current: TamagotchiState): TamagotchiState {
+    fun heal(current: PetState): PetState {
         if (!current.sick)
             return current
 
@@ -74,7 +74,7 @@ class GameLogicManager {
         }
     }
 
-    fun discipline(current: TamagotchiState): TamagotchiState {
+    fun discipline(current: PetState): PetState {
         if (!canInteract(current))
             return current
 
@@ -92,7 +92,7 @@ class GameLogicManager {
         }
     }
 
-    fun learning(current: TamagotchiState): TamagotchiState {
+    fun learning(current: PetState): PetState {
         val updatedIntelligence = (current.intelligence + 1).coerceAtMost(MAX_INTELLIGENCE)
         return current.copy(
             intelligence = updatedIntelligence,

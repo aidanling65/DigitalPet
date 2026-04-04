@@ -5,7 +5,7 @@ import com.example.tamagotchi.main.data.data_logging.LocalDateTimeSerializer
 import com.example.tamagotchi.main.data.data_logging.LocalTimeSerializer
 import com.example.tamagotchi.intelligence.PuzzleDifficulty
 import com.example.tamagotchi.minigames.GameDifficulty
-import com.example.tamagotchi.theme.TamagotchiColor
+import com.example.tamagotchi.theme.PetColor
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -18,7 +18,7 @@ const val MAX_FITNESS = 4
 const val MAX_INTELLIGENCE = 4
 
 @Serializable
-data class TamagotchiState(
+data class PetState(
 
     val initial: Boolean = true,
     val loading: Boolean = true,
@@ -70,7 +70,7 @@ data class TamagotchiState(
 
     val paused: Boolean = false,
 
-    val color : TamagotchiColor = TamagotchiColor.LCD,
+    val color : PetColor = PetColor.LCD,
 ){
     val currentAnimation : Int
         get() = when{

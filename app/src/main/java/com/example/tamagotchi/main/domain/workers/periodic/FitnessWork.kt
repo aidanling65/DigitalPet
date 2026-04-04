@@ -5,7 +5,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
 import com.example.tamagotchi.main.data.model.MAX_FITNESS
-import com.example.tamagotchi.main.data.repository.TamagotchiRepository
+import com.example.tamagotchi.main.data.repository.PetRepository
 import com.example.tamagotchi.main.domain.workers.utils.createSingleWorker
 import com.example.tamagotchi.main.domain.workers.mistake.FitnessMistakeWork
 import com.example.tamagotchi.main.utils.showNotification
@@ -15,7 +15,7 @@ class FitnessWork(
     appContext: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
-    private val repository = TamagotchiRepository(appContext)
+    private val repository = PetRepository(appContext)
 
     override suspend fun doWork(): Result {
 

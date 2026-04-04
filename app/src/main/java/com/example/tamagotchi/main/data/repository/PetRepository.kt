@@ -11,9 +11,9 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.example.tamagotchi.intelligence.PuzzleDifficulty
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.EvolutionAnimations
-import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.main.data.model.PetState
 import com.example.tamagotchi.minigames.GameDifficulty
-import com.example.tamagotchi.theme.TamagotchiColor
+import com.example.tamagotchi.theme.PetColor
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.LocalDateTime
@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter
 
 val Context.dataStore by preferencesDataStore(name = "tamagotchi_prefs")
 
-class TamagotchiRepository(private val context: Context) {
+class PetRepository(private val context: Context) {
 
     private val INITIAL = booleanPreferencesKey("initial")
     private val AGE = intPreferencesKey("age")
@@ -61,9 +61,9 @@ class TamagotchiRepository(private val context: Context) {
 
     private val COLOR = intPreferencesKey("color")
 
-    private fun stateFromPrefs(prefs: Preferences): TamagotchiState {
-        val defaultState = TamagotchiState()
-        return TamagotchiState(
+    private fun stateFromPrefs(prefs: Preferences): PetState {
+        val defaultState = PetState()
+        return PetState(
             initial = prefs[INITIAL] ?: defaultState.initial,
             age = prefs[AGE] ?: defaultState.age,
             weight = prefs[WEIGHT] ?: defaultState.weight,
@@ -99,16 +99,16 @@ class TamagotchiRepository(private val context: Context) {
             gameDifficulty = GameDifficulty.entries[prefs[GAME_DIFFICULTY] ?: defaultState.gameDifficulty.ordinal],
             bedTime = LocalTime.parse(prefs[BED_TIME] ?: defaultState.bedTime.toString()),
             wakeTime = LocalTime.parse(prefs[WAKE_TIME] ?: defaultState.wakeTime.toString()),
-            color = TamagotchiColor.entries[prefs[COLOR] ?: defaultState.color.ordinal],
+            color = PetColor.entries[prefs[COLOR] ?: defaultState.color.ordinal],
         )
     }
 
-    val tamagotchiStateFlow: Flow<TamagotchiState> = context.dataStore.data
+    val petStateFlow: Flow<PetState> = context.dataStore.data
         .map { prefs ->
             stateFromPrefs(prefs)
         }
 
-    suspend fun updateState(transform: (currentState: TamagotchiState) -> TamagotchiState): TamagotchiState {
+    suspend fun updateState(transform: (currentState: PetState) -> PetState): PetState {
         Log.d("Repository", "Updating state")
         val updatedPrefs = context.dataStore.updateData {prefs->
             val current = stateFromPrefs(prefs)
@@ -123,7 +123,7 @@ class TamagotchiRepository(private val context: Context) {
         return stateFromPrefs(updatedPrefs)
     }
 
-    private fun saveStateInternal(current: TamagotchiState, updated: MutablePreferences) {
+    private fun saveStateInternal(current: PetState, updated: MutablePreferences) {
         updated[INITIAL] = current.initial
         updated[AGE] = current.age
         updated[WEIGHT] = current.weight

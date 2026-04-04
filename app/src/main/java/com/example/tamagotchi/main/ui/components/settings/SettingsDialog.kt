@@ -34,19 +34,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.R
 import com.example.tamagotchi.intelligence.PuzzleDifficulty
-import com.example.tamagotchi.main.data.model.TamagotchiState
-import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
+import com.example.tamagotchi.main.data.model.PetState
+import com.example.tamagotchi.main.ui.components.PetDisplay
 import com.example.tamagotchi.main.ui.components.VisualNoise
 import com.example.tamagotchi.minigames.GameDifficulty
 import com.example.tamagotchi.theme.AppTheme
-import com.example.tamagotchi.theme.TamagotchiColor
-import com.example.tamagotchi.theme.TamagotchiTheme
+import com.example.tamagotchi.theme.PetColor
+import com.example.tamagotchi.theme.DigitalPetTheme
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsDialog(
-    tamagotchiState: TamagotchiState,
+    petState: PetState,
     submitStepsGoal: (Int) -> Unit,
     updateBedTime: (LocalTime) -> Unit,
     updateWakeTime: (LocalTime) -> Unit,
@@ -55,25 +55,25 @@ fun SettingsDialog(
     onExport: () -> Unit,
     selectedTheme: AppTheme,
     updateTheme: (AppTheme) -> Unit,
-    selectedColor: TamagotchiColor,
-    updateColor: (TamagotchiColor) -> Unit,
+    selectedColor: PetColor,
+    updateColor: (PetColor) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
-    var newStepGoal by remember { mutableIntStateOf(tamagotchiState.stepGoal) }
+    var newStepGoal by remember { mutableIntStateOf(petState.stepGoal) }
     val bedTimeState = rememberTimePickerState(
-        initialHour = tamagotchiState.bedTime.hour,
-        initialMinute = tamagotchiState.bedTime.minute,
+        initialHour = petState.bedTime.hour,
+        initialMinute = petState.bedTime.minute,
         is24Hour = true
     )
 
     val wakeTimeState = rememberTimePickerState(
-        initialHour = tamagotchiState.wakeTime.hour,
-        initialMinute = tamagotchiState.wakeTime.minute,
+        initialHour = petState.wakeTime.hour,
+        initialMinute = petState.wakeTime.minute,
         is24Hour = true
     )
 
-    var puzzleSliderPosition by remember { mutableFloatStateOf(tamagotchiState.puzzleDifficulty.ordinal.toFloat()) }
-    var gameSliderPosition by remember { mutableFloatStateOf(tamagotchiState.gameDifficulty.ordinal.toFloat()) }
+    var puzzleSliderPosition by remember { mutableFloatStateOf(petState.puzzleDifficulty.ordinal.toFloat()) }
+    var gameSliderPosition by remember { mutableFloatStateOf(petState.gameDifficulty.ordinal.toFloat()) }
 
     Box(
         Modifier
@@ -92,7 +92,7 @@ fun SettingsDialog(
                 .padding(horizontal = 8.dp, vertical = 16.dp)
         ) {
             Spacer(Modifier.height(16.dp))
-            TamagotchiDisplay(tamagotchiState, modifier = Modifier.weight(0.2f))
+            PetDisplay(petState, modifier = Modifier.weight(0.2f))
             Spacer(Modifier.height(8.dp))
             LazyColumn(Modifier.weight(0.6f)) {
                 item {
@@ -185,16 +185,16 @@ fun SettingsDialog(
                 }
                 item {
                     Text(
-                        stringResource(R.string.tamagotchi_colour),
+                        stringResource(R.string.pet_colour),
                         style = MaterialTheme.typography.bodySmall,
                         textAlign = TextAlign.Start,
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
                 item{
-                    val colorItems = TamagotchiColor.entries.map { color ->  RadioButtonItem(color.ordinal, color.name,
+                    val colorItems = PetColor.entries.map { color ->  RadioButtonItem(color.ordinal, color.name,
                         color.color) }
-                    RadioGroup(colorItems, selectedColor.ordinal, {updateColor(TamagotchiColor.entries[it])})
+                    RadioGroup(colorItems, selectedColor.ordinal, {updateColor(PetColor.entries[it])})
                 }
                 item {
                     Button(
@@ -240,9 +240,9 @@ fun SettingsDialog(
 @Preview(showBackground = false)
 @Composable
 fun SettingsPreview() {
-    TamagotchiTheme(AppTheme.PINK) {
+    DigitalPetTheme(AppTheme.PINK) {
         SettingsDialog(
-            TamagotchiState(puzzleDifficulty = PuzzleDifficulty.Hard),
+            PetState(puzzleDifficulty = PuzzleDifficulty.Hard),
             {},
             {},
             {},
@@ -251,7 +251,7 @@ fun SettingsPreview() {
             {},
             AppTheme.PURPLE,
             {},
-            TamagotchiColor.PINK,
+            PetColor.PINK,
             {},
             {}
         )

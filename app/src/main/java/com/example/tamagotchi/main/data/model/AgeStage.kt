@@ -13,7 +13,7 @@ import java.time.Duration
 enum class AgeStage(
     val minimumWeight: Int,
     val stageLength: Duration?,
-    val evolve: ((Context, TamagotchiState, Boolean) -> Pair<TamagotchiState, EvolutionLog>)?,
+    val evolve: ((Context, PetState, Boolean) -> Pair<PetState, EvolutionLog>)?,
     val misbehaviorChances: Float,
     val mistakesLimit: Int?
 ) {

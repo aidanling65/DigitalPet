@@ -26,8 +26,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.example.tamagotchi.main.data.model.TamagotchiState
-import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
+import com.example.tamagotchi.main.data.model.PetState
+import com.example.tamagotchi.main.ui.components.PetDisplay
 import com.example.tamagotchi.main.ui.components.VisualNoise
 import com.example.tamagotchi.main.ui.components.dialogs.DialogBase
 
@@ -35,7 +35,7 @@ import com.example.tamagotchi.main.ui.components.dialogs.DialogBase
 fun PuzzleLossDialog(
     visible: Boolean,
     message: String,
-    tamagotchiState: TamagotchiState,
+    petState: PetState,
     onDismissRequest: () -> Unit,
     correctPuzzle: @Composable () -> Unit
 ) {
@@ -55,7 +55,7 @@ fun PuzzleLossDialog(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                TamagotchiDisplay(tamagotchiState, modifier = Modifier.weight(0.2f))
+                PetDisplay(petState, modifier = Modifier.weight(0.2f))
                 Text(
                     message,
                     style = MaterialTheme.typography.bodyMedium,
@@ -88,5 +88,5 @@ fun PuzzleLossDialog(
 @Preview(showBackground = true)
 @Composable
 fun PuzzleLossPreview() {
-    PuzzleLossDialog(true, "Too bad\nYou failed the Sudoku!", TamagotchiState(), {}) {}
+    PuzzleLossDialog(true, "Too bad\nYou failed the Sudoku!", PetState(), {}) {}
 }

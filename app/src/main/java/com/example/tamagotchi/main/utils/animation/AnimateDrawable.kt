@@ -70,5 +70,5 @@ fun AnimateDrawable(
 @Preview()
 @Composable
 fun AnimateDrawablePreview() {
-    AnimateDrawable(R.drawable.adult_2_eating)
+    AnimateDrawable(R.drawable.child_idle)
 }

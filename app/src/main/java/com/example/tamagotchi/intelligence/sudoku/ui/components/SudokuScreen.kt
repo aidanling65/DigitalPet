@@ -19,13 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.intelligence.MistakeMeter
 import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModel
-import com.example.tamagotchi.main.data.model.TamagotchiState
-import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
+import com.example.tamagotchi.main.data.model.PetState
+import com.example.tamagotchi.main.ui.components.PetDisplay
 
 @Composable
 fun SudokuScreen(
     viewModel: SudokuViewModel,
-    tamagotchiState: TamagotchiState,
+    petState: PetState,
     onCellTouched: (Int, Int) -> Unit
 ) {
     val mistakes by viewModel.sudokuGame.mistakes.observeAsState(initial = 5)
@@ -48,12 +48,12 @@ fun SudokuScreen(
                 color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(Modifier.weight(0.05f))
-            TamagotchiDisplay(
-                tamagotchiState, modifier = Modifier
+            PetDisplay(
+                petState, modifier = Modifier
                     .fillMaxWidth(0.4f)
                     .aspectRatio(1f),
             )
-            MistakeMeter(mistakes, tamagotchiState.puzzleDifficulty.mistakes)
+            MistakeMeter(mistakes, petState.puzzleDifficulty.mistakes)
             Spacer(Modifier.weight(0.05f))
             SudokuGrid(viewModel, onCellTouched)
             Spacer(Modifier.weight(0.05f))

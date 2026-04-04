@@ -22,8 +22,8 @@ import androidx.compose.ui.unit.sp
 import com.example.tamagotchi.R
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.EvolutionAnimations
-import com.example.tamagotchi.main.data.model.TamagotchiState
-import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
+import com.example.tamagotchi.main.data.model.PetState
+import com.example.tamagotchi.main.ui.components.PetDisplay
 import com.example.tamagotchi.main.ui.components.status_bars.StatusBar
 import kotlinx.coroutines.delay
 import kotlin.random.Random
@@ -65,6 +65,6 @@ fun HungerContent() {
             lineHeight = 16.sp
         )
         StatusBar(progress = progress, maximum = maximum)
-        TamagotchiDisplay(TamagotchiState(paused = false, ageStage = AgeStage.CHILD, animations = EvolutionAnimations.CHILD, loading =false), showEatingAnimation = showEatingAnimation, modifier = Modifier.size(64.dp))
+        PetDisplay(PetState(paused = false, ageStage = AgeStage.CHILD, animations = EvolutionAnimations.CHILD, loading =false), showEatingAnimation = showEatingAnimation, modifier = Modifier.size(64.dp))
     }
 }

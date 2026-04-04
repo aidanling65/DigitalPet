@@ -42,22 +42,22 @@ import androidx.compose.ui.zIndex
 import com.example.tamagotchi.R
 import com.example.tamagotchi.main.data.model.AgeStage
 import com.example.tamagotchi.main.data.model.EvolutionAnimations
-import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.main.data.model.PetState
 import com.example.tamagotchi.main.utils.animation.AnimateDrawable
 import com.example.tamagotchi.main.utils.animation.AnimateDrawableOneShot
 import com.example.tamagotchi.main.utils.animation.getAnimationDuration
-import com.example.tamagotchi.theme.TamagotchiColor
+import com.example.tamagotchi.theme.PetColor
 import kotlinx.coroutines.delay
 
 @Composable
-fun TamagotchiDisplay(
-    currentState: TamagotchiState,
+fun PetDisplay(
+    currentState: PetState,
     modifier: Modifier = Modifier,
     onAnimationFinish: () -> Unit = {},
     showEatingAnimation: Int = 0,
 ) {
     val colorPass =
-        if (currentState.animations == EvolutionAnimations.ADULT_4 && currentState.color == TamagotchiColor.LCD) {
+        if (currentState.animations == EvolutionAnimations.ADULT_4 && currentState.color == PetColor.LCD) {
             Color.Black
         }
         else
@@ -262,17 +262,17 @@ fun TamagotchiDisplay(
 
 @Preview(showBackground = false)
 @Composable
-fun TamagotchiDisplayPreview() {
-    TamagotchiDisplay(
-        TamagotchiState(
+fun PetDisplayPreview() {
+    PetDisplay(
+        PetState(
             paused = false,
-            ageStage = AgeStage.TEEN,
-            animations = EvolutionAnimations.TEEN_2,
+            ageStage = AgeStage.CHILD,
+            animations = EvolutionAnimations.CHILD,
             loading = false,
             sleeping = false,
             poop=false,
             sick=false,
-            color=TamagotchiColor.LCD
+            color=PetColor.LCD
         ),
         showEatingAnimation = 0
     )
@@ -280,17 +280,35 @@ fun TamagotchiDisplayPreview() {
 
 @Preview(showBackground = false)
 @Composable
-fun TamagotchiDisplayPreview2() {
-    TamagotchiDisplay(
-        TamagotchiState(
+fun PetDisplayPreview4() {
+    PetDisplay(
+        PetState(
+            paused = false,
+            ageStage = AgeStage.CHILD,
+            animations = EvolutionAnimations.CHILD,
+            loading = false,
+            sleeping = false,
+            poop=true,
+            sick=false,
+            color=PetColor.LCD
+        ),
+        showEatingAnimation = 0
+    )
+}
+
+@Preview(showBackground = false)
+@Composable
+fun PetDisplayPreview2() {
+    PetDisplay(
+        PetState(
             paused = false,
             ageStage = AgeStage.CHILD,
             animations = EvolutionAnimations.CHILD,
             loading = false,
             poop = false,
-            sick = false,
+            sick = true,
             sleeping = false,
-            color= TamagotchiColor.LCD,
+            color= PetColor.LCD,
         ),
         showEatingAnimation = 0,
     )
@@ -298,17 +316,37 @@ fun TamagotchiDisplayPreview2() {
 
 @Preview(showBackground = false)
 @Composable
-fun TamagotchiDisplayPreview3() {
-    TamagotchiDisplay(
-        TamagotchiState(
+fun PetDisplayPreview3() {
+    PetDisplay(
+        PetState(
             paused = false,
-            ageStage = AgeStage.ADULT,
-            animations = EvolutionAnimations.ADULT_3,
+            ageStage = AgeStage.CHILD,
+            animations = EvolutionAnimations.CHILD,
             loading = false,
             poop =  false,
             sick = false,
-            color= TamagotchiColor.LCD,
+            sleeping=true,
+            color= PetColor.LCD,
         ),
         showEatingAnimation = 0,
+    )
+}
+
+
+@Preview(showBackground = false)
+@Composable
+fun PetDisplayPreview5() {
+    PetDisplay(
+        PetState(
+            paused = false,
+            ageStage = AgeStage.CHILD,
+            animations = EvolutionAnimations.CHILD,
+            loading = false,
+            poop =  false,
+            sick = false,
+            sleeping=false,
+            color= PetColor.LCD,
+        ),
+        showEatingAnimation = 1,
     )
 }

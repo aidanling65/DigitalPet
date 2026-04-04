@@ -24,8 +24,8 @@ import com.example.tamagotchi.main.ui.components.dialogs.Dialogs
 import com.example.tamagotchi.main.ui.components.status_bars.StatusBars
 
 @Composable
-fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
-    val tamagotchiState by gameViewModel.tamagotchiState.collectAsState()
+fun DigitalPetApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
+    val petState by gameViewModel.petState.collectAsState()
     val showEating by gameViewModel.showEatingAnimation.collectAsState()
     val showManual by gameViewModel.showManual.collectAsState()
 
@@ -36,7 +36,7 @@ fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
                 .background(color = MaterialTheme.colorScheme.background),
             topBar = {
                 TopAppBar(
-                    tamagotchiState,
+                    petState,
                     showManual,
                     { gameViewModel.onManualClicked() },
                     { gameViewModel.onStartupOpen() },
@@ -66,14 +66,14 @@ fun TamagotchiApp(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
                 Spacer(Modifier.height(16.dp))
-                TamagotchiDisplay(
-                    tamagotchiState,
+                PetDisplay(
+                    petState,
                     modifier.fillMaxWidth(0.65f),
                     { gameViewModel.onEatingAnimationFinished() },
                     showEating,
                 )
                 Spacer(Modifier.height(16.dp))
-                StatusBars(tamagotchiState)
+                StatusBars(petState)
                 Spacer(Modifier.height(16.dp))
             }
 

@@ -5,8 +5,8 @@ import java.time.LocalDateTime
 
 
 suspend fun updateHistory(context: Context, transform: (PassiveHistory) -> PassiveHistory){
-    val historyDb = TamagotchiDatabase.getDatabase(context = context)
-    val historyRepository = TamagotchiHistoryRepository(historyDb.historyDao())
+    val historyDb = PetDatabase.getDatabase(context = context)
+    val historyRepository = PetHistoryRepository(historyDb.historyDao())
 
     val previous = historyRepository.getLatestPassive() ?: PassiveHistory()
     val updated = transform(previous.copy(id = 0, string = LocalDateTime.now().toString()))
@@ -14,7 +14,7 @@ suspend fun updateHistory(context: Context, transform: (PassiveHistory) -> Passi
 }
 
 suspend fun storeEvolution(context: Context, evolution: EvolutionLog){
-    val historyDb = TamagotchiDatabase.getDatabase(context = context)
-    val historyRepository = TamagotchiHistoryRepository(historyDb.historyDao())
+    val historyDb = PetDatabase.getDatabase(context = context)
+    val historyRepository = PetHistoryRepository(historyDb.historyDao())
     historyRepository.storeEvolution(evolution)
 }

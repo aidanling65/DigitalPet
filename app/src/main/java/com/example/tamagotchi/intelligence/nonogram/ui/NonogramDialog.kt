@@ -29,15 +29,15 @@ import com.example.tamagotchi.intelligence.PuzzleLossDialog
 import com.example.tamagotchi.intelligence.PuzzleWinDialog
 import com.example.tamagotchi.intelligence.nonogram.NonogramView
 import com.example.tamagotchi.intelligence.nonogram.NonogramViewModel
-import com.example.tamagotchi.main.data.model.TamagotchiState
-import com.example.tamagotchi.main.ui.components.TamagotchiDisplay
+import com.example.tamagotchi.main.data.model.PetState
+import com.example.tamagotchi.main.ui.components.PetDisplay
 import com.example.tamagotchi.main.ui.components.VisualNoise
 import com.example.tamagotchi.theme.AppTheme
-import com.example.tamagotchi.theme.TamagotchiTheme
+import com.example.tamagotchi.theme.DigitalPetTheme
 
 @Composable
 fun NonogramDialog(
-    tamagotchiState: TamagotchiState,
+    petState: PetState,
     nonogramViewModel: NonogramViewModel,
     showWin: Boolean,
     onWin: () -> Unit,
@@ -66,7 +66,7 @@ fun NonogramDialog(
         PuzzleWinDialog(
             true,
             "Congratulations!\nYou solved the Nonogram!",
-            tamagotchiState,
+            petState,
             { onDismissRequest() }
         ) {
             NonogramGrid(
@@ -79,7 +79,7 @@ fun NonogramDialog(
     }
 
     LaunchedEffect(nonogram.mistakes.value) {
-        if (nonogram.mistakes.value >= tamagotchiState.puzzleDifficulty.mistakes) {
+        if (nonogram.mistakes.value >= petState.puzzleDifficulty.mistakes) {
             onLoss()
         }
     }
@@ -87,7 +87,7 @@ fun NonogramDialog(
         PuzzleLossDialog(
             true,
             "Too bad\nYou failed the Nonogram!",
-            tamagotchiState,
+            petState,
             {onDismissRequest()}
         ) {
             NonogramGrid(
@@ -119,8 +119,8 @@ fun NonogramDialog(
                 color = MaterialTheme.colorScheme.onSurface,
             )
 
-            TamagotchiDisplay(tamagotchiState, modifier = Modifier.weight(0.15f))
-            MistakeMeter(nonogram.mistakes.value, tamagotchiState.puzzleDifficulty.mistakes)
+            PetDisplay(petState, modifier = Modifier.weight(0.15f))
+            MistakeMeter(nonogram.mistakes.value, petState.puzzleDifficulty.mistakes)
             NonogramView(nonogram, modifier = Modifier.weight(0.5f), blocking)
             BottomButtons(blocking) { blocking = !blocking }
             Spacer(modifier = Modifier.weight(0.05f))
@@ -133,7 +133,7 @@ fun NonogramDialog(
 @Composable
 fun NonogramDialogPreview() {
     val nonogramViewModel: NonogramViewModel = viewModel()
-    TamagotchiTheme(AppTheme.PURPLE) {
-        NonogramDialog(TamagotchiState(), nonogramViewModel, true, {}, false, {}, {})
+    DigitalPetTheme(AppTheme.PURPLE) {
+        NonogramDialog(PetState(), nonogramViewModel, true, {}, false, {}, {})
     }
 }

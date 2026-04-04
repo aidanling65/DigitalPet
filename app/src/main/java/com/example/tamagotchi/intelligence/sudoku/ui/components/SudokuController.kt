@@ -21,8 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModel
 import com.example.tamagotchi.intelligence.sudoku.ui.SudokuViewModelFactory
-import com.example.tamagotchi.main.data.model.TamagotchiState
-import com.example.tamagotchi.theme.TamagotchiTheme
+import com.example.tamagotchi.main.data.model.PetState
+import com.example.tamagotchi.theme.DigitalPetTheme
 
 @Composable
 fun SudokuController(
@@ -101,10 +101,10 @@ fun SudokuControllerPreview() {
     val sudokuViewModel: SudokuViewModel = viewModel(
         factory = SudokuViewModelFactory(40)
     )
-    TamagotchiTheme {
+    DigitalPetTheme {
         SudokuScreen(
             viewModel = sudokuViewModel,
-            tamagotchiState = TamagotchiState(),
+            petState = PetState(),
             onCellTouched = { _, _ -> }
         )
     }

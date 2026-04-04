@@ -21,37 +21,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.tamagotchi.R
 import com.example.tamagotchi.main.data.model.MAX_FITNESS
-import com.example.tamagotchi.main.data.model.TamagotchiState
+import com.example.tamagotchi.main.data.model.PetState
 
 @Composable
-fun FitnessBar(state: TamagotchiState, modifier: Modifier = Modifier) {
+fun FitnessBar(state: PetState, modifier: Modifier = Modifier) {
     var expanded by remember { mutableStateOf(false) }
-    val progressBar: Float = state.fitness.toFloat() / MAX_FITNESS.toFloat()
-    val color = when {
-        progressBar <= 0.5f -> {
-            val factor = progressBar / 0.5f
-            Color(
-                red = 1f,
-                green = factor,
-                blue = 0f
-            )
-        }
-
-        else -> {
-            val factor = (progressBar - 0.5f) / 0.5f
-            Color(
-                red = 1f - factor,
-                green = 1f,
-                blue = 0f
-            )
-        }
-    }
 
     Box(modifier = modifier.clickable { expanded = !expanded }) {
         Column(
@@ -67,7 +46,7 @@ fun FitnessBar(state: TamagotchiState, modifier: Modifier = Modifier) {
                 progress = state.fitness,
                 maximum = MAX_FITNESS,
                 labelComplex = {
-                    Row() {
+                    Row {
                         Text(
                             text = stringResource(R.string.fitness),
                             color = MaterialTheme.colorScheme.primary,
