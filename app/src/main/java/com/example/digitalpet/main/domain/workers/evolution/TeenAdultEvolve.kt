@@ -38,7 +38,7 @@ fun teenAdultEvolve(
 
 
     if(showNotification) {
-        showNotification(context, "Your Tamagotchi has evolved!", EVOLVE_ID)
+        showNotification(context, "Your pet has evolved!", EVOLVE_ID)
     }
 
     val updatedState = baseEvolve(currentState).copy(

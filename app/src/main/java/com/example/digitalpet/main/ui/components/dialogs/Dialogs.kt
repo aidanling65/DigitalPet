@@ -28,7 +28,7 @@ import com.example.digitalpet.minigames.ui.GameDialog
 @Composable
 fun Dialogs(gameViewModel: GameViewModel) {
 
-    val tamagotchiState by gameViewModel.petState.collectAsState()
+    val petState by gameViewModel.petState.collectAsState()
     val showStartup by gameViewModel.showStartup.collectAsState()
     val showReset by gameViewModel.showResetDialog.collectAsState()
     val showGame by gameViewModel.showGame.collectAsState()
@@ -41,7 +41,7 @@ fun Dialogs(gameViewModel: GameViewModel) {
     val (activeStats, passiveStats) = gameViewModel.getStats()
     val appTheme by gameViewModel.appTheme.collectAsState()
     val startupDismiss = {
-        if (tamagotchiState.initial) {
+        if (petState.initial) {
             gameViewModel.setupNewGame()
         } else {
             gameViewModel.onDismissStartup()
@@ -55,13 +55,13 @@ fun Dialogs(gameViewModel: GameViewModel) {
         DialogBase(
             showStartup, onDismissRequest = { startupDismiss() },
             properties = DialogProperties(
-                dismissOnBackPress = !tamagotchiState.initial,
+                dismissOnBackPress = !petState.initial,
                 dismissOnClickOutside = false,
                 usePlatformDefaultWidth = false
             )
         ) { onDismissRequest ->
             SettingsDialog(
-                tamagotchiState,
+                petState,
                 { gameViewModel.submitStepsGoal(it) },
                 { gameViewModel.updateBedTime(it) },
                 { gameViewModel.updateWakeTime(it) },
@@ -70,17 +70,17 @@ fun Dialogs(gameViewModel: GameViewModel) {
                 { gameViewModel.exportData() },
                 appTheme,
                 {gameViewModel.updateTheme(it)},
-                tamagotchiState.color,
+                petState.color,
                 {gameViewModel.updateColor(it)},
                 onDismissRequest = onDismissRequest,
             )
         }
 
         DialogBase(
-            tamagotchiState.hasEvolved,
+            petState.hasEvolved,
             onDismissRequest = { gameViewModel.onDismissEvolution() }) { onDismissRequest ->
             EvolutionDialog(
-                tamagotchiState,
+                petState,
                 onDismissRequest = onDismissRequest
             )
         }
@@ -101,7 +101,7 @@ fun Dialogs(gameViewModel: GameViewModel) {
             )
         ) { onDismissRequest ->
             GameDialog(
-                tamagotchiState,
+                petState,
             ) { score, game -> gameViewModel.gameScore(score, game) }
         }
 
@@ -112,13 +112,13 @@ fun Dialogs(gameViewModel: GameViewModel) {
             modifier = puzzleModifier,
             onDismissRequest = { gameViewModel.onDismissIntelligence() }) { onDismissRequest ->
 
-            val missingDigits = tamagotchiState.puzzleDifficulty.sudokuDigits
+            val missingDigits = petState.puzzleDifficulty.sudokuDigits
             val sudokuViewModel: SudokuViewModel = viewModel(
                 factory = SudokuViewModelFactory(missingDigits)
             )
 
             SudokuDialog(
-                petState = tamagotchiState,
+                petState = petState,
                 sudokuViewModel,
                 showWinScreen,
                 showLoss,
@@ -144,11 +144,11 @@ fun Dialogs(gameViewModel: GameViewModel) {
                 factory = NonogramViewModelFactory(
                     10,
                     10,
-                    tamagotchiState.puzzleDifficulty.nonogramOdds
+                    petState.puzzleDifficulty.nonogramOdds
                 )
             )
             NonogramDialog(
-                tamagotchiState,
+                petState,
                 nonogramViewModel,
                 showWinScreen,
                 {
@@ -169,9 +169,9 @@ fun Dialogs(gameViewModel: GameViewModel) {
             showStats,
             onDismissRequest = { gameViewModel.onDismissStats() },
         ) {
-            StatsDialog(tamagotchiState, activeStats, passiveStats)
+            StatsDialog(petState, activeStats, passiveStats)
         }
 
-        Manual(showManual, tamagotchiState) { gameViewModel.onDismissManual() }
+        Manual(showManual, petState) { gameViewModel.onDismissManual() }
     }
 }

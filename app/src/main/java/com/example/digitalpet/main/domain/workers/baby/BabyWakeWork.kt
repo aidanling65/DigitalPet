@@ -22,7 +22,7 @@ class BabyWakeWork(
                 light = true
             )
         }
-        attentionNotification(applicationContext, "You Tamagotchi has woken up")
+        attentionNotification(applicationContext, "Your pet has woken up")
         updateHistory(applicationContext){
             it.copy(
                 age = it.age+1

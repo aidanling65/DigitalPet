@@ -14,7 +14,7 @@ fun childTeenEvolve(
     showNotification: Boolean = true
 ): Pair<PetState, EvolutionLog> {
     if(showNotification) {
-        showNotification(context, "Your Tamagotchi has evolved!", EVOLVE_ID)
+        showNotification(context, "Your pet has evolved!", EVOLVE_ID)
     }
 
     val updatedState = baseEvolve(currentState).copy(

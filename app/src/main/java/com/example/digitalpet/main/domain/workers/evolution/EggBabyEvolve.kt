@@ -10,7 +10,7 @@ import com.example.digitalpet.main.utils.showNotification
 
 fun eggBabyEvolve(context: Context, currentState: PetState, showNotification: Boolean = true): Pair<PetState, EvolutionLog> {
     if(showNotification) {
-        showNotification(context, "Your Tamagotchi has hatched!", EVOLVE_ID)
+        showNotification(context, "Your pet has hatched!", EVOLVE_ID)
     }
 
     val updatedState = baseEvolve(currentState).copy(

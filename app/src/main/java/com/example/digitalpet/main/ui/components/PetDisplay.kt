@@ -65,13 +65,13 @@ fun PetDisplay(
 
     val eatingAnimation = listOf(R.drawable.eating_bread, R.drawable.eating_burger).random()
     val eatingDuration = getAnimationDuration(LocalContext.current, eatingAnimation)
-    var tamagotchiEating by remember { mutableStateOf(false) }
+    var eating by remember { mutableStateOf(false) }
     LaunchedEffect(showEatingAnimation) {
         if (showEatingAnimation > 0) {
-            tamagotchiEating = true
+            eating = true
         } else {
             delay(eatingDuration.toLong())
-            tamagotchiEating = false
+            eating = false
         }
     }
 
@@ -106,7 +106,7 @@ fun PetDisplay(
             ) {
                 if (currentState.loading) {
                     Box(modifier = Modifier.fillMaxSize())
-                } else if (tamagotchiEating && currentState.currentAnimation == currentState.animations.idle) {
+                } else if (eating && currentState.currentAnimation == currentState.animations.idle) {
                     AnimateDrawable(
                         drawableRes = currentState.animations.eating
                             ?: currentState.currentAnimation,

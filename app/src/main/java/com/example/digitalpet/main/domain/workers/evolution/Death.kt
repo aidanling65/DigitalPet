@@ -20,7 +20,7 @@ fun death(
     WorkManager.getInstance(context).cancelAllWork()
 
     if (showNotification) {
-        showNotification(context, "Your Tamagotchi has died!", EVOLVE_ID)
+        showNotification(context, "Your pet has died!", EVOLVE_ID)
     }
 
     val updatedState = baseEvolve(currentState).copy(

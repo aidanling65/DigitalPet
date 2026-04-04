@@ -12,7 +12,7 @@ import com.example.digitalpet.main.utils.showNotification
 fun babyChildEvolve(context: Context, currentState: PetState, showNotification: Boolean = true): Pair<PetState, EvolutionLog> {
 
     if(showNotification) {
-        showNotification(context, "Your Tamagotchi has evolved!", EVOLVE_ID)
+        showNotification(context, "Your pet has evolved!", EVOLVE_ID)
     }
 
     WorkManager.getInstance(context).cancelAllWorkByTag("hunger_happiness")

@@ -27,7 +27,7 @@ class PoopSickWork(
                 it
             }
             else if (it.poop && !it.sick) {
-                attentionNotification(applicationContext, "Your tamagotchi is sick!")
+                attentionNotification(applicationContext, "Your pet is sick!")
                 createSingleWorker<SickMistakeWork>(
                     applicationContext,
                     Duration.ofMinutes(15),

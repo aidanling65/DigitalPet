@@ -24,7 +24,7 @@ class BabyPoopWork(
             it.copy(timesPooped = it.timesPooped + 1)
         }
 
-        attentionNotification(applicationContext, "You Tamagotchi has pooped!")
+        attentionNotification(applicationContext, "Your pet has pooped!")
 
         return Result.success()
     }

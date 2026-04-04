@@ -24,7 +24,7 @@ class BrainrotWork(
         }
 
         if(updatedState.intelligence == 0){
-            attentionNotification(applicationContext, "Your Tamagotchi is stupid!")
+            attentionNotification(applicationContext, "Your pet is stupid!")
 
             createSingleWorker<StupidMistakeWork>(
                 applicationContext,

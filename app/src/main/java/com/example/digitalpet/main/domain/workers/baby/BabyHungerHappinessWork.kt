@@ -28,10 +28,10 @@ class BabyHungerHappinessWork(
                 happiness = if (currentState.happiness > 0) currentState.happiness - 1 else currentState.happiness
             )
             if (updatedState.hunger == 0) {
-                attentionNotification(applicationContext, "Your Tamagotchi is hungry!")
+                attentionNotification(applicationContext, "Your pet is hungry!")
             }
             if (updatedState.happiness == 0) {
-                attentionNotification(applicationContext, "Your Tamagotchi is sad!")
+                attentionNotification(applicationContext, "Your pet is sad!")
             }
             updatedState
         }

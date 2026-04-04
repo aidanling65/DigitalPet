@@ -35,7 +35,7 @@ class SickWork(
         }
 
         if(updatedState.sick && !updatedState.sleeping){
-            attentionNotification(applicationContext, "Your Tamagotchi is sick!")
+            attentionNotification(applicationContext, "Your pet is sick!")
 
             createSingleWorker<SickMistakeWork>(
                 applicationContext,

@@ -23,7 +23,7 @@ class BabySickWork(
             it.copy(timesSick = it.timesSick + 1)
         }
 
-        attentionNotification(applicationContext, "You Tamagotchi is sick!")
+        attentionNotification(applicationContext, "Your pet is sick!")
 
         return Result.success()
     }

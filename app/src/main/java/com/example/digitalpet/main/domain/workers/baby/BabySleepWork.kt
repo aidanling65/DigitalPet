@@ -26,7 +26,7 @@ class BabySleepWork(
             it.copy(timesSlept = it.timesSlept + 1)
         }
 
-        attentionNotification(applicationContext, "You Tamagotchi is sleeping")
+        attentionNotification(applicationContext, "Your pet is sleeping")
 
         createSingleWorker<BabyWakeWork>(
             applicationContext,

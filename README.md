@@ -1,2 +1,2 @@
-# Tamagotchi
-Level 4 Individual Project Tamagotchi
+# DigitalPet
+Level 4 Individual Project DigitalPet#

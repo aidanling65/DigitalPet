@@ -38,7 +38,7 @@ class MisbehavingWork(
 
 
         if(updatedState.misbehaving && !updatedState.sleeping){
-            attentionNotification(applicationContext, "Your Tamagotchi is misbehaving!")
+            attentionNotification(applicationContext, "Your pet is misbehaving!")
 
             createSingleWorker<DisciplineMistakeWork>(
                 applicationContext,

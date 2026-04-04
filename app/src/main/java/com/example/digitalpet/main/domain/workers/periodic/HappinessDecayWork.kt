@@ -29,7 +29,7 @@ class HappinessDecayWork(
         }
 
         if (updatedState.happiness == 0 && !updatedState.sleeping) {
-            attentionNotification(applicationContext, "Your Tamagotchi is sad!")
+            attentionNotification(applicationContext, "Your pet is sad!")
             createSingleWorker<HappinessMistakeWork>(
                 applicationContext,
                 Duration.ofMinutes(15),

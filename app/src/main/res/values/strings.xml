@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">DigiPet</string>
-    <string name="tamagotchi">Tamagotchi</string>
+    <string name="digital_pet">DigiPet</string>
     <string name="hunger">Hunger</string>
     <string name="discipline">Discipline</string>
     <string name="feed">Feed</string>
@@ -16,8 +16,8 @@
     <string name="lights_out">Lights out</string>
     <string name="sleeping">Sleeping</string>
     <string name="awake">Awake</string>
-    <string name="tamagotchi_notifications">Tamagotchi Notifications</string>
-    <string name="reset_tamagotchi">Reset Tamagotchi</string>
+    <string name="pet_notifications">DigiPet Notifications</string>
+    <string name="reset_pet">Reset Pet</string>
     <string name="dismiss">Dismiss</string>
     <string name="confirm">Confirm</string>
     <string name="sick">Sick</string>
@@ -52,7 +52,7 @@
     <string name="evolution_explanation">Values like your pet\'s discipline or the number of mistakes you\'ve made affect which form your pet will evolve to!</string>
     <string name="evolution">Evolution</string>
     <string name="death">Death</string>
-    <string name="death_description">Your tamagotchi may die if you make too many mistakes or it is sick for too long.</string>
+    <string name="death_description">Your pet may die if you make too many mistakes or it is sick for too long.</string>
     <string name="manual">Manual</string>
     <string name="settings">Settings</string>
     <string name="reset">Reset</string>

@@ -12,7 +12,7 @@ import androidx.core.app.NotificationManagerCompat
 import com.example.digitalpet.main.MainActivity
 import com.example.digitalpet.R
 
-const val CHANNEL_ID = "Tamagotchi"
+const val CHANNEL_ID = "DigitalPet"
 const val NOTIFICATION_PERMISSION_CODE = 100
 const val EVOLVE_ID = 0
 const val ATTENTION_ID = 1
@@ -29,7 +29,7 @@ fun showNotification(context: Context, text: String, id: Int = ATTENTION_ID) {
 
     val builder = NotificationCompat.Builder(context, CHANNEL_ID)
         .setSmallIcon(R.mipmap.ic_launcher_foreground)
-        .setContentTitle("Tamagotchi")
+        .setContentTitle("DigiPet")
         .setContentText(text)
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         .setContentIntent(pendingIntent)
@@ -46,7 +46,7 @@ fun attentionNotification(context: Context, text: String){
     val isShowing = notificationManager.activeNotifications.any { it.id == ATTENTION_ID }
     var contentText = text
     if(isShowing){
-        contentText == "Your tamagotchi needs attention"
+        contentText == "Your pet needs attention"
     }
 
     showNotification(context, contentText, ATTENTION_ID)
@@ -60,8 +60,8 @@ fun cancelNotifications(context: Context){
 
 fun createNotificationChannel(context: Context) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val name = context.getString(R.string.tamagotchi)
-        val descriptionText = context.getString(R.string.tamagotchi_notifications)
+        val name = context.getString(R.string.digital_pet)
+        val descriptionText = context.getString(R.string.pet_notifications)
         val importance = NotificationManager.IMPORTANCE_DEFAULT
         val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
             description = descriptionText

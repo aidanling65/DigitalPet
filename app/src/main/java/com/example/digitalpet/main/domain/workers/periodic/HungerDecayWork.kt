@@ -28,7 +28,7 @@ class HungerDecayWork(
         }
 
         if (updatedState.hunger == 0 && !updatedState.sleeping) {
-            attentionNotification(applicationContext, "You Tamagotchi is hungry!")
+            attentionNotification(applicationContext, "Your pet is hungry!")
             createSingleWorker<HungerMistakeWork>(
                 applicationContext,
                 Duration.ofMinutes(15),

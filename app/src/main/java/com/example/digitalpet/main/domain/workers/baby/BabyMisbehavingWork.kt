@@ -27,7 +27,7 @@ class BabyMisbehavingWork(
             it.copy(timesMisbehaved = it.timesMisbehaved + 1)
         }
 
-        attentionNotification(applicationContext, "You Tamagotchi is misbehaving")
+        attentionNotification(applicationContext, "Your pet is misbehaving")
 
         createSingleWorker<BabyBehaveWork>(
             applicationContext,

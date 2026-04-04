@@ -20,7 +20,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-val Context.dataStore by preferencesDataStore(name = "tamagotchi_prefs")
+val Context.dataStore by preferencesDataStore(name = "digipet_prefs")
 
 class PetRepository(private val context: Context) {
 

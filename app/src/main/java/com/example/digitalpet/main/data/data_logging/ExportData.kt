@@ -18,8 +18,8 @@ import java.util.zip.ZipOutputStream
 
 class ExportData(private val context: Context, private val repository: PetRepository) {
     companion object {
-        const val DB_NAME = "tamagotchi_database"
-        const val PREFS_NAME = "tamagotchi_prefs.preferences_pb"
+        const val DB_NAME = "pet_database"
+        const val PREFS_NAME = "pet_prefs.preferences_pb"
     }
 
     suspend fun exportDataForSharing() {
@@ -30,7 +30,7 @@ class ExportData(private val context: Context, private val repository: PetReposi
                 exportDir.mkdirs()
             }
 
-            val zipFile = File(exportDir, "tamagotchi_backup.zip")
+            val zipFile = File(exportDir, "pet_backup.zip")
             if (zipFile.exists()) {
                 zipFile.delete()
             }
@@ -40,7 +40,7 @@ class ExportData(private val context: Context, private val repository: PetReposi
             val currentState = repository.petStateFlow.first()
             val json = Json{prettyPrint=true}
             val jsonString = json.encodeToString(currentState)
-            val jsonFile = File(exportDir, "tamagotchi_state.json")
+            val jsonFile = File(exportDir, "pet_state.json")
             jsonFile.writeText(jsonString)
             filesToZip.add(jsonFile)
 
@@ -92,7 +92,7 @@ class ExportData(private val context: Context, private val repository: PetReposi
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
 
-        val chooser = Intent.createChooser(shareIntent, "Export Tamagotchi Data")
+        val chooser = Intent.createChooser(shareIntent, "Export Pet Data")
         chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(chooser)
     }

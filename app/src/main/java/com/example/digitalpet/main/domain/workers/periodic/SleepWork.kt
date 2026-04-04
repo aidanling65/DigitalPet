@@ -33,7 +33,7 @@ class SleepWork(
 
             if (!current.sleeping && shouldBeSleeping) {
                 slept = true
-                attentionNotification(applicationContext, "Your tamagotchi has gone to sleep")
+                attentionNotification(applicationContext, "Your pet has gone to sleep")
                 createSingleWorker<SleepMistakeWork>(
                     applicationContext,
                     Duration.ofMinutes(15),
@@ -42,7 +42,7 @@ class SleepWork(
                 )
             } else if (current.sleeping && !shouldBeSleeping) {
                 aged = true
-                attentionNotification(applicationContext, "Your tamagotchi has awoken")
+                attentionNotification(applicationContext, "Your pet has awoken")
             }
 
             current.copy(

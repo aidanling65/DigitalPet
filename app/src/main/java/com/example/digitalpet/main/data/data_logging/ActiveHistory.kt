@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "tamagotchi_active_history",
+@Entity(tableName = "active_history",
     foreignKeys = [
         ForeignKey(
             entity= SessionLog::class,

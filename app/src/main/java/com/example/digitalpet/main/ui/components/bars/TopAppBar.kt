@@ -33,7 +33,7 @@ fun TopAppBar(
         ),
         title = {
             Text(
-                text = stringResource(R.string.tamagotchi),
+                text = stringResource(R.string.digital_pet),
                 style = MaterialTheme.typography.titleLarge,
                 modifier=Modifier.padding(bottom=8.dp)
             )

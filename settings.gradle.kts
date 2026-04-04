@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Tamagotchi"
+rootProject.name = "DigitalPet"
 include(":app")

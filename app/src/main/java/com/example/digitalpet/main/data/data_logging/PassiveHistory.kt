@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.time.LocalTime
 
-@Entity(tableName = "tamagotchi_passive_history")
+@Entity(tableName = "passive_history")
 data class PassiveHistory(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,

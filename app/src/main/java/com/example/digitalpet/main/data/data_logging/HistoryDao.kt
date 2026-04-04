@@ -10,34 +10,34 @@ import androidx.room.Update
 @Dao
 interface HistoryDao {
 
-    @Query("SELECT * FROM tamagotchi_active_history ORDER BY id DESC LIMIT 1")
+    @Query("SELECT * FROM active_history ORDER BY id DESC LIMIT 1")
     suspend fun getLatestActive(): ActiveHistory?
 
-    @Query("SELECT * FROM tamagotchi_passive_history ORDER BY created_at DESC LIMIT 1")
+    @Query("SELECT * FROM passive_history ORDER BY created_at DESC LIMIT 1")
     suspend fun getLatestPassive(): PassiveHistory?
 
     @Query("SELECT * FROM evolution_log ORDER BY evolution_time DESC LIMIT 1")
     suspend fun getLatestEvolution(): EvolutionLog?
 
     @Update
-    suspend fun update(tamagotchiInstance: PassiveHistory)
+    suspend fun update(petInstance: PassiveHistory)
 
     @Insert
-    suspend fun insert(tamagotchiInstance: ActiveHistory)
+    suspend fun insert(petInstance: ActiveHistory)
 
     @Insert
-    suspend fun insert(tamagotchiInstance: EvolutionLog)
+    suspend fun insert(petInstance: EvolutionLog)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(tamagotchiInstance: SessionLog) : Long
+    suspend fun insert(petInstance: SessionLog) : Long
 
     @Insert
-    suspend fun insert(tamagotchiInstance: PassiveHistory)
+    suspend fun insert(petInstance: PassiveHistory)
 
     @Delete
-    suspend fun delete(tamagotchiInstance: ActiveHistory)
+    suspend fun delete(petInstance: ActiveHistory)
 
     @Delete
-    suspend fun delete(tamagotchiInstance: PassiveHistory)
+    suspend fun delete(petInstance: PassiveHistory)
 
 }
