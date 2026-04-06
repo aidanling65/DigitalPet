@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -37,9 +36,6 @@ fun BottomBar(
             .fillMaxWidth(),
         actions = {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(46.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 listOf(
