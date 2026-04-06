@@ -7,9 +7,11 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkerParameters
 import com.example.digitalpet.main.data.data_logging.PetDatabase
 import com.example.digitalpet.main.data.data_logging.PetHistoryRepository
+import com.example.digitalpet.main.data.model.AgeStage
 import com.example.digitalpet.main.data.repository.PetRepository
 import com.example.digitalpet.main.domain.workers.utils.createSingleWorker
 import com.example.digitalpet.main.domain.workers.utils.scheduleEssentialWorkers
+import com.example.digitalpet.main.utils.showNotification
 import kotlinx.coroutines.runBlocking
 import java.time.Duration
 import java.time.LocalTime
@@ -52,7 +54,12 @@ class EvolutionWork(
             val evolutionFunction = state.ageStage.evolve
 
             if (evolutionFunction != null) {
-                val (evolvedState, evolutionLog) = evolutionFunction(applicationContext, state, true)
+                if(state.ageStage == AgeStage.EGG){
+                    showNotification(applicationContext, "Your egg has hatched!")
+                } else{
+                    showNotification(applicationContext, "Your pet has evolved!")
+                }
+                val (evolvedState, evolutionLog) = evolutionFunction(state)
                 runBlocking {
                     historyRepository.storeEvolution(evolutionLog)
                 }

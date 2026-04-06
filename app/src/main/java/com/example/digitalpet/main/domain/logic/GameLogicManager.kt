@@ -62,16 +62,9 @@ class GameLogicManager {
         if (!current.sick)
             return current
 
-        return if (current.medicineTaken) {
-            current.copy(
-                sick = false,
-                medicineTaken = false
-            )
-        } else {
-            current.copy(
-                medicineTaken = true
-            )
-        }
+        return current.copy(
+            sick = false
+        )
     }
 
     fun discipline(current: PetState): PetState {

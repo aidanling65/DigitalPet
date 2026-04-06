@@ -1,6 +1,5 @@
 package com.example.digitalpet.main.data.model
 
-import android.content.Context
 import com.example.digitalpet.main.data.data_logging.EvolutionLog
 import com.example.digitalpet.main.domain.workers.evolution.babyChildEvolve
 import com.example.digitalpet.main.domain.workers.evolution.childTeenEvolve
@@ -13,7 +12,7 @@ import java.time.Duration
 enum class AgeStage(
     val minimumWeight: Int,
     val stageLength: Duration?,
-    val evolve: ((Context, PetState, Boolean) -> Pair<PetState, EvolutionLog>)?,
+    val evolve: ((PetState) -> Pair<PetState, EvolutionLog>)?,
     val misbehaviorChances: Float,
     val mistakesLimit: Int?
 ) {

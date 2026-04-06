@@ -42,7 +42,6 @@ class PetRepository(private val context: Context) {
     private val LIGHT_STATE = intPreferencesKey("light_state")
     private val SLEEPING = booleanPreferencesKey("sleeping")
 
-    private val MEDICINE_TAKEN = booleanPreferencesKey("medicineTaken")
     private val SICK = booleanPreferencesKey("sick")
     private val POOP = booleanPreferencesKey("poop")
     private val MISBEHAVING = booleanPreferencesKey("misbehaving")
@@ -77,7 +76,6 @@ class PetRepository(private val context: Context) {
             discipline = prefs[DISCIPLINE] ?: defaultState.discipline,
             intelligence = prefs[INTELLIGENCE] ?: defaultState.intelligence,
             light = prefs[LIGHT] ?: defaultState.light,
-            medicineTaken = prefs[MEDICINE_TAKEN] ?: defaultState.medicineTaken,
             sick = prefs[SICK] ?: defaultState.sick,
             lightAnimationState = prefs[LIGHT_STATE] ?: defaultState.lightAnimationState,
             poop = prefs[POOP] ?: defaultState.poop,
@@ -138,7 +136,6 @@ class PetRepository(private val context: Context) {
         updated[INTELLIGENCE] = current.intelligence
         updated[LIGHT] = current.light
         updated[LIGHT_STATE] = current.lightAnimationState
-        updated[MEDICINE_TAKEN] = current.medicineTaken
         updated[SICK] = current.sick
         updated[POOP] = current.poop
         updated[MISBEHAVING] = current.misbehaving

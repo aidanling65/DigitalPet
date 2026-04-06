@@ -68,10 +68,8 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.compose.foundation)
     implementation(libs.core.ktx)
-    implementation(libs.androidx.work.testing)
     ksp(libs.androidx.room.compiler)
     implementation(libs.retrofit)
-    implementation(libs.converter.gson)
     implementation(libs.kotlinx.serialization.json)
     // In app/build.gradle.kts
 
@@ -82,7 +80,6 @@ dependencies {
 
     implementation(libs.androidx.appcompat)
     testImplementation(libs.junit)
-    testImplementation("org.robolectric:robolectric:4.11.1")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

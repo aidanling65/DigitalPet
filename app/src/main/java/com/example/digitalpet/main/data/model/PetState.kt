@@ -41,7 +41,6 @@ data class PetState(
     val lightAnimationState: Int = 0,
     val light: Boolean = true,
 
-    val medicineTaken: Boolean = false,
     val sick: Boolean = false,
 
     val poop: Boolean = false,

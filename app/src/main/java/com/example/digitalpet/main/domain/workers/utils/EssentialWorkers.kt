@@ -5,7 +5,8 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
 import com.example.digitalpet.main.data.model.AgeStage
 import com.example.digitalpet.main.data.model.PetState
-import com.example.digitalpet.main.domain.workers.baby.BabyHungerHappinessWork
+import com.example.digitalpet.main.domain.workers.baby.BabyHappinessWork
+import com.example.digitalpet.main.domain.workers.baby.BabyHungerWork
 import com.example.digitalpet.main.domain.workers.baby.BabyMisbehavingWork
 import com.example.digitalpet.main.domain.workers.baby.BabyPoopWork
 import com.example.digitalpet.main.domain.workers.baby.BabySickWork
@@ -37,10 +38,16 @@ fun scheduleEssentialWorkers(
         AgeStage.EGG -> return
         AgeStage.DEAD -> return
         AgeStage.BABY -> {
-            createSingleWorker<BabyHungerHappinessWork>(
+            createSingleWorker<BabyHungerWork>(
                 context,
                 Duration.ofMinutes(3),
-                "hunger_happiness",
+                "hunger",
+                ExistingWorkPolicy.REPLACE
+            )
+            createSingleWorker<BabyHappinessWork>(
+                context,
+                Duration.ofMinutes(3),
+                "happiness",
                 ExistingWorkPolicy.REPLACE
             )
             createSingleWorker<BabyPoopWork>(
@@ -120,7 +127,7 @@ fun scheduleEssentialWorkers(
                 context,
                 initialDelay,
                 Duration.ofHours(24),
-                "brainrot",
+                "intelligence",
                 policy
             )
             createPeriodicWorker<SickWork>(

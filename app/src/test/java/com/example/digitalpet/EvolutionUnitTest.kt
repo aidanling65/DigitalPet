@@ -1,9 +1,5 @@
 package com.example.digitalpet
 
-import android.content.Context
-import androidx.test.core.app.ApplicationProvider
-import androidx.work.Configuration
-import androidx.work.testing.WorkManagerTestInitHelper
 import com.example.digitalpet.main.data.model.AgeStage
 import com.example.digitalpet.main.data.model.EvolutionAnimations
 import com.example.digitalpet.main.data.model.MAX_DISCIPLINE
@@ -12,13 +8,8 @@ import com.example.digitalpet.main.domain.workers.evolution.babyChildEvolve
 import com.example.digitalpet.main.domain.workers.evolution.childTeenEvolve
 import com.example.digitalpet.main.domain.workers.evolution.eggBabyEvolve
 import com.example.digitalpet.main.domain.workers.evolution.teenAdultEvolve
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
-import org.junit.Before
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -26,25 +17,12 @@ import org.robolectric.annotation.Config
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [34], manifest = Config.NONE)
 class EvolutionUnitTests {
-
-    @Before
-    fun setup() {
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        val config = Configuration.Builder()
-            .setMinimumLoggingLevel(android.util.Log.DEBUG)
-            .build()
-        WorkManagerTestInitHelper.initializeTestWorkManager(context, config)
-    }
-
     @Test
     fun eggBabyEvolveTest(){
-        val context = ApplicationProvider.getApplicationContext<Context>()
 
         val eggState = PetState()
-        val (newState, evolutionLog) = eggBabyEvolve(context, eggState,showNotification = false)
+        val (newState, evolutionLog) = eggBabyEvolve(eggState)
         assertEquals(AgeStage.BABY, newState.ageStage)
         assertEquals(AgeStage.BABY, evolutionLog.ageStage)
 
@@ -54,10 +32,8 @@ class EvolutionUnitTests {
 
     @Test
     fun babyChildEvolveTest(){
-        val context = ApplicationProvider.getApplicationContext<Context>()
-
         val babyState = PetState(ageStage = AgeStage.BABY, animations = EvolutionAnimations.BABY)
-        val (newState, _) = babyChildEvolve(context, babyState,showNotification = false)
+        val (newState, _) = babyChildEvolve(babyState)
 
         assertEquals(AgeStage.CHILD, newState.ageStage)
 
@@ -66,10 +42,8 @@ class EvolutionUnitTests {
 
     @Test
     fun childTeen1EvolveTest(){
-        val context = ApplicationProvider.getApplicationContext<Context>()
-
         val childState = PetState(ageStage = AgeStage.CHILD, animations = EvolutionAnimations.CHILD)
-        val (newState, _) = childTeenEvolve(context, childState,showNotification = false)
+        val (newState, _) = childTeenEvolve(childState)
 
         assertEquals(AgeStage.TEEN, newState.ageStage)
 
@@ -78,10 +52,8 @@ class EvolutionUnitTests {
 
     @Test
     fun childTeen2EvolveTest(){
-        val context = ApplicationProvider.getApplicationContext<Context>()
-
         val childState = PetState(ageStage = AgeStage.CHILD, animations = EvolutionAnimations.CHILD, mistakes = 2)
-        val (newState, _) = childTeenEvolve(context, childState,showNotification = false)
+        val (newState, _) = childTeenEvolve(childState)
 
         assertEquals(AgeStage.TEEN, newState.ageStage)
 
@@ -90,10 +62,9 @@ class EvolutionUnitTests {
 
     @Test
     fun teenAdult1Evolve(){
-        val context = ApplicationProvider.getApplicationContext<Context>()
 
         val teenState = PetState(ageStage = AgeStage.TEEN, animations = EvolutionAnimations.TEEN_1, discipline = MAX_DISCIPLINE, mistakes = 4)
-        val (newState, _) = teenAdultEvolve(context, teenState,showNotification = false)
+        val (newState, _) = teenAdultEvolve(teenState)
 
         assertEquals(AgeStage.ADULT, newState.ageStage)
         assertEquals(EvolutionAnimations.ADULT_1, newState.animations)
@@ -101,9 +72,8 @@ class EvolutionUnitTests {
 
     @Test
     fun teenAdult2Evolve(){
-        val context = ApplicationProvider.getApplicationContext<Context>()
         val teenState = PetState(ageStage = AgeStage.TEEN, animations = EvolutionAnimations.TEEN_1, discipline = MAX_DISCIPLINE, mistakes = 5)
-        val (newState, _) = teenAdultEvolve(context, teenState,showNotification = false)
+        val (newState, _) = teenAdultEvolve(teenState)
 
         assertEquals(AgeStage.ADULT, newState.ageStage)
         assertEquals(EvolutionAnimations.ADULT_2, newState.animations)
@@ -111,9 +81,8 @@ class EvolutionUnitTests {
 
     @Test
     fun teenAdult3Evolve(){
-        val context = ApplicationProvider.getApplicationContext<Context>()
         val teenState = PetState(ageStage = AgeStage.TEEN, animations = EvolutionAnimations.TEEN_1, discipline = MAX_DISCIPLINE / 2, mistakes = 4)
-        val (newState, _) = teenAdultEvolve(context, teenState,showNotification = false)
+        val (newState, _) = teenAdultEvolve(teenState)
 
         assertEquals(AgeStage.ADULT, newState.ageStage)
         assertEquals(EvolutionAnimations.ADULT_3, newState.animations)
@@ -121,9 +90,8 @@ class EvolutionUnitTests {
 
     @Test
     fun teenAdult4Evolve(){
-        val context = ApplicationProvider.getApplicationContext<Context>()
         val teenState = PetState(ageStage = AgeStage.TEEN, animations = EvolutionAnimations.TEEN_2, discipline = MAX_DISCIPLINE)
-        val (newState, _) = teenAdultEvolve(context, teenState,showNotification = false)
+        val (newState, _) = teenAdultEvolve(teenState)
 
         assertEquals(AgeStage.ADULT, newState.ageStage)
         assertEquals(EvolutionAnimations.ADULT_4, newState.animations)
@@ -131,15 +99,14 @@ class EvolutionUnitTests {
 
     @Test
     fun teenAdult5Evolve(){
-        val context = ApplicationProvider.getApplicationContext<Context>()
         val teenState = PetState(ageStage = AgeStage.TEEN, animations = EvolutionAnimations.TEEN_1, discipline = 3, mistakes = 5)
-        val (newState, _) = teenAdultEvolve(context, teenState,showNotification = false)
+        val (newState, _) = teenAdultEvolve(teenState)
 
         assertEquals(AgeStage.ADULT, newState.ageStage)
         assertEquals(EvolutionAnimations.ADULT_5, newState.animations)
 
         val teenState2 = PetState(ageStage = AgeStage.TEEN, animations = EvolutionAnimations.TEEN_2, discipline = 2)
-        val (newState2, _) = teenAdultEvolve(context, teenState2,showNotification = false)
+        val (newState2, _) = teenAdultEvolve(teenState2)
 
         assertEquals(AgeStage.ADULT, newState2.ageStage)
         assertEquals(EvolutionAnimations.ADULT_5, newState2.animations)
@@ -147,15 +114,14 @@ class EvolutionUnitTests {
 
     @Test
     fun teenAdult6Evolve(){
-        val context = ApplicationProvider.getApplicationContext<Context>()
         val teenState = PetState(ageStage = AgeStage.TEEN, animations = EvolutionAnimations.TEEN_1, discipline = MAX_DISCIPLINE/2, mistakes = 5)
-        val (newState, _) = teenAdultEvolve(context, teenState,showNotification = false)
+        val (newState, _) = teenAdultEvolve(teenState)
 
         assertEquals(AgeStage.ADULT, newState.ageStage)
         assertEquals(EvolutionAnimations.ADULT_6, newState.animations)
 
         val teenState2 = PetState(ageStage = AgeStage.TEEN, animations = EvolutionAnimations.TEEN_2, discipline = 3)
-        val (newState2, _) = teenAdultEvolve(context, teenState2,showNotification = false)
+        val (newState2, _) = teenAdultEvolve(teenState2)
 
         assertEquals(AgeStage.ADULT, newState2.ageStage)
         assertEquals(EvolutionAnimations.ADULT_6, newState2.animations)

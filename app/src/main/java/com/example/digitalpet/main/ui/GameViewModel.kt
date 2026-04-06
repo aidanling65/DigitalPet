@@ -324,7 +324,7 @@ class GameViewModel(
                 } else {
                     val evolveFunction = petState.value.ageStage.evolve
                     updateAndSave {
-                        val (evolvedState, _) = evolveFunction!!(getApplication(), it, false)
+                        val (evolvedState, _) = evolveFunction!!(it)
                         evolvedState
                     }
                 }
