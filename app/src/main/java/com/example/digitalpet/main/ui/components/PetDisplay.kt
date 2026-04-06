@@ -339,8 +339,8 @@ fun PetDisplayPreview5() {
     PetDisplay(
         PetState(
             paused = false,
-            ageStage = AgeStage.EGG,
-            animations = EvolutionAnimations.EGG,
+            ageStage = AgeStage.DEAD,
+            animations = EvolutionAnimations.DEAD,
             loading = false,
             poop = false,
             sick = false,

@@ -15,9 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.digitalpet.R
+import com.example.digitalpet.theme.DigitalPetTheme
 
 @Composable
 fun ScoreBoard(score: Int, show: Boolean, modifier: Modifier=Modifier) {
@@ -61,12 +63,12 @@ fun ScoreBoard(score: Int, show: Boolean, modifier: Modifier=Modifier) {
         ) {
             Text(
                 stringResource(R.string.scores_explained),
-                style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
+                style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.sp),
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
-                    .weight(0.9f)
+                    .weight(0.85f)
             )
             Text(
                 stringResource(R.string.happiness_scores),
@@ -78,5 +80,13 @@ fun ScoreBoard(score: Int, show: Boolean, modifier: Modifier=Modifier) {
                     .weight(1f)
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ScoreBoardPreview() {
+    DigitalPetTheme {
+        ScoreBoard(score = 10, show = true)
     }
 }

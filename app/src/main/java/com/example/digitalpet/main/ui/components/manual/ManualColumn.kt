@@ -36,7 +36,7 @@ fun ManualColumn() {
         item {
             ManualEntry(
                 title = stringResource(R.string.mistakes),
-                painterId = R.drawable.sad_face,
+                painterId = R.drawable.mistakes,
                 content = {
                     MistakeContent()
                 }
