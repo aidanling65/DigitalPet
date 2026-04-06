@@ -74,8 +74,9 @@ data class PetState(
 ){
     val currentAnimation : Int
         get() = when{
-            !sleeping && !light -> R.drawable.lights_out_awake
-            sleeping && !light -> R.drawable.lights_out_sleep
+            !light-> {
+                if (sleeping) R.drawable.lights_out_sleep else R.drawable.lights_out_awake
+            }
             sick -> animations.sick ?: animations.idle
             sleeping && animations.sleep != null -> animations.sleep
             else -> animations.idle

@@ -22,6 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -59,8 +60,7 @@ fun PetDisplay(
     val colorPass =
         if (currentState.animations == EvolutionAnimations.ADULT_4 && currentState.color == PetColor.LCD) {
             Color.Black
-        }
-        else
+        } else
             currentState.color.color
 
     val eatingAnimation = listOf(R.drawable.eating_bread, R.drawable.eating_burger).random()
@@ -107,20 +107,24 @@ fun PetDisplay(
                 if (currentState.loading) {
                     Box(modifier = Modifier.fillMaxSize())
                 } else if (eating && currentState.currentAnimation == currentState.animations.idle) {
-                    AnimateDrawable(
-                        drawableRes = currentState.animations.eating
-                            ?: currentState.currentAnimation,
-                        color = colorPass,
-                        modifier = Modifier
-                            .fillMaxSize()
-                    )
+                    key(currentState.animations.eating) {
+                        AnimateDrawable(
+                            drawableRes = currentState.animations.eating
+                                ?: currentState.currentAnimation,
+                            color = colorPass,
+                            modifier = Modifier
+                                .fillMaxSize()
+                        )
+                    }
                 } else {
-                    AnimateDrawable(
-                        drawableRes = currentState.currentAnimation,
-                        color = colorPass,
-                        modifier = Modifier
-                            .fillMaxSize()
-                    )
+                    key(currentState.currentAnimation) {
+                        AnimateDrawable(
+                            drawableRes = currentState.currentAnimation,
+                            color = colorPass,
+                            modifier = Modifier
+                                .fillMaxSize()
+                        )
+                    }
                 }
             }
             val poopOffsetX = maxWidth * 0.15f
@@ -266,9 +270,9 @@ fun PetDisplayPreview() {
             animations = EvolutionAnimations.CHILD,
             loading = false,
             sleeping = false,
-            poop=false,
-            sick=false,
-            color=PetColor.LCD
+            poop = false,
+            sick = false,
+            color = PetColor.LCD
         ),
         showEatingAnimation = 0
     )
@@ -284,9 +288,9 @@ fun PetDisplayPreview4() {
             animations = EvolutionAnimations.CHILD,
             loading = false,
             sleeping = false,
-            poop=true,
-            sick=false,
-            color=PetColor.LCD
+            poop = true,
+            sick = false,
+            color = PetColor.LCD
         ),
         showEatingAnimation = 0
     )
@@ -304,7 +308,7 @@ fun PetDisplayPreview2() {
             poop = false,
             sick = false,
             sleeping = false,
-            color= PetColor.LCD,
+            color = PetColor.LCD,
         ),
         showEatingAnimation = 0,
     )
@@ -319,10 +323,10 @@ fun PetDisplayPreview3() {
             ageStage = AgeStage.CHILD,
             animations = EvolutionAnimations.CHILD,
             loading = false,
-            poop =  false,
+            poop = false,
             sick = false,
-            sleeping=true,
-            color= PetColor.LCD,
+            sleeping = true,
+            color = PetColor.LCD,
         ),
         showEatingAnimation = 0,
     )
@@ -338,10 +342,10 @@ fun PetDisplayPreview5() {
             ageStage = AgeStage.EGG,
             animations = EvolutionAnimations.EGG,
             loading = false,
-            poop =  false,
+            poop = false,
             sick = false,
-            sleeping=false,
-            color= PetColor.LCD,
+            sleeping = false,
+            color = PetColor.LCD,
         ),
         showEatingAnimation = 1,
     )

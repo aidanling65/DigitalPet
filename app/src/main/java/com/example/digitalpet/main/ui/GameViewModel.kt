@@ -265,23 +265,19 @@ class GameViewModel(
     }
 
     fun light() {
+        val isCurrentlyOn = petState.value.light
         viewModelScope.launch {
-            if (petState.value.light) {
+            if (isCurrentlyOn) {
                 updateAndSave { it.copy(lightAnimationState = 1) }
-                delay(550)
+                delay(500)
                 updateAndSave {
                     it.copy(lightAnimationState = 0, light = false)
                 }
                 tempHistory?.timesLightsOut++
 
             } else {
-                updateAndSave {if(it.lightAnimationState != 1) {
-                    it.copy(lightAnimationState = 2, light = true)
-                    } else{
-                        it.copy(lightAnimationState = 2)
-                    }
-                }
-                delay(550)
+                updateAndSave { it.copy(lightAnimationState = 2, light = true) }
+                delay(500)
                 updateAndSave {
                     it.copy(lightAnimationState = 0, light = true)
                 }
