@@ -115,15 +115,11 @@ fun PetDisplay(
                             .fillMaxSize()
                     )
                 } else {
-                    val size = if (currentState.ageStage == AgeStage.EGG) 0.4f else 1f
-                    val offset =
-                        if (currentState.ageStage == AgeStage.EGG) (maxWidth * 0.3f) else 0.dp
                     AnimateDrawable(
                         drawableRes = currentState.currentAnimation,
                         color = colorPass,
                         modifier = Modifier
-                            .fillMaxSize(size)
-                            .offset(offset, offset)
+                            .fillMaxSize()
                     )
                 }
             }
@@ -302,11 +298,11 @@ fun PetDisplayPreview2() {
     PetDisplay(
         PetState(
             paused = false,
-            ageStage = AgeStage.CHILD,
-            animations = EvolutionAnimations.CHILD,
+            ageStage = AgeStage.ADULT,
+            animations = EvolutionAnimations.ADULT_6,
             loading = false,
             poop = false,
-            sick = true,
+            sick = false,
             sleeping = false,
             color= PetColor.LCD,
         ),
@@ -339,8 +335,8 @@ fun PetDisplayPreview5() {
     PetDisplay(
         PetState(
             paused = false,
-            ageStage = AgeStage.CHILD,
-            animations = EvolutionAnimations.CHILD,
+            ageStage = AgeStage.EGG,
+            animations = EvolutionAnimations.EGG,
             loading = false,
             poop =  false,
             sick = false,

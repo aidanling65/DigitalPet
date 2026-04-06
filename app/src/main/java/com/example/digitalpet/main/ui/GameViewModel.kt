@@ -270,11 +270,7 @@ class GameViewModel(
                 updateAndSave { it.copy(lightAnimationState = 1) }
                 delay(550)
                 updateAndSave {
-                    if (it.lightAnimationState != 2) {
-                        it.copy(lightAnimationState = 0, light = false)
-                    } else{
-                        it
-                    }
+                    it.copy(lightAnimationState = 0, light = false)
                 }
                 tempHistory?.timesLightsOut++
 
@@ -287,11 +283,7 @@ class GameViewModel(
                 }
                 delay(550)
                 updateAndSave {
-                    if(it.lightAnimationState != 1) {
-                        it.copy(lightAnimationState = 0, light = true)
-                    } else{
-                        it
-                    }
+                    it.copy(lightAnimationState = 0, light = true)
                 }
             }
         }
