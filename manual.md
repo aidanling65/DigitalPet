@@ -6,7 +6,7 @@ You can install the application to an Android Device or Emulator through the fol
     - Android Studio will automatically download all required dependencies.
     - Ensure Gradle sync completes without errors.
 3. Run the app
-    - Connect a phhysical Android Device (Android 8.0 / API 26 or higher) or start an emulator supporting API 26+
+    - Connect a physical Android Device (Android 8.0 / API 26 or higher) or start an emulator supporting API 26+
     - Click **run** in Android Studio to install and launch the app
 4. Usage Notes
     - No internet connection is required
