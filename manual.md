@@ -1,6 +1,6 @@
 ### DigiPet Manual
 ## Installation
-You can install the application through the following instructions
+You can install the application to an Android Device or Emulator through the following instructions
 1. Open the project in Android Studio
 2. Build the project
     - Android Studio will automatically download all required dependencies.
